@@ -129,7 +129,11 @@ Confirm the placement only when the preceding checks agree on the same
 relation, axis, granularity, owner, and coverage.
 
 When they do not, state the unresolved primitive and the competing placements.
-Do not hide the uncertainty by selecting one. Escalate before establishing a
-new root, a widely reused category, or another decision that later placements
-will inherit. A caller may impose a stricter human-review gate; this procedure
+Do not hide the uncertainty by selecting one.
+
+When resolving the ambiguity would establish a reusable root, taxonomy, schema
+boundary, or other structural precedent, follow
+<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md" uid="K8T4ZM">documentation-system:§5.4</a>
+before committing the structure. Otherwise surface the ambiguity to the caller
+for a decision. A caller may impose a stricter human-review gate; this procedure
 sets the minimum rule that unresolved structure is surfaced rather than guessed.
