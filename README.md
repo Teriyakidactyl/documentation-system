@@ -1,5 +1,6 @@
 ---
 uid: 6E9QHP
+form: '<a href="3%20Standard%20Forms/1%20%F0%9F%93%96%20Origin.md" uid="DNFDSK">documentation-system:§3.1</a>'
 description: >-
   `Consult when` *repository work reaches a documentation, documented-information,
   or Documentation System tooling concern and the applicable procedure is not
@@ -9,9 +10,12 @@ description: >-
 
 # Documentation System Origin
 
-This is the origin for the repository-agnostic Documentation System. Choose
-only among the immediate indexed choices below; each location exposes another
-index when one is needed, providing progressive disclosure.
+> [!IMPORTANT]
+> Start here. Compare the current need only against the immediate indexed
+> choices below. Select the narrowest matching description. If that choice
+> exposes another index, repeat there. Stop when the selected description
+> identifies the governing artifact.
+
 
 <!-- BEGIN index -->
 <!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->

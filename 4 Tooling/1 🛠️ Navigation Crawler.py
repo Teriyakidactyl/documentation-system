@@ -45,8 +45,8 @@ A controlled link is an HTML anchor carrying `uid`. Authors may write
 `<a href="*" uid="5CFFZW">documentation-system:§2.1#4.2</a>`. Every compile
 pass uses only the UID to identify the current document, preserves and validates
 the optional section number, then rewrites the displayed qualified address and
-`href`. Ordinary Markdown links are untouched. The same rule applies inside a
-Python module docstring. Address semantics are defined by
+`href`. Ordinary Markdown links are untouched. The same rule applies in Markdown
+frontmatter and inside a Python module docstring. Address semantics are defined by
 <a href="../1%20Document%20Control/1%20%F0%9F%9B%A0%EF%B8%8F%20Control%20Documented%20Information.md#3-derive-and-use-addresses" uid="0AQHNH">documentation-system:§1.1#3</a>.
 
 Usage:
@@ -843,24 +843,11 @@ def rewrite_control_links_in_markdown(
     return "".join(out), changed
 
 
-def markdown_body_start(text: str) -> int:
-    if not text.startswith("---\n"):
-        return 0
-    close = text.find("\n---", 4)
-    if close == -1:
-        return 0
-    start = close + 4
-    if start < len(text) and text[start] == "\n":
-        start += 1
-    return start
-
-
 def rewrite_markdown_control_links(path: Path, root: Path, model: dict) -> int:
     text = read_text(path)
-    start = markdown_body_start(text)
-    body, changed = rewrite_control_links_in_markdown(text[start:], root, path, model)
+    rewritten, changed = rewrite_control_links_in_markdown(text, root, path, model)
     if changed:
-        path.write_text(text[:start] + body, encoding="utf-8")
+        path.write_text(rewritten, encoding="utf-8")
     return changed
 
 
