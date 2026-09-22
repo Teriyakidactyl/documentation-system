@@ -9,9 +9,21 @@ description: >-
 
 # Documentation System Origin
 
-This is the origin for the repository-agnostic Documentation System. Choose
-only among the immediate indexed choices below; each location exposes another
-index when one is needed, providing progressive disclosure.
+> [!IMPORTANT]
+> Start here. Compare the current need only against the immediate indexed
+> choices below. Select the narrowest matching description. If that choice
+> exposes another index, repeat there. Stop when the selected description
+> identifies the governing artifact.
+
+<!--
+This callout is the reader-facing navigation contract for the Origin. Preserve
+the behavior even if wording changes: choose only among immediate children,
+follow one index at a time, and stop at the governing artifact.
+
+Keep root-only context before the generated index only when a reader needs it
+to make the first routing decision. Do not add descendant summaries, duplicate
+child descriptions, or a parallel navigation map here.
+-->
 
 <!-- BEGIN index -->
 <!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->
