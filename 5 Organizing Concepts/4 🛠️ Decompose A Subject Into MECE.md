@@ -79,9 +79,13 @@ Before classifying whole files, folders, documents, modules, or other physical
 containers, decompose the subject into **facet-coherent units**: independently
 addressable fragments whose active organizing facets do not conflict.
 
-Use PMEST as a completeness prompt for candidate facets:
+Use S. R. Ranganathan's PMEST—Personality, Matter, Energy, Space, and
+Time—as a completeness prompt for candidate facets. PMEST originates in Colon
+Classification. This procedure preserves the five fundamental category names
+but adapts them to repository structural analysis; it does not implement Colon
+Classification notation, citation order, or its full classification rules.
 
-| Facet | Question |
+| PMEST category | Operational question here |
 |---|---|
 | Personality | What primary subject or entity is this about? |
 | Matter | What substance, content, or artifact type is involved? |
@@ -207,6 +211,23 @@ Use two cheap probes when exhaustiveness is uncertain:
 
 A counter-example confirms a gap. Failure to find one is evidence of
 exhaustiveness, not proof.
+
+**Record the validation evidence before issuing a verdict.** The record must let
+another reader audit the result without reconstructing unstated reasoning.
+
+- Record one row for every facet-coherent unit from §3, including its active
+  PMEST values, owner, topology and axis, and boundary from adjacent units.
+- When §5 applies, record every examined node with its parent, the literal Test A
+  and Test B propositions and their results, and the resulting classification.
+  Do not replace the evaluated propositions with bare `holds` / `fails` labels.
+- Record each overlap or gap candidate that could affect the verdict and its
+  disposition.
+- Confirm that the unit-record count matches the number of units identified in
+  §3 and that every load-bearing parent relation required by a nested verdict
+  has been tested. Fill any shortfall before continuing.
+
+A verdict without this complete validation record is incomplete even when its
+conclusion later proves correct.
 
 Declare exactly one outcome:
 
