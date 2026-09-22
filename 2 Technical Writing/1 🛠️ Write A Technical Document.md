@@ -69,6 +69,7 @@ description: >-              # bound at step 2.1
   `Read in full and follow when` *a connector has stopped authenticating and
   the required credential fields are unknown* `to` **restore the connector to
   an authenticating state without escalating**.
+form: '<a href="*" uid="ABC123">documentation-system:§3.1</a>' # optional; bound by Standard Forms
 quadrant: HowTo               # bound at step 2.2
 outline:                      # bound at step 4.1
   topology: linear
@@ -89,9 +90,14 @@ writing-style:                # bound at step 5
 Scope decides the container, not preference.
 
 `description` describes the whole file and stays in *frontmatter* whatever
-shape the document takes. `quadrant`, `outline`, and `writing-style` describe
-one quadrant: they sit in frontmatter while a document carries one quadrant,
-and move into each H1's *metamatter* once it carries several (step 4.4).
+shape the document takes. When a document derives from a Standard Form, its
+`form` controlled link also stays in frontmatter because the provenance
+governs the whole file. Standard Forms owns when that key is required and how
+the form is applied.
+
+`quadrant`, `outline`, and `writing-style` describe one quadrant: they sit
+in frontmatter while a document carries one quadrant, and move into each H1's
+*metamatter* once it carries several (step 4.4).
 
 Metamatter sits immediately beneath a heading, with no blank line between
 them:
