@@ -39,8 +39,13 @@ Origin. Keep its behavior intact when adapting wording to a corpus:
   branches.
 
 The Origin is README.md at the crawler root. Give it a corpus-specific H1 and a
-description that routes a reader into the corpus. Place the crawler-owned
-immediate-child index after this guidance.
+description that routes a reader into the corpus. The derived README.md carries
+a `form` controlled link in frontmatter back to this artifact. Place the
+crawler-owned immediate-child index after the reader-facing navigation
+contract.
+
+Do not copy this generic guidance block into the derived README.md; the
+`form` link keeps this form as its owner.
 
 Add root context only when it is needed before the first routing decision. A
 compact glossary can define terms required to interpret the immediate choices.
