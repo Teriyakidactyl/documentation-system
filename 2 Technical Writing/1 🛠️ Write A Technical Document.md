@@ -70,7 +70,7 @@ description: >-              # bound at step 2.1
   `Read in full and follow when` *a connector has stopped authenticating and
   the required credential fields are unknown* `to` **restore the connector to
   an authenticating state without escalating**.
-form: '<a href="*" uid="ABC123">documentation-system:§3.1</a>' # optional; bound by Standard Forms
+form: '<a href="*" uid="ABC123">documentation-system:§3.10</a>' # optional; bound by Standard Forms
 quadrant: HowTo               # bound at step 2.2
 outline:                      # bound at step 4.1
   topology: linear

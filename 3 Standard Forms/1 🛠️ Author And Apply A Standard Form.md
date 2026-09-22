@@ -55,7 +55,7 @@ Add `form` to the derived document's file frontmatter as a controlled link to
 the governing form:
 
 ```yaml
-form: '<a href="*" uid="ABC123">documentation-system:§3.1</a>'
+form: '<a href="*" uid="ABC123">documentation-system:§3.10</a>'
 ```
 
 Use the form's real UID and current address. The crawler owns the link target
