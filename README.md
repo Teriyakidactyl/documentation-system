@@ -24,4 +24,6 @@ index when one is needed, providing progressive disclosure.
   - `Consult when` *a recurring repository document role may have a standard form* `to` **confirm whether a standard form already governs the artifact before inventing a local structure**.
 - <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
   - `Consult when` *the Documentation System needs compilation, address resolution, or harness projection* `to` **select the tool that performs the required control operation**.
+- <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
+  - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **select the organizing concept that resolves conceptual structure before domain-specific rules are applied**.
 <!-- END index -->
