@@ -646,6 +646,18 @@ The body is where it does or does not.
 
 The rules below are prose rules, not register. No style block exempts them.
 
+- **State current truth, not change history.** Describe what is true and why it
+  matters now; leave rename, move, previous-state, and implementation-status
+  narrative to version history or task tracking. Historical narration belongs
+  only where recording history is the document's job, such as a changelog or
+  migration audit.
+- **Make every passage earn its place.** Delete it and reread the surrounding
+  material. If no information required by the reader is lost, omit it. Do not
+  restate the filename, subject name, nearby facts, or generic tool mechanics.
+- **Put each fact at the scope that owns it.** Keep whole-document facts at
+  document scope, section facts in their section, and one-off details locally.
+  When reasoning generalizes across instances, document it once with the concept
+  that owns it and point to that source rather than re-deriving it locally.
 - **Name the mechanism, not the feeling.** "Queries stay fast" tells a
   reader nothing. "The index is consulted before any table scan" tells them
   what happens. Test it: a sentence that would read the same in another
