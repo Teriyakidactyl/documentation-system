@@ -1,4 +1,5 @@
 ---
+uid: PK9FPF
 description: >-
   `Read in full and follow when` *a recurring repository document role needs a
   reusable standard form or a document is being derived from one* `to`
