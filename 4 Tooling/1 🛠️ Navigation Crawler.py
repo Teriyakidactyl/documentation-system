@@ -857,10 +857,9 @@ def markdown_body_start(text: str) -> int:
 
 def rewrite_markdown_control_links(path: Path, root: Path, model: dict) -> int:
     text = read_text(path)
-    start = markdown_body_start(text)
-    body, changed = rewrite_control_links_in_markdown(text[start:], root, path, model)
+    rewritten, changed = rewrite_control_links_in_markdown(text, root, path, model)
     if changed:
-        path.write_text(text[:start] + body, encoding="utf-8")
+        path.write_text(rewritten, encoding="utf-8")
     return changed
 
 
