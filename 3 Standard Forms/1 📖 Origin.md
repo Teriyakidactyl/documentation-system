@@ -1,4 +1,5 @@
 ---
+uid: DNFDSK
 description: >-
   `Consult when` *the `README.md` representing a Documentation System origin
   is being authored or reviewed for conformance* `to` **confirm the required
