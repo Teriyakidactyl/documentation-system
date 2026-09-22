@@ -44,6 +44,7 @@ description
 | **metamatter** | YAML inside an HTML comment, beneath a heading. Governs that heading's section only. |
 | **ordinary HTML comment** | Markdown source wrapped in `<!-- ... -->` that carries document-maintenance or tool-control information, not document specification or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
+| **form** | An optional file-level controlled link from a derived document to the Standard Form governing its recurring repository role. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
 | **acceptance criterion** | The observable thing successful use enables the reader to do, decide, or understand in order to act. |
