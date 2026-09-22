@@ -658,7 +658,6 @@ The rules below are prose rules, not register. No style block exempts them.
   document scope, section facts in their section, and one-off details locally.
   When reasoning generalizes across instances, document it once with the concept
   that owns it and point to that source rather than re-deriving it locally.
-
 - **Name the mechanism, not the feeling.** "Queries stay fast" tells a
   reader nothing. "The index is consulted before any table scan" tells them
   what happens. Test it: a sentence that would read the same in another
