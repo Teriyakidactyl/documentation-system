@@ -214,11 +214,13 @@ For example:
 The `uid` identifies the document within the selected corpus; the optional
 `#` in the displayed address selects a numbered heading within it. On every
 pass the compiler finds the current document by UID, derives its current
-location, prefixes the selected corpus root's directory name, validates the
-section when present, and rewrites both `href` and the displayed address.
-Ordinary Markdown links are not touched. If the address declares a different
-corpus root, the UID is missing or duplicated, or the selected heading no longer
-exists, the compiler fails rather than guessing.
+location, prefixes the selected corpus root's current directory name, validates
+the section when present, and rewrites both `href` and the displayed address.
+A controlled link may therefore carry a stale root declaration or location
+after a rename or move; the UID remains authority and the compiler refreshes
+that projection. Ordinary Markdown links are not touched. If the UID is missing
+or duplicated, the displayed value is not rooted-address syntax, or the selected
+heading no longer exists, the compiler fails rather than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
 prose. A rooted address written as plain reader-visible prose is a current
