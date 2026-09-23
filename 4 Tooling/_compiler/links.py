@@ -40,7 +40,7 @@ def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> st
     if match is None:
         raise CompilerError(
             f"{corpus_path(corpus.corpus_root, owner)}: controlled link uid {uid} must display "
-            "a rooted documentation address"
+            "an address with a corpus-root declaration"
         )
     section = match.group("section")
     heading = heading_target(artifact.body, section, artifact.path) if section else None
