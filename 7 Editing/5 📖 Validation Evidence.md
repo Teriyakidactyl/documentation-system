@@ -173,9 +173,9 @@ Cheap deterministic checks normally remain authoritative by recomputation.
 Persist a deterministic result only when the run itself carries required
 provenance or would be materially costly or impossible to reproduce.
 
-Repository Information Storage in Document Control owns the choice among
-ordinary files, sideband files, Git-attached metadata, separate histories, and
-other Git-backed storage methods. Git Notes are a possible object-attached
+<a href="../1%20Document%20Control/3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>
+owns the choice among ordinary files, sideband files, Git-attached metadata,
+separate histories, and other Git-backed storage methods. Git Notes are a possible object-attached
 storage pattern for exact-state assurance evidence, not the default
 representation of Validation.
 
