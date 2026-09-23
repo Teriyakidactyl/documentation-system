@@ -65,9 +65,9 @@ Keep the navigation behavior intact when adapting wording to a corpus:
 
 For a compiler job, the Origin is `README.md` at the directory serving as that
 job's corpus root. Give it a corpus-specific H1 and a description that routes a
-reader into the corpus. Do not add a persistent root-identity field: the job
-declares the corpus-root role by path, while each address declares the role for
-itself by directory name.
+reader into the corpus. Do not add a persistent corpus-root field: the job
+declares the role by path, while each address declares the role for itself by
+directory name.
 The derived README.md carries a `form` controlled link in frontmatter back to
 this artifact. Place the compiler-owned immediate-child index after the
 reader-facing navigation contract.
