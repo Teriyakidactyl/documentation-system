@@ -111,6 +111,11 @@ directories define classification locations. Numbered artifacts occupy
 terminal positions within those locations. Unnumbered directories may organize
 files physically but contribute no address component.
 
+When a reserved controlled sideband is selected by Folder Conventions, place
+the artifact there instead of the address hierarchy. A controlled sideband is
+address-opaque: its descendants receive no Documentation System address and do
+not enter generated indexes. After sideband placement, continue at step 5.
+
 For example:
 
 ```text
@@ -224,18 +229,21 @@ descendant metadata by hand.
 a quadrant glyph. Its address is exactly the address of its containing
 location.
 
-## 5. Make an artifact indexable
+## 5. Add controlled metadata
 
 Put descriptive metadata on the artifact itself when its native format can
 carry it safely. Markdown uses frontmatter. Python uses its module docstring.
 The compiler reads metadata without executing the artifact.
 
-Every indexed artifact carries exactly one canonical `description`. Author or
-correct it with
+Every controlled artifact carries exactly one canonical `description`. Author
+or correct it with
 <a href="../2%20Technical%20Writing/1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#2-write-the-description" uid="5CFFZW">documentation-system:§2.1#2</a>
 rather than inventing another routing or rule schema here. The compiler mints a
 missing `uid`; never author a replacement UID merely because the artifact
 moves.
+
+For an addressed artifact, continue to step 6. For a controlled sideband
+artifact, skip generated index work and continue to step 7.
 
 Keep classification, routing, and identity separate:
 
@@ -276,8 +284,8 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
 The compiler validates duplicate sibling ordinals, duplicate addresses and
-UIDs, missing descriptions, malformed generated regions, and controlled links
-before it writes indexes.
+UIDs, missing descriptions, malformed generated regions, controlled links, and
+supported sideband relationships before it writes indexes.
 
 Resolve an address without writing anything:
 
