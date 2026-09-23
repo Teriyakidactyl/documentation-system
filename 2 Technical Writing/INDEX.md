@@ -16,7 +16,7 @@ artifact; this location governs how the document is conceived and written.
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md" uid="5CFFZW">documentation-system:§2.1</a> — 🛠️ Write A Technical Document
-  - `Read in full and follow when` *authoring a technical document* `to` **commit its description, controlled placement, quadrant, outline, and writing style before drafting prose, then validate the finished artifact before claiming that it satisfies those commitments**.
+  - `Read in full and follow when` *authoring a technical document* `to` **commit its description, controlled placement, quadrant, outline, and writing style before drafting prose that satisfies them while checking each representation against the commitments that govern it**.
 - <a href="2%20%F0%9F%A7%AD%20Routable%20Descriptions%20Recognized.md" uid="CCTBKN">documentation-system:§2.2</a> — 🧭 Routable Descriptions Recognized
   - `Read in full when` *an agent must author or review a `description` and the grammar alone is insufficient to tell whether a plausible statement will route a reader correctly* `to` **distinguish and repair descriptions by directive, exigence, acceptance criterion, pairing, abstraction, and scope**.
 - <a href="3%20Document/INDEX.md" uid="7Z7MY0">documentation-system:§2.3</a> — Document

@@ -1,4 +1,5 @@
 ---
+uid: S9HVWB
 description: >-
   `Consult when` *repository information must be retained but its authority,
   discoverability, retrieval path, or storage representation is unclear* `to`

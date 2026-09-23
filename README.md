@@ -28,7 +28,7 @@ of the corpus root's physical path.
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
 
 - <a href="1%20Document%20Control/INDEX.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
-  - `Consult when` *documented information needs a controlled repository location, address, index presence, progressive-disclosure exposure, or compiler validation* `to` **select the Document Control procedure before changing controlled information**.
+  - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or compiler validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
 - <a href="2%20Technical%20Writing/INDEX.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
   - `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
 - <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
@@ -38,5 +38,5 @@ of the corpus root's physical path.
 - <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 - <a href="7%20Editing/INDEX.md" uid="X74GZ1">documentation-system:§7</a> — Editing
-  - `Consult when` *an existing artifact must be changed or assessed against a stated change, specification, norm, or declared commitment* `to` **select the Editing authority and, for prose-bearing work, the editorial pass that govern the task without conflating mutation with assessment**.
+  - `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
 <!-- END index -->

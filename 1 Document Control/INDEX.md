@@ -28,4 +28,6 @@ and storage mechanisms.
   - `Read in full and follow when` *documented information is created, moved, renamed, indexed, linked, or otherwise brought under repository control* `to` **keep its identity, location-derived address, generated index, and controlled links valid**.
 - <a href="2%20%F0%9F%93%96%20Folder%20Conventions.md" uid="TRJS8V">documentation-system:§1.2</a> — 📖 Folder Conventions
   - `Consult when` *a directory name begins with a reserved prefix and its corpus membership, compiler traversal, or access condition is unknown* `to` **confirm what the prefix reserves, whether the compiler enters it, and whether reading it requires a specific instruction**.
+- <a href="3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a> — 📖 Repository Information Storage
+  - `Consult when` *repository information must be retained but its authority, discoverability, retrieval path, or storage representation is unclear* `to` **separate information role from retrieval policy and storage method, using ordinary repository files by default and selecting another Git-backed method only for a concrete control benefit**.
 <!-- END index -->
