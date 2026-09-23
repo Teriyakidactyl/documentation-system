@@ -53,10 +53,12 @@ and `Corpus` values, UID identity, root-relative location derivation, rooted
 address parsing and rendering, Git repository root discovery, and corpus
 construction.
 
-A `Corpus` carries the selected corpus-root path as its root fact. The root
-declaration written in an address is derived from the selected directory's
-name; the `§` location is derived from descendants relative to that directory.
-Do not carry a second root-identity fact beside `Corpus.root`.
+A `Corpus` carries the corpus-root declaration selected for the current
+compiler job as its `root` fact. That fact is job-local runtime state, not a
+permanent designation of the filesystem directory. Address rendering declares
+the same role in address syntax by using the selected directory's name before
+`:`; the `§` location is derived from descendants relative to that directory.
+Do not carry a persistent or second root-identity fact beside `Corpus.root`.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -99,9 +101,10 @@ or presentation behavior.
 ### 2.6 Command line
 
 `cli.py` owns invocation, exit policy, address-resolution output, selection
-of diagnostic projections, and selection of the corpus-root declaration for
-the operation. A supplied `corpus_root` path wins; when it is omitted, the CLI
-uses the Git repository root containing the compiler.
+of diagnostic projections, and the job-local corpus-root declaration. A
+supplied `corpus_root` path declares which directory serves that role for the
+job; when omitted, the CLI declares the Git repository root containing the
+compiler.
 
 The command line orchestrates compiler behavior; it does not invent a second
 root-identity setting.
