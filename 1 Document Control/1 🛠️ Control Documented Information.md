@@ -86,8 +86,7 @@ Dot-prefixed directories are outside the controlled corpus and the compiler does
 not descend into them. Use them for repository/tool state or local working
 material, not for indexed documented information. When information must be
 retained in or alongside the repository but its normal discoverability or
-storage representation is unclear, apply
-<a href="3%20%F0%9F%93%96%20Repository%20Information%20Storage.md">Repository Information Storage</a>
+storage representation is unclear, apply **Repository Information Storage**
 before selecting a sideband directory or another Git-backed representation.
 
 On a normal compile, the compiler adds a missing `uid` to each indexed artifact.
