@@ -53,10 +53,10 @@ and `Corpus` values, UID identity, root-relative location derivation, rooted
 address parsing and rendering, Git repository root discovery, and corpus
 construction.
 
-A `Corpus` carries the selected corpus-root path as its root fact. There is no
-independent address-space or namespace fact. The root declaration written in an
-address is derived from the selected directory's name; the `§` location is
-derived from descendants relative to that directory.
+A `Corpus` carries the selected corpus-root path as its root fact. The root
+declaration written in an address is derived from the selected directory's
+name; the `§` location is derived from descendants relative to that directory.
+Do not carry a second root-identity fact beside `Corpus.root`.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -102,7 +102,7 @@ the operation. A supplied `corpus_root` path wins; when it is omitted, the CLI
 uses the Git repository root containing the compiler.
 
 The command line orchestrates compiler behavior; it does not invent a second
-address-root or namespace setting.
+root-identity setting.
 
 ## 3. Compilation pipeline
 
@@ -167,8 +167,8 @@ presenters -> Diagnostic
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
 single artifact legitimately owns them. Derive rooted addresses from
-`Corpus.root`; do not introduce a separately authored address-space,
-namespace, or root-name source of truth.
+`Corpus.root`; do not introduce another authored or computed root-identity
+source of truth.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
