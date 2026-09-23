@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - fix/corpus-root-addressing
   workflow_dispatch:
 
 permissions:
