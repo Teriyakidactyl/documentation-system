@@ -191,8 +191,43 @@ evidence to survive that context and the claim is about an exact repository
 state, Git-attached storage is a plausible pattern because it can bind evidence
 to the state without modifying the validated artifact.
 
-Git Notes are one candidate implementation of that pattern, not a repository
+A durable Git-attached receipt can follow this pattern:
+
+```text
+validation record
+        ↓
+schema + cross-field invariant validation
+        ↓
+bind controlled artifact identity + exact repository state
+        ↓
+canonical receipt representation
+        ↓
+Git-attached persistence adapter
+        ↓
+Git storage primitive
+```
+
+Keep receipt semantics above the storage primitive. The receipt model decides
+what evidence is admissible and what subject state it describes; the storage
+adapter only persists and retrieves already-valid representations. An agent or
+human using Validation should not need to manipulate note refs, object IDs, or
+other Git plumbing directly.
+
+Schema validation protects durable process evidence from malformed fields,
+unknown result vocabulary, contradictory clean/fault claims, missing subject
+identity, and similar representation errors. It establishes structural
+admissibility, not the truth of an authored judgment.
+
+For a controlled artifact, use its `uid` for conceptual identity and an exact
+Git object or equivalent state identifier for the representation examined.
+Neither substitutes for the other.
+
+Git Notes are one candidate implementation of this pattern, not a repository
 default. Select them only when object attachment and durable assurance evidence
-justify the loss of ordinary file visibility. Validation receipt semantics are
-owned by
+justify the loss of ordinary file visibility. A tool may also project a stored
+receipt back over its exact subject state as an annotated artifact so faults,
+clean checks, or uncertainty appear beside the material reviewed; that
+annotation is a view of the receipt, not a mutation of the canonical artifact.
+
+Validation receipt semantics are owned by
 <a href="../7%20Editing/5%20%F0%9F%93%96%20Validation%20Evidence.md" uid="5SK5Z4">documentation-system:§7.5</a>.
