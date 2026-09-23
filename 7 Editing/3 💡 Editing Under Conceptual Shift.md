@@ -132,3 +132,24 @@ Technical Writing owns how technical documents are conceived and authored.
 Editing owns reconciliation of an existing artifact with an external frame.
 The two cooperate when a revision changes a document's specification, but
 neither responsibility collapses into the other.
+
+## 7. Established terms carry useful prior structure
+
+Editing already has mature names for recurring scopes of work: developmental
+editing, line editing, copyediting, proofreading, house style, and style sheet.
+For agent-facing guidance, keep those names when they fit instead of replacing
+them with locally coined synonyms.
+
+An established term gives the agent a larger learned body of examples,
+techniques, boundaries, and failure modes to retrieve from. The local procedure
+then constrains that prior knowledge where Documentation System needs a sharper
+rule.
+
+Local terms are justified when they name a distinction the established
+editorial vocabulary does not provide. `checked-clean`, `residual`,
+`edit-induced fault`, and `superseded representation` exist for that reason.
+
+This is also why Revision and Validation do not replace developmental editing,
+copyediting, or proofreading. Revision and Validation answer what authority the
+operation has. The editorial term answers what level and class of prose work is
+in scope.

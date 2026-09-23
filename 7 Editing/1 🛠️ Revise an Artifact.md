@@ -3,9 +3,9 @@ uid: SE6M58
 description: >-
   `Read in full and follow when` *an existing artifact must incorporate a
   stated change without leaving superseded meaning, broken dependencies, or
-  unexamined residual* `to` **apply the change against a frozen frame,
-  propagate its implications, verify the result, and return a checkable revision
-  record**.
+  unexamined residual* `to` **freeze the change frame, validate the current
+  state, propagate the change, independently validate the result, and return a
+  checkable revision record**.
 quadrant: HowTo
 outline:
   topology: linear
@@ -25,7 +25,20 @@ writing-style:
 
 Revision changes an existing artifact so it satisfies an external frame. Do not
 use the artifact's current contents, the edits already made, or your own sense
-of completion as the authority for what remains to be done.
+of completion as authority for what remains to be done.
+
+The procedure deliberately separates assessment from mutation:
+
+```text
+freeze frame
+→ validate current state
+→ revise
+→ validate resulting state
+→ declare residual
+```
+
+Validation makes claims about the artifact. Revision changes it. Do not collapse
+the two authorities merely because one task invokes both.
 
 **Terms.**
 
@@ -36,6 +49,7 @@ of completion as the authority for what remains to be done.
 | **residual** | Required work not completed by the revision, named explicitly rather than absorbed into a completion claim. |
 | **superseded representation** | A representation of a state, rule, term, relationship, or implementation that the accepted change has made non-current. |
 | **edit-induced fault** | A defect introduced by the revision that was not present before mutation. |
+| **style sheet** | For prose work, an artifact-specific record of editorial decisions such as terminology, capitalization, spelling, numbering, and other consistency choices. It contributes to the frame but does not replace governing specifications or house style. |
 
 ## 1. Freeze the change frame
 
@@ -47,15 +61,38 @@ Take the frame from an authority outside the revision itself: an explicit user
 decision, accepted design, governing specification, norm, or other confirmed
 source. Do not derive the frame from whichever passages first attract attention.
 
+For prose-bearing artifacts, include the applicable document specification,
+house style, and artifact-specific style sheet in the frame when they govern the
+work. Keep the established editorial term for the surrounding scope when one
+fits: developmental editing, line editing, copyediting, or proofreading. A
+proofreading pass remains validation-only; if it yields an authorized
+correction, enter Revision for that correction rather than expanding the
+proofreading mandate. The frozen frame determines the exact authority for this
+revision.
+
 Freeze the criteria before the first mutation. If the frame proves wrong or
 incomplete, stop, replace it explicitly, and restart coverage against the new
 frame. Do not amend criteria merely to make completed edits appear sufficient.
 
-## 2. Map the implications
+## 2. Validate the current state
 
-Inspect the artifact against each criterion before changing it. Search is a
-discovery aid, not a completeness test: a representation can embody the old
-model without repeating the words that named it.
+Before changing the artifact, apply
+<a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
+against the frozen frame and the full in-scope artifact.
+
+The pre-edit validation record is the detection artifact for the revision. It
+separates observed faults from assumptions about where changes will be needed
+and records material already checked clean.
+
+Do not begin mutation until the required validation lenses have been run. A
+search result, edit plan, or list of obvious lexical matches is not a substitute
+for current-state validation.
+
+## 3. Map the implications
+
+Use the frozen frame and the pre-edit validation record to derive the edit set.
+Search is a discovery aid, not a completeness test: a representation can embody
+the old model without repeating the words that named it.
 
 For each criterion, ask:
 
@@ -66,9 +103,11 @@ For each criterion, ask:
 - Which units would read or behave differently if the new criterion had been
   true when the artifact was first produced?
 
-Build the edit set from those implications.
+Include dependencies implied by the accepted change even when the pre-edit
+validation did not enumerate them as faults. Validation detects against a frame;
+revision must also propagate the consequences of changing that frame.
 
-## 3. Remove superseded representations
+## 4. Remove superseded representations
 
 Remove superseded representations unless the superseded state itself is
 required information for the artifact's job.
@@ -83,7 +122,7 @@ such as an explanation whose job is historical, a migration record, or a local
 recurrence-prevention note for a non-obvious failed implementation. Mark
 retained material so its non-current role is explicit.
 
-## 4. Apply bounded changes
+## 5. Apply bounded changes
 
 Change one unit at a time. Trace every mutation to one or more numbered frame
 criteria. A change with no criterion is scope creep.
@@ -98,11 +137,12 @@ change through the existing artifact.
 
 Record each changed unit and the criterion that required it.
 
-## 5. Verify the result
+## 6. Validate the resulting state
 
-Assess the revised artifact against the frozen frame rather than against the
-reasoning that produced the edits. A revision is not complete because its
-planned mutations were applied.
+Apply
+<a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
+again against the frozen frame after mutation. Do not treat the edit log as
+evidence that the result is correct.
 
 Re-scan changed units and inspect the artifact for edit-induced faults:
 
@@ -115,25 +155,28 @@ Re-scan changed units and inspect the artifact for edit-induced faults:
 | **Severed dependency** | A prerequisite, definition, or ordering relation no longer precedes or supports its consumer. |
 | **Criterion collision** | Two frame criteria were implemented in incompatible ways. |
 | **Scope creep** | A mutation traces to no frame criterion. |
+| **Confabulated finding** | A requested additional pass produced a claim unsupported by the frame or artifact after genuine findings were exhausted. |
 
 Do not silently repair a newly discovered issue whose correct resolution is not
 determined by the frame. Record it as residual.
 
-## 6. Emit the revision record
+## 7. Emit the revision record
 
 Return a checkable record with the artifact:
 
 ```yaml
 revision-record:
   frame: <path or identifier for the frozen frame>
-  changed: []         # { unit, criterion, what }
-  checked-clean: []   # { unit, criterion, evidence }
-  unresolved: []      # { unit, criterion, fault, why-not-fixed }
-  out-of-scope: []    # { unit, observation, reason }
+  pre-edit-validation: <validation record or identifier>
+  changed: []           # { unit, criterion, what }
+  checked-clean: []     # { unit, criterion, evidence }
+  unresolved: []        # { unit, criterion, fault, why-not-fixed }
+  out-of-scope: []      # { unit, observation, reason }
+  post-edit-validation: <validation record or identifier>
 ```
 
 `checked-clean` distinguishes examined material from material never inspected.
 Every in-scope unit must appear in at least one record list, and every frame
 criterion must appear in `changed`, `checked-clean`, or `unresolved`.
-Coverage is demonstrated by the record, not by a prose claim that the revision
+Coverage is demonstrated by the records, not by a prose claim that the revision
 is complete.
