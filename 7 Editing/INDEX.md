@@ -12,8 +12,11 @@ description: >-
 
 This location governs work on existing artifacts. Revision is authorized to
 change an artifact against an external frame; validation is authorized to make
-claims about an artifact against a frame without changing it. The artifact may
-be prose, structured data, code, or a mixture.
+claims about an artifact against a frame without changing it. Those are
+authority boundaries, not replacements for established editorial terms:
+developmental editing, line editing, copyediting, and proofreading still name
+recognized scopes of prose work. The artifact may be prose, structured data,
+code, or a mixture.
 
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
