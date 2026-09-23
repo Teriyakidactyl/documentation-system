@@ -59,7 +59,7 @@ the governing form:
 form: '<a href="*" uid="ABC123">documentation-system:§3.10</a>'
 ```
 
-Use the form's real UID and current address. The crawler owns the link target
+Use the form's real UID and current address. The compiler owns the link target
 and displayed address after that. Keep the `form` field when the instance is
 moved or locally adapted.
 
@@ -80,6 +80,6 @@ otherwise follow the `form` link back to the owning guidance.
 ## 5. Validate the result
 
 Apply Technical Writing to the authored or revised document, apply Document
-Control to its controlled state, then run the Navigation Crawler. Finish only
+Control to its controlled state, then run the Documentation Compiler. Finish only
 when the form link resolves and the generated projections agree with the
 filesystem.

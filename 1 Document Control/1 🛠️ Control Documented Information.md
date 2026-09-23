@@ -26,14 +26,14 @@ Apply these steps to an existing artifact or to the output of an authoring
 procedure. The filesystem owns classification and the location portion of an
 address; a `uid` owns durable document identity; a numbered internal outline
 can extend that address into a file. Metadata makes an artifact indexable. The
-crawler derives indexes from the same filesystem hierarchy; traversing them
+compiler derives indexes from the same filesystem hierarchy; traversing them
 provides progressive disclosure without creating a second navigation hierarchy.
 
 **Terms.** One name per concept, with relationships shown before definitions:
 
 ```text
 address space
-└── crawler root
+└── corpus root
     ├── origin
     │   └── index
     ├── indexed artifact
@@ -49,26 +49,26 @@ address space
 | Term | Meaning |
 |---|---|
 | **address space** | A stable logical namespace for one controlled corpus. When `SKILL.md` is present, its `name` is the address-space name; mounting the corpus beneath another repository does not change addresses inside it. |
-| **crawler root** | The filesystem root of one address space. An explicit path selects it; the bundled crawler otherwise discovers the nearest ancestor containing `SKILL.md`. |
+| **corpus root** | The filesystem root of one address space. An explicit path selects it; the bundled Documentation Compiler otherwise discovers the nearest ancestor containing `SKILL.md`. |
 | **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
 | **indexed artifact** | A file whose supported metadata surface contains a `uid` and `description`. Its filesystem position supplies classification; metadata supplies durable identity and semantic routing. |
-| **uid** | A permanent six-character Crockford Base32 identifier minted by the crawler for one indexed artifact. It survives moves and renames; duplicate UIDs are invalid. |
+| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one indexed artifact. It survives moves and renames; duplicate UIDs are invalid. |
 | **description** | The canonical Markdown routing statement for an indexed artifact. Its exact wording is reused wherever the artifact is projected. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. Its `§` portion is fully derived from location ordinals beneath the crawler root; optional `#` extends into a numbered heading; optional address-space qualification keeps the reference unambiguous outside its corpus. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. Its `§` portion is fully derived from location ordinals beneath the corpus root; optional `#` extends into a numbered heading; optional address-space qualification keeps the reference unambiguous outside its corpus. |
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
-| **index** | The crawler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
+| **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
-| **crawler** | The tool that scans supported metadata surfaces, mints and validates UIDs, validates the location/address space, derives indexes, refreshes controlled links, and resolves addresses. |
+| **compiler** | The Documentation Compiler that scans supported metadata surfaces, mints and validates UIDs, validates the location/address space, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
 
 ## 1. Establish the controlled corpus
 
-Start from the **crawler root**. Everything below it may contribute physical
-classification, but a file becomes an indexed artifact only when the crawler
+Start from the **corpus root**. Everything below it may contribute physical
+classification, but a file becomes an indexed artifact only when the compiler
 recognizes its metadata surface.
 
-The crawler currently recognizes two shapes:
+The compiler currently recognizes two shapes:
 
 - Markdown: YAML frontmatter fenced by `---` at the start of the file.
 - Python: YAML frontmatter fenced by `---` at the start of the module docstring.
@@ -82,11 +82,11 @@ Do not infer that every file under the crawler root is controlled information.
 Presence establishes physical location; recognizable metadata establishes
 index participation.
 
-Dot-prefixed directories are outside the controlled corpus and the crawler does
+Dot-prefixed directories are outside the controlled corpus and the compiler does
 not descend into them. Use them for repository/tool state or local working
 material, not for indexed documented information.
 
-On a normal compile, the crawler adds a missing `uid` to each indexed artifact.
+On a normal compile, the compiler adds a missing `uid` to each indexed artifact.
 Never change an existing UID because an artifact moved or was renamed. Copying
 an indexed artifact also copies its UID, so the duplicate must be replaced by
 a newly minted UID before the corpus can compile.
@@ -118,18 +118,18 @@ contains these positions:
 §2.11.9  2 Conventions/11 Technical Writing/9 Write A Technical Document.md
 ```
 
-Use one ordinal once among physical siblings. A numbered directory and a
-numbered artifact with the same ordinal under one parent collide even when
-their names differ.
+Use one ordinal once among physical siblings in the current corpus state. A
+numbered directory and a numbered artifact with the same ordinal under one
+parent collide even when their names differ.
 
-**A retired ordinal is not reused.** Archiving or deleting an addressed item
-leaves its former position vacant. Reusing the number would make an old address
-identify new information.
+An ordinal is a current structural coordinate, not durable identity. After an
+item moves or is removed, its former ordinal may be reused. Preserve durable
+identity with the artifact's UID rather than reserving historical coordinates.
 
 ## 3. Derive and use addresses
 
 Treat the corpus structure as the source of truth. Derive the location portion
-of an address by walking from the crawler root, taking each location ordinal,
+of an address by walking from the corpus root, taking each location ordinal,
 and appending a terminal artifact ordinal when the target is not `INDEX.md`.
 Join those ordinals with `.` and prefix them with `§`:
 
@@ -154,9 +154,10 @@ documentation-system:§2.1#4.2
 ```
 
 The periods express hierarchical descent on either side of `#`; `#` marks the
-boundary between repository location and the file's internal outline. Moving
-the whole address space does not change its addresses. Moving an addressed
-item within that space does. The UID does not.
+boundary between repository location and the file's internal outline. An
+address is a current coordinate: moving an addressed item changes it, and a
+former coordinate may later identify different information. Moving the whole
+address space does not change internal coordinates. The UID does not change.
 
 Use a controlled HTML anchor when the reference must survive a move or rename:
 
@@ -172,13 +173,19 @@ For example:
 ```
 
 The `uid` identifies the document; the optional `#` in the displayed address
-selects a numbered heading within it. On every pass the crawler finds the
+selects a numbered heading within it. On every pass the compiler finds the
 current document by UID, derives its current fully qualified address, validates
 the section when present, and rewrites both `href` and the displayed address.
-The address-space qualifier therefore names the intended crawler root even
+The address-space qualifier therefore names the intended corpus root even
 after that root is mounted elsewhere. Ordinary Markdown links are not touched.
 If the UID is missing or duplicated, or the selected heading no longer exists,
-the crawler fails rather than guessing.
+the compiler fails rather than guessing.
+
+Use a controlled UID anchor for every durable reference in reader-visible
+prose. A bare address is only a current-location notation suitable for examples,
+lookup input, or other non-reference contexts. The compiler reports live bare
+references as `ERROR DS001` so structural changes cannot silently retarget
+prose.
 
 Do not store authored address components in metadata or reconstruct location
 ancestry from generated projections. An unnumbered artifact outside a numbered location
@@ -190,11 +197,11 @@ represents that location.
 
 Add `INDEX.md` when a location needs a reader-facing representation. The
 numbered directory already created the location; `INDEX.md` describes what the
-location collects and provides the surface on which the crawler can project
+location collects and provides the surface on which the compiler can project
 its immediate indexed children.
 
 Keep the index focused. Give it its own `description`, then place one generated
-region where immediate choices should appear. The crawler derives those choices
+region where immediate choices should appear. The compiler derives those choices
 from the filesystem and reuses each child's exact `description`; do not repeat
 descendant metadata by hand.
 
@@ -206,12 +213,12 @@ location.
 
 Put descriptive metadata on the artifact itself when its native format can
 carry it safely. Markdown uses frontmatter. Python uses its module docstring.
-The crawler reads metadata without executing the artifact.
+The compiler reads metadata without executing the artifact.
 
 Every indexed artifact carries exactly one canonical `description`. Author or
 correct it with
 <a href="../2%20Technical%20Writing/1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#2-write-the-description" uid="5CFFZW">documentation-system:§2.1#2</a>
-rather than inventing another routing or rule schema here. The crawler mints a
+rather than inventing another routing or rule schema here. The compiler mints a
 missing `uid`; never author a replacement UID merely because the artifact
 moves.
 
@@ -228,7 +235,7 @@ address           → where it is now
 
 The index is a derived reader projection, not authored topology. The filesystem
 already determines the hierarchy. `README.md` represents the origin and projects
-the immediate indexed items at the crawler root; each `INDEX.md` with immediate
+the immediate indexed items at the corpus root; each `INDEX.md` with immediate
 indexed children projects only those children. Traversing successive indexes
 provides progressive disclosure.
 
@@ -239,21 +246,21 @@ Place exactly one generated region where those choices should appear:
 <!-- END index -->
 ```
 
-The crawler owns everything between the markers and renders each immediate
+The compiler owns everything between the markers and renders each immediate
 child as its controlled link, title, and exact `description`. Do not hand-edit
 generated content and do not author a parallel child list.
 
-## 7. Run and validate the crawler
+## 7. Run and validate the compiler
 
-Run the bundled crawler after classification, recognized metadata, numbered
+Run the Documentation Compiler after classification, recognized metadata, numbered
 headings, generated-index membership, or controlled-link targets may have
 changed:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [crawler_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-When the root is omitted, the bundled tool finds the nearest ancestor
+When the root is omitted, the compiler finds the nearest ancestor
 containing `SKILL.md`. It validates duplicate sibling ordinals, duplicate
 addresses and UIDs, missing descriptions, malformed generated regions, and
 controlled links before it writes indexes.
@@ -261,14 +268,14 @@ controlled links before it writes indexes.
 Resolve an address without writing anything:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [crawler_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. A location address resolves through its `INDEX.md` when
 one exists; a location with no index resolves as a location with no body. A
-normal crawler pass also refreshes every controlled HTML anchor carrying a
+normal compiler pass also refreshes every controlled HTML anchor carrying a
 `uid`, including anchors carried by a supported Python module docstring.
 
-Finish only when the crawler succeeds and each generated projection contains
+Finish only when the compiler succeeds and each generated projection contains
 the immediate indexed children implied by the filesystem.
