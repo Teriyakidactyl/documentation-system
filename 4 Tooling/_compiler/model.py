@@ -23,7 +23,7 @@ CONTROLLED_SIDEBAND_DIRS = {".research"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
 ADDRESS_RE = re.compile(
-    r"^(?P<root>[^:\r\n]+):"
+    r"^(?P<corpus_root>[^:\r\n]+):"
     r"(?P<location>§[0-9]+(?:\.[0-9]+)*)"
     r"(?:#(?P<section>[0-9]+(?:\.[0-9]+)*))?$"
 )
@@ -291,7 +291,7 @@ def parse_address(address: str, corpus_root: Path) -> tuple[str, str | None]:
             f"Invalid documentation address {address!r}; addresses must declare the corpus root "
             "before ':'"
         )
-    declared_root = match.group("root")
+    declared_root = match.group("corpus_root")
     expected_root = corpus_root_name(corpus_root)
     if declared_root != expected_root:
         raise CompilerError(
