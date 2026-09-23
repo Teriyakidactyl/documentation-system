@@ -1,7 +1,7 @@
 ---
 uid: PK9FPF
 description: >-
-  `Read in full and follow when` *a recurring repository document role needs a
+  `Read in full and follow when` *a recurring document role needs a
   reusable Document Form or a document is being derived from one* `to`
   **author the canonical form, bind each derived document back to it, and keep
   recurring guidance owned by the form instead of copied into instances**.
