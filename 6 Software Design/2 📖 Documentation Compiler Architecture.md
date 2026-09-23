@@ -172,9 +172,9 @@ presenters -> Diagnostic
 
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
-single artifact legitimately owns them. Derive rooted addresses from the
-job-local corpus-root declaration; do not introduce another authored or
-computed corpus-root source of truth.
+single artifact legitimately owns them. Derive addresses from the job-local
+corpus-root declaration; do not introduce another authored or computed
+corpus-root source of truth.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
