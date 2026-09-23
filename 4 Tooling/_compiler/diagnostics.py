@@ -22,7 +22,7 @@ from .model import (
     walk_files,
 )
 
-ROOTLESS_LOCATION_TOKEN_RE = re.compile(
+LOCATION_TOKEN_RE = re.compile(
     r"(?<!:)§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
 )
 ANNOTATION_LINE_RE = re.compile(
@@ -50,9 +50,9 @@ class Diagnostic:
         return f"<!-- {self.severity.value.upper()} {self.code}: {message} -->"
 
 
-def clear_inline_annotations(root: Path) -> int:
+def clear_inline_annotations(corpus_root: Path) -> int:
     changed = 0
-    for path in walk_files(root):
+    for path in walk_files(corpus_root):
         if path.suffix.lower() not in {".md", ".py"}:
             continue
         text = read_text(path)
@@ -91,7 +91,7 @@ def _scan_markdown(
     base_line: int = 1,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    rooted_address_re = re.compile(
+    address_re = re.compile(
         rf"(?P<prefix>^|[^A-Za-z0-9_-])"
         rf"(?P<address>{re.escape(corpus_root)}:§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?)"
     )
@@ -131,7 +131,7 @@ def _scan_markdown(
         line = CONTROL_LINK_RE.sub(lambda m: " " * len(m.group(0)), line)
         line = _strip_inline_code(line)
 
-        for match in rooted_address_re.finditer(line):
+        for match in address_re.finditer(line):
             address = match.group("address")
             diagnostics.append(
                 Diagnostic(
@@ -146,7 +146,7 @@ def _scan_markdown(
                 )
             )
 
-        for match in ROOTLESS_LOCATION_TOKEN_RE.finditer(line):
+        for match in LOCATION_TOKEN_RE.finditer(line):
             location = match.group(0)
             diagnostics.append(
                 Diagnostic(
@@ -155,7 +155,7 @@ def _scan_markdown(
                     path=path,
                     line=base_line + offset,
                     message=(
-                        f"Unrooted location {location} is not a valid documentation address; "
+                        f"Location notation {location} is not a documentation address; "
                         f"declare the corpus root as {corpus_root}:{location}."
                     ),
                 )
@@ -165,9 +165,9 @@ def _scan_markdown(
 
 def validate_address_references(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    root_name = corpus_root_name(corpus.root)
-    for path in sorted(walk_files(corpus.root), key=lambda p: corpus_path(corpus.root, p).casefold()):
-        rel = path.resolve().relative_to(corpus.root.resolve())
+    root_name = corpus_root_name(corpus.corpus_root)
+    for path in sorted(walk_files(corpus.corpus_root), key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
+        rel = path.resolve().relative_to(corpus.corpus_root.resolve())
         if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
             continue
         if path.suffix.lower() == ".md":
@@ -183,7 +183,7 @@ def validate_address_references(corpus: Corpus) -> list[Diagnostic]:
 def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     by_uid = artifact_by_uid(corpus)
-    for artifact in sorted(corpus.artifacts.values(), key=lambda a: corpus_path(corpus.root, a.path).casefold()):
+    for artifact in sorted(corpus.artifacts.values(), key=lambda a: corpus_path(corpus.corpus_root, a.path).casefold()):
         prompt_uid = artifact.metadata.get("research-prompt")
         if prompt_uid is None:
             continue
@@ -210,7 +210,7 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
                 )
             )
         else:
-            rel = prompt.path.resolve().relative_to(corpus.root.resolve())
+            rel = prompt.path.resolve().relative_to(corpus.corpus_root.resolve())
             if ".research" not in rel.parts[:-1] or prompt.path.name != "Prompt.md":
                 diagnostics.append(
                     Diagnostic(
@@ -247,7 +247,7 @@ def validate(corpus: Corpus) -> list[Diagnostic]:
     return validate_address_references(corpus) + validate_research_reports(corpus)
 
 
-def annotate(root: Path, diagnostics: list[Diagnostic]) -> int:
+def annotate(corpus_root: Path, diagnostics: list[Diagnostic]) -> int:
     grouped: dict[Path, list[Diagnostic]] = {}
     for diagnostic in diagnostics:
         grouped.setdefault(diagnostic.path.resolve(), []).append(diagnostic)
@@ -280,9 +280,9 @@ def _github_escape(value: str, *, property_value: bool = False) -> str:
     return value
 
 
-def emit(diagnostics: list[Diagnostic], root: Path) -> None:
+def emit(diagnostics: list[Diagnostic], corpus_root: Path) -> None:
     for diagnostic in diagnostics:
-        path = corpus_path(root, diagnostic.path)
+        path = corpus_path(corpus_root, diagnostic.path)
         print(
             f"{diagnostic.severity.value.upper()} {diagnostic.code} "
             f"{path}:{diagnostic.line} {diagnostic.message}"
@@ -300,7 +300,7 @@ def emit(diagnostics: list[Diagnostic], root: Path) -> None:
             )
 
 
-def write_json(path: Path, diagnostics: list[Diagnostic], root: Path) -> None:
+def write_json(path: Path, diagnostics: list[Diagnostic], corpus_root: Path) -> None:
     payload = {
         "errors": sum(d.severity is Severity.ERROR for d in diagnostics),
         "warnings": sum(d.severity is Severity.WARNING for d in diagnostics),
@@ -309,7 +309,7 @@ def write_json(path: Path, diagnostics: list[Diagnostic], root: Path) -> None:
             {
                 **asdict(d),
                 "severity": d.severity.value,
-                "path": corpus_path(root, d.path),
+                "path": corpus_path(corpus_root, d.path),
             }
             for d in diagnostics
         ],

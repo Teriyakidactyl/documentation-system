@@ -60,7 +60,7 @@ class CorpusRootTests(unittest.TestCase):
         write(root / "1 Page.md", page())
         return root
 
-    def test_selected_directory_name_is_the_address_root(self) -> None:
+    def test_selected_directory_name_is_the_corpus_root_declaration(self) -> None:
         root = self.make_corpus("Project Docs")
         compile_corpus(root)
 
@@ -71,13 +71,28 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("DEF456", resolved["uid"])
         self.assertEqual(str(root.resolve()), resolved["corpus_root"])
 
-    def test_rootless_location_is_not_an_address(self) -> None:
+    def test_directory_has_corpus_root_role_only_when_declared(self) -> None:
+        parent = self.base / "parent"
+        nested = parent / "nested"
+        write(parent / "README.md", origin("parent"))
+        write(nested / "README.md", origin("nested", uid="GHJ789"))
+        write(nested / "1 Page.md", page())
+
+        parent_resolution = resolve_address(parent, "parent:§1")
+        nested_resolution = resolve_address(nested, "nested:§1")
+
+        self.assertEqual("DEF456", parent_resolution["uid"])
+        self.assertEqual("DEF456", nested_resolution["uid"])
+        self.assertEqual(str(parent.resolve()), parent_resolution["corpus_root"])
+        self.assertEqual(str(nested.resolve()), nested_resolution["corpus_root"])
+
+    def test_location_without_corpus_root_is_not_an_address(self) -> None:
         root = self.make_corpus("project")
 
         with self.assertRaisesRegex(CompilerError, "must declare the corpus root"):
             resolve_address(root, "§1")
 
-    def test_declared_address_root_must_match_selected_root(self) -> None:
+    def test_address_corpus_root_must_match_job_corpus_root(self) -> None:
         root = self.make_corpus("project")
 
         with self.assertRaisesRegex(CompilerError, "declares corpus root 'other'"):
@@ -98,7 +113,7 @@ class CorpusRootTests(unittest.TestCase):
         self.assertIn('<a href="1%20Page.md" uid="DEF456">beta:§1</a>', compiled)
         self.assertNotIn(">alpha:§1</a>", compiled)
 
-    def test_reader_visible_rooted_address_requires_controlled_link(self) -> None:
+    def test_reader_visible_address_requires_controlled_link(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See project:§1.\n"))
@@ -107,7 +122,7 @@ class CorpusRootTests(unittest.TestCase):
 
         self.assertIn("DS001", {diagnostic.code for diagnostic in result.diagnostics})
 
-    def test_reader_visible_rootless_location_is_reported_as_invalid_address(self) -> None:
+    def test_reader_visible_location_without_corpus_root_is_reported(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See §1.\n"))
