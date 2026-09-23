@@ -209,6 +209,7 @@ printing or exceptions when compilation can continue deterministically.
 - an **error** means a valid deterministic result cannot be established and
   compilation fails;
 - a **warning** means compilation is valid but a condition requires attention;
+- **info** records a useful non-failing observation;
 - diagnostics carry stable codes, severity, location, and a concrete message;
 - presentation layers may render the same diagnostic to console output, GitHub
   annotations, or machine-readable artifacts.
