@@ -26,12 +26,15 @@ consume the Documentation System must package their own skills. Version tags
 such as `v1.2.0`, when published, identify immutable states of the distribution
 history.
 
-Addresses are relative to the corpus root, the filesystem directory at the top
-of this controlled corpus. `documentation-system:§2.3.2.1` means start at that
-directory, then descend through ordinal 2, child 3, child 2, and artifact 1; `#4.2`
-selects numbered heading 4.2 inside the resolved artifact. The
-`documentation-system:` qualifier names the logical address space independently
-of the corpus root's physical path.
+The **corpus root** is the root declaration for both compiler operations and
+documentation addresses. For a compiler operation, declare it with the optional
+`corpus_root` path argument; when omitted, the compiler defaults to the root of
+the Git repository containing the compiler. For an address, declare the same
+root by the selected directory's name before `:`; that declaration is required.
+Thus `documentation-system:§2.3.2.1` declares this repository directory as the
+corpus root, then descends through ordinal 2, child 3, child 2, and artifact 1;
+`#4.2` selects numbered heading 4.2 inside the resolved artifact. A rootless
+`§2.3.2.1` is location notation, not a valid documentation address.
 
 > [!IMPORTANT]
 > Start here. A task may present several independent concerns; route each one
