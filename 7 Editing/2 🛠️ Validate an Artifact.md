@@ -1,4 +1,5 @@
 ---
+uid: BCSYYG
 description: >-
   `Read in full and follow when` *an existing artifact must be assessed
   against governing specifications, norms, or declared commitments without

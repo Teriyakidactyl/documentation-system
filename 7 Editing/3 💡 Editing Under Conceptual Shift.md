@@ -1,4 +1,5 @@
 ---
+uid: JD245Q
 description: >-
   `Read in full when` *editing is being treated as ordinary rewriting or an
   editor's internal sense of completion is being accepted as evidence that a

@@ -1,4 +1,5 @@
 ---
+uid: SE6M58
 description: >-
   `Read in full and follow when` *an existing artifact must incorporate a
   stated change without leaving superseded meaning, broken dependencies, or
