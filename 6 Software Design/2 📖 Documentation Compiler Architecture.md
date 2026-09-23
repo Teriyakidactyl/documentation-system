@@ -86,7 +86,9 @@ the current `href` and displayed address.
 The UID is authority for target identity within the selected corpus. The
 displayed address is a projection of the current corpus-root declaration,
 root-relative location, and optional numbered section. Controlled links reject
-an address that omits the corpus root or declares a different root.
+a displayed value that omits the corpus-root declaration, but a stale rooted
+value may be rewritten after the corpus root or target location changes because
+UID identity remains authoritative.
 
 ### 2.5 Compilation engine
 
