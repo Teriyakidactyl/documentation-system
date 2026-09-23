@@ -88,10 +88,10 @@ def corpus_path(corpus_root: Path, path: Path) -> str:
 def corpus_root_name(corpus_root: Path) -> str:
     name = corpus_root.resolve().name
     if not name:
-        raise CompilerError(f"Corpus corpus_root has no directory name: {corpus_root}")
+        raise CompilerError(f"Corpus root has no directory name: {corpus_root}")
     if ":" in name or "\r" in name or "\n" in name:
         raise CompilerError(
-            f"Corpus corpus_root directory name {name!r} cannot be represented in a documentation address"
+            f"Corpus root directory name {name!r} cannot be represented in a documentation address"
         )
     return name
 
@@ -511,7 +511,7 @@ def location_depth(location: str) -> int:
 def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, frozenset[Path], dict[Path, frozenset[Path]], dict[Path, Path]]:
     origin = (corpus_root / "README.md").resolve()
     if origin not in artifacts:
-        raise CompilerError("Corpus corpus_root must contain indexed README.md")
+        raise CompilerError("Corpus root must contain indexed README.md")
     immediate: dict[Path, set[Path]] = {}
     parents: dict[Path, Path] = {}
     located = [artifact for artifact in artifacts.values() if artifact.location is not None]
@@ -550,7 +550,7 @@ def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Pa
 def build_corpus(corpus_root: Path) -> Corpus:
     corpus_root = corpus_root.resolve()
     if not corpus_root.is_dir():
-        raise CompilerError(f"Corpus corpus_root is not a directory: {corpus_root}")
+        raise CompilerError(f"Corpus root is not a directory: {corpus_root}")
     corpus_root_name(corpus_root)
     validate_sibling_ordinals(corpus_root)
     artifacts = load_artifacts(corpus_root)
