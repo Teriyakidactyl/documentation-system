@@ -50,9 +50,9 @@ class Diagnostic:
         return f"<!-- {self.severity.value.upper()} {self.code}: {message} -->"
 
 
-def clear_inline_annotations(root: Path) -> int:
+def clear_inline_annotations(corpus_root: Path) -> int:
     changed = 0
-    for path in walk_files(root):
+    for path in walk_files(corpus_root):
         if path.suffix.lower() not in {".md", ".py"}:
             continue
         text = read_text(path)
@@ -247,7 +247,7 @@ def validate(corpus: Corpus) -> list[Diagnostic]:
     return validate_address_references(corpus) + validate_research_reports(corpus)
 
 
-def annotate(root: Path, diagnostics: list[Diagnostic]) -> int:
+def annotate(corpus_root: Path, diagnostics: list[Diagnostic]) -> int:
     grouped: dict[Path, list[Diagnostic]] = {}
     for diagnostic in diagnostics:
         grouped.setdefault(diagnostic.path.resolve(), []).append(diagnostic)
@@ -280,9 +280,9 @@ def _github_escape(value: str, *, property_value: bool = False) -> str:
     return value
 
 
-def emit(diagnostics: list[Diagnostic], root: Path) -> None:
+def emit(diagnostics: list[Diagnostic], corpus_root: Path) -> None:
     for diagnostic in diagnostics:
-        path = corpus_path(root, diagnostic.path)
+        path = corpus_path(corpus_root, diagnostic.path)
         print(
             f"{diagnostic.severity.value.upper()} {diagnostic.code} "
             f"{path}:{diagnostic.line} {diagnostic.message}"
@@ -300,7 +300,7 @@ def emit(diagnostics: list[Diagnostic], root: Path) -> None:
             )
 
 
-def write_json(path: Path, diagnostics: list[Diagnostic], root: Path) -> None:
+def write_json(path: Path, diagnostics: list[Diagnostic], corpus_root: Path) -> None:
     payload = {
         "errors": sum(d.severity is Severity.ERROR for d in diagnostics),
         "warnings": sum(d.severity is Severity.WARNING for d in diagnostics),
@@ -309,7 +309,7 @@ def write_json(path: Path, diagnostics: list[Diagnostic], root: Path) -> None:
             {
                 **asdict(d),
                 "severity": d.severity.value,
-                "path": corpus_path(root, d.path),
+                "path": corpus_path(corpus_root, d.path),
             }
             for d in diagnostics
         ],
