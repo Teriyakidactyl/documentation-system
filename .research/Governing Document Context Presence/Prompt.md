@@ -1,6 +1,6 @@
 ---
 uid: RMRAE6
-form: '<a href="*" uid="BSJY2D">documentation-system:§2.3.1.12.10</a>'
+form: '<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/12%20Research/10%20%F0%9F%93%96%20Research%20Prompt.md" uid="BSJY2D">documentation-system:§2.3.1.12.10</a>'
 description: >-
   `Read in full and follow when` *the governing-document context-presence
   investigation is rerun* `to` **execute the preserved research request
