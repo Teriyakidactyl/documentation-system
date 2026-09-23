@@ -23,8 +23,8 @@ writing-style:
 # 📖 Origin
 
 Addresses are relative to the corpus root, the filesystem directory at the top
-of this controlled corpus. `documentation-system:§2.3.1` means start at that
-directory, then descend through ordinal 2, child 3, and artifact 1; `#4.2`
+of this controlled corpus. `documentation-system:§2.3.2.1` means start at that
+directory, then descend through ordinal 2, child 3, child 2, and artifact 1; `#4.2`
 selects numbered heading 4.2 inside the resolved artifact. The
 `documentation-system:` qualifier names the logical address space independently
 of the corpus root's physical path.
