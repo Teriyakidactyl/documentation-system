@@ -22,6 +22,7 @@ IGNORED_DIRS = {"__pycache__"}
 CONTROLLED_SIDEBAND_DIRS = {".research"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
+ADDRESS_SPACE_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 ADDRESS_RE = re.compile(
     r"^(?:(?P<space>[a-z0-9][a-z0-9-]*):)?"
     r"(?P<location>§[0-9]+(?:\.[0-9]+)*)"
@@ -33,7 +34,6 @@ NUMBERED_HEADING_RE = re.compile(
     r"^(?P<marks>#{2,6})\s+(?P<number>[0-9]+(?:\.[0-9]+)*)"
     r"(?P<trailing>\.)?\s+(?P<title>.+?)\s*$"
 )
-ADDRESS_SPACE = "documentation-system"
 
 
 class CompilerError(RuntimeError):
@@ -74,6 +74,7 @@ class Corpus:
     index_owners: frozenset[Path]
     immediate: dict[Path, frozenset[Path]]
     parents: dict[Path, Path]
+    dependencies: dict[str, Path]
 
 
 def read_text(path: Path) -> str:
@@ -186,6 +187,78 @@ def extract_metadata(path: Path) -> tuple[dict, str, str] | None:
     return None
 
 
+def origin_configuration(root: Path) -> tuple[str, dict[str, Path]]:
+    origin = (root / "README.md").resolve()
+    extracted = markdown_adapter(origin) if origin.is_file() else None
+    if extracted is None:
+        raise CompilerError("Corpus root must contain controlled README.md")
+    metadata, _, _ = extracted
+
+    address_space = metadata.get("address-space")
+    if not isinstance(address_space, str) or not ADDRESS_SPACE_RE.fullmatch(address_space):
+        raise CompilerError(
+            "README.md: address-space must be a lowercase logical name using "
+            "letters, digits, and hyphens"
+        )
+
+    raw_dependencies = metadata.get("corpus-dependencies", {})
+    if raw_dependencies is None:
+        raw_dependencies = {}
+    if not isinstance(raw_dependencies, dict):
+        raise CompilerError("README.md: corpus-dependencies must be a mapping")
+
+    dependencies: dict[str, Path] = {}
+    seen_roots: dict[Path, str] = {}
+    for name, raw_path in raw_dependencies.items():
+        if not isinstance(name, str) or not ADDRESS_SPACE_RE.fullmatch(name):
+            raise CompilerError(
+                "README.md: every corpus-dependencies key must be a valid address-space name"
+            )
+        if name == address_space:
+            raise CompilerError(
+                f"README.md: corpus-dependencies cannot redeclare local address space {name!r}"
+            )
+        if not isinstance(raw_path, str) or not raw_path.strip():
+            raise CompilerError(
+                f"README.md: corpus-dependencies[{name!r}] must be a non-empty relative path"
+            )
+        dependency_path = Path(raw_path)
+        if dependency_path.is_absolute():
+            raise CompilerError(
+                f"README.md: corpus-dependencies[{name!r}] must be relative to the corpus root"
+            )
+        dependency_root = (root / dependency_path).resolve()
+        if not dependency_root.is_dir():
+            raise CompilerError(
+                f"README.md: corpus dependency {name!r} is not a directory: {dependency_root}"
+            )
+        previous_name = seen_roots.get(dependency_root)
+        if previous_name is not None:
+            raise CompilerError(
+                f"README.md: corpus dependencies {previous_name!r} and {name!r} "
+                "resolve to the same corpus root"
+            )
+        dependency_origin = dependency_root / "README.md"
+        dependency_extracted = (
+            markdown_adapter(dependency_origin) if dependency_origin.is_file() else None
+        )
+        if dependency_extracted is None:
+            raise CompilerError(
+                f"README.md: corpus dependency {name!r} has no controlled README.md"
+            )
+        dependency_metadata, _, _ = dependency_extracted
+        dependency_space = dependency_metadata.get("address-space")
+        if dependency_space != name:
+            raise CompilerError(
+                f"README.md: corpus dependency {name!r} resolves to a corpus declaring "
+                f"address-space {dependency_space!r}"
+            )
+        dependencies[name] = dependency_root
+        seen_roots[dependency_root] = name
+
+    return address_space, dependencies
+
+
 def clean(text: str) -> str:
     return " ".join(text.split())
 
@@ -275,17 +348,21 @@ def heading_target(body: str, number: str, owner: Path) -> HeadingTarget:
     return matches[0]
 
 
-def parse_address(address: str, address_space: str) -> tuple[str, str | None]:
+def split_address(address: str) -> tuple[str | None, str, str | None]:
     match = ADDRESS_RE.fullmatch(address)
     if not match:
         raise CompilerError(f"Invalid address: {address!r}")
-    qualifier = match.group("space")
+    return match.group("space"), match.group("location"), match.group("section")
+
+
+def parse_address(address: str, address_space: str) -> tuple[str, str | None]:
+    qualifier, location, section = split_address(address)
     if qualifier is not None and qualifier != address_space:
-        expected = address_space or "<unqualified corpus>"
         raise CompilerError(
-            f"Address {address!r} names address space {qualifier!r}; current space is {expected!r}"
+            f"Address {address!r} names address space {qualifier!r}; "
+            f"current space is {address_space!r}"
         )
-    return match.group("location"), match.group("section")
+    return location, section
 
 
 def ignored_directory_name(name: str) -> bool:
@@ -537,6 +614,7 @@ def build_corpus(root: Path) -> Corpus:
     root = root.resolve()
     if not root.is_dir():
         raise CompilerError(f"Corpus root is not a directory: {root}")
+    address_space, dependencies = origin_configuration(root)
     validate_sibling_ordinals(root)
     artifacts = load_artifacts(root)
     if not artifacts:
@@ -545,13 +623,14 @@ def build_corpus(root: Path) -> Corpus:
     origin, owners, immediate, parents = derive_index(root, artifacts)
     return Corpus(
         root=root,
-        address_space=ADDRESS_SPACE,
+        address_space=address_space,
         artifacts=artifacts,
         locations=locations,
         origin=origin,
         index_owners=owners,
         immediate=immediate,
         parents=parents,
+        dependencies=dependencies,
     )
 
 
@@ -561,6 +640,18 @@ def artifact_by_address(corpus: Corpus) -> dict[str, Artifact]:
 
 def artifact_by_uid(corpus: Corpus) -> dict[str, Artifact]:
     return {a.uid: a for a in corpus.artifacts.values() if a.uid is not None}
+
+
+def select_corpus(corpus: Corpus, address_space: str | None) -> Corpus:
+    if address_space is None or address_space == corpus.address_space:
+        return corpus
+    dependency_root = corpus.dependencies.get(address_space)
+    if dependency_root is None:
+        raise CompilerError(
+            f"Address space {address_space!r} is not the local corpus and is not "
+            "declared in README.md corpus-dependencies"
+        )
+    return build_corpus(dependency_root)
 
 
 def qualified_address(corpus: Corpus, artifact: Artifact, section: str | None = None) -> str:
