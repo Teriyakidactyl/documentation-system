@@ -22,7 +22,7 @@ from .model import (
     walk_files,
 )
 
-LOCATION_TOKEN_RE = re.compile(
+BARE_CORPUS_ROOT_ADDRESS_RE = re.compile(
     r"(?<!:)§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
 )
 ANNOTATION_LINE_RE = re.compile(
@@ -146,8 +146,8 @@ def _scan_markdown(
                 )
             )
 
-        for match in LOCATION_TOKEN_RE.finditer(line):
-            location = match.group(0)
+        for match in BARE_CORPUS_ROOT_ADDRESS_RE.finditer(line):
+            bare_address = match.group(0)
             diagnostics.append(
                 Diagnostic(
                     code="DS004",
@@ -155,8 +155,8 @@ def _scan_markdown(
                     path=path,
                     line=base_line + offset,
                     message=(
-                        f"Location notation {location} is not a documentation address; "
-                        f"declare the corpus root as {corpus_root}:{location}."
+                        f"Bare corpus-root address {bare_address} is invalid and unresolvable; "
+                        f"declare the corpus root as {corpus_root}:{bare_address}."
                     ),
                 )
             )
