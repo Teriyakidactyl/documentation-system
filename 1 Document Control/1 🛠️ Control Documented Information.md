@@ -67,7 +67,7 @@ corpus root
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
 | **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
-| **compiler** | The Documentation Compiler that selects the corpus root, scans supported metadata surfaces beneath it, mints and validates UIDs, validates locations and rooted addresses, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
+| **compiler** | The Documentation Compiler that declares a corpus root for each job, scans supported metadata surfaces beneath it, mints and validates UIDs, validates locations and corpus-root declarations in addresses, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
 
 ## 1. Declare the corpus root
 
@@ -87,7 +87,7 @@ An address makes its own corpus-root declaration: the directory name before
 compiler resolves an address, that declared name must match the directory
 selected as the corpus root for the current job. Changing only that directory's
 ancestor path does not change addresses that declare it. Renaming the directory
-changes the root declaration in addresses that use it. A directory name
+changes the corpus-root declaration in addresses that use it. A directory name
 containing `:` cannot be represented by the address grammar and cannot serve as
 a corpus root for compilation or addressing.
 
@@ -192,8 +192,8 @@ documentation-system:§2.1
 documentation-system:§2.1#4.2
 ```
 
-A rootless `§2.1` or `§2.1#4.2` is location notation and is invalid when an
-address is required. The periods express hierarchical descent on either side
+`§2.1` or `§2.1#4.2` without a corpus-root declaration is location notation
+and is invalid when an address is required. The periods express hierarchical descent on either side
 of `#`; `#` marks the boundary between filesystem location and the file's
 internal outline.
 
@@ -223,7 +223,7 @@ The `uid` identifies the document within the selected corpus; the optional
 pass the compiler finds the current document by UID, derives its current
 location, prefixes the selected corpus root's current directory name, validates
 the section when present, and rewrites both `href` and the displayed address.
-A controlled link may therefore carry a stale root declaration or location
+A controlled link may therefore carry a stale corpus-root declaration or location
 after a rename or move; the UID remains authority and the compiler refreshes
 that projection. Ordinary Markdown links are not touched. If the UID is missing
 or duplicated, the displayed value is not rooted-address syntax, or the selected
@@ -317,8 +317,8 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 
 The compiler validates the corpus-root declaration, duplicate sibling ordinals,
 duplicate artifact locations and UIDs, missing descriptions, malformed generated
-regions, rooted controlled links, and supported sideband relationships before
-it writes indexes.
+regions, controlled links with address declarations, and supported sideband
+relationships before it writes indexes.
 
 Resolve an address without writing anything:
 
@@ -326,8 +326,8 @@ Resolve an address without writing anything:
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
-Resolution requires a rooted address whose declared corpus root matches the
-selected compiler corpus root; a rootless `§...` input is a syntax error.
+Resolution requires an address whose corpus-root declaration matches the
+compiler job's corpus root; a bare `§...` location input is a syntax error.
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. An address naming a location resolves through its
 `INDEX.md` when one exists; a location with no index resolves as a location
