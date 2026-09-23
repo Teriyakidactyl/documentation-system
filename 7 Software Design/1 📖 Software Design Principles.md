@@ -10,6 +10,7 @@ quadrant: Reference
 outline:
   topology: tree
   axis: design concern
+  numbering: hierarchical-decimal
 writing-style:
   formality: professional
   tone: clinical/detached
@@ -37,9 +38,9 @@ Named traditions below are retrieval cues for their established bodies of
 knowledge. The local rule is the interpretation this repository adopts when
 those traditions permit several reasonable implementations.
 
-## Decision defaults
+## 1. Decision defaults
 
-### Resolution order
+### 1.1 Resolution order
 
 Resolve meaning before representation:
 
@@ -56,7 +57,7 @@ concept
 Do not begin from a Python class, module tree, serializer, provider object, or
 consumer view when any earlier decision remains unsettled.
 
-### Canonical choice
+### 1.2 Canonical choice
 
 Use the documented default when several established designs satisfy the same
 constraints. Do not reopen an equivalent design space merely because another
@@ -65,9 +66,9 @@ recognized pattern also works.
 A supported alternative requires a concrete selecting condition. State that
 condition so an agent can choose deterministically rather than rank preferences.
 
-## Domain modeling
+## 2. Domain modeling
 
-### DDD: Bounded Context
+### 2.1 DDD: Bounded Context
 
 Keep one coherent meaning and rule set for a term inside one model boundary.
 
@@ -75,14 +76,14 @@ Keep one coherent meaning and rule set for a term inside one model boundary.
 the same concept. Model distinct meanings separately even when their names
 match.
 
-### DDD: Ubiquitous Language
+### 2.2 DDD: Ubiquitous Language
 
 Use one canonical term for one concept inside its bounded context.
 
 **Default.** Code, tests, metadata, and documentation use the same domain term.
 Translate vocabulary only at an explicit external boundary.
 
-### DDD: Entity and Value Object
+### 2.3 DDD: Entity and Value Object
 
 Distinguish persistent identity from value equality.
 
@@ -94,7 +95,7 @@ Do not create a class merely because a noun can be named. A class must preserve
 identity, value semantics, an invariant, validation, serialization behavior,
 substitutable behavior, or useful typed dispatch.
 
-### DDD: Aggregate and Design by Contract
+### 2.4 DDD: Aggregate and Design by Contract
 
 Place each invariant at the narrowest boundary that legitimately owns every fact
 required to enforce it.
@@ -106,9 +107,9 @@ validation, and external-system rules at the integration boundary.
 Do not move a cross-object validation rule onto a model object merely to make
 that object richer.
 
-## Boundaries and responsibilities
+## 3. Boundaries and responsibilities
 
-### Parnas: Information Hiding
+### 3.1 Parnas: Information Hiding
 
 Hide decisions that can vary independently behind separate boundaries.
 
@@ -116,7 +117,7 @@ Hide decisions that can vary independently behind separate boundaries.
 to change. Sharing the same input model is not, by itself, a reason to combine
 their behavior.
 
-### GRASP: Information Expert
+### 3.2 GRASP: Information Expert
 
 Place responsibility with the legitimate owner of the information needed to
 perform it.
@@ -125,7 +126,7 @@ perform it.
 assembler, validation, and projection behavior remain in their corresponding
 processing stages unless the domain model itself demonstrates a stronger owner.
 
-### GRASP: High Cohesion and Low Coupling
+### 3.3 GRASP: High Cohesion and Low Coupling
 
 Keep one reason to change together and minimize knowledge across boundaries.
 
@@ -133,7 +134,7 @@ Keep one reason to change together and minimize knowledge across boundaries.
 a proliferation of one-function modules. Split when an independently changing
 policy, representation, or compiler pass has become identifiable.
 
-### Behavioral Subtyping
+### 3.4 Behavioral Subtyping
 
 Use inheritance only when substitution preserves the parent's meaning and
 contract.
@@ -143,9 +144,9 @@ composition, ownership, containment, or references unless the child is
 semantically a kind of the parent and is substitutable everywhere the parent
 is accepted.
 
-## External and derived representations
+## 4. External and derived representations
 
-### Ports and Adapters
+### 4.1 Ports and Adapters
 
 Keep provider, protocol, and transport vocabulary at the boundary.
 
@@ -153,7 +154,7 @@ Keep provider, protocol, and transport vocabulary at the boundary.
 the adapter. Do not let a provider's taxonomy become the domain taxonomy unless
 the domain independently adopts the same distinction.
 
-### Canonical state and projections
+### 4.2 Canonical state and projections
 
 Give each mutable fact one canonical authority.
 
@@ -174,9 +175,9 @@ interpretation, choosing among plausible meanings, reconciling conflicting
 authority, or adapting semantics to context, it is authoring rather than
 compilation and requires an agent or human decision.
 
-## Implementation structure
+## 5. Implementation structure
 
-### Common Closure Principle
+### 5.1 Common Closure Principle
 
 Treat repeated co-change as evidence for cohesion, subordinate to semantic
 ownership.
@@ -185,7 +186,7 @@ ownership.
 meaning, or durable reason to change. Do not group them merely because one
 operation happens to process them in sequence.
 
-### Modules and lightweight model objects
+### 5.2 Modules and lightweight model objects
 
 Use modules to expose independently changing implementation responsibilities.
 Use lightweight typed objects to make stable domain facts explicit.
@@ -198,7 +199,7 @@ Prefer immutable dataclasses or similarly lightweight values where identity and
 mutation are not part of the modeled concept. Do not create a class hierarchy
 to mirror the module layout.
 
-### Diagnostics
+### 5.3 Diagnostics
 
 Represent validation findings as structured diagnostics rather than immediate
 printing or exceptions when compilation can continue deterministically.
@@ -216,9 +217,9 @@ Use exceptions for failures that prevent the compiler from constructing or
 evaluating the model at all, not as the ordinary representation of every
 validation finding.
 
-## Exceptions
+## 6. Exceptions
 
-### Exception condition
+### 6.1 Exception condition
 
 An exception must name the concrete constraint that defeats the default and
 must remain narrower than the rule it overrides.
