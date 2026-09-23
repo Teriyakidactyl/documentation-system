@@ -63,7 +63,7 @@ corpus root
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the selected corpus root by directory name; the `§` portion is derived from location ordinals beneath that root; optional `#` extends into a numbered heading. A rootless `§...` form is location notation, not an address. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` portion is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A `§...` form without a corpus-root declaration is location notation, not an address. |
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
 | **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
@@ -230,12 +230,12 @@ or duplicated, the displayed value is not rooted-address syntax, or the selected
 heading no longer exists, the compiler fails rather than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
-prose. A rooted address written as plain reader-visible prose is a current
-coordinate rather than durable identity, so the compiler reports it as
-`ERROR DS001`. A rootless `§...` token used as though it were an address is
-invalid syntax and is reported as `ERROR DS004`. Location notation remains
-suitable inside fenced examples, inline code, and other contexts where no live
-reference is being made.
+prose. An address written as plain reader-visible prose is a current coordinate
+rather than durable identity, so the compiler reports it as `ERROR DS001`. A
+`§...` location token used as though it were an address lacks the required
+corpus-root declaration and is reported as `ERROR DS004`. Location notation
+remains suitable inside fenced examples, inline code, and other contexts where
+no live reference is being made.
 
 Do not store the corpus-root declaration or derived location components in
 artifact metadata, and do not reconstruct location ancestry from generated
