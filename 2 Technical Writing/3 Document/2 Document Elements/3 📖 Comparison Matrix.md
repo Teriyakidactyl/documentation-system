@@ -1,0 +1,50 @@
+---
+uid: Z3X0VE
+description: >-
+  `Consult when` *several peer entities must be compared across the same
+  independent attributes* `to` **represent the peers as rows and shared
+  attributes as columns so differences can be located by intersection**.
+quadrant: Reference
+outline:
+  topology: list
+  axis: element facet
+writing-style:
+  formality: professional
+  tone: clinical/detached
+  mode: declarative
+  density: compressed/dense
+  abstraction: concrete/specific
+  redundancy: zero
+  signposting: entry-headers only
+  register: technical
+---
+
+# 📖 Comparison Matrix
+
+## Anatomy
+
+A comparison matrix is one heading-bounded element whose rows are peer entities
+and whose columns are the same independent attributes for every peer.
+
+## Source specimen
+
+```markdown
+## Storage comparison
+<!-- element: [controlled link to this Document Element] -->
+
+| Option | Persistence | Lookup key | Ordering |
+|---|---|---|---|
+| Queue | Durable | Message ID | FIFO within partition |
+| Cache | Evictable | Cache key | None |
+| Log | Durable | Offset | Append order |
+```
+
+## Constraints
+
+Keep one entity type on the row axis and one shared attribute set on the column
+axis. Do not mix parent and child entities in the same matrix. Prefer a tree
+when the relation is hierarchical and a decision table when conditions produce
+actions.
+
+Instances record provenance with `element:` metamatter as defined by
+<a href="../../1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#12-choose-the-container" uid="5CFFZW">documentation-system:§2.1#1.2</a>.
