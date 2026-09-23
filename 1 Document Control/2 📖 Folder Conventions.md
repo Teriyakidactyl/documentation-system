@@ -28,6 +28,6 @@ corpus. The remainder of the name is descriptive only.
 
 | Prefix | Meaning | Compiler | Agent |
 |---|---|---|---|
-| `.research` | Controlled research sideband for retained investigation prompts and run outputs. | Descend and control metadata-bearing artifacts, including UID minting and validation; descendants have no Documentation System address and do not enter generated indexes. | Read only when the user explicitly requests research material or names the directory or investigation. |
+| `.research` | Controlled research sideband for retained investigation prompts and run outputs. | Descend and control metadata-bearing artifacts, including UID minting and research-provenance validation; descendants have no Documentation System address and do not enter generated indexes. Preserve prompt/report payloads as historical evidence rather than applying current-authority prose diagnostics to them. | Read only when the user explicitly requests research material or names the directory or investigation. |
 | `.<name>` | Any other dot-prefixed directory is outside the controlled corpus; repository/tool state or local working material. | Do not descend. | Read only when the user explicitly names the directory. |
 | `_<name>` | Operational grouping, not classification; address-transparent. | No special treatment; descendants participate normally. | Normal access unless an enclosing rule excludes it. |

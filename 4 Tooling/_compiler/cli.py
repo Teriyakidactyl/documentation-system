@@ -64,7 +64,7 @@ def run(script: Path, argv: list[str]) -> int:
         write_json(diagnostics_json, [], root)
 
     print(
-        f"Compiled {result.artifacts} indexed artifacts across {result.locations} addressed locations "
+        f"Compiled {result.artifacts} controlled artifacts across {result.locations} addressed locations "
         f"beneath {root}; minted {result.uids_minted} uids, refreshed {result.links_refreshed} "
         f"controlled links, and reported {len(result.diagnostics)} diagnostics"
     )

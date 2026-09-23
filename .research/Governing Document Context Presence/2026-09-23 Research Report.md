@@ -1,3 +1,17 @@
+---
+form: '<a href="*" uid="AKNN1G">documentation-system:§2.3.1.12.11</a>'
+description: >-
+  `Consult when` *the initial governing-document context-presence research
+  run must be reviewed or compared with a later rerun* `to` **use the
+  retained findings, evidence, and recommendations from this specific run
+  while keeping them distinct from current governing guidance**.
+research-prompt: RMRAE6
+research-run:
+  executed-at: '2026-09-23'
+  model: gpt-5-thinking
+  version: GPT-5.6 Sol
+---
+
 # Verifying That a Governing Document Is Actually Present in an LLM Agent’s Effective Context
 
 ## Executive findings and taxonomy
