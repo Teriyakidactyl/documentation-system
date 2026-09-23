@@ -27,10 +27,11 @@ artifact 1; `#4.2` selects numbered heading 4.2 inside the resolved artifact.
 A qualifier such as `documentation-system:` names the address space.
 
 > [!IMPORTANT]
-> Start here. Compare the current need only against the immediate indexed
-> choices below. Select the narrowest matching description. If that choice
-> exposes another index, repeat there. Stop when the selected description
-> identifies the governing artifact.
+> Start here. A task may present several independent concerns; route each one
+> separately. For the current concern, compare only the immediate indexed
+> choices, select the narrowest matching description, and descend one index at
+> a time until the governing artifact is identified. Repeat for every remaining
+> concern, satisfying each resulting document according to its directive.
 
 <!--
 The address paragraph and callout above are the standard reader-facing entry
@@ -40,12 +41,14 @@ then leave UID, move, resolution, and crawler mechanics to Document Control.
 
 Keep the navigation behavior intact when adapting wording to a corpus:
 
-- begin at the Origin;
-- compare the current need only with immediate indexed choices;
+- identify each independent concern presented by the task;
+- begin at the Origin for the current concern;
+- compare that concern only with immediate indexed choices;
 - select the narrowest matching description;
 - descend through one INDEX.md at a time when another location is selected;
-- stop at the governing artifact rather than browsing sibling or descendant
-  branches.
+- stop descending that branch when its governing artifact is identified;
+- repeat for every remaining concern; and
+- satisfy every resulting document according to its directive.
 
 The Origin is README.md at the crawler root. Give it a corpus-specific H1 and a
 description that routes a reader into the corpus. The derived README.md carries
