@@ -36,6 +36,7 @@ navigation surface.
 ```text
 address space
 └── corpus root
+    ├── corpus dependency
     ├── controlled artifact
     │   ├── uid
     │   ├── description
@@ -52,13 +53,14 @@ address space
 
 | Term | Meaning |
 |---|---|
-| **address space** | A stable logical namespace for one controlled corpus. Its name qualifies addresses independently of the corpus root's physical path or mount location. |
+| **address space** | A stable logical namespace for one controlled corpus. Its Origin declares the name in `address-space`; the name qualifies addresses independently of the corpus root's physical path or mount location. |
 | **corpus root** | The filesystem directory selected as the root of one controlled corpus and the relative origin of its address tree. Every `§` location path is derived from numbered descendants beneath this directory; filesystem ancestors do not contribute to the address. |
+| **corpus dependency** | A foreign controlled corpus that this corpus may read to resolve qualified controlled links or addresses. The Origin declares each dependency by foreign address-space name and a path relative to this corpus root. Dependency declaration grants resolution access, not mutation authority. |
 | **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
 | **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
-| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
+| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid within one corpus. Across corpora, durable identity is selected by address space plus UID. |
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
@@ -70,10 +72,30 @@ address space
 
 ## 1. Establish the controlled corpus
 
-Start from the **corpus root**. A file becomes a controlled artifact only when
-it is on a compiler-traversed path and the compiler recognizes its metadata
-surface. Address and index participation are additional properties rather than
-requirements for controlled identity.
+Start from the **corpus root**. Its `README.md` Origin declares one canonical
+`address-space` name. The compiler reads that authored identity; it does not
+derive the logical namespace from the directory name, Git repository name, or
+invocation.
+
+When this corpus needs a durable controlled link into another corpus, declare
+that foreign corpus under `corpus-dependencies` in the Origin:
+
+```yaml
+address-space: project
+corpus-dependencies:
+  documentation-system: ../1 Documentation System
+```
+
+Each dependency key is the foreign corpus's own declared address space. Each
+value is a path relative to this corpus root. The compiler requires the target
+Origin to declare the same address-space name. A dependency is read-only during
+this corpus's compilation: UID minting, index generation, link rewriting, and
+diagnostic annotation remain confined to the local corpus.
+
+A file becomes a controlled artifact only when it is on a compiler-traversed
+path and the compiler recognizes its metadata surface. Address and index
+participation are additional properties rather than requirements for controlled
+identity.
 
 The compiler currently recognizes two shapes:
 
@@ -190,16 +212,25 @@ For example:
 <a href="*" uid="5CFFZW">documentation-system:§2.1#4.2</a>
 ```
 
-The `uid` identifies the document; the optional `#` in the displayed address
-selects a numbered heading within it. On every pass the compiler finds the
-current document by UID, derives its current fully qualified address, validates
+The `uid` identifies the document inside the address space selected by the
+displayed qualifier; the optional `#` selects a numbered heading within that
+document. An unqualified controlled link resolves only inside the local corpus.
+A foreign-qualified controlled link resolves only through a matching declared
+corpus dependency. The compiler does not search sibling directories or rank
+foreign corpora by UID.
+
+On every pass the compiler selects the target corpus, finds the current
+document by UID there, derives its current fully qualified address, validates
 the section when present, and rewrites both `href` and the displayed address.
 The address-space qualifier names the logical namespace; it does not encode the
-corpus root's physical path. Moving or mounting the whole corpus elsewhere does
-not change its qualifier or its internal coordinates. Ordinary Markdown links
-are not touched.
-If the UID is missing or duplicated, or the selected heading no longer exists,
-the compiler fails rather than guessing.
+corpus root's physical path. Moving or mounting a corpus elsewhere does not
+change its qualifier or internal coordinates, provided the consuming Origin's
+dependency path is updated when needed. Ordinary Markdown links are not touched.
+
+If the dependency is undeclared, its path is invalid, its Origin declares a
+different address space, the UID is missing or duplicated in the selected
+corpus, or the selected heading no longer exists, the compiler fails rather
+than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
 prose. A bare address is only a current-location notation suitable for examples,
@@ -283,9 +314,11 @@ changed:
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-The compiler validates duplicate sibling ordinals, duplicate addresses and
-UIDs, missing descriptions, malformed generated regions, controlled links, and
-supported sideband relationships before it writes indexes.
+The compiler validates the Origin's address-space declaration and corpus
+dependencies, duplicate sibling ordinals, duplicate addresses and local UIDs,
+missing descriptions, malformed generated regions, controlled links, and
+supported sideband relationships. Compilation mutates only the selected local
+corpus; declared dependency corpora are resolution inputs.
 
 Resolve an address without writing anything:
 
@@ -294,10 +327,12 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-syst
 ```
 
 Resolution returns the indexed body and provenance for the addressed document
-or numbered section. A location address resolves through its `INDEX.md` when
-one exists; a location with no index resolves as a location with no body. A
-normal compiler pass also refreshes every controlled HTML anchor carrying a
-`uid`, including anchors carried by a supported Python module docstring.
+or numbered section. A qualified address naming a declared corpus dependency is
+resolved read-only through that dependency; an undeclared foreign qualifier
+fails. A location address resolves through its `INDEX.md` when one exists; a
+location with no index resolves as a location with no body. A normal compiler
+pass also refreshes every controlled HTML anchor carrying a `uid`, including
+anchors carried by a supported Python module docstring.
 
 Finish only when the compiler succeeds and each generated projection contains
 the immediate indexed children implied by the filesystem.
