@@ -4,8 +4,9 @@ description: >-
   `Read in full when` *editing is being treated as ordinary rewriting or an
   editor's internal sense of completion is being accepted as evidence that a
   conceptual change has fully propagated* `to` **understand why revision needs
-  an external frame, independent validation, and explicit residual accounting
-  when existing representations can preserve superseded meaning**.
+  an external frame, validation reasoning distinct from mutation, and explicit
+  residual accounting when existing representations can preserve superseded
+  meaning**.
 quadrant: Explanation
 outline:
   topology: graph
@@ -29,7 +30,7 @@ representation that already exists and must reconcile it with something that
 has changed or with a standard it may already violate.
 
 That difference makes editing depend on an external frame and on validation
-that is independent of the mutation itself.
+reasoning that remains logically distinct from the mutation it evaluates.
 
 ## 1. Existing representations carry precedent
 
@@ -68,31 +69,33 @@ criterion was satisfied, found already clean, left unresolved, or excluded?
 
 The second question can be inspected by another reader.
 
-## 3. Revision and validation have different authority
+## 3. Revision and validation reasoning have different authority
 
-Revision is authorized to change an artifact. Validation is authorized to make
-claims about an artifact.
+Revision is authorized to change an artifact. Validation reasoning determines
+whether a representation satisfies a governing criterion.
 
-Combining the two without an explicit boundary lets the reasoning that selected
-a repair also decide that the repair was sufficient. Keeping them distinct
-allows validation to test the result against the same external frame without
-treating the edit history as proof.
-
-The normal relationship is:
+The two can be interleaved without becoming the same operation:
 
 ```text
 external frame
-     │
-     ├──> validate current state
-     │
-     └──> revise artifact
-               │
-               └──> validate resulting state
+     ↓
+inspect representation
+     ↓ validation reasoning
+revise representation
+     ↓ validation reasoning
+continue until criteria and residual are accounted for
 ```
 
-Validation may precede revision to locate faults and follows revision to detect
-remaining or edit-induced faults. The responsibility is the same in both
-positions: assessment without mutation.
+A correction can follow immediately from a validation judgment when the frozen
+frame determines the repair and Revision already authorizes the mutation. The
+judgment still does not become evidence merely because the same context made
+the correction; check the resulting representation against the criterion rather
+than treating the edit history as proof.
+
+A bounded Validation pass is a stronger, separately accountable assurance
+operation. Invoke it only when a governing process explicitly requires that
+assurance; ordinary Revision does not need a formal pre-edit and post-edit pass
+merely to separate assessment reasoning from mutation.
 
 ## 4. Residual error becomes future evidence
 
@@ -149,7 +152,8 @@ Local terms are justified when they name a distinction the established
 editorial vocabulary does not provide. `checked-clean`, `residual`,
 `edit-induced fault`, and `superseded representation` exist for that reason.
 
-This is also why Revision and Validation do not replace developmental editing,
-copyediting, or proofreading. Revision and Validation answer what authority the
-operation has. The editorial term answers what level and class of prose work is
-in scope.
+This is also why Revision and validation reasoning do not replace developmental
+editing, copyediting, or proofreading. Revision answers mutation authority;
+validation reasoning answers assessment against criteria; a bounded Validation
+pass adds independently accountable assurance only when selected. The editorial
+term answers what level and class of prose work is in scope.
