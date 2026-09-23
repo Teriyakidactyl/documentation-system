@@ -27,8 +27,12 @@ The Documentation Compiler is one controlled tool with one compilation
 pipeline. The public Tooling artifact owns invocation and user-facing behavior;
 the address-transparent `_compiler` package owns implementation stages.
 
-Do not create an independent assembler, validator executable, projection tool,
-or second corpus model when the responsibility belongs to this pipeline.
+One invocation has one **local corpus** whose derived state may be mutated.
+That corpus may declare **dependency corpora** for read-only resolution of
+foreign qualified addresses and controlled links. Do not turn dependencies into
+a workspace-wide mutable corpus, and do not create an independent assembler,
+validator executable, projection tool, or second compiler pipeline when the
+responsibility belongs here.
 
 ## 1. Architecture contract
 
@@ -49,8 +53,15 @@ canonical tool and concept name.
 ### 2.1 Corpus model
 
 `model.py` owns metadata adapters, normalized `Artifact`, `HeadingTarget`,
-and `Corpus` values, UID identity, the compiler-owned address-space name,
-address derivation, Git repository root discovery, and corpus construction.
+and `Corpus` values, UID identity, Origin-declared address-space and corpus
+dependency configuration, address derivation, Git repository root discovery,
+and corpus construction.
+
+The Origin is the canonical source of the local logical namespace. The model
+must not derive that namespace from a directory name, repository name, or CLI
+override. Dependency declarations map a foreign address-space name to a corpus
+root relative to the local root and validate that the target Origin declares
+the same name.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -77,8 +88,16 @@ they do not become another authored topology.
 `links.py` owns UID-controlled target resolution and mechanical rewriting of
 the current `href` and displayed address.
 
-The UID is authority for target identity. The rendered address is a projection
-of current corpus structure.
+Resolve the target namespace before the UID. An unqualified or local-qualified
+link selects the local corpus; a foreign-qualified link selects only a declared
+dependency corpus. UIDs are unique within one corpus, not assumed globally
+unique across all corpora. The selected corpus plus UID is authority for target
+identity. The rendered address is a projection of that target corpus's current
+structure.
+
+Dependency corpora are read-only resolution inputs. Link rewriting may read
+their models and compute a relative `href`, but it must not mint their UIDs,
+compile their indexes, rewrite their source, or annotate diagnostics there.
 
 ### 2.5 Compilation engine
 
@@ -98,15 +117,16 @@ The command line orchestrates compiler behavior; it does not own corpus rules.
 Use this canonical order:
 
 ```text
-clear stale inline diagnostics
--> mint missing UIDs
--> build corpus model
--> compile deterministic projections
--> rebuild corpus model
--> rewrite UID-controlled links
--> rebuild corpus model
--> validate compiled state
--> emit selected diagnostic projections
+validate local Origin identity and dependency declarations
+-> clear stale local inline diagnostics
+-> mint missing local UIDs
+-> build local corpus model
+-> compile local deterministic projections
+-> rebuild local corpus model
+-> rewrite local UID-controlled links using read-only dependency corpora
+-> rebuild local corpus model
+-> validate compiled local state
+-> emit selected local diagnostic projections
 ```
 
 A pass may write only the representation it owns. Rebuild the corpus model
@@ -156,15 +176,22 @@ Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
 single artifact legitimately owns them.
 
+A dependency registry is explicit Origin configuration, not discovery. Never
+scan sibling directories for candidate corpora or choose a foreign corpus by a
+matching UID. Reject undeclared namespaces, missing dependency roots, and
+address-space mismatches deterministically.
+
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
 
 ## 6. Evolution
 
 Add a compiler capability when canonical inputs and declarations determine one
-output without contextual interpretation. If producing the output requires
-choosing among plausible meanings, reconciling authority, or adapting semantics
-to context, keep that work authored.
+output without contextual interpretation. Origin-declared address spaces and
+dependency paths qualify: they deterministically select the corpus in which a
+qualified UID or address resolves. If producing the output requires choosing
+among plausible meanings, reconciling authority, or adapting semantics to
+context, keep that work authored.
 
 Add another internal module when a responsibility has an independent reason to
 change and a stable boundary. Do not split one function per file for symmetry.
