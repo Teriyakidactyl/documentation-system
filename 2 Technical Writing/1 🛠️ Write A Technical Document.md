@@ -1,9 +1,9 @@
 ---
 uid: 5CFFZW
 description: >-
-  `Read in full and follow when` *authoring or substantially revising a technical
-  document* `to` **commit its description, controlled placement, quadrant,
-  outline, and writing style before drafting prose that satisfies them**.
+  `Read in full and follow when` *authoring a technical document* `to` **commit
+  its description, controlled placement, quadrant, outline, and writing style
+  before drafting prose that satisfies them**.
 ---
 
 # 🛠️ Write A Technical Document
