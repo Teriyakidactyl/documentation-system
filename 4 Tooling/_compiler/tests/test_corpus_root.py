@@ -89,7 +89,10 @@ class CorpusRootTests(unittest.TestCase):
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
 
-        with self.assertRaisesRegex(CompilerError, "must declare the corpus root"):
+        with self.assertRaisesRegex(
+            CompilerError,
+            "Bare corpus-root address '§1' is invalid and unresolvable",
+        ):
             resolve_address(root, "§1")
 
     def test_address_corpus_root_must_match_job_corpus_root(self) -> None:
