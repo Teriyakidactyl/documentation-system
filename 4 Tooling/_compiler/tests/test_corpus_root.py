@@ -75,7 +75,7 @@ class CorpusRootTests(unittest.TestCase):
         parent = self.base / "parent"
         nested = parent / "nested"
         write(parent / "README.md", origin("parent"))
-        write(nested / "README.md", origin("nested"))
+        write(nested / "README.md", origin("nested", uid="GHJ789"))
         write(nested / "1 Page.md", page())
 
         parent_resolution = resolve_address(parent, "parent:§1")
