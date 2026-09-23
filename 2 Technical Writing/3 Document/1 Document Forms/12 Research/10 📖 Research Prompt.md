@@ -1,4 +1,5 @@
 ---
+uid: BSJY2D
 description: >-
   `Consult when` *a repeatable research request needs a durable source
   representation* `to` **preserve one exact rerunnable prompt under stable

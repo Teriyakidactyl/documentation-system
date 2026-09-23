@@ -1,4 +1,5 @@
 ---
+uid: AKNN1G
 description: >-
   `Consult when` *the output of a research run is being retained for later
   review, comparison, or promotion into current authority* `to` **bind the
