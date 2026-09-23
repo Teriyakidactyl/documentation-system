@@ -316,7 +316,7 @@ different documents because one document cannot hold two reader relationships
 without blending what step 2.2 just separated.
 
 A second same-quadrant document is a document-unit exception governed by
-§4.4's HTIL gate.
+<a href="*" uid="5CFFZW">documentation-system:§2.1#4.4</a>'s HTIL gate.
 
 Deciding now bounds the outline. A concept covered by several documents
 leaves this one a share of the ground instead of all of it.
@@ -451,7 +451,7 @@ common parent of every section that uses it. Never place a definition after
 its first load-bearing use.
 
 A dedicated glossary gives the reader a Reference lookup task. Carry it into
-§4.4's quadrant check when it could stand as an independent lookup document.
+<a href="*" uid="5CFFZW">documentation-system:§2.1#4.4</a>'s quadrant check when it could stand as an independent lookup document.
 
 ### 4.3 Check the outline for overlap and gaps
 
