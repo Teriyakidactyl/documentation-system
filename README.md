@@ -39,6 +39,11 @@ of the corpus root's physical path.
 > choices, select the narrowest matching description, and descend one index at
 > a time until the governing artifact is identified. Repeat for every remaining
 > concern, satisfying each resulting document according to its directive.
+>
+> Before relying on any governing document selected through this routing
+> process, confirm that its complete source text is identifiable in the active,
+> non-compacted conversation history. If it is not, or if its prior presence is
+> only within compacted history, read the document in full before relying on it.
 
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
