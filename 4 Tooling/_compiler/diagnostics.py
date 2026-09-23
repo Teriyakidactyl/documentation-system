@@ -10,7 +10,7 @@ from enum import Enum
 from pathlib import Path
 
 from .links import CONTROL_LINK_RE
-from .model import UID_RE, Corpus, artifact_by_uid, python_docstring, read_text, repo_path, walk_files
+from .model import CONTROLLED_SIDEBAND_DIRS, UID_RE, Corpus, artifact_by_uid, python_docstring, read_text, repo_path, walk_files
 
 ADDRESS_TOKEN_RE = re.compile(
     r"(?<![A-Za-z0-9_-])(?:(?:[a-z0-9][a-z0-9-]*):)?"
@@ -133,6 +133,9 @@ def _scan_markdown(text: str, path: Path, base_line: int = 1) -> list[Diagnostic
 def validate_bare_addresses(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     for path in sorted(walk_files(corpus.root), key=lambda p: repo_path(corpus.root, p).casefold()):
+        rel = path.resolve().relative_to(corpus.root.resolve())
+        if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
+            continue
         if path.suffix.lower() == ".md":
             diagnostics.extend(_scan_markdown(read_text(path), path))
         elif path.suffix.lower() == ".py":
