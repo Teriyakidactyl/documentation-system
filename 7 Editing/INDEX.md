@@ -10,12 +10,14 @@ description: >-
 # Editing
 
 This location governs work on existing artifacts. Revision is authorized to
-change an artifact against an external frame; validation is authorized to make
-claims about an artifact against a frame without changing it. Those are
-authority boundaries, not replacements for established editorial terms:
-developmental editing, line editing, copyediting, and proofreading still name
-recognized scopes of prose work. The artifact may be prose, structured data,
-code, or a mixture.
+change an artifact against an external frame. Validation reasoning assesses a
+representation against governing criteria and can occur before, during, or
+after mutation without granting mutation authority. A bounded Validation pass
+adds independently accountable assurance only when a governing requirement
+selects it. These are authority and assurance distinctions, not replacements
+for established editorial terms: developmental editing, line editing,
+copyediting, and proofreading still name recognized scopes of prose work. The
+artifact may be prose, structured data, code, or a mixture.
 
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
