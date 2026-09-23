@@ -93,38 +93,6 @@ selection of diagnostic projections.
 
 The command line orchestrates compiler behavior; it does not own corpus rules.
 
-### 2.7 Validation evidence
-
-When durable validation evidence is implemented, keep receipt semantics and
-storage mechanics in separate internal modules.
-
-`receipts.py` owns the validation-evidence domain: validation basis,
-schema-valid receipt values, producer kind, typed coverage, canonical
-serialization, receipt invariants, and current-versus-stale applicability
-semantics. It does not invoke Git or decide command-line presentation.
-
-`git_notes.py` owns the Git persistence adapter: resolve the exact Git object
-state for a controlled subject, read and write the selected validation-notes
-namespace, and return stored representations to the receipt layer. It does not
-decide whether a receipt is semantically admissible and does not make Git object
-identity replace Documentation System `uid` identity.
-
-Use Git Notes as the selected persistence mechanism for durable validation
-receipts because receipt updates must not mutate the validated artifact merely
-to record that validation occurred. Keep the storage namespace and Git commands
-behind this adapter.
-
-Do not persist ordinary compiler or lint success on every run. Deterministic
-validation remains authoritative by recomputation when it is cheap. A tool
-receipt is persisted only when a concrete requirement makes the run itself
-valuable evidence, such as expensive execution, environment-specific
-provenance, release attestation, or compliance evidence.
-
-A validation-status operation combines applicable durable receipts with
-recomputed deterministic checks. It exposes domain states such as current,
-stale, findings, uncertain, and not evaluated; it does not project a blanket
-`validated: true` fact onto the subject.
-
 ## 3. Compilation pipeline
 
 Use this canonical order:
@@ -180,22 +148,13 @@ shared facts:
 ```text
 CLI -> engine -> passes
              -> normalized Corpus
-             -> validation status
 validators -> Diagnostic
-receipts -> validation evidence values
-git_notes -> receipt persistence
 presenters -> Diagnostic
 ```
 
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
 single artifact legitimately owns them.
-
-Keep dependencies directed from receipt semantics toward abstract subject/frame
-facts and from the Git adapter toward receipt serialization. `receipts.py`
-must not import Git persistence. `git_notes.py` may persist only receipt
-representations that have passed receipt validation. The engine coordinates
-basis resolution, deterministic rechecks, receipt lookup, and status assembly.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
@@ -214,8 +173,8 @@ Add another public executable only when the new capability has an independent
 lifecycle and cannot remain a pass in this compiler without violating this
 architecture.
 
-Expose future validation-evidence operations through the existing compiler
-entry point unless an independent lifecycle is demonstrated. User-facing
-commands name Validation concepts such as receipt and status; they do not
-require callers to manipulate Git refs, note namespaces, or object identifiers
-directly.
+Do not reserve compiler modules, persistence adapters, or command-line
+operations for a possible future capability before a concrete requirement
+selects that representation. Preserve candidate designs in the information
+store appropriate to their current role rather than making speculative
+implementation part of the active architecture.
