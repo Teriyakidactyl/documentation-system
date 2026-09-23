@@ -118,7 +118,7 @@ no Validation Fault was established there. It does not claim universal
 error-freedom.
 
 A compiler, linter, test, or other deterministic validator may produce a native
-`Diagnostic`, test result, or equivalent machine finding. When a formal
+`Diagnostic`, test result, or equivalent machine observation. When a formal
 validation record needs to account for that evidence, the native result can
 establish a Validation Fault without becoming a second fault ontology.
 
