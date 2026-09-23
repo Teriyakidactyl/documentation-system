@@ -49,13 +49,13 @@ canonical tool and concept name.
 ### 2.1 Corpus model
 
 `model.py` owns metadata adapters, normalized `Artifact`, `HeadingTarget`,
-and `Corpus` values, UID identity, root-relative location derivation, rooted
+and `Corpus` values, UID identity, corpus-root-relative location derivation,
 address parsing and rendering, Git repository root discovery, and corpus
 construction.
 
 A `Corpus` carries the corpus-root declaration selected for the current
-compiler job as its `root` fact. That fact is job-local runtime state, not a
-permanent designation of the filesystem directory. Address rendering declares
+compiler job as its `corpus_root` fact. That fact is job-local runtime state,
+not a permanent designation of the filesystem directory. Address rendering declares
 the same role in address syntax by using the selected directory's name before
 `:`; the `§` location is derived from descendants relative to that directory.
 Do not carry a persistent or second corpus-root fact beside the job-local
@@ -88,10 +88,10 @@ the current `href` and displayed address.
 
 The UID is authority for target identity within the selected corpus. The
 displayed address is a projection of the current corpus-root declaration,
-root-relative location, and optional numbered section. Controlled links reject
-a displayed value that omits the corpus-root declaration, but a stale rooted
-value may be rewritten after the corpus root or target location changes because
-UID identity remains authoritative.
+corpus-root-relative location, and optional numbered section. Controlled links
+reject a displayed value that omits the corpus-root declaration, but a stale
+address may be rewritten after the corpus-root declaration or target location
+changes because UID identity remains authoritative.
 
 ### 2.5 Compilation engine
 
