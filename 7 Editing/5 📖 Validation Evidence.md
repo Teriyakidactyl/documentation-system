@@ -75,7 +75,7 @@ Validation reasoning alone does not create a receipt.
 A receipt is a communication representation, not evidence that every ordinary
 authoring or revision operation requires a separate validation phase.
 
-## 2. Bounded Validation selection
+## 2. Assurance requirements
 
 Ordinary competent authoring and revision use validation reasoning while work is
 performed. They do not require a formal Validation pass merely to prove that the
