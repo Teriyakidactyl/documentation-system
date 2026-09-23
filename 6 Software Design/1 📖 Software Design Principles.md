@@ -217,6 +217,21 @@ Use exceptions for failures that prevent the compiler from constructing or
 evaluating the model at all, not as the ordinary representation of every
 validation finding.
 
+### 5.4 Architecture provenance
+
+Record a recurring subsystem architecture when it constrains where future
+implementation responsibilities may be placed.
+
+**Default.** Code inherits this Software Design Reference without repeating its
+principle list. An indexed executable entry point may carry a file-level
+`architecture` controlled link to the architecture that governs the subsystem.
+Implementation modules beneath that entry point inherit the architecture and
+state only their local responsibility and boundary in ordinary module
+docstrings.
+
+Add local principle metadata only when a documented exception must override an
+inherited default.
+
 ## 6. Exceptions
 
 ### 6.1 Exception condition
