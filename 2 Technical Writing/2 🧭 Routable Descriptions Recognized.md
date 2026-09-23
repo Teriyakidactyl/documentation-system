@@ -1,0 +1,177 @@
+---
+uid: CCTBKN
+description: >-
+  `Read in full when` *an agent must author or review a `description` and
+  the grammar alone is insufficient to tell whether a plausible statement will
+  route a reader correctly* `to` **distinguish and repair descriptions by
+  directive, exigence, acceptance criterion, pairing, abstraction, and scope**.
+quadrant: Tutorial
+writing-style:
+  formality: professional
+  tone: neutral/detached
+  mode: declarative
+  density: moderate
+  abstraction: concrete/specific
+  redundancy: zero
+  signposting: light
+  register: technical
+---
+
+# 🧭 Routable Descriptions Recognized
+
+Use these pairs to train the judgment required by
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#2-write-the-description" uid="5CFFZW">documentation-system:§2.1#2</a>.
+Each pair changes one routing decision while holding the surrounding statement
+stable.
+
+## Directive depth distinguished
+
+**Good**
+
+```yaml
+description: >-
+  `Consult when` *a recurring repository document role may have a standard form*
+  `to` **confirm whether a standard form already governs the artifact before
+  inventing a local structure**.
+```
+
+**Bad**
+
+```yaml
+description: >-
+  `Use when` *a recurring repository document role may have a standard form*
+  `to` **confirm whether a standard form already governs the artifact before
+  inventing a local structure**.
+```
+
+**Rule.** The directive states the required interaction and its depth. A generic
+verb such as `Use` leaves an agent free to search, skim, or execute when the
+document requires one specific posture.
+
+## Exigence separated from topic
+
+**Good**
+
+```yaml
+description: >-
+  `Consult when` *a connector rejects authentication and the required
+  credential constraint is unknown* `to` **identify the field constraint
+  needed to restore authentication**.
+```
+
+**Bad**
+
+```yaml
+description: >-
+  `Consult when` *working with connector authentication* `to` **identify the
+  field constraint needed to restore authentication**.
+```
+
+**Rule.** The exigence names the pressure that exists before the document does
+and the moment the reader encounters it. A topic or phase does not explain why
+the reader must route here now.
+
+## Observable outcome established
+
+**Good**
+
+```yaml
+description: >-
+  `Consult when` *documented information needs a controlled repository
+  location and the applicable procedure is not yet known* `to` **select the
+  Document Control procedure before changing controlled information**.
+```
+
+**Bad**
+
+```yaml
+description: >-
+  `Consult when` *documented information needs a controlled repository
+  location and the applicable procedure is not yet known* `to` **understand
+  Document Control**.
+```
+
+**Rule.** The acceptance criterion names the minimum observable action,
+decision, or understanding-in-order-to-act. Merely understanding a subject does
+not say what successful routing enables.
+
+## Pressure and outcome paired
+
+**Good**
+
+```yaml
+description: >-
+  `Consult when` *a reader has a documentation address but does not know which
+  artifact it currently resolves to* `to` **resolve the address to its current
+  controlled artifact**.
+```
+
+**Bad**
+
+```yaml
+description: >-
+  `Consult when` *a reader has a documentation address but does not know which
+  artifact it currently resolves to* `to` **choose a location ordinal for new
+  information**.
+```
+
+**Rule.** Satisfying the acceptance criterion must dissolve the exigence. Both
+halves can be individually well formed and still be paired incorrectly.
+
+## Forcing condition generalized
+
+**Good**
+
+```yaml
+description: >-
+  `Read in full and follow when` *documented information is created, moved,
+  renamed, indexed, linked, or otherwise brought under repository control*
+  `to` **keep its identity, location-derived address, generated index, and
+  controlled links valid**.
+```
+
+**Bad**
+
+```yaml
+description: >-
+  `Read in full and follow when` *a Markdown file was just renamed* `to`
+  **keep its identity, location-derived address, generated index, and controlled
+  links valid**.
+```
+
+**Rule.** When several concrete triggers share the same reader and resolve to
+the same outcome, the exigence names their common forcing condition rather than
+one symptom.
+
+## Scope separated without duplicate routing
+
+**Good**
+
+```yaml
+# Existing Reference routing
+description: >-
+  `Consult when` *a recurring repository document role may have a standard
+  form* `to` **confirm whether a standard form already governs the artifact
+  before inventing a local structure**.
+
+# Distinct HowTo routing on the same subject
+description: >-
+  `Read in full and follow when` *a recurring repository document role needs
+  a reusable standard form or a document is being derived from one* `to`
+  **author the canonical form, bind each derived document back to it, and keep
+  recurring guidance owned by the form instead of copied into instances**.
+```
+
+**Bad**
+
+```yaml
+# Candidate duplicates the existing Reference outcome
+description: >-
+  `Consult when` *a recurring repository document role may have a standard
+  form* `to` **confirm whether a standard form already governs the artifact
+  before inventing a local structure**.
+```
+
+**Rule.** Shared subject matter does not create overlap when reader posture and
+outcome differ. The same pressure and outcome in the same posture is duplicate
+routing even when the proposed document has a different title.
