@@ -63,10 +63,12 @@ source. Do not derive the frame from whichever passages first attract attention.
 
 For prose-bearing artifacts, include the applicable document specification,
 house style, and artifact-specific style sheet in the frame when they govern the
-work. Use established editorial terms for the intervention when they fit:
-developmental editing, line editing, copyediting, or proofreading. Those terms
-name recognized scopes of work; the frozen frame still determines the exact
-authority for this revision.
+work. Keep the established editorial term for the surrounding scope when one
+fits: developmental editing, line editing, copyediting, or proofreading. A
+proofreading pass remains validation-only; if it yields an authorized
+correction, enter Revision for that correction rather than expanding the
+proofreading mandate. The frozen frame determines the exact authority for this
+revision.
 
 Freeze the criteria before the first mutation. If the frame proves wrong or
 incomplete, stop, replace it explicitly, and restart coverage against the new
