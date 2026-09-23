@@ -30,7 +30,7 @@ stable.
 
 ```yaml
 description: >-
-  `Consult when` *a recurring repository document role may have a Document Form*
+  `Consult when` *a recurring document role may have a Document Form*
   `to` **confirm whether a Document Form already governs the artifact before
   inventing a local structure**.
 ```
@@ -39,7 +39,7 @@ description: >-
 
 ```yaml
 description: >-
-  `Use when` *a recurring repository document role may have a Document Form*
+  `Use when` *a recurring document role may have a Document Form*
   `to` **confirm whether a Document Form already governs the artifact before
   inventing a local structure**.
 ```
@@ -150,13 +150,13 @@ one symptom.
 ```yaml
 # Existing Reference routing
 description: >-
-  `Consult when` *a recurring repository document role may have a standard
+  `Consult when` *a recurring document role may have a standard
   form* `to` **confirm whether a Document Form already governs the artifact
   before inventing a local structure**.
 
 # Distinct HowTo routing on the same subject
 description: >-
-  `Read in full and follow when` *a recurring repository document role needs
+  `Read in full and follow when` *a recurring document role needs
   a reusable Document Form or a document is being derived from one* `to`
   **author the canonical form, bind each derived document back to it, and keep
   recurring guidance owned by the form instead of copied into instances**.
@@ -167,7 +167,7 @@ description: >-
 ```yaml
 # Candidate duplicates the existing Reference outcome
 description: >-
-  `Consult when` *a recurring repository document role may have a standard
+  `Consult when` *a recurring document role may have a standard
   form* `to` **confirm whether a Document Form already governs the artifact
   before inventing a local structure**.
 ```
