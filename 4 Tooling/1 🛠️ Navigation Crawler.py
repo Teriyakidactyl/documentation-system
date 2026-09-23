@@ -51,8 +51,9 @@ Each documentation address separately declares its corpus root by directory
 name before `:`. For a job selecting a directory named
 `documentation-system`, generated addresses therefore begin
 `documentation-system:§...`. No second corpus-root designation is configured
-or stored in metadata. `§...` without a corpus-root declaration is location notation and is invalid
-where a documentation address is required. Renaming the directory
+or stored in metadata. A bare form such as `§2.1` omits the required
+corpus-root declaration, is invalid address syntax, and cannot resolve.
+Renaming the directory
 serving as corpus root changes the corpus-root declaration in addresses that
 use it; moving that directory beneath a different ancestor without renaming it
 does not.
@@ -87,8 +88,8 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-syst
 ```
 
 The address must declare the compiler job's corpus root by directory name before
-`:`; `--resolve §2.1` is a syntax error because `§2.1` is only location
-notation.
+`:`. `--resolve §2.1` is a syntax error because the bare address omits that
+required declaration and is unresolvable.
 Resolution returns JSON for the addressed document, location, or numbered
 section without compiling derived state.
 

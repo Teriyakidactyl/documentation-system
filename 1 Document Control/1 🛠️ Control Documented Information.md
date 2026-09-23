@@ -65,7 +65,7 @@ corpus root
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` portion is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A `§...` form without a corpus-root declaration is location notation, not an address. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
 | **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
@@ -149,14 +149,15 @@ For example:
     └── 9 Write A Technical Document.md
 ```
 
-contains these positions:
+contains these ordinal paths relative to the corpus root declared for the
+compiler job:
 
 ```text
-§2       2 Conventions/
-§2       2 Conventions/INDEX.md
-§2.11    2 Conventions/11 Technical Writing/
-§2.11    2 Conventions/11 Technical Writing/INDEX.md
-§2.11.9  2 Conventions/11 Technical Writing/9 Write A Technical Document.md
+2       2 Conventions/
+2       2 Conventions/INDEX.md
+2.11    2 Conventions/11 Technical Writing/
+2.11    2 Conventions/11 Technical Writing/INDEX.md
+2.11.9  2 Conventions/11 Technical Writing/9 Write A Technical Document.md
 ```
 
 Use one ordinal once among physical siblings in the current corpus state. A
@@ -169,21 +170,21 @@ identity with the artifact's UID rather than reserving historical coordinates.
 
 ## 3. Derive and use addresses
 
-Treat the selected corpus structure as the source of truth. First derive the
-target's **location** by walking from the corpus root, taking each location
-ordinal, and appending a terminal artifact ordinal when the target is not
-`INDEX.md`. Join those ordinals with `.` and prefix them with `§`:
+Treat the selected corpus structure as the source of truth. Derive the target's
+**location** by walking from the corpus root, taking each location ordinal, and
+appending a terminal artifact ordinal when the target is not `INDEX.md`. Join
+those ordinals with `.`. Form the address by declaring the corpus root's
+directory name before `:`, then prefixing the ordinal path with `§`:
 
 ```text
 2 Technical Writing/
 └── 1 🛠️ Write A Technical Document.md
 
-§2.1
+documentation-system:§2.1
 ```
 
-A location is not by itself an address. Form an address by declaring the
-selected corpus root's directory name before `:`. A numbered heading extends
-the rooted location into the resolved file after `#`:
+A numbered heading extends the complete address into the resolved file after
+`#`:
 
 ```text
 address        = corpus-root ":" "§" location-ordinal ("." location-ordinal)* ["#" heading-number]
@@ -194,10 +195,10 @@ documentation-system:§2.1
 documentation-system:§2.1#4.2
 ```
 
-`§2.1` or `§2.1#4.2` without a corpus-root declaration is location notation
-and is invalid when an address is required. The periods express hierarchical descent on either side
-of `#`; `#` marks the boundary between filesystem location and the file's
-internal outline.
+`§2.1` and `§2.1#4.2` are bare corpus-root addresses: each omits the
+required corpus-root declaration, is syntactically invalid, and cannot resolve.
+The periods express hierarchical descent on either side of `#`; `#` marks
+the boundary between filesystem location and the file's internal outline.
 
 An address is a current coordinate. Moving an addressed item within the corpus
 changes its location portion, and a former coordinate may later identify
@@ -228,16 +229,15 @@ the section when present, and rewrites both `href` and the displayed address.
 A controlled link may therefore carry a stale corpus-root declaration or location
 after a rename or move; the UID remains authority and the compiler refreshes
 that projection. Ordinary Markdown links are not touched. If the UID is missing
-or duplicated, the displayed value is not rooted-address syntax, or the selected
+or duplicated, the displayed value is not valid address syntax, or the selected
 heading no longer exists, the compiler fails rather than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
 prose. An address written as plain reader-visible prose is a current coordinate
-rather than durable identity, so the compiler reports it as `ERROR DS001`. A
-`§...` location token used as though it were an address lacks the required
-corpus-root declaration and is reported as `ERROR DS004`. Location notation
-remains suitable inside fenced examples, inline code, and other contexts where
-no live reference is being made.
+rather than durable identity, so the compiler reports it as `ERROR DS001`.
+A bare corpus-root address such as `§2.1` is invalid and unresolvable because
+it omits the required corpus-root declaration; the compiler reports that
+violation as `ERROR DS004`.
 
 Do not store the corpus-root declaration or derived location components in
 artifact metadata, and do not reconstruct location ancestry from generated
@@ -329,7 +329,8 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-syst
 ```
 
 Resolution requires an address whose corpus-root declaration matches the
-compiler job's corpus root; a bare `§...` location input is a syntax error.
+compiler job's corpus root. A bare corpus-root address such as `§2.1` is a
+syntax error and cannot resolve.
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. An address naming a location resolves through its
 `INDEX.md` when one exists; a location with no index resolves as a location

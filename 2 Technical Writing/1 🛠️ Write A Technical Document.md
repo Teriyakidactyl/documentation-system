@@ -390,7 +390,8 @@ under `outline` and number every level below the H1: `1`, `1.1`, `1.2`, `2`,
 `2.1`. Numbers buy addressing. A `3.2` locates a section for a reader
 arriving from a cross-reference, and a `2.1` with no `2.2` exposes a lone
 child at a glance. In a controlled corpus, the local heading number extends
-the file's address after `#`: heading `4.2` in `§2.1` is `§2.1#4.2`. Leave a
+the file's address after `#`: heading `4.2` in
+`documentation-system:§2.1` is `documentation-system:§2.1#4.2`. Leave a
 flat, standalone outline unnumbered; ordinals on five headings that nothing
 points into are noise.
 
