@@ -41,6 +41,11 @@ projections may have changed.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
+When `corpus_root` is omitted, the compiler uses the root of the Git repository
+containing this tool. An explicit `corpus_root` overrides that default. The
+compiler uses `documentation-system` as this corpus's logical address-space
+name; the qualifier is independent of the repository's physical path.
+
 A successful run refreshes deterministic projections and controlled links,
 then evaluates structured diagnostics. Errors make the run fail; warnings and
 info remain successful unless a future invocation policy explicitly promotes
