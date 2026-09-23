@@ -339,7 +339,7 @@ Authentication/
 Apply <a href="../1%20Document%20Control/1%20%F0%9F%9B%A0%EF%B8%8F%20Control%20Documented%20Information.md#2-place-information-in-the-location-hierarchy" uid="0AQHNH">documentation-system:§1.1#2</a> to the file or concept directory
 produced above. That procedure owns corpus
 placement, location ordinals and addresses, `INDEX.md`, indexing,
-progressive disclosure, and crawler validation. The writing procedure owns none of those rules; it
+progressive disclosure, and compiler validation. The writing procedure owns none of those rules; it
 only requires that its output satisfy them before signoff.
 
 ## 4. Build the outline
