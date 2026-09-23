@@ -71,7 +71,7 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("DEF456", resolved["uid"])
         self.assertEqual(str(root.resolve()), resolved["corpus_root"])
 
-    def test_rootless_location_is_not_an_address(self) -> None:
+    def test_location_without_corpus_root_is_not_an_address(self) -> None:
         root = self.make_corpus("project")
 
         with self.assertRaisesRegex(CompilerError, "must declare the corpus root"):
@@ -107,7 +107,7 @@ class CorpusRootTests(unittest.TestCase):
 
         self.assertIn("DS001", {diagnostic.code for diagnostic in result.diagnostics})
 
-    def test_reader_visible_rootless_location_is_reported_as_invalid_address(self) -> None:
+    def test_reader_visible_location_without_corpus_root_is_reported(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See §1.\n"))
