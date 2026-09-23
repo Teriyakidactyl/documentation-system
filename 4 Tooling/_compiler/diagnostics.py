@@ -10,7 +10,7 @@ from enum import Enum
 from pathlib import Path
 
 from .links import CONTROL_LINK_RE
-from .model import Corpus, python_docstring, read_text, repo_path, walk_files
+from .model import UID_RE, Corpus, artifact_by_uid, python_docstring, read_text, repo_path, walk_files
 
 ADDRESS_TOKEN_RE = re.compile(
     r"(?<![A-Za-z0-9_-])(?:(?:[a-z0-9][a-z0-9-]*):)?"
@@ -143,8 +143,71 @@ def validate_bare_addresses(corpus: Corpus) -> list[Diagnostic]:
     return diagnostics
 
 
+def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    by_uid = artifact_by_uid(corpus)
+    for artifact in sorted(corpus.artifacts.values(), key=lambda a: repo_path(corpus.root, a.path).casefold()):
+        prompt_uid = artifact.metadata.get("research-prompt")
+        if prompt_uid is None:
+            continue
+        if not isinstance(prompt_uid, str) or not UID_RE.fullmatch(prompt_uid):
+            diagnostics.append(
+                Diagnostic(
+                    code="DS002",
+                    severity=Severity.ERROR,
+                    path=artifact.path,
+                    line=1,
+                    message="research-prompt must be a six-character controlled artifact UID",
+                )
+            )
+            continue
+        prompt = by_uid.get(prompt_uid)
+        if prompt is None:
+            diagnostics.append(
+                Diagnostic(
+                    code="DS002",
+                    severity=Severity.ERROR,
+                    path=artifact.path,
+                    line=1,
+                    message=f"research-prompt names missing uid {prompt_uid}",
+                )
+            )
+        else:
+            rel = prompt.path.resolve().relative_to(corpus.root.resolve())
+            if ".research" not in rel.parts[:-1] or prompt.path.name != "Prompt.md":
+                diagnostics.append(
+                    Diagnostic(
+                        code="DS002",
+                        severity=Severity.ERROR,
+                        path=artifact.path,
+                        line=1,
+                        message=(
+                            f"research-prompt uid {prompt_uid} must identify Prompt.md "
+                            "inside the controlled .research sideband"
+                        ),
+                    )
+                )
+
+        run = artifact.metadata.get("research-run")
+        required = ("executed-at", "model", "version")
+        if not isinstance(run, dict) or any(not run.get(key) for key in required):
+            diagnostics.append(
+                Diagnostic(
+                    code="DS003",
+                    severity=Severity.ERROR,
+                    path=artifact.path,
+                    line=1,
+                    message=(
+                        "research-run must record non-empty executed-at, model, and version "
+                        "for every retained research report"
+                    ),
+                )
+            )
+    return diagnostics
+
+
 def validate(corpus: Corpus) -> list[Diagnostic]:
-    return validate_bare_addresses(corpus)
+    return validate_bare_addresses(corpus) + validate_research_reports(corpus)
 
 
 def annotate(root: Path, diagnostics: list[Diagnostic]) -> int:
