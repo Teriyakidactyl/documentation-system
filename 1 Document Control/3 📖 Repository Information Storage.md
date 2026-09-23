@@ -7,8 +7,8 @@ description: >-
   only for a concrete control benefit**.
 quadrant: Reference
 outline:
-  topology: matrix
-  axis: storage method
+  topology: tree
+  axis: repository information storage decision
   numbering: hierarchical-decimal
 writing-style:
   formality: professional
