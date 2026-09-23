@@ -3,9 +3,9 @@ uid: SE6M58
 description: >-
   `Read in full and follow when` *an existing artifact must incorporate a
   stated change without leaving superseded meaning, broken dependencies, or
-  unexamined residual* `to` **freeze the change frame, validate the current
-  state, propagate the change, independently validate the result, and return a
-  checkable revision record**.
+  unexamined residual* `to` **freeze the change frame, inspect the current
+  state, propagate the change with validation reasoning, check the resulting
+  state, and return a traceable revision record**.
 quadrant: HowTo
 outline:
   topology: linear
@@ -27,18 +27,22 @@ Revision changes an existing artifact so it satisfies an external frame. Do not
 use the artifact's current contents, the edits already made, or your own sense
 of completion as authority for what remains to be done.
 
-The procedure deliberately separates assessment from mutation:
+Validation reasoning is part of competent Revision: compare representations with
+the frozen criteria while inspecting, changing, and checking the artifact.
+That reasoning does not require a separate post-operation Validation phase.
+
+Keep the authority distinction clear:
 
 ```text
-freeze frame
-→ validate current state
-→ revise
-→ validate resulting state
-→ declare residual
-```
+validation reasoning
+= determines whether a representation satisfies a criterion
 
-Validation makes claims about the artifact. Revision changes it. Do not collapse
-the two authorities merely because one task invokes both.
+Revision
+= changes the representation
+
+bounded Validation pass
+= separately accountable assurance operation, only when explicitly required
+```
 
 **Terms.**
 
@@ -49,6 +53,7 @@ the two authorities merely because one task invokes both.
 | **residual** | Required work not completed by the revision, named explicitly rather than absorbed into a completion claim. |
 | **superseded representation** | A representation of a state, rule, term, relationship, or implementation that the accepted change has made non-current. |
 | **edit-induced fault** | A defect introduced by the revision that was not present before mutation. |
+| **validation reasoning** | Comparison of a representation with a governing criterion while work proceeds. |
 | **style sheet** | For prose work, an artifact-specific record of editorial decisions such as terminology, capitalization, spelling, numbering, and other consistency choices. It contributes to the frame but does not replace governing specifications or house style. |
 
 ## 1. Freeze the change frame
@@ -74,35 +79,24 @@ Freeze the criteria before the first mutation. If the frame proves wrong or
 incomplete, stop, replace it explicitly, and restart coverage against the new
 frame. Do not amend criteria merely to make completed edits appear sufficient.
 
-## 2. Validate the current state
+## 2. Inspect the current state
 
-Before changing the artifact, apply
+Use validation reasoning against the frozen frame before and while locating the
+required change. Distinguish observed faults from assumptions about where edits
+will be needed, and note material already shown to satisfy relevant criteria.
+
+Search is a discovery aid, not a completeness test. A representation can embody
+the old model without repeating the words that named it.
+
+When a governing assurance requirement explicitly calls for a bounded
+Validation pass, apply
 <a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
-against the frozen frame and the full in-scope artifact.
-
-The pre-edit validation record is the detection artifact for the revision. It
-separates observed faults from assumptions about where changes will be needed
-and records material already checked clean.
-
-Current durable validation evidence may supply checked-clean coverage only when
-its subject state, scope, and governing frame match this revision's frozen
-frame. A stale receipt or a receipt produced against a different change frame
-is historical evidence, not a substitute for revision-specific validation.
-
-When the pre-edit validation record is selected for durable preservation,
-persist its findings and clean coverage against the pre-edit subject state
-before the first mutation. A later repair must not rewrite the receipt that
-established the original fault.
-
-Do not begin mutation until the required validation lenses have current
-evidence. A search result, edit plan, list of obvious lexical matches, or
-mismatched prior receipt is not a substitute for current-state validation.
+at the required boundary. Otherwise do not create a formal validation record
+merely to prove that Revision inspected its inputs.
 
 ## 3. Map the implications
 
-Use the frozen frame and the pre-edit validation record to derive the edit set.
-Search is a discovery aid, not a completeness test: a representation can embody
-the old model without repeating the words that named it.
+Use the frozen frame and current-state observations to derive the edit set.
 
 For each criterion, ask:
 
@@ -113,9 +107,9 @@ For each criterion, ask:
 - Which units would read or behave differently if the new criterion had been
   true when the artifact was first produced?
 
-Include dependencies implied by the accepted change even when the pre-edit
-validation did not enumerate them as faults. Validation detects against a frame;
-revision must also propagate the consequences of changing that frame.
+Include dependencies implied by the accepted change even when the initial
+inspection did not expose them as explicit faults. Revision must propagate the
+consequences of changing the frame, not merely repair the first lexical matches.
 
 ## 4. Remove superseded representations
 
@@ -145,18 +139,20 @@ apply the relevant authoring rules from
 to those authoring decisions; Editing still owns propagation of the resulting
 change through the existing artifact.
 
+Use validation reasoning as each changed unit becomes inspectable. Correct a
+representation when the frozen frame determines the repair and Revision already
+authorizes the mutation. Escalate or record an issue when the correct resolution
+is not determined by the frame.
+
 Record each changed unit and the criterion that required it.
 
-## 6. Validate the resulting state
+## 6. Check the resulting state
 
-Apply
-<a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
-again against the frozen frame after mutation. Do not treat the edit log as
-evidence that the result is correct. Prior receipts from the pre-edit state are
-stale for claims affected by the revision unless their validation basis remains
-unchanged and the governing criterion still applies exactly.
+Before finishing, compare the resulting artifact with every frozen criterion
+and inspect for edit-induced faults. Do not treat the edit log as evidence that
+the result is correct.
 
-Re-scan changed units and inspect the artifact for edit-induced faults:
+Re-scan changed units and their dependencies:
 
 | Fault | Detection cue |
 |---|---|
@@ -167,10 +163,14 @@ Re-scan changed units and inspect the artifact for edit-induced faults:
 | **Severed dependency** | A prerequisite, definition, or ordering relation no longer precedes or supports its consumer. |
 | **Criterion collision** | Two frame criteria were implemented in incompatible ways. |
 | **Scope creep** | A mutation traces to no frame criterion. |
-| **Confabulated finding** | A requested additional pass produced a claim unsupported by the frame or artifact after genuine findings were exhausted. |
+| **Confabulated fault** | Additional checking produced a claimed defect unsupported by the frame or artifact after genuine faults were exhausted. |
 
 Do not silently repair a newly discovered issue whose correct resolution is not
 determined by the frame. Record it as residual.
+
+If the governing process requires independently accountable assurance of the
+result, invoke the bounded Validation procedure after mutation. That pass is a
+separate authority boundary even when the same agent performs both operations.
 
 ## 7. Emit the revision record
 
@@ -179,16 +179,19 @@ Return a checkable record with the artifact:
 ```yaml
 revision-record:
   frame: <path or identifier for the frozen frame>
-  pre-edit-validation: <validation record or identifier>
-  changed: []           # { unit, criterion, what }
-  checked-clean: []     # { unit, criterion, evidence }
-  unresolved: []        # { unit, criterion, fault, why-not-fixed }
-  out-of-scope: []      # { unit, observation, reason }
-  post-edit-validation: <validation record or identifier>
+  changed: []        # { unit, criterion, what }
+  checked-clean: []  # { unit, criterion, evidence }
+  unresolved: []     # { unit, criterion, fault, why-not-fixed }
+  out-of-scope: []   # { unit, observation, reason }
+  assurance: []      # validation record or receipt identifiers, only when required
 ```
 
 `checked-clean` distinguishes examined material from material never inspected.
-Every in-scope unit must appear in at least one record list, and every frame
-criterion must appear in `changed`, `checked-clean`, or `unresolved`.
-Coverage is demonstrated by the records, not by a prose claim that the revision
-is complete.
+Every frame criterion must appear in `changed`, `checked-clean`, or
+`unresolved`; every in-scope unit must be accounted for by the revision
+record. Coverage is demonstrated by those records, not by a prose claim that
+the revision is complete.
+
+Leave `assurance` empty when no bounded Validation pass was required. The
+absence of a receipt does not imply that validation reasoning was omitted from
+the Revision.
