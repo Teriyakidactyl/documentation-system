@@ -33,6 +33,10 @@ class CompileResult:
 
 
 def compile_corpus(root: Path) -> CompileResult:
+    root = root.resolve()
+    # Establish the corpus-root declaration and validate the modeled corpus
+    # before any compiler-owned mutation occurs.
+    build_corpus(root)
     clear_inline_annotations(root)
     minted = ensure_uids(root)
     corpus = build_corpus(root)
