@@ -15,7 +15,7 @@ from .model import (
     ensure_uids,
     heading_target,
     parse_address,
-    repo_path,
+    corpus_path,
 )
 
 
@@ -60,8 +60,8 @@ def resolve_address(root: Path, address: str) -> dict:
             "address": address,
             "corpus_root": str(corpus.root),
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
-            "path": repo_path(root, artifact.path),
-            "parent_index": repo_path(root, parent) if parent else None,
+            "path": corpus_path(root, artifact.path),
+            "parent_index": corpus_path(root, parent) if parent else None,
             "location_ordinal": artifact.ordinal,
             "uid": artifact.uid,
             "title": artifact.title,
@@ -84,7 +84,7 @@ def resolve_address(root: Path, address: str) -> dict:
             "address": address,
             "corpus_root": str(corpus.root),
             "type": "location",
-            "path": repo_path(root, location_path) + "/",
+            "path": corpus_path(root, location_path) + "/",
             "index": None,
             "body": None,
         }
