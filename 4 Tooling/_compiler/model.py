@@ -417,8 +417,7 @@ def add_uid_to_metadata(path: Path, uid: str) -> None:
         raise CompilerError(f"{path}: cannot find Python module docstring")
 
     token = None
-    for candidate in tokenize.generate_tokens(io
-.StringIO(source).readline):
+    for candidate in tokenize.generate_tokens(io.StringIO(source).readline):
         if candidate.type == tokenize.STRING and candidate.start[0] == first.value.lineno:
             token = candidate
             break
