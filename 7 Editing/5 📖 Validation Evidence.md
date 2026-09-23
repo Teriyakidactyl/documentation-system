@@ -1,4 +1,5 @@
 ---
+uid: 5SK5Z4
 description: >-
   `Consult when` *validation evidence may need to survive the validating task,
   be reused by an amnesiac agent, or be combined with reproducible checks* `to`
