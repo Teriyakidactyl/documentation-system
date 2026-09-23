@@ -165,9 +165,9 @@ def _scan_markdown(
 
 def validate_address_references(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    root_name = corpus_root_name(corpus.root)
-    for path in sorted(walk_files(corpus.root), key=lambda p: corpus_path(corpus.root, p).casefold()):
-        rel = path.resolve().relative_to(corpus.root.resolve())
+    root_name = corpus_root_name(corpus.corpus_root)
+    for path in sorted(walk_files(corpus.corpus_root), key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
+        rel = path.resolve().relative_to(corpus.corpus_root.resolve())
         if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
             continue
         if path.suffix.lower() == ".md":
@@ -183,7 +183,7 @@ def validate_address_references(corpus: Corpus) -> list[Diagnostic]:
 def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     by_uid = artifact_by_uid(corpus)
-    for artifact in sorted(corpus.artifacts.values(), key=lambda a: corpus_path(corpus.root, a.path).casefold()):
+    for artifact in sorted(corpus.artifacts.values(), key=lambda a: corpus_path(corpus.corpus_root, a.path).casefold()):
         prompt_uid = artifact.metadata.get("research-prompt")
         if prompt_uid is None:
             continue
@@ -210,7 +210,7 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
                 )
             )
         else:
-            rel = prompt.path.resolve().relative_to(corpus.root.resolve())
+            rel = prompt.path.resolve().relative_to(corpus.corpus_root.resolve())
             if ".research" not in rel.parts[:-1] or prompt.path.name != "Prompt.md":
                 diagnostics.append(
                     Diagnostic(
