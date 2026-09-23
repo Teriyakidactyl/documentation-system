@@ -91,6 +91,10 @@ def _scan_markdown(
     base_line: int = 1,
 ) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
+    rooted_address_re = re.compile(
+        rf"(?P<prefix>^|[^A-Za-z0-9_-])"
+        rf"(?P<address>{re.escape(corpus_root)}:§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?)"
+    )
     in_fence = False
     fence_token: str | None = None
     in_comment = False
@@ -127,12 +131,8 @@ def _scan_markdown(
         line = CONTROL_LINK_RE.sub(lambda m: " " * len(m.group(0)), line)
         line = _strip_inline_code(line)
 
-        rooted_address_re = re.compile(
-            rf"(?<![^\s(\[])"
-            rf"{re.escape(corpus_root)}:§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
-        )
         for match in rooted_address_re.finditer(line):
-            address = match.group(0)
+            address = match.group("address")
             diagnostics.append(
                 Diagnostic(
                     code="DS001",
