@@ -65,7 +65,7 @@ class HeadingTarget:
 
 @dataclass(frozen=True)
 class Corpus:
-    root: Path
+    corpus_root: Path
     artifacts: dict[Path, Artifact]
     locations: dict[str, Path]
     origin: Path
@@ -559,7 +559,7 @@ def build_corpus(root: Path) -> Corpus:
     locations = location_addresses(root)
     origin, owners, immediate, parents = derive_index(root, artifacts)
     return Corpus(
-        root=root,
+        corpus_root=root,
         artifacts=artifacts,
         locations=locations,
         origin=origin,
@@ -580,9 +580,9 @@ def artifact_by_uid(corpus: Corpus) -> dict[str, Artifact]:
 def render_address(corpus: Corpus, artifact: Artifact, section: str | None = None) -> str:
     if artifact.location is None:
         raise CompilerError(
-            f"{corpus_path(corpus.root, artifact.path)}: uid {artifact.uid} has no addressable location"
+            f"{corpus_path(corpus.corpus_root, artifact.path)}: uid {artifact.uid} has no addressable location"
         )
-    address = f"{corpus_root_name(corpus.root)}:{artifact.location}"
+    address = f"{corpus_root_name(corpus.corpus_root)}:{artifact.location}"
     if section is not None:
         address += f"#{section}"
     return address
