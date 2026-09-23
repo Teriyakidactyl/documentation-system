@@ -1,4 +1,5 @@
 ---
+uid: M8MDHY
 description: >-
   `Consult when` *a software design decision admits several plausible
   implementations or an existing implementation boundary is being materially

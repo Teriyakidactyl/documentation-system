@@ -34,4 +34,6 @@ A qualifier such as `documentation-system:` names the address space.
   - `Consult when` *the Documentation System needs compilation, address resolution, or harness projection* `to` **select the tool that performs the required control operation**.
 - <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
   - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **select the organizing concept that resolves conceptual structure before domain-specific rules are applied**.
+- <a href="6%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY">documentation-system:§6</a> — 📖 Software Design Principles
+  - `Consult when` *a software design decision admits several plausible implementations or an existing implementation boundary is being materially changed* `to` **apply the Documentation System's canonical defaults for concepts, ownership, classes, modules, validation, and projections without reopening equivalent alternatives**.
 <!-- END index -->
