@@ -84,9 +84,19 @@ The pre-edit validation record is the detection artifact for the revision. It
 separates observed faults from assumptions about where changes will be needed
 and records material already checked clean.
 
-Do not begin mutation until the required validation lenses have been run. A
-search result, edit plan, or list of obvious lexical matches is not a substitute
-for current-state validation.
+Current durable validation evidence may supply checked-clean coverage only when
+its subject state, scope, and governing frame match this revision's frozen
+frame. A stale receipt or a receipt produced against a different change frame
+is historical evidence, not a substitute for revision-specific validation.
+
+When the pre-edit validation record is selected for durable preservation,
+persist its findings and clean coverage against the pre-edit subject state
+before the first mutation. A later repair must not rewrite the receipt that
+established the original fault.
+
+Do not begin mutation until the required validation lenses have current
+evidence. A search result, edit plan, list of obvious lexical matches, or
+mismatched prior receipt is not a substitute for current-state validation.
 
 ## 3. Map the implications
 
@@ -142,7 +152,9 @@ Record each changed unit and the criterion that required it.
 Apply
 <a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
 again against the frozen frame after mutation. Do not treat the edit log as
-evidence that the result is correct.
+evidence that the result is correct. Prior receipts from the pre-edit state are
+stale for claims affected by the revision unless their validation basis remains
+unchanged and the governing criterion still applies exactly.
 
 Re-scan changed units and inspect the artifact for edit-induced faults:
 
