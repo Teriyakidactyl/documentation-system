@@ -86,7 +86,7 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual(str(parent.resolve()), parent_resolution["corpus_root"])
         self.assertEqual(str(nested.resolve()), nested_resolution["corpus_root"])
 
-    def test_location_without_corpus_root_is_not_an_address(self) -> None:
+    def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
 
         with self.assertRaisesRegex(CompilerError, "must declare the corpus root"):
@@ -122,7 +122,7 @@ class CorpusRootTests(unittest.TestCase):
 
         self.assertIn("DS001", {diagnostic.code for diagnostic in result.diagnostics})
 
-    def test_reader_visible_location_without_corpus_root_is_reported(self) -> None:
+    def test_reader_visible_bare_corpus_root_address_is_reported(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See §1.\n"))
@@ -130,6 +130,13 @@ class CorpusRootTests(unittest.TestCase):
         result = compile_corpus(root)
 
         self.assertIn("DS004", {diagnostic.code for diagnostic in result.diagnostics})
+        self.assertTrue(
+            any(
+                "Bare corpus-root address §1 is invalid and unresolvable"
+                in diagnostic.message
+                for diagnostic in result.diagnostics
+            )
+        )
 
     def test_invalid_corpus_root_name_fails_before_uid_minting(self) -> None:
         root = self.make_corpus("bad:root", origin_uid=None)
