@@ -94,11 +94,12 @@ information out of the ordinary filesystem. A routing or folder convention is
 preferred when it preserves human ergonomics and still gives agents an
 unambiguous access condition.
 
-Dot-prefixed directories are one existing explicit-retrieval mechanism in this
-corpus; their access behavior is defined by
+Reserved directory conventions can provide explicit retrieval independently of
+authority. Their corpus participation and access behavior are defined by
 <a href="2%20%F0%9F%93%96%20Folder%20Conventions.md" uid="TRJS8V">documentation-system:§1.2</a>.
-That convention applies when its explicit-only retrieval rule is the intended
-policy.
+In particular, `.research` is a controlled sideband: its metadata-bearing
+artifacts retain UID identity and compiler validation while remaining outside
+normal address and index navigation.
 
 ## 4. Storage methods
 
@@ -147,13 +148,15 @@ Absent a concrete failure, the ordinary representation remains the default.
 ### 6.1 Research
 
 Substantial research material is naturally browsed by investigation or topic.
-Source records, notes, intermediate analysis, and other retained research
-therefore fit ordinary files unless another constraint selects different
-storage.
+Repeatable research uses ordinary files grouped by investigation. When those
+retained prompts and run outputs should remain controlled without competing
+with current authority during normal agent retrieval, the reserved
+`.research` sideband supplies that policy while preserving ordinary human file
+navigation.
 
-When research should not enter normal agent retrieval, a reserved sideband
-directory can provide explicit-only access without sacrificing ordinary human
-file navigation.
+A repeatable investigation keeps one prompt and separate run reports together.
+The canonical source arrangements for those artifacts are owned by the Research
+Document Forms under Technical Writing.
 
 Conclusions required for current action belong in the controlled information
 that owns the subject. Current policy should not require reconstruction from
