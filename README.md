@@ -1,5 +1,6 @@
 ---
 uid: 6E9QHP
+address-space: documentation-system
 form: '<a href="2%20Technical%20Writing/3%20Document/1%20Document%20Forms/10%20%F0%9F%93%96%20Origin.md" uid="DNFDSK">documentation-system:§2.3.1.10</a>'
 description: >-
   `Consult when` *repository work reaches a documentation, documented-information,
