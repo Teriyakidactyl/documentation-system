@@ -43,8 +43,13 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 
 When `corpus_root` is omitted, the compiler uses the root of the Git repository
 containing this tool. An explicit `corpus_root` overrides that default. The
-compiler uses `documentation-system` as this corpus's logical address-space
-name; the qualifier is independent of the repository's physical path.
+selected corpus's Origin declares its logical `address-space`; the qualifier is
+independent of the repository's physical path.
+
+If the Origin declares `corpus-dependencies`, compilation may read those
+foreign corpora to resolve qualified controlled links. Dependency corpora are
+read-only inputs: this invocation mints UIDs, compiles indexes, rewrites source,
+and projects diagnostics only beneath the selected local `corpus_root`.
 
 A successful run refreshes deterministic projections and controlled links,
 then evaluates structured diagnostics. Errors make the run fail; warnings and
@@ -76,7 +81,9 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-syst
 ```
 
 Resolution returns JSON for the addressed document, location, or numbered
-section without compiling derived state.
+section without compiling derived state. A foreign-qualified address resolves
+only when its address space is declared under the selected Origin's
+`corpus-dependencies`; the dependency is read without mutation.
 
 ## 4. Preserve the architecture boundary
 
