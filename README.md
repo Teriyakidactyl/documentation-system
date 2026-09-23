@@ -10,8 +10,8 @@ description: >-
 
 # Documentation System Origin
 
-Addresses are relative to the address-space root: the corpus root folder
-containing `SKILL.md`. `documentation-system:§2.3.1` means start at that
+Addresses are relative to the corpus root: the filesystem directory containing
+`SKILL.md` that roots this address space. `documentation-system:§2.3.1` means start at that
 root, then descend through ordinal 2, child 3, and artifact 1; `#4.2` selects
 numbered heading 4.2 inside the resolved artifact. The
 `documentation-system:` qualifier identifies which corpus root supplies that

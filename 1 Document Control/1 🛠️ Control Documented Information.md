@@ -49,7 +49,7 @@ address space
 | Term | Meaning |
 |---|---|
 | **address space** | A stable logical namespace for one controlled corpus. When `SKILL.md` is present, its `name` is the address-space name; mounting the corpus beneath another repository does not change addresses inside it. |
-| **corpus root** | The filesystem root of one address space. An explicit path selects it; the bundled Documentation Compiler otherwise discovers the nearest ancestor containing `SKILL.md`. |
+| **corpus root** | The filesystem directory that roots one address space. It contains `SKILL.md`; every `§` location path in that address space is derived relative to this directory. An explicit path may select it; otherwise the Documentation Compiler discovers the nearest ancestor directory containing `SKILL.md`. |
 | **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
 | **indexed artifact** | A file whose supported metadata surface contains a `uid` and `description`. Its filesystem position supplies classification; metadata supplies durable identity and semantic routing. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one indexed artifact. It survives moves and renames; duplicate UIDs are invalid. |
@@ -78,7 +78,7 @@ not need a companion Markdown document merely to participate in control. Add a
 new source format by adding a metadata adapter; do not change the address model
 for each file type.
 
-Do not infer that every file under the crawler root is controlled information.
+Do not infer that every file under the corpus root is controlled information.
 Presence establishes physical location; recognizable metadata establishes
 index participation.
 
