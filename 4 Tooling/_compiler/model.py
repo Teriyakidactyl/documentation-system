@@ -19,6 +19,7 @@ from pathlib import Path
 import yaml
 
 IGNORED_DIRS = {"__pycache__"}
+CONTROLLED_SIDEBAND_DIRS = {".research"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
 ADDRESS_RE = re.compile(
@@ -203,6 +204,8 @@ def ordinal_from_name(name: str) -> str | None:
 
 def address_components(root: Path, path: Path) -> list[str]:
     rel = path.resolve().relative_to(root.resolve())
+    if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
+        return []
     components: list[str] = []
     for part in rel.parts[:-1]:
         ordinal = ordinal_from_name(part)
@@ -286,7 +289,11 @@ def parse_address(address: str, address_space: str) -> tuple[str, str | None]:
 
 
 def ignored_directory_name(name: str) -> bool:
-    return name.startswith(".") or name in IGNORED_DIRS or name.startswith("old_")
+    return (
+        (name.startswith(".") and name not in CONTROLLED_SIDEBAND_DIRS)
+        or name in IGNORED_DIRS
+        or name.startswith("old_")
+    )
 
 
 def ignored_path(path: Path, root: Path) -> bool:
@@ -442,6 +449,8 @@ def location_addresses(root: Path) -> dict[str, Path]:
         if current_path == root.resolve() or ordinal_from_name(current_path.name) is None:
             continue
         rel = current_path.relative_to(root.resolve())
+        if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts):
+            continue
         ordinals = [ordinal_from_name(part) for part in rel.parts]
         ordinals = [part for part in ordinals if part is not None]
         if not ordinals:
