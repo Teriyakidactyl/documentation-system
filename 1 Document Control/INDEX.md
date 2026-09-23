@@ -11,8 +11,14 @@ description: >-
 # Document Control
 
 This location collects the repository-agnostic rules for classifying,
-addressing, indexing, projecting, linking, and validating documented
+addressing, indexing, projecting, linking, validating, and storing documented
 information.
+
+**Human access environment.** Human maintainers primarily interact with
+repository information through Visual Studio Code. Document Control therefore
+treats ordinary filesystem navigation, search, editing, diff, and source-control
+review as baseline human capabilities when evaluating information organization
+and storage mechanisms.
 
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
