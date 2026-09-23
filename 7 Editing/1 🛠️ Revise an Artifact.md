@@ -89,6 +89,11 @@ its subject state, scope, and governing frame match this revision's frozen
 frame. A stale receipt or a receipt produced against a different change frame
 is historical evidence, not a substitute for revision-specific validation.
 
+When the pre-edit validation record is selected for durable preservation,
+persist its findings and clean coverage against the pre-edit subject state
+before the first mutation. A later repair must not rewrite the receipt that
+established the original fault.
+
 Do not begin mutation until the required validation lenses have current
 evidence. A search result, edit plan, list of obvious lexical matches, or
 mismatched prior receipt is not a substitute for current-state validation.
