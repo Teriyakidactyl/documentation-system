@@ -44,7 +44,7 @@ description
 | **metamatter** | Structured YAML data inside an HTML comment whose first non-whitespace content is a data key (`key:`). Position supplies its scope; the key supplies its meaning. |
 | **ordinary HTML comment** | An HTML comment whose first non-whitespace content is not a YAML data key. It carries freeform maintenance or tool-control information, not structured metamatter or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
-| **form** | An optional file-level controlled link from a derived document to the Document Form governing its recurring repository role. |
+| **form** | An optional file-level controlled link from a derived document to the Document Form governing its recurring document role. |
 | **element** | A position-scoped controlled link in metamatter from a reusable document section to the Document Element governing its source structure. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
