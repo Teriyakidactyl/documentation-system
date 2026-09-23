@@ -17,9 +17,10 @@ from .model import (
     Corpus,
     artifact_by_uid,
     heading_target,
-    qualified_address,
+    parse_address,
     read_text,
-    repo_path,
+    render_address,
+    corpus_path,
     source_offset,
     walk_files,
 )
@@ -32,27 +33,22 @@ CONTROL_LINK_RE = re.compile(
 
 def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
     if not UID_RE.fullmatch(uid):
-        raise CompilerError(f"{repo_path(corpus.root, owner)}: invalid controlled-link uid {uid!r}")
+        raise CompilerError(f"{corpus_path(corpus.root, owner)}: invalid controlled-link uid {uid!r}")
     artifact = artifact_by_uid(corpus).get(uid)
     if artifact is None:
-        raise CompilerError(f"{repo_path(corpus.root, owner)}: controlled link names missing uid {uid}")
+        raise CompilerError(f"{corpus_path(corpus.root, owner)}: controlled link names missing uid {uid}")
     match = ADDRESS_RE.fullmatch(label.strip())
     if match is None:
         raise CompilerError(
-            f"{repo_path(corpus.root, owner)}: controlled link uid {uid} must display a documentation address"
+            f"{corpus_path(corpus.root, owner)}: controlled link uid {uid} must display "
+            "a rooted documentation address"
         )
-    qualifier = match.group("space")
-    if qualifier is not None and qualifier != corpus.address_space:
-        raise CompilerError(
-            f"{repo_path(corpus.root, owner)}: controlled link uid {uid} names address space "
-            f"{qualifier!r}, not {corpus.address_space!r}"
-        )
-    section = match.group("section")
+    _, section = parse_address(label.strip(), corpus.root)
     heading = heading_target(artifact.body, section, artifact.path) if section else None
     href = relative_link(owner, artifact.path)
     if heading is not None:
         href += "#" + quote(heading.anchor, safe="-._~")
-    return f'<a href="{href}" uid="{uid}">{qualified_address(corpus, artifact, section)}</a>'
+    return f'<a href="{href}" uid="{uid}">{render_address(corpus, artifact, section)}</a>'
 
 
 def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, int]:
@@ -160,7 +156,7 @@ def rewrite_python(path: Path, corpus: Corpus) -> int:
 
 def rewrite_control_links(corpus: Corpus) -> int:
     changed = 0
-    for path in sorted(walk_files(corpus.root), key=lambda p: repo_path(corpus.root, p).casefold()):
+    for path in sorted(walk_files(corpus.root), key=lambda p: corpus_path(corpus.root, p).casefold()):
         suffix = path.suffix.lower()
         if suffix == ".md":
             changed += rewrite_markdown(path, corpus)
