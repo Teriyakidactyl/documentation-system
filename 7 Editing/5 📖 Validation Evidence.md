@@ -83,7 +83,41 @@ Do not persist a receipt merely because a validator exists. Durability is
 selected by the cost or loss of reconstruction, not by symmetry between
 producers.
 
-## 3. Bind receipts to exact basis
+## 3. Preserve pre-fix evidence before mutation
+
+When a validation finding will trigger a repair and that validation evidence is
+selected for durability, persist the finding against the pre-fix subject state
+before the repair changes that state.
+
+This preserves the distinction among:
+
+```text
+pre-existing fault
+→ observed before mutation
+
+repair
+→ authorized mutation
+
+post-edit finding
+→ residual or edit-induced fault observed after mutation
+```
+
+Do not let the corrective edit become the only surviving evidence that a fault
+was ever observed. The pre-fix receipt remains historical evidence bound to the
+state that contained the fault; the post-edit validation establishes whether
+the resulting state is clean, still faulty, or uncertain.
+
+A revision may contain both receipts in one review or delivery workflow, but
+they remain separate validation events with separate subject states. Never
+rewrite a pre-fix receipt to describe the repaired state.
+
+A repository-wide baseline sweep follows the same rule. Establish authored
+receipts only for lenses and scopes actually examined. Record findings before
+their fixes land, then let subsequent validation produce receipts for the
+corrected states. Do not manufacture a clean baseline by fixing first and
+retrospectively claiming that the original state was examined clean.
+
+## 4. Bind receipts to exact basis
 
 A receipt never means only "this artifact was validated." Bind every durable
 claim to the state that was actually examined.
@@ -113,7 +147,7 @@ The basis must contain enough identity to evaluate those conditions
 mechanically. Storage-specific object identifiers are implementation facts,
 not replacements for the controlled artifact's `uid`.
 
-## 4. Preserve typed coverage
+## 5. Preserve typed coverage
 
 A durable authored receipt preserves the semantic distinctions of the
 validation record instead of reducing them to one Boolean.
@@ -157,7 +191,7 @@ A tool receipt, when durability is selected, identifies the deterministic
 validator, its applicable version or rule set, and the inputs required to
 reproduce the result.
 
-## 5. Validate receipts before storage
+## 6. Validate receipts before storage
 
 Treat the receipt representation as structured data. Validate its schema and
 cross-field invariants before persistence so minor authoring errors do not
@@ -178,7 +212,7 @@ Schema validity proves that the receipt is structurally admissible. It does not
 prove that an authored observation is true. Validation procedure, evidence, and
 coverage remain the authority for the underlying claim.
 
-## 6. Derive status rather than storing it as document truth
+## 7. Derive status rather than storing it as document truth
 
 Validation status is a projection over current evidence:
 
@@ -209,7 +243,7 @@ unevaluated. Likewise, a clean compiler or lint result does not imply semantic
 review occurred, and an authored semantic review does not substitute for a
 mechanical invariant that can be checked deterministically.
 
-## 7. Keep receipts outside the validated artifact
+## 8. Keep receipts outside the validated artifact
 
 Validation remains observational. Recording that validation occurred does not
 mutate the validated subject merely to record its status.
@@ -229,7 +263,7 @@ interface. The selected storage mechanism may use repository version-control
 facilities, but agents and guidance reason in terms of records, receipts, basis,
 and status rather than storage commands.
 
-## 8. Use current evidence before claiming conformance
+## 9. Use current evidence before claiming conformance
 
 Before asserting that an artifact satisfies a governing specification, norm,
 accepted change, or declared commitment, determine which validation lenses and
