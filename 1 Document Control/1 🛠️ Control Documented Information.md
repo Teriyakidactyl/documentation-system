@@ -53,7 +53,7 @@ corpus root
 
 | Term | Meaning |
 |---|---|
-| **corpus root** | The declared filesystem directory against which a Documentation Compiler operation and its addresses are resolved. The compiler declaration is a filesystem path; when omitted, it defaults to the Git repository root containing the compiler. In every documentation address, the corpus root is declared again by that selected directory's name before `:`; omission is a syntax error. |
+| **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. A compiler job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing the compiler. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
 | **corpus** | The controlled artifacts and locations discovered beneath the selected corpus root for the current operation. |
 | **origin** | The root reader-facing entry point of a corpus, represented by `README.md` at the selected corpus root. It contributes no location ordinal. |
 | **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
@@ -77,12 +77,19 @@ compiler selects the root of the Git repository containing the compiler. The
 declaration is operational state; do not store a second corpus-root name in
 artifact metadata.
 
-The selected directory itself is the corpus root. Its directory name is the
-required corpus-root declaration at the start of every documentation address.
-Changing only the root's ancestor path does not change addresses. Renaming the
-corpus-root directory changes the corpus-root declaration and therefore every
-address in that corpus. A corpus-root directory name containing `:` cannot be
-represented by the address grammar and is invalid for compilation.
+For that compiler job, the selected directory **serves as** the corpus root.
+The role belongs to the declaration and job, not permanently to the directory;
+the same directory may be a corpus root in one job and an ordinary descendant
+or unrelated path in another.
+
+An address makes its own corpus-root declaration: the directory name before
+`:` designates which directory serves as the root for that address. When the
+compiler resolves an address, that declared name must match the directory
+selected as the corpus root for the current job. Changing only that directory's
+ancestor path does not change addresses that declare it. Renaming the directory
+changes the root declaration in addresses that use it. A directory name
+containing `:` cannot be represented by the address grammar and cannot serve as
+a corpus root for compilation or addressing.
 
 A file becomes a controlled artifact only when it is on a compiler-traversed
 path beneath the selected corpus root and the compiler recognizes its metadata
@@ -192,11 +199,11 @@ internal outline.
 
 An address is a current coordinate. Moving an addressed item within the corpus
 changes its location portion, and a former coordinate may later identify
-different information. Moving the corpus-root directory to another parent
-without renaming it leaves addresses unchanged because the declaration uses the
-root directory's name, not its ancestor path. Renaming the corpus root changes
-the root declaration in every address. The UID does not change when an artifact
-moves.
+different information. Moving a directory that an address declares as its
+corpus root to another parent without renaming it leaves that address unchanged
+because the declaration uses the directory's name, not its ancestor path.
+Renaming that directory changes the corpus-root declaration in addresses that
+use it. The UID does not change when an artifact moves.
 
 Use a controlled HTML anchor when the reference must survive a move or rename:
 
