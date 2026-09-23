@@ -49,8 +49,8 @@ canonical tool and concept name.
 ### 2.1 Corpus model
 
 `model.py` owns metadata adapters, normalized `Artifact`, `HeadingTarget`,
-and `Corpus` values, UID identity, address derivation, filesystem discovery,
-and corpus construction.
+and `Corpus` values, UID identity, the compiler-owned address-space name,
+address derivation, Git repository root discovery, and corpus construction.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.

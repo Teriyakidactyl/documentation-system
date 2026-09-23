@@ -48,8 +48,8 @@ address space
 
 | Term | Meaning |
 |---|---|
-| **address space** | A stable logical namespace for one controlled corpus. When `SKILL.md` is present, its `name` is the address-space name; mounting the corpus beneath another repository does not change addresses inside it. |
-| **corpus root** | The filesystem directory that roots one address space. It contains `SKILL.md`; every `§` location path in that address space is derived relative to this directory. An explicit path may select it; otherwise the Documentation Compiler discovers the nearest ancestor directory containing `SKILL.md`. |
+| **address space** | A stable logical namespace for one controlled corpus. Its name qualifies addresses independently of the corpus root's physical path or mount location. |
+| **corpus root** | The filesystem directory selected as the root of one controlled corpus and the relative origin of its address tree. Every `§` location path is derived from numbered descendants beneath this directory; filesystem ancestors do not contribute to the address. |
 | **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
 | **indexed artifact** | A file whose supported metadata surface contains a `uid` and `description`. Its filesystem position supplies classification; metadata supplies durable identity and semantic routing. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one indexed artifact. It survives moves and renames; duplicate UIDs are invalid. |
@@ -176,8 +176,10 @@ The `uid` identifies the document; the optional `#` in the displayed address
 selects a numbered heading within it. On every pass the compiler finds the
 current document by UID, derives its current fully qualified address, validates
 the section when present, and rewrites both `href` and the displayed address.
-The address-space qualifier therefore names the intended corpus root even
-after that root is mounted elsewhere. Ordinary Markdown links are not touched.
+The address-space qualifier names the logical namespace; it does not encode the
+corpus root's physical path. Moving or mounting the whole corpus elsewhere does
+not change its qualifier or its internal coordinates. Ordinary Markdown links
+are not touched.
 If the UID is missing or duplicated, or the selected heading no longer exists,
 the compiler fails rather than guessing.
 
@@ -260,10 +262,9 @@ changed:
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-When the root is omitted, the compiler finds the nearest ancestor
-containing `SKILL.md`. It validates duplicate sibling ordinals, duplicate
-addresses and UIDs, missing descriptions, malformed generated regions, and
-controlled links before it writes indexes.
+The compiler validates duplicate sibling ordinals, duplicate addresses and
+UIDs, missing descriptions, malformed generated regions, and controlled links
+before it writes indexes.
 
 Resolve an address without writing anything:
 

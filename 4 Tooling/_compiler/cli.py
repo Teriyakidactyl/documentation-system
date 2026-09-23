@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .diagnostics import annotate, emit, write_json
 from .engine import compile_corpus, resolve_address
-from .model import CompilerError, find_corpus_root
+from .model import CompilerError, find_repository_root
 
 
 def usage(script: Path) -> str:
@@ -47,7 +47,7 @@ def run(script: Path, argv: list[str]) -> int:
             index += 1
     if len(positional) > 1:
         raise CompilerError(usage(script))
-    root = Path(positional[0]).resolve() if positional else find_corpus_root(script)
+    root = Path(positional[0]).resolve() if positional else find_repository_root(script)
 
     if resolve is not None:
         print(json.dumps(resolve_address(root, resolve), indent=2, ensure_ascii=False))

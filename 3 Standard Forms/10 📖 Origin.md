@@ -22,12 +22,12 @@ writing-style:
 
 # 📖 Origin
 
-Addresses are relative to the corpus root: the filesystem directory containing
-`SKILL.md` that roots this address space. `documentation-system:§2.3.1` means start at that
-root, then descend through ordinal 2, child 3, and artifact 1; `#4.2` selects
-numbered heading 4.2 inside the resolved artifact. The
-`documentation-system:` qualifier identifies which corpus root supplies that
-relative tree.
+Addresses are relative to the corpus root, the filesystem directory at the top
+of this controlled corpus. `documentation-system:§2.3.1` means start at that
+directory, then descend through ordinal 2, child 3, and artifact 1; `#4.2`
+selects numbered heading 4.2 inside the resolved artifact. The
+`documentation-system:` qualifier names the logical address space independently
+of the corpus root's physical path.
 
 > [!IMPORTANT]
 > Start here. A task may present several independent concerns; route each one
@@ -39,10 +39,10 @@ relative tree.
 <!--
 The address paragraph and callout above are the standard reader-facing entry
 contract for an Origin. Keep the address explanation compact: establish the
-corpus root as the filesystem directory containing `SKILL.md` and the relative
-root of the address tree, teach decimal path descent,
-the optional heading suffix, and qualification of that root, then leave UID,
-move, resolution, and compiler mechanics to Document Control.
+corpus root as the filesystem directory that is the relative origin of the
+address tree, teach decimal path descent and the optional heading suffix, and
+distinguish the logical address-space qualifier from the root's physical path.
+Leave UID, move, resolution, and compiler mechanics to Document Control.
 
 Keep the navigation behavior intact when adapting wording to a corpus:
 
