@@ -30,8 +30,9 @@ documentation address separately declares its corpus root by directory name
 before `:`, and that declaration is required. Thus
 `documentation-system:§2.3.2.1` declares this directory as the corpus root for
 that address, then descends through ordinal 2, child 3, child 2, and artifact 1;
-`#4.2` selects numbered heading 4.2 inside the resolved artifact. `§2.3.2.1` without a corpus-root declaration is location notation, not a
-valid documentation address.
+`#4.2` selects numbered heading 4.2 inside the resolved artifact. A bare form
+such as `§2.3.2.1` omits the required corpus-root declaration, is invalid
+address syntax, and is unresolvable.
 
 > [!IMPORTANT]
 > Start here. A task may present several independent concerns; route each one
@@ -48,9 +49,10 @@ State that a compiler job declares the role by filesystem path, with the
 Git-repository-root default when the path argument is omitted, and that a
 documentation address separately declares the role by directory name before
 `:`. Teach
-decimal location descent and the optional heading suffix. Make clear that
-`§...` notation without a corpus-root declaration is not an address. Leave UID, move, and detailed
-compiler mechanics to Document Control.
+decimal location descent and the optional heading suffix. Make clear that a
+bare form such as `§2.1` is an invalid, unresolvable address because it omits
+the required corpus-root declaration. Leave UID, move, and detailed compiler
+mechanics to Document Control.
 
 Keep the navigation behavior intact when adapting wording to a corpus:
 
