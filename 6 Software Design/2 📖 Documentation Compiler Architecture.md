@@ -58,7 +58,8 @@ compiler job as its `root` fact. That fact is job-local runtime state, not a
 permanent designation of the filesystem directory. Address rendering declares
 the same role in address syntax by using the selected directory's name before
 `:`; the `§` location is derived from descendants relative to that directory.
-Do not carry a persistent or second root-identity fact beside `Corpus.root`.
+Do not carry a persistent or second corpus-root fact beside the job-local
+corpus-root declaration.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -107,7 +108,7 @@ job; when omitted, the CLI declares the Git repository root containing the
 compiler.
 
 The command line orchestrates compiler behavior; it does not invent a second
-root-identity setting.
+corpus-root setting.
 
 ## 3. Compilation pipeline
 
@@ -171,9 +172,9 @@ presenters -> Diagnostic
 
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
-single artifact legitimately owns them. Derive rooted addresses from
-`Corpus.root`; do not introduce another authored or computed root-identity
-source of truth.
+single artifact legitimately owns them. Derive rooted addresses from the
+job-local corpus-root declaration; do not introduce another authored or
+computed corpus-root source of truth.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
