@@ -63,8 +63,9 @@ Keep the navigation behavior intact when adapting wording to a corpus:
 
 The Origin is `README.md` at the selected corpus root. Give it a
 corpus-specific H1 and a description that routes a reader into the corpus. Do
-not add a second authored corpus-root or namespace field: the compiler operation
-declares the root by path, and addresses declare it by that directory's name.
+do not add a second authored root-identity field: the compiler operation
+declares the corpus root by path, and addresses declare that same root by the
+selected directory's name.
 The derived README.md carries a `form` controlled link in frontmatter back to
 this artifact. Place the compiler-owned immediate-child index after the
 reader-facing navigation contract.
