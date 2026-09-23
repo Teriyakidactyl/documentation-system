@@ -23,7 +23,7 @@ CONTROLLED_SIDEBAND_DIRS = {".research"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
 ADDRESS_RE = re.compile(
-    r"^(?:(?P<space>[a-z0-9][a-z0-9-]*):)?"
+    r"^(?P<root>[^:\r\n]+):"
     r"(?P<location>§[0-9]+(?:\.[0-9]+)*)"
     r"(?:#(?P<section>[0-9]+(?:\.[0-9]+)*))?$"
 )
@@ -33,7 +33,6 @@ NUMBERED_HEADING_RE = re.compile(
     r"^(?P<marks>#{2,6})\s+(?P<number>[0-9]+(?:\.[0-9]+)*)"
     r"(?P<trailing>\.)?\s+(?P<title>.+?)\s*$"
 )
-ADDRESS_SPACE = "documentation-system"
 
 
 class CompilerError(RuntimeError):
@@ -48,7 +47,7 @@ class Artifact:
     body: str
     title: str
     description: str
-    address: str | None
+    location: str | None
     ordinal: str | None
     uid: str | None
 
@@ -67,7 +66,6 @@ class HeadingTarget:
 @dataclass(frozen=True)
 class Corpus:
     root: Path
-    address_space: str
     artifacts: dict[Path, Artifact]
     locations: dict[str, Path]
     origin: Path
@@ -83,8 +81,19 @@ def read_text(path: Path) -> str:
         raise CompilerError(f"Can't read {path}: {exc}") from exc
 
 
-def repo_path(root: Path, path: Path) -> str:
+def corpus_path(root: Path, path: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
+
+
+def corpus_root_name(root: Path) -> str:
+    name = root.resolve().name
+    if not name:
+        raise CompilerError(f"Corpus root has no directory name: {root}")
+    if ":" in name or "\r" in name or "\n" in name:
+        raise CompilerError(
+            f"Corpus root directory name {name!r} cannot be represented in a documentation address"
+        )
+    return name
 
 
 def find_repository_root(script: Path) -> Path:
@@ -202,7 +211,7 @@ def ordinal_from_name(name: str) -> str | None:
     return match.group(1) if match else None
 
 
-def address_components(root: Path, path: Path) -> list[str]:
+def location_components(root: Path, path: Path) -> list[str]:
     rel = path.resolve().relative_to(root.resolve())
     if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
         return []
@@ -218,8 +227,8 @@ def address_components(root: Path, path: Path) -> list[str]:
     return components
 
 
-def address_for(root: Path, path: Path) -> str | None:
-    components = address_components(root, path)
+def location_for(root: Path, path: Path) -> str | None:
+    components = location_components(root, path)
     return "§" + ".".join(components) if components else None
 
 
@@ -275,15 +284,19 @@ def heading_target(body: str, number: str, owner: Path) -> HeadingTarget:
     return matches[0]
 
 
-def parse_address(address: str, address_space: str) -> tuple[str, str | None]:
+def parse_address(address: str, corpus_root: Path) -> tuple[str, str | None]:
     match = ADDRESS_RE.fullmatch(address)
     if not match:
-        raise CompilerError(f"Invalid address: {address!r}")
-    qualifier = match.group("space")
-    if qualifier is not None and qualifier != address_space:
-        expected = address_space or "<unqualified corpus>"
         raise CompilerError(
-            f"Address {address!r} names address space {qualifier!r}; current space is {expected!r}"
+            f"Invalid documentation address {address!r}; addresses must declare the corpus root "
+            "before ':'"
+        )
+    declared_root = match.group("root")
+    expected_root = corpus_root_name(corpus_root)
+    if declared_root != expected_root:
+        raise CompilerError(
+            f"Address {address!r} declares corpus root {declared_root!r}; "
+            f"current corpus root is {expected_root!r}"
         )
     return match.group("location"), match.group("section")
 
@@ -321,27 +334,27 @@ def walk_files(root: Path):
 
 def load_artifacts(root: Path) -> dict[Path, Artifact]:
     artifacts: dict[Path, Artifact] = {}
-    addresses: dict[str, Path] = {}
+    artifact_locations: dict[str, Path] = {}
     uids: dict[str, Path] = {}
-    for path in sorted(walk_files(root), key=lambda p: repo_path(root, p).casefold()):
+    for path in sorted(walk_files(root), key=lambda p: corpus_path(root, p).casefold()):
         if path.suffix.lower() not in SUPPORTED_SUFFIXES:
             continue
         extracted = extract_metadata(path)
         if extracted is None:
             continue
         metadata, body, title = extracted
-        address = address_for(root, path)
+        location = location_for(root, path)
         ordinal = None if path.name == "INDEX.md" else ordinal_from_name(path.name)
         uid = metadata.get("uid")
         if uid is not None:
             if not isinstance(uid, str) or not UID_RE.fullmatch(uid):
                 raise CompilerError(
-                    f"{repo_path(root, path)}: uid must be six Crockford Base32 characters"
+                    f"{corpus_path(root, path)}: uid must be six Crockford Base32 characters"
                 )
             previous_uid = uids.get(uid)
             if previous_uid is not None:
                 raise CompilerError(
-                    f"Duplicate uid {uid}: {repo_path(root, previous_uid)} and {repo_path(root, path)}"
+                    f"Duplicate uid {uid}: {corpus_path(root, previous_uid)} and {corpus_path(root, path)}"
                 )
             uids[uid] = path
         artifact = Artifact(
@@ -351,17 +364,18 @@ def load_artifacts(root: Path) -> dict[Path, Artifact]:
             body=body,
             title=title,
             description=description_from_metadata(metadata, path),
-            address=address,
+            location=location,
             ordinal=ordinal,
             uid=uid,
         )
-        if address is not None:
-            previous = addresses.get(address)
+        if location is not None:
+            previous = artifact_locations.get(location)
             if previous is not None:
                 raise CompilerError(
-                    f"Duplicate address {address}: {repo_path(root, previous) } and {repo_path(root, path)}"
+                    f"Duplicate artifact location {location}: "
+                    f"{corpus_path(root, previous)} and {corpus_path(root, path)}"
                 )
-            addresses[address] = path
+            artifact_locations[location] = path
         artifacts[path] = artifact
     return artifacts
 
@@ -403,8 +417,7 @@ def add_uid_to_metadata(path: Path, uid: str) -> None:
         raise CompilerError(f"{path}: cannot find Python module docstring")
 
     token = None
-    for candidate in tokenize.generate_tokens(io
-.StringIO(source).readline):
+    for candidate in tokenize.generate_tokens(io.StringIO(source).readline):
         if candidate.type == tokenize.STRING and candidate.start[0] == first.value.lineno:
             token = candidate
             break
@@ -427,7 +440,7 @@ def ensure_uids(root: Path) -> int:
     artifacts = load_artifacts(root)
     used = {artifact.uid for artifact in artifacts.values() if artifact.uid is not None}
     created = 0
-    for path, artifact in sorted(artifacts.items(), key=lambda pair: repo_path(root, pair[0]).casefold()):
+    for path, artifact in sorted(artifacts.items(), key=lambda pair: corpus_path(root, pair[0]).casefold()):
         if artifact.uid is not None:
             continue
         uid = generate_uid(used)
@@ -455,13 +468,14 @@ def location_addresses(root: Path) -> dict[str, Path]:
         ordinals = [part for part in ordinals if part is not None]
         if not ordinals:
             continue
-        address = "§" + ".".join(ordinals)
-        previous = result.get(address)
+        location = "§" + ".".join(ordinals)
+        previous = result.get(location)
         if previous is not None and previous != current_path:
             raise CompilerError(
-                f"Two locations derive {address}: {repo_path(root, previous)} and {repo_path(root, current_path)}"
+                f"Two locations derive {location}: "
+                f"{corpus_path(root, previous)} and {corpus_path(root, current_path)}"
             )
-        result[address] = current_path
+        result[location] = current_path
     return result
 
 
@@ -484,14 +498,14 @@ def validate_sibling_ordinals(root: Path) -> None:
             previous = seen.get(ordinal)
             if previous is not None:
                 raise CompilerError(
-                    f"Duplicate sibling location ordinal {ordinal} in {repo_path(root, current_path)}: "
+                    f"Duplicate sibling location ordinal {ordinal} in {corpus_path(root, current_path)}: "
                     f"{previous!r} and {name!r}"
                 )
             seen[ordinal] = name
 
 
-def address_depth(address: str) -> int:
-    return len(address.removeprefix("§").split("."))
+def location_depth(location: str) -> int:
+    return len(location.removeprefix("§").split("."))
 
 
 def derive_index(root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, frozenset[Path], dict[Path, frozenset[Path]], dict[Path, Path]]:
@@ -500,23 +514,23 @@ def derive_index(root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, fro
         raise CompilerError("Corpus root must contain indexed README.md")
     immediate: dict[Path, set[Path]] = {}
     parents: dict[Path, Path] = {}
-    addressed = [artifact for artifact in artifacts.values() if artifact.address is not None]
+    located = [artifact for artifact in artifacts.values() if artifact.location is not None]
 
-    root_children = {artifact.path for artifact in addressed if address_depth(artifact.address) == 1}
+    root_children = {artifact.path for artifact in located if location_depth(artifact.location) == 1}
     if root_children:
         immediate[origin] = root_children
         for child in root_children:
             parents[child] = origin
 
     for owner in artifacts.values():
-        if owner.path.name != "INDEX.md" or owner.address is None:
+        if owner.path.name != "INDEX.md" or owner.location is None:
             continue
-        prefix = owner.address + "."
-        depth = address_depth(owner.address) + 1
+        prefix = owner.location + "."
+        depth = location_depth(owner.location) + 1
         children = {
             artifact.path
-            for artifact in addressed
-            if artifact.address.startswith(prefix) and address_depth(artifact.address) == depth
+            for artifact in located
+            if artifact.location.startswith(prefix) and location_depth(artifact.location) == depth
         }
         if children:
             immediate[owner.path] = children
@@ -524,8 +538,8 @@ def derive_index(root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, fro
                 previous = parents.get(child)
                 if previous is not None and previous != owner.path:
                     raise CompilerError(
-                        f"{repo_path(root, child)} derives multiple index parents: "
-                        f"{repo_path(root, previous)} and {repo_path(root, owner.path)}"
+                        f"{corpus_path(root, child)} derives multiple index parents: "
+                        f"{corpus_path(root, previous)} and {corpus_path(root, owner.path)}"
                     )
                 parents[child] = owner.path
 
@@ -537,6 +551,7 @@ def build_corpus(root: Path) -> Corpus:
     root = root.resolve()
     if not root.is_dir():
         raise CompilerError(f"Corpus root is not a directory: {root}")
+    corpus_root_name(root)
     validate_sibling_ordinals(root)
     artifacts = load_artifacts(root)
     if not artifacts:
@@ -545,7 +560,6 @@ def build_corpus(root: Path) -> Corpus:
     origin, owners, immediate, parents = derive_index(root, artifacts)
     return Corpus(
         root=root,
-        address_space=ADDRESS_SPACE,
         artifacts=artifacts,
         locations=locations,
         origin=origin,
@@ -555,21 +569,20 @@ def build_corpus(root: Path) -> Corpus:
     )
 
 
-def artifact_by_address(corpus: Corpus) -> dict[str, Artifact]:
-    return {a.address: a for a in corpus.artifacts.values() if a.address is not None}
+def artifact_by_location(corpus: Corpus) -> dict[str, Artifact]:
+    return {a.location: a for a in corpus.artifacts.values() if a.location is not None}
 
 
 def artifact_by_uid(corpus: Corpus) -> dict[str, Artifact]:
     return {a.uid: a for a in corpus.artifacts.values() if a.uid is not None}
 
 
-def qualified_address(corpus: Corpus, artifact: Artifact, section: str | None = None) -> str:
-    if artifact.address is None:
+def render_address(corpus: Corpus, artifact: Artifact, section: str | None = None) -> str:
+    if artifact.location is None:
         raise CompilerError(
-            f"{repo_path(corpus.root, artifact.path)}: uid {artifact.uid} has no addressable location"
+            f"{corpus_path(corpus.root, artifact.path)}: uid {artifact.uid} has no addressable location"
         )
-    address = artifact.address
-    address = f"{corpus.address_space}:{address}"
+    address = f"{corpus_root_name(corpus.root)}:{artifact.location}"
     if section is not None:
         address += f"#{section}"
     return address

@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 
-from .model import Artifact, CompilerError, Corpus, read_text, repo_path
+from .model import Artifact, CompilerError, Corpus, corpus_path, read_text, render_address
 
 BEGIN = "<!-- BEGIN index -->"
 END = "<!-- END index -->"
@@ -44,19 +44,19 @@ def validate_regions(corpus: Corpus) -> None:
         if artifact.kind != "md":
             if path in corpus.index_owners:
                 raise CompilerError(
-                    f"{repo_path(corpus.root, path)}: a Python artifact cannot render an index region"
+                    f"{corpus_path(corpus.root, path)}: a Python artifact cannot render an index region"
                 )
             continue
         begins, ends = live_marker_offsets(read_text(path))
         if path in corpus.index_owners:
             if len(begins) != 1 or len(ends) != 1 or ends[0] < begins[0]:
                 raise CompilerError(
-                    f"{repo_path(corpus.root, path)}: index owner must contain exactly one "
+                    f"{corpus_path(corpus.root, path)}: index owner must contain exactly one "
                     f"{BEGIN} ... {END} region outside fenced code"
                 )
         elif begins or ends:
             raise CompilerError(
-                f"{repo_path(corpus.root, path)}: index region exists but the filesystem "
+                f"{corpus_path(corpus.root, path)}: index region exists but the filesystem "
                 "derives no immediate indexed children"
             )
 
@@ -78,21 +78,17 @@ def render_index(corpus: Corpus, owner: Path, children: frozenset[Path]) -> str:
     ordered = sorted(
         children,
         key=lambda path: (
-            tuple(int(part) for part in corpus.artifacts[path].address[1:].split("."))
-            if corpus.artifacts[path].address
+            tuple(int(part) for part in corpus.artifacts[path].location[1:].split("."))
+            if corpus.artifacts[path].location
             else (10**9,),
-            repo_path(corpus.root, path).casefold(),
+            corpus_path(corpus.root, path).casefold(),
         ),
     )
     for path in ordered:
         artifact: Artifact = corpus.artifacts[path]
         if artifact.uid is None:
-            raise CompilerError(f"{repo_path(corpus.root, path)}: indexed child has no uid")
-        label = (
-            f"{corpus.address_space}:{artifact.address}"
-            if corpus.address_space is not None and artifact.address is not None
-            else artifact.address or artifact.title
-        )
+            raise CompilerError(f"{corpus_path(corpus.root, path)}: indexed child has no uid")
+        label = render_address(corpus, artifact)
         lines.append(
             f'- <a href="{relative_link(owner, path)}" uid="{artifact.uid}">{label}</a> — {artifact.title}'
         )
@@ -114,5 +110,5 @@ def replace_region(path: Path, content: str) -> None:
 
 def compile_indexes(corpus: Corpus) -> None:
     validate_regions(corpus)
-    for owner in sorted(corpus.index_owners, key=lambda p: repo_path(corpus.root, p).casefold()):
+    for owner in sorted(corpus.index_owners, key=lambda p: corpus_path(corpus.root, p).casefold()):
         replace_region(owner, render_index(corpus, owner, corpus.immediate[owner]))

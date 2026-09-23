@@ -23,38 +23,39 @@ writing-style:
 # 🛠️ Control Documented Information
 
 Apply these steps to an existing artifact or to the output of an authoring
-procedure. The filesystem owns classification and the location portion of an
-address; a `uid` owns durable document identity; a numbered internal outline
-can extend that address into a file. Recognized metadata makes an artifact
-controlled. An addressable position additionally makes it indexable. The
-compiler derives indexes from the addressed filesystem hierarchy; controlled
-sideband artifacts can retain identity and validation without entering that
-navigation surface.
+procedure. The selected corpus root and filesystem hierarchy own classification
+and location; a rooted address declares that corpus root by directory name and
+then names a location beneath it. A `uid` owns durable document identity; a
+numbered internal outline can extend an address into a file. Recognized metadata
+makes an artifact controlled. An addressable position additionally makes it
+indexable. The compiler derives indexes from the selected corpus hierarchy;
+controlled sideband artifacts can retain identity and validation without
+entering that navigation surface.
 
 **Terms.** One name per concept, with relationships shown before definitions:
 
 ```text
-address space
-└── corpus root
-    ├── controlled artifact
-    │   ├── uid
-    │   ├── description
-    │   ├── indexed artifact
-    │   └── controlled sideband artifact
-    ├── origin
-    │   └── index
-    └── location
-        ├── location ordinal
-        ├── address
-        └── INDEX.md
-            └── index
+corpus root
+├── corpus
+├── controlled artifact
+│   ├── uid
+│   ├── description
+│   ├── indexed artifact
+│   └── controlled sideband artifact
+├── origin
+│   └── index
+└── location
+    ├── location ordinal
+    ├── address
+    └── INDEX.md
+        └── index
 ```
 
 | Term | Meaning |
 |---|---|
-| **address space** | A stable logical namespace for one controlled corpus. Its name qualifies addresses independently of the corpus root's physical path or mount location. |
-| **corpus root** | The filesystem directory selected as the root of one controlled corpus and the relative origin of its address tree. Every `§` location path is derived from numbered descendants beneath this directory; filesystem ancestors do not contribute to the address. |
-| **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
+| **corpus root** | The declared filesystem directory against which a Documentation Compiler operation and its addresses are resolved. The compiler declaration is a filesystem path; when omitted, it defaults to the Git repository root containing the compiler. In every documentation address, the corpus root is declared again by that selected directory's name before `:`; omission is a syntax error. |
+| **corpus** | The controlled artifacts and locations discovered beneath the selected corpus root for the current operation. |
+| **origin** | The root reader-facing entry point of a corpus, represented by `README.md` at the selected corpus root. It contributes no location ordinal. |
 | **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
@@ -62,16 +63,29 @@ address space
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. Its `§` portion is fully derived from location ordinals beneath the corpus root; optional `#` extends into a numbered heading; optional address-space qualification keeps the reference unambiguous outside its corpus. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the selected corpus root by directory name; the `§` portion is derived from location ordinals beneath that root; optional `#` extends into a numbered heading. A rootless `§...` form is location notation, not an address. |
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
 | **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
-| **compiler** | The Documentation Compiler that scans supported metadata surfaces, mints and validates UIDs, validates the location/address space, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
+| **compiler** | The Documentation Compiler that selects the corpus root, scans supported metadata surfaces beneath it, mints and validates UIDs, validates locations and rooted addresses, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
 
-## 1. Establish the controlled corpus
+## 1. Declare the corpus root
 
-Start from the **corpus root**. A file becomes a controlled artifact only when
-it is on a compiler-traversed path and the compiler recognizes its metadata
+Declare the **corpus root** for the compiler operation by passing its filesystem
+path as the optional `corpus_root` argument. When that argument is omitted, the
+compiler selects the root of the Git repository containing the compiler. The
+declaration is operational state; do not store a second corpus-root name in
+artifact metadata.
+
+The selected directory itself is the corpus root. Its directory name is the
+required corpus-root declaration at the start of every documentation address.
+Changing only the root's ancestor path does not change addresses. Renaming the
+corpus-root directory changes the corpus-root declaration and therefore every
+address in that corpus. A corpus-root directory name containing `:` cannot be
+represented by the address grammar and is invalid for compilation.
+
+A file becomes a controlled artifact only when it is on a compiler-traversed
+path beneath the selected corpus root and the compiler recognizes its metadata
 surface. Address and index participation are additional properties rather than
 requirements for controlled identity.
 
@@ -109,7 +123,7 @@ replaced by a newly minted UID before the corpus can compile.
 Use the existing repository hierarchy before creating another one. Numbered
 directories define classification locations. Numbered artifacts occupy
 terminal positions within those locations. Unnumbered directories may organize
-files physically but contribute no address component.
+files physically but contribute no location component.
 
 When a reserved controlled sideband is selected by Folder Conventions, place
 the artifact there instead of the address hierarchy. A controlled sideband is
@@ -146,10 +160,10 @@ identity with the artifact's UID rather than reserving historical coordinates.
 
 ## 3. Derive and use addresses
 
-Treat the corpus structure as the source of truth. Derive the location portion
-of an address by walking from the corpus root, taking each location ordinal,
-and appending a terminal artifact ordinal when the target is not `INDEX.md`.
-Join those ordinals with `.` and prefix them with `§`:
+Treat the selected corpus structure as the source of truth. First derive the
+target's **location** by walking from the corpus root, taking each location
+ordinal, and appending a terminal artifact ordinal when the target is not
+`INDEX.md`. Join those ordinals with `.` and prefix them with `§`:
 
 ```text
 2 Technical Writing/
@@ -158,29 +172,36 @@ Join those ordinals with `.` and prefix them with `§`:
 §2.1
 ```
 
-A numbered heading extends that location into the resolved file after `#`.
-Qualification with the address-space name is optional inside the same corpus
-and explicit when the address must survive being cited from elsewhere:
+A location is not by itself an address. Form an address by declaring the
+selected corpus root's directory name before `:`. A numbered heading extends
+the rooted location into the resolved file after `#`:
 
 ```text
-address = [address-space ":"] "§" location-ordinal ("." location-ordinal)* ["#" heading-number]
+address        = corpus-root ":" "§" location-ordinal ("." location-ordinal)* ["#" heading-number]
+corpus-root    = selected corpus-root directory name
 heading-number = integer ("." integer)*
 
-§2.1
-§2.1#4.2
+documentation-system:§2.1
 documentation-system:§2.1#4.2
 ```
 
-The periods express hierarchical descent on either side of `#`; `#` marks the
-boundary between repository location and the file's internal outline. An
-address is a current coordinate: moving an addressed item changes it, and a
-former coordinate may later identify different information. Moving the whole
-address space does not change internal coordinates. The UID does not change.
+A rootless `§2.1` or `§2.1#4.2` is location notation and is invalid when an
+address is required. The periods express hierarchical descent on either side
+of `#`; `#` marks the boundary between filesystem location and the file's
+internal outline.
+
+An address is a current coordinate. Moving an addressed item within the corpus
+changes its location portion, and a former coordinate may later identify
+different information. Moving the corpus-root directory to another parent
+without renaming it leaves addresses unchanged because the declaration uses the
+root directory's name, not its ancestor path. Renaming the corpus root changes
+the root declaration in every address. The UID does not change when an artifact
+moves.
 
 Use a controlled HTML anchor when the reference must survive a move or rename:
 
 ```text
-control-link = '<a href="' physical-target '" uid="' uid '">' qualified-address '</a>'
+control-link = '<a href="' physical-target '" uid="' uid '">' address '</a>'
 uid          = 6 Crockford Base32 characters
 ```
 
@@ -190,26 +211,29 @@ For example:
 <a href="*" uid="5CFFZW">documentation-system:§2.1#4.2</a>
 ```
 
-The `uid` identifies the document; the optional `#` in the displayed address
-selects a numbered heading within it. On every pass the compiler finds the
-current document by UID, derives its current fully qualified address, validates
+The `uid` identifies the document within the selected corpus; the optional
+`#` in the displayed address selects a numbered heading within it. On every
+pass the compiler finds the current document by UID, derives its current
+location, prefixes the selected corpus root's current directory name, validates
 the section when present, and rewrites both `href` and the displayed address.
-The address-space qualifier names the logical namespace; it does not encode the
-corpus root's physical path. Moving or mounting the whole corpus elsewhere does
-not change its qualifier or its internal coordinates. Ordinary Markdown links
-are not touched.
-If the UID is missing or duplicated, or the selected heading no longer exists,
-the compiler fails rather than guessing.
+A controlled link may therefore carry a stale root declaration or location
+after a rename or move; the UID remains authority and the compiler refreshes
+that projection. Ordinary Markdown links are not touched. If the UID is missing
+or duplicated, the displayed value is not rooted-address syntax, or the selected
+heading no longer exists, the compiler fails rather than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
-prose. A bare address is only a current-location notation suitable for examples,
-lookup input, or other non-reference contexts. The compiler reports live bare
-references as `ERROR DS001` so structural changes cannot silently retarget
-prose.
+prose. A rooted address written as plain reader-visible prose is a current
+coordinate rather than durable identity, so the compiler reports it as
+`ERROR DS001`. A rootless `§...` token used as though it were an address is
+invalid syntax and is reported as `ERROR DS004`. Location notation remains
+suitable inside fenced examples, inline code, and other contexts where no live
+reference is being made.
 
-Do not store authored address components in metadata or reconstruct location
-ancestry from generated projections. An unnumbered artifact outside a numbered location
-has no location address. A numbered location remains addressable without an
+Do not store the corpus-root declaration or derived location components in
+artifact metadata, and do not reconstruct location ancestry from generated
+projections. An unnumbered artifact outside a numbered location has no
+addressable location. A numbered location remains addressable without an
 `INDEX.md`, but a controlled link can target it only when an indexed body
 represents that location.
 
@@ -226,8 +250,9 @@ from the filesystem and reuses each child's exact `description`; do not repeat
 descendant metadata by hand.
 
 `INDEX.md` is a reserved representation, so it carries neither an ordinal nor
-a quadrant glyph. Its address is exactly the address of its containing
-location.
+a quadrant glyph. Its location is exactly that of its containing directory, and
+its address is that location prefixed by the selected corpus-root directory
+name.
 
 ## 5. Add controlled metadata
 
@@ -283,9 +308,10 @@ changed:
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-The compiler validates duplicate sibling ordinals, duplicate addresses and
-UIDs, missing descriptions, malformed generated regions, controlled links, and
-supported sideband relationships before it writes indexes.
+The compiler validates the corpus-root declaration, duplicate sibling ordinals,
+duplicate artifact locations and UIDs, missing descriptions, malformed generated
+regions, rooted controlled links, and supported sideband relationships before
+it writes indexes.
 
 Resolve an address without writing anything:
 
@@ -293,11 +319,14 @@ Resolve an address without writing anything:
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
+Resolution requires a rooted address whose declared corpus root matches the
+selected compiler corpus root; a rootless `§...` input is a syntax error.
 Resolution returns the indexed body and provenance for the addressed document
-or numbered section. A location address resolves through its `INDEX.md` when
-one exists; a location with no index resolves as a location with no body. A
-normal compiler pass also refreshes every controlled HTML anchor carrying a
-`uid`, including anchors carried by a supported Python module docstring.
+or numbered section. An address naming a location resolves through its
+`INDEX.md` when one exists; a location with no index resolves as a location
+with no body. A normal compiler pass also refreshes every controlled HTML anchor
+carrying a `uid`, including anchors carried by a supported Python module
+docstring.
 
 Finish only when the compiler succeeds and each generated projection contains
 the immediate indexed children implied by the filesystem.

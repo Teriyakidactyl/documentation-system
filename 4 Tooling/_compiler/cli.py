@@ -47,25 +47,25 @@ def run(script: Path, argv: list[str]) -> int:
             index += 1
     if len(positional) > 1:
         raise CompilerError(usage(script))
-    root = Path(positional[0]).resolve() if positional else find_repository_root(script)
+    corpus_root = Path(positional[0]).resolve() if positional else find_repository_root(script)
 
     if resolve is not None:
-        print(json.dumps(resolve_address(root, resolve), indent=2, ensure_ascii=False))
+        print(json.dumps(resolve_address(corpus_root, resolve), indent=2, ensure_ascii=False))
         return 0
 
-    result = compile_corpus(root)
+    result = compile_corpus(corpus_root)
     if result.diagnostics:
-        emit(list(result.diagnostics), root)
+        emit(list(result.diagnostics), corpus_root)
         if diagnostics_json is not None:
-            write_json(diagnostics_json, list(result.diagnostics), root)
+            write_json(diagnostics_json, list(result.diagnostics), corpus_root)
         if annotate_source:
-            annotate(root, list(result.diagnostics))
+            annotate(corpus_root, list(result.diagnostics))
     elif diagnostics_json is not None:
-        write_json(diagnostics_json, [], root)
+        write_json(diagnostics_json, [], corpus_root)
 
     print(
         f"Compiled {result.artifacts} controlled artifacts across {result.locations} addressed locations "
-        f"beneath {root}; minted {result.uids_minted} uids, refreshed {result.links_refreshed} "
+        f"beneath corpus root {corpus_root}; minted {result.uids_minted} uids, refreshed {result.links_refreshed} "
         f"controlled links, and reported {len(result.diagnostics)} diagnostics"
     )
     return 1 if result.errors else 0

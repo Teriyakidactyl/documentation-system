@@ -10,12 +10,12 @@ from .indexes import compile_indexes
 from .links import rewrite_control_links
 from .model import (
     CompilerError,
-    artifact_by_address,
+    artifact_by_location,
     build_corpus,
     ensure_uids,
     heading_target,
     parse_address,
-    repo_path,
+    corpus_path,
 )
 
 
@@ -33,6 +33,10 @@ class CompileResult:
 
 
 def compile_corpus(root: Path) -> CompileResult:
+    root = root.resolve()
+    # Establish the corpus-root declaration and validate the modeled corpus
+    # before any compiler-owned mutation occurs.
+    build_corpus(root)
     clear_inline_annotations(root)
     minted = ensure_uids(root)
     corpus = build_corpus(root)
@@ -52,16 +56,16 @@ def compile_corpus(root: Path) -> CompileResult:
 
 def resolve_address(root: Path, address: str) -> dict:
     corpus = build_corpus(root)
-    location, section = parse_address(address, corpus.address_space)
-    artifact = artifact_by_address(corpus).get(location)
+    location, section = parse_address(address, corpus.root)
+    artifact = artifact_by_location(corpus).get(location)
     if artifact is not None:
         parent = corpus.parents.get(artifact.path)
         result = {
             "address": address,
-            "address_space": corpus.address_space,
+            "corpus_root": str(corpus.root),
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
-            "path": repo_path(root, artifact.path),
-            "parent_index": repo_path(root, parent) if parent else None,
+            "path": corpus_path(root, artifact.path),
+            "parent_index": corpus_path(root, parent) if parent else None,
             "location_ordinal": artifact.ordinal,
             "uid": artifact.uid,
             "title": artifact.title,
@@ -82,9 +86,9 @@ def resolve_address(root: Path, address: str) -> dict:
     if location_path is not None and section is None:
         return {
             "address": address,
-            "address_space": corpus.address_space,
+            "corpus_root": str(corpus.root),
             "type": "location",
-            "path": repo_path(root, location_path) + "/",
+            "path": corpus_path(root, location_path) + "/",
             "index": None,
             "body": None,
         }
