@@ -3,11 +3,11 @@ uid: 0AQHNH
 description: >-
   `Read in full and follow when` *documented information is created, moved,
   renamed, indexed, linked, or otherwise brought under repository control* `to`
-  **keep its identity, location-derived address, generated index, and controlled
-  links valid**.
+  **keep its durable identity, applicable address and index state, and
+  controlled relationships valid**.
 quadrant: HowTo
 outline:
-  topology: linear
+  topology: branching
   numbering: hierarchical-decimal
 writing-style:
   formality: professional
@@ -25,20 +25,24 @@ writing-style:
 Apply these steps to an existing artifact or to the output of an authoring
 procedure. The filesystem owns classification and the location portion of an
 address; a `uid` owns durable document identity; a numbered internal outline
-can extend that address into a file. Metadata makes an artifact indexable. The
-compiler derives indexes from the same filesystem hierarchy; traversing them
-provides progressive disclosure without creating a second navigation hierarchy.
+can extend that address into a file. Recognized metadata makes an artifact
+controlled. An addressable position additionally makes it indexable. The
+compiler derives indexes from the addressed filesystem hierarchy; controlled
+sideband artifacts can retain identity and validation without entering that
+navigation surface.
 
 **Terms.** One name per concept, with relationships shown before definitions:
 
 ```text
 address space
 └── corpus root
+    ├── controlled artifact
+    │   ├── uid
+    │   ├── description
+    │   ├── indexed artifact
+    │   └── controlled sideband artifact
     ├── origin
     │   └── index
-    ├── indexed artifact
-    │   ├── uid
-    │   └── description
     └── location
         ├── location ordinal
         ├── address
@@ -51,9 +55,11 @@ address space
 | **address space** | A stable logical namespace for one controlled corpus. Its name qualifies addresses independently of the corpus root's physical path or mount location. |
 | **corpus root** | The filesystem directory selected as the root of one controlled corpus and the relative origin of its address tree. Every `§` location path is derived from numbered descendants beneath this directory; filesystem ancestors do not contribute to the address. |
 | **origin** | The root reader-facing entry point of an address space, represented by `README.md`. It contributes no location ordinal. |
-| **indexed artifact** | A file whose supported metadata surface contains a `uid` and `description`. Its filesystem position supplies classification; metadata supplies durable identity and semantic routing. |
-| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one indexed artifact. It survives moves and renames; duplicate UIDs are invalid. |
-| **description** | The canonical Markdown routing statement for an indexed artifact. Its exact wording is reused wherever the artifact is projected. |
+| **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
+| **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
+| **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
+| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
+| **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
 | **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. Its `§` portion is fully derived from location ordinals beneath the corpus root; optional `#` extends into a numbered heading; optional address-space qualification keeps the reference unambiguous outside its corpus. |
@@ -64,9 +70,10 @@ address space
 
 ## 1. Establish the controlled corpus
 
-Start from the **corpus root**. Everything below it may contribute physical
-classification, but a file becomes an indexed artifact only when the compiler
-recognizes its metadata surface.
+Start from the **corpus root**. A file becomes a controlled artifact only when
+it is on a compiler-traversed path and the compiler recognizes its metadata
+surface. Address and index participation are additional properties rather than
+requirements for controlled identity.
 
 The compiler currently recognizes two shapes:
 
@@ -79,21 +86,23 @@ new source format by adding a metadata adapter; do not change the address model
 for each file type.
 
 Do not infer that every file under the corpus root is controlled information.
-Presence establishes physical location; recognizable metadata establishes
-index participation.
+Presence establishes physical location; compiler traversal plus recognizable
+metadata establishes controlled participation. Addressability determines index
+participation separately.
 
-Dot-prefixed directories are outside the controlled corpus and the compiler does
-not descend into them. Use them for repository/tool state or local working
-material, not for indexed documented information. When information must be
-retained in or alongside the repository but its normal discoverability or
-storage representation is unclear, apply
+Most dot-prefixed directories remain outside the controlled corpus. Reserved
+exceptions can define a controlled sideband when information needs durable UID
+identity and compiler validation without normal routing. The current reserved
+behavior is defined by
+<a href="2%20%F0%9F%93%96%20Folder%20Conventions.md" uid="TRJS8V">documentation-system:§1.2</a>.
+Apply
 <a href="3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>
-before selecting a sideband directory or another Git-backed representation.
+before introducing another sideband representation.
 
-On a normal compile, the compiler adds a missing `uid` to each indexed artifact.
-Never change an existing UID because an artifact moved or was renamed. Copying
-an indexed artifact also copies its UID, so the duplicate must be replaced by
-a newly minted UID before the corpus can compile.
+On a normal compile, the compiler adds a missing `uid` to each controlled
+artifact. Never change an existing UID because an artifact moved or was renamed.
+Copying a controlled artifact also copies its UID, so the duplicate must be
+replaced by a newly minted UID before the corpus can compile.
 
 ## 2. Place information in the location hierarchy
 
