@@ -31,9 +31,8 @@ post-operation stage.
 
 A bounded Validation pass is different. It deliberately fixes a frame, scope,
 and set of lenses so the resulting assurance can be accounted for independently
-of mutation. Apply
-<a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
-when a governing process explicitly requires that bounded assurance.
+of mutation. <a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
+governs that pass when a process explicitly requires bounded assurance.
 
 The evidence model is:
 
@@ -57,7 +56,7 @@ validation reasoning
                      durable storage
 ```
 
-Do not create a receipt merely because validation reasoning occurred.
+Validation reasoning alone does not create a receipt.
 
 ## 1. Evidence concepts
 
@@ -76,14 +75,14 @@ Do not create a receipt merely because validation reasoning occurred.
 A receipt is a communication representation, not evidence that every ordinary
 authoring or revision operation requires a separate validation phase.
 
-## 2. Select bounded Validation explicitly
+## 2. Bounded Validation selection
 
 Ordinary competent authoring and revision use validation reasoning while work is
 performed. They do not require a formal Validation pass merely to prove that the
 author checked their own work.
 
-Use a bounded Validation pass when an assurance requirement positively selects
-one, for example:
+A bounded Validation pass is selected when an assurance requirement positively
+requires one, for example:
 
 - an explicit user or process request for validation;
 - an acceptance gate requiring accounted validation coverage;
@@ -95,14 +94,14 @@ one, for example:
 
 Context loss alone does not create an assurance requirement. A future agent can
 normally read the current artifact, current governing information, and current
-task, then perform the work required now. Preserve prior validation because its
-occurrence or result has a continuing job, not merely because a later agent may
-be amnesiac.
+task, then perform the work required now. Prior validation is preserved only
+when its occurrence or result has a continuing job, not merely because a later
+agent may be amnesiac.
 
-## 3. Emit the record at the validation boundary
+## 3. Validation records
 
-A bounded Validation pass emits one validation record. Preserve the distinctions
-among faults, clean coverage, uncertainty, and excluded scope:
+A bounded Validation pass emits one validation record whose representation
+preserves faults, clean coverage, uncertainty, and excluded scope:
 
 ```yaml
 validation-record:
@@ -122,9 +121,9 @@ A compiler, linter, test, or other deterministic validator may produce a native
 validation record needs to account for that evidence, the native result can
 establish a Validation Fault without becoming a second fault ontology.
 
-## 4. Create a receipt only for communication
+## 4. Validation receipts
 
-Package the validation record as a receipt when another context or process must
+A validation receipt packages the record when another context or process must
 consume the validation result without repeating the pass.
 
 Typical cases include:
@@ -149,28 +148,28 @@ what was examined, against what frame, with which lenses, and with what result.
 It records auditable evidence and concise rationale needed to support the
 conclusion; it does not require a transcript of private reasoning.
 
-## 5. Persist only when assurance must outlive the context
+## 5. Durable validation evidence
 
 Durability is a separate decision from producing a receipt.
 
-Persist a receipt when a governing process requires the assurance evidence
-itself to survive the immediate coordination context, such as a release
+Receipt persistence is selected when a governing process requires the assurance
+evidence itself to survive the immediate coordination context, such as a release
 attestation, audit requirement, durable independent approval, or another
 explicit cross-context tracking obligation.
 
-When durability requires claims about an exact repository state, bind the
-receipt to an exact validation basis. Artifact identity and representation state
+When durability requires claims about an exact repository state, the receipt is
+bound to an exact validation basis. Artifact identity and representation state
 remain distinct: a controlled `uid` identifies which artifact is involved,
 while a Git object or equivalent state identifier can identify the exact
 representation examined.
 
-Do not add receipt identifiers, last-validation timestamps, validation status,
-or validation-version fields to ordinary artifact frontmatter merely because a
-validation occurred. Recording assurance must not mutate the validated subject
-solely to record that it was inspected.
+Ordinary artifact frontmatter does not gain receipt identifiers,
+last-validation timestamps, validation status, or validation-version fields
+merely because validation occurred. Recording assurance does not mutate the
+validated subject solely to record that it was inspected.
 
-Cheap deterministic checks normally remain authoritative by recomputation.
-Persist a deterministic result only when the run itself carries required
+Cheap deterministic checks normally remain authoritative by recomputation. A
+deterministic result is persisted only when the run itself carries required
 provenance or would be materially costly or impossible to reproduce.
 
 <a href="../1%20Document%20Control/3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>
@@ -179,15 +178,15 @@ separate histories, and other Git-backed storage methods. Git Notes are a possib
 storage pattern for exact-state assurance evidence, not the default
 representation of Validation.
 
-## 6. Track fault lifecycle only when coordination requires it
+## 6. Cross-context fault lifecycle
 
 Most Validation Faults need no durable identity. A current deterministic fault
 can be recomputed, projected beside source, repaired, and disappear on the next
 check.
 
 When a cross-context workflow must coordinate the lifecycle of a particular
-fault, give that fault a durable identifier in the receipt and preserve events
-rather than mutating the original observation:
+fault, that fault receives a durable identifier in the receipt and later events
+preserve its lifecycle without mutating the original observation:
 
 ```text
 Validation Fault F1 observed
@@ -204,6 +203,6 @@ establishes whether the criterion is now checked clean, the fault remains, or
 the result is uncertain. The original receipt continues to describe the state
 in which the fault was observed.
 
-This lifecycle is an optional coordination pattern. Do not introduce fault IDs,
-open/closed status, or durable resolution records unless another context or
+This lifecycle is an optional coordination pattern. Fault IDs, open/closed
+status, and durable resolution records are absent unless another context or
 governing process actually needs to track them.
