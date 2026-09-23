@@ -57,7 +57,7 @@ class InstallError(RuntimeError):
     """Raised when a safe harness projection cannot be completed."""
 
 
-def find_skill_root(script: Path) -> Path:
+def find_repository_root(script: Path) -> Path:
     try:
         result = subprocess.run(
             ["git", "-C", str(script.resolve().parent), "rev-parse", "--show-toplevel"],
@@ -73,8 +73,8 @@ def find_skill_root(script: Path) -> Path:
     return root
 
 
-def skill_name(skill_root: Path) -> str:
-    path = skill_root / "SKILL.md"
+def skill_name(source_root: Path) -> str:
+    path = source_root / "SKILL.md"
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
         raise InstallError(f"{path}: missing YAML frontmatter")
@@ -113,12 +113,12 @@ def discover_targets(host_root: Path, explicit: list[Path]) -> list[Path]:
     return sorted(set(targets), key=lambda path: path.as_posix().casefold())
 
 
-def expected_target(link: Path, skill_root: Path) -> Path:
-    relative = os.path.relpath(skill_root, start=link.parent)
+def expected_target(link: Path, source_root: Path) -> Path:
+    relative = os.path.relpath(source_root, start=link.parent)
     return Path(relative)
 
 
-def status(link: Path, skill_root: Path) -> str:
+def status(link: Path, source_root: Path) -> str:
     if not link.exists() and not link.is_symlink():
         return "missing"
     if not link.is_symlink():
@@ -127,11 +127,11 @@ def status(link: Path, skill_root: Path) -> str:
         resolved = link.resolve(strict=True)
     except FileNotFoundError:
         return "broken"
-    return "correct" if resolved == skill_root.resolve() else "wrong-target"
+    return "correct" if resolved == source_root.resolve() else "wrong-target"
 
 
-def install(link: Path, skill_root: Path) -> str:
-    state = status(link, skill_root)
+def install(link: Path, source_root: Path) -> str:
+    state = status(link, source_root)
     if state == "correct":
         return "already correct"
     if state == "conflict":
@@ -139,12 +139,12 @@ def install(link: Path, skill_root: Path) -> str:
     if link.is_symlink():
         link.unlink()
     link.parent.mkdir(parents=True, exist_ok=True)
-    link.symlink_to(expected_target(link, skill_root), target_is_directory=True)
+    link.symlink_to(expected_target(link, source_root), target_is_directory=True)
     return "installed" if state == "missing" else "repaired"
 
 
-def remove(link: Path, skill_root: Path) -> str:
-    state = status(link, skill_root)
+def remove(link: Path, source_root: Path) -> str:
+    state = status(link, source_root)
     if state == "missing":
         return "already absent"
     if state == "conflict":
@@ -157,8 +157,8 @@ def remove(link: Path, skill_root: Path) -> str:
 
 def main() -> None:
     script = Path(__file__).resolve()
-    skill_root = find_skill_root(script)
-    name = skill_name(skill_root)
+    source_root = find_repository_root(script)
+    name = skill_name(source_root)
 
     args = sys.argv[1:]
     mode = "install"
@@ -196,13 +196,13 @@ def main() -> None:
     for skills_dir in targets:
         link = skills_dir / name
         if mode == "check":
-            state = status(link, skill_root)
+            state = status(link, source_root)
             print(f"{state:12} {link}")
             failures += state != "correct"
         elif mode == "remove":
-            print(f"{remove(link, skill_root):12} {link}")
+            print(f"{remove(link, source_root):12} {link}")
         else:
-            print(f"{install(link, skill_root):12} {link}")
+            print(f"{install(link, source_root):12} {link}")
 
     if failures:
         raise SystemExit(1)
