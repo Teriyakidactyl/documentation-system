@@ -15,10 +15,11 @@ artifact 1; `#4.2` selects numbered heading 4.2 inside the resolved artifact.
 A qualifier such as `documentation-system:` names the address space.
 
 > [!IMPORTANT]
-> Start here. Compare the current need only against the immediate indexed
-> choices below. Select the narrowest matching description. If that choice
-> exposes another index, repeat there. Stop when the selected description
-> identifies the governing artifact.
+> Start here. A task may present several independent concerns; route each one
+> separately. For the current concern, compare only the immediate indexed
+> choices, select the narrowest matching description, and descend one index at
+> a time until the governing artifact is identified. Repeat for every remaining
+> concern, satisfying each resulting document according to its directive.
 
 <!-- BEGIN index -->
 <!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->
