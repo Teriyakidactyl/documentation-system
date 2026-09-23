@@ -22,15 +22,16 @@ writing-style:
 
 # 📖 Origin
 
-The **corpus root** is the root declaration for both compiler operations and
-documentation addresses. For a compiler operation, declare it with the optional
-`corpus_root` path argument; when omitted, the compiler defaults to the root of
-the Git repository containing the compiler. For an address, declare the same
-root by the selected directory's name before `:`; that declaration is required.
-Thus `documentation-system:§2.3.2.1` declares this corpus-root directory, then
-descends through ordinal 2, child 3, child 2, and artifact 1; `#4.2` selects
-numbered heading 4.2 inside the resolved artifact. A rootless `§2.3.2.1` is
-location notation, not a valid documentation address.
+**Corpus root** is a contextual role declared for a filesystem directory; it
+is not a permanent designation of that directory. A compiler job declares its
+corpus root with the optional `corpus_root` path argument; when omitted, that
+job defaults to the root of the Git repository containing the compiler. A
+documentation address separately declares its corpus root by directory name
+before `:`, and that declaration is required. Thus
+`documentation-system:§2.3.2.1` declares this directory as the corpus root for
+that address, then descends through ordinal 2, child 3, child 2, and artifact 1;
+`#4.2` selects numbered heading 4.2 inside the resolved artifact. A rootless
+`§2.3.2.1` is location notation, not a valid documentation address.
 
 > [!IMPORTANT]
 > Start here. A task may present several independent concerns; route each one
@@ -42,10 +43,11 @@ location notation, not a valid documentation address.
 <!--
 The address paragraph and callout above are the standard reader-facing entry
 contract for an Origin. Keep the address explanation compact: establish the
-corpus root as the declaration that selects the filesystem directory for the
-compiler operation, state the compiler's Git-repository-root default when the
-path argument is omitted, and state that every documentation address must
-declare that same root by the selected directory's name before `:`. Teach
+corpus root as a contextual role rather than a permanent directory property.
+State that a compiler job declares the role by filesystem path, with the
+Git-repository-root default when the path argument is omitted, and that a
+documentation address separately declares the role by directory name before
+`:`. Teach
 decimal location descent and the optional heading suffix. Make clear that
 rootless `§...` notation is not an address. Leave UID, move, and detailed
 compiler mechanics to Document Control.
@@ -61,11 +63,11 @@ Keep the navigation behavior intact when adapting wording to a corpus:
 - repeat for every remaining concern; and
 - satisfy every resulting document according to its directive.
 
-The Origin is `README.md` at the selected corpus root. Give it a
-corpus-specific H1 and a description that routes a reader into the corpus. Do
-do not add a second authored root-identity field: the compiler operation
-declares the corpus root by path, and addresses declare that same root by the
-selected directory's name.
+For a compiler job, the Origin is `README.md` at the directory serving as that
+job's corpus root. Give it a corpus-specific H1 and a description that routes a
+reader into the corpus. Do not add a persistent root-identity field: the job
+declares the corpus-root role by path, while each address declares the role for
+itself by directory name.
 The derived README.md carries a `form` controlled link in frontmatter back to
 this artifact. Place the compiler-owned immediate-child index after the
 reader-facing navigation contract.
