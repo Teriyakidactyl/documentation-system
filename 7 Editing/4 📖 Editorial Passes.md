@@ -24,8 +24,12 @@ writing-style:
 # 📖 Editorial Passes
 
 Use established editorial terms when their recognized scope matches the work.
-The terms carry broader editorial practice with them; the local rule below
-narrows their use inside Documentation System without renaming them.
+Revision and Validation state what authority an operation has; the editorial
+pass states the level and class of prose intervention. These axes are
+independent.
+
+The established names carry broader editorial practice with them; the local
+rule below narrows their use inside Documentation System without renaming them.
 
 | Term | Recognized scope | Documentation System rule |
 |---|---|---|
