@@ -40,8 +40,8 @@ choose and apply a repair during the validation pass.
 
 Identify the authority for every claim the validation is allowed to make.
 Applicable sources can include an accepted change frame, document
-specification, schema, style rules, repository conventions, interface
-contracts, or explicit acceptance criteria.
+specification, schema, house style, artifact-specific style sheet, repository
+conventions, interface contracts, or explicit acceptance criteria.
 
 Do not substitute preference for a missing norm. When the artifact declares its
 own commitments, those commitments are valid validation inputs. When no
@@ -67,8 +67,18 @@ Run one lens at a time over the full in-scope artifact. Do not combine fault
 classes into a general review; an easy finding in one class must not stand in
 for inspection of another.
 
-Use the lenses required by the frame and artifact type. At minimum, test the
-applicable categories below:
+Use the lenses required by the frame and artifact type. For prose-bearing
+artifacts, keep the established editorial pass name when one applies. The pass
+scopes the validation lenses; it does not grant mutation authority.
+
+| Editorial pass | Validation emphasis |
+|---|---|
+| **developmental editing** | Requirement, structural, and semantic lenses over the artifact's macro architecture, coverage, sequence, and logic. |
+| **line editing** | Semantic and surface lenses over paragraph- and sentence-level clarity, flow, emphasis, and local logic. |
+| **copyediting** | Referential, semantic, and surface lenses over correctness, consistency, terminology, usage, cross-references, and house style. |
+| **proofreading** | Surface lens after content and structure are stable; inspect typographical, punctuation, spacing, formatting, and other microscopic mechanical defects without reopening structure. |
+
+At minimum, test the applicable categories below:
 
 | Lens | Question |
 |---|---|
