@@ -10,7 +10,7 @@ from .indexes import compile_indexes
 from .links import rewrite_control_links
 from .model import (
     CompilerError,
-    artifact_by_address,
+    artifact_by_location,
     build_corpus,
     ensure_uids,
     heading_target,
@@ -52,13 +52,13 @@ def compile_corpus(root: Path) -> CompileResult:
 
 def resolve_address(root: Path, address: str) -> dict:
     corpus = build_corpus(root)
-    location, section = parse_address(address, corpus.address_space)
-    artifact = artifact_by_address(corpus).get(location)
+    location, section = parse_address(address, corpus.root)
+    artifact = artifact_by_location(corpus).get(location)
     if artifact is not None:
         parent = corpus.parents.get(artifact.path)
         result = {
             "address": address,
-            "address_space": corpus.address_space,
+            "corpus_root": str(corpus.root),
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
             "path": repo_path(root, artifact.path),
             "parent_index": repo_path(root, parent) if parent else None,
@@ -82,7 +82,7 @@ def resolve_address(root: Path, address: str) -> dict:
     if location_path is not None and section is None:
         return {
             "address": address,
-            "address_space": corpus.address_space,
+            "corpus_root": str(corpus.root),
             "type": "location",
             "path": repo_path(root, location_path) + "/",
             "index": None,
