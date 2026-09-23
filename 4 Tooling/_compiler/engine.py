@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -14,8 +15,9 @@ from .model import (
     build_corpus,
     ensure_uids,
     heading_target,
-    parse_address,
     repo_path,
+    select_corpus,
+    split_address,
 )
 
 
@@ -51,17 +53,21 @@ def compile_corpus(root: Path) -> CompileResult:
 
 
 def resolve_address(root: Path, address: str) -> dict:
+    root = root.resolve()
     corpus = build_corpus(root)
-    location, section = parse_address(address, corpus.address_space)
-    artifact = artifact_by_address(corpus).get(location)
+    qualifier, location, section = split_address(address)
+    target_corpus = select_corpus(corpus, qualifier)
+    artifact = artifact_by_address(target_corpus).get(location)
     if artifact is not None:
-        parent = corpus.parents.get(artifact.path)
+        parent = target_corpus.parents.get(artifact.path)
         result = {
             "address": address,
-            "address_space": corpus.address_space,
+            "address_space": target_corpus.address_space,
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
-            "path": repo_path(root, artifact.path),
-            "parent_index": repo_path(root, parent) if parent else None,
+            "path": Path(os.path.relpath(artifact.path, start=root)).as_posix(),
+            "parent_index": (
+                Path(os.path.relpath(parent, start=root)).as_posix() if parent else None
+            ),
             "location_ordinal": artifact.ordinal,
             "uid": artifact.uid,
             "title": artifact.title,
@@ -78,13 +84,13 @@ def resolve_address(root: Path, address: str) -> dict:
                 }
             )
         return result
-    location_path = corpus.locations.get(location)
+    location_path = target_corpus.locations.get(location)
     if location_path is not None and section is None:
         return {
             "address": address,
-            "address_space": corpus.address_space,
+            "address_space": target_corpus.address_space,
             "type": "location",
-            "path": repo_path(root, location_path) + "/",
+            "path": Path(os.path.relpath(location_path, start=root)).as_posix() + "/",
             "index": None,
             "body": None,
         }
