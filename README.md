@@ -10,6 +10,22 @@ description: >-
 
 # Documentation System Origin
 
+This repository's `main` branch is the canonical maintainer/source corpus.
+Skill consumers who need only the published consumer surface should clone the
+generated `latest` branch instead:
+
+```bash
+git clone --branch latest --single-branch https://github.com/Teriyakidactyl/documentation-system.git
+```
+
+The `latest` branch has an independent generated history and contains this
+repository's Skill Distribution projection. This repository's publication
+process omits dot-prefixed directories from that projection; that publication
+choice applies to this repository and does not prescribe how repositories that
+consume the Documentation System must package their own skills. Version tags
+such as `v1.2.0`, when published, identify immutable states of the distribution
+history.
+
 Addresses are relative to the corpus root, the filesystem directory at the top
 of this controlled corpus. `documentation-system:§2.3.2.1` means start at that
 directory, then descend through ordinal 2, child 3, child 2, and artifact 1; `#4.2`
