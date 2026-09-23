@@ -2,8 +2,8 @@
 uid: TRJS8V
 description: >-
   `Consult when` *a directory name begins with a reserved prefix and its corpus
-  membership, crawler traversal, or access condition is unknown* `to` **confirm
-  what the prefix reserves, whether the crawler enters it, and whether reading
+  membership, compiler traversal, or access condition is unknown* `to` **confirm
+  what the prefix reserves, whether the compiler enters it, and whether reading
   it requires a specific instruction**.
 quadrant: Reference
 outline:
@@ -26,7 +26,7 @@ writing-style:
 A *reserved prefix* changes how a directory participates in the controlled
 corpus. The remainder of the name is descriptive only.
 
-| Prefix | Meaning | Crawler | Agent |
+| Prefix | Meaning | Compiler | Agent |
 |---|---|---|---|
 | `.<name>` | Outside the controlled corpus; repository/tool state or local working material. | Do not descend. | Read only when the user explicitly names the directory. |
 | `_<name>` | Operational grouping, not classification; address-transparent. | No special treatment; descendants participate normally. | Normal access unless an enclosing rule excludes it. |
