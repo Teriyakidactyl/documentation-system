@@ -1,0 +1,133 @@
+name: Publish skill distribution
+
+on:
+  workflow_run:
+    workflows:
+      - Compile documentation corpus
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Optional immutable distribution tag, for example v1.2.0
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-skill-distribution
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out canonical source
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install compiler dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Verify canonical source is compiled
+        shell: bash
+        run: |
+          python "4 Tooling/1 🛠️ Navigation Crawler.py" .
+          if ! git diff --quiet; then
+            echo "::error::main is not in compiled canonical state; publish aborted."
+            git diff
+            exit 1
+          fi
+
+      - name: Build consumer projection
+        id: projection
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source_sha="$(git rev-parse HEAD)"
+          dist="$RUNNER_TEMP/skill-distribution"
+          rm -rf "$dist"
+          mkdir -p "$dist"
+
+          while IFS= read -r -d '' path; do
+            if [[ "/$path" =~ /\.[^/]+/ ]]; then
+              continue
+            fi
+
+            mkdir -p "$dist/$(dirname "$path")"
+            cp -a -- "$path" "$dist/$path"
+          done < <(git ls-files -z)
+
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "dist=$dist" >> "$GITHUB_OUTPUT"
+
+      - name: Publish latest
+        id: publish
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ steps.projection.outputs.source_sha }}
+          DIST: ${{ steps.projection.outputs.dist }}
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin latest >/dev/null 2>&1; then
+            git fetch origin latest:refs/remotes/origin/latest
+            git switch --force-create latest refs/remotes/origin/latest
+            git rm -rf . >/dev/null 2>&1 || true
+          else
+            git switch --orphan latest
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+
+          git clean -fdx
+          cp -a "$DIST/." .
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Skill Distribution is already current."
+          else
+            git commit -m "Publish skill distribution from $SOURCE_SHA"
+            git push origin latest
+          fi
+
+          distribution_sha="$(git rev-parse HEAD)"
+          echo "distribution_sha=$distribution_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Tag immutable release
+        if: github.event_name == 'workflow_dispatch' && inputs.version != ''
+        shell: bash
+        env:
+          VERSION: ${{ inputs.version }}
+          DISTRIBUTION_SHA: ${{ steps.publish.outputs.distribution_sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::version must be a v-prefixed semantic version such as v1.2.0"
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then
+            echo "::error::tag $VERSION already exists"
+            exit 1
+          fi
+
+          git tag -a "$VERSION" "$DISTRIBUTION_SHA" -m "Skill Distribution $VERSION"
+          git push origin "refs/tags/$VERSION"
