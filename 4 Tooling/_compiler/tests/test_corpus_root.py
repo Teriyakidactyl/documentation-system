@@ -34,13 +34,15 @@ def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") 
 """
 
 
-def page(uid: str = "DEF456") -> str:
+def page(uid: str = "DEF456", *, body: str = "") -> str:
     return f"""---
 uid: {uid}
 description: >-
   `Consult when` *a test page is needed* `to` **resolve the test page**.
 ---
 # Test Page
+
+{body}
 """
 
 
@@ -95,6 +97,24 @@ class CorpusRootTests(unittest.TestCase):
         compiled = (renamed / "README.md").read_text(encoding="utf-8")
         self.assertIn('<a href="1%20Page.md" uid="DEF456">beta:§1</a>', compiled)
         self.assertNotIn(">alpha:§1</a>", compiled)
+
+    def test_reader_visible_rooted_address_requires_controlled_link(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(root / "1 Page.md", page(body="See project:§1.\n"))
+
+        result = compile_corpus(root)
+
+        self.assertIn("DS001", {diagnostic.code for diagnostic in result.diagnostics})
+
+    def test_reader_visible_rootless_location_is_reported_as_invalid_address(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(root / "1 Page.md", page(body="See §1.\n"))
+
+        result = compile_corpus(root)
+
+        self.assertIn("DS004", {diagnostic.code for diagnostic in result.diagnostics})
 
     def test_invalid_corpus_root_name_fails_before_uid_minting(self) -> None:
         root = self.make_corpus("bad:root", origin_uid=None)
