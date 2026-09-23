@@ -23,39 +23,41 @@ writing-style:
 # 🛠️ Control Documented Information
 
 Apply these steps to an existing artifact or to the output of an authoring
-procedure. The selected corpus root and filesystem hierarchy own classification
-and location; a rooted address declares that corpus root by directory name and
-then names a location beneath it. A `uid` owns durable document identity; a
-numbered internal outline can extend an address into a file. Recognized metadata
-makes an artifact controlled. An addressable position additionally makes it
-indexable. The compiler derives indexes from the selected corpus hierarchy;
-controlled sideband artifacts can retain identity and validation without
+procedure. For each compiler job, the declared corpus root and filesystem
+hierarchy own classification and location. Each documentation address makes its
+own corpus-root declaration by directory name, then names a location beneath
+that declared root. A `uid` owns durable document identity; a numbered internal
+outline can extend an address into a file. Recognized metadata makes an artifact
+controlled. An addressable position additionally makes it indexable. The
+compiler derives indexes from the corpus hierarchy established for the current
+job; controlled sideband artifacts can retain identity and validation without
 entering that navigation surface.
 
 **Terms.** One name per concept, with relationships shown before definitions:
 
 ```text
 corpus root
-├── corpus
-├── controlled artifact
-│   ├── uid
-│   ├── description
-│   ├── indexed artifact
-│   └── controlled sideband artifact
-├── origin
-│   └── index
-└── location
-    ├── location ordinal
-    ├── address
-    └── INDEX.md
-        └── index
+├── declared by compiler job
+│   └── bounds corpus
+│       ├── controlled artifact
+│       │   ├── uid
+│       │   ├── description
+│       │   ├── indexed artifact
+│       │   └── controlled sideband artifact
+│       └── origin
+│           └── index
+└── declared by address
+    └── anchors location
+        ├── location ordinal
+        └── INDEX.md
+            └── index
 ```
 
 | Term | Meaning |
 |---|---|
 | **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. A compiler job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing the compiler. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
-| **corpus** | The controlled artifacts and locations discovered beneath the selected corpus root for the current operation. |
-| **origin** | The root reader-facing entry point of a corpus, represented by `README.md` at the selected corpus root. It contributes no location ordinal. |
+| **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current compiler job. |
+| **origin** | The reader-facing entry point of a corpus, represented by `README.md` in the directory serving as corpus root for the current compiler job. It contributes no location ordinal. |
 | **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
@@ -185,7 +187,7 @@ the rooted location into the resolved file after `#`:
 
 ```text
 address        = corpus-root ":" "§" location-ordinal ("." location-ordinal)* ["#" heading-number]
-corpus-root    = selected corpus-root directory name
+corpus-root    = directory name declared as corpus root by the address
 heading-number = integer ("." integer)*
 
 documentation-system:§2.1
