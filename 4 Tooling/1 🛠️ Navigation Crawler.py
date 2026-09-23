@@ -41,13 +41,15 @@ projections may have changed.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-The positional `corpus_root` path is the corpus-root declaration for this
-operation. When it is omitted, the compiler declares the root of the Git
-repository containing this tool. An explicit path overrides that default.
+The positional `corpus_root` path declares which filesystem directory serves
+as the corpus root for this compiler job. The designation exists for that job;
+it is not stored on or permanently assigned to the directory. When the argument
+is omitted, the job declares the root of the Git repository containing this
+tool. An explicit path overrides that default.
 
-The selected directory's name is the corpus-root declaration written at the
-start of every documentation address. For example, selecting a directory named
-`documentation-system` produces addresses beginning
+Each documentation address separately declares its corpus root by directory
+name before `:`. For a job selecting a directory named
+`documentation-system`, generated addresses therefore begin
 `documentation-system:§...`. The address root is not configured separately
 and is not stored in metadata. A rootless `§...` expression is location
 notation and is invalid where a documentation address is required. Renaming the
