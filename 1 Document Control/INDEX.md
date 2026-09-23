@@ -2,16 +2,17 @@
 uid: YVXKT9
 form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
-  `Consult when` *documented information needs a controlled repository location,
-  address, index presence, progressive-disclosure exposure, or compiler
-  validation* `to` **select the Document Control procedure before changing
-  controlled information**.
+  `Consult when` *documented information needs a controlled repository
+  location, retrieval policy, storage representation, address, index presence,
+  progressive-disclosure exposure, or compiler validation* `to` **select the
+  Document Control rule or procedure that governs how users encounter and rely
+  on the information**.
 ---
 
 # Document Control
 
-This location collects the repository-agnostic rules for classifying,
-addressing, indexing, projecting, linking, validating, and storing documented
+This location collects the control rules for classifying, addressing,
+indexing, projecting, linking, validating, retrieving, and storing documented
 information.
 
 **Human access environment.** Human maintainers primarily interact with
