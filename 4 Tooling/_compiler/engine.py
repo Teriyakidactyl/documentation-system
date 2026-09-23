@@ -32,18 +32,18 @@ class CompileResult:
         return sum(d.severity is Severity.ERROR for d in self.diagnostics)
 
 
-def compile_corpus(root: Path) -> CompileResult:
-    root = root.resolve()
+def compile_corpus(corpus_root: Path) -> CompileResult:
+    corpus_root = corpus_root.resolve()
     # Establish the corpus-root declaration and validate the modeled corpus
     # before any compiler-owned mutation occurs.
-    build_corpus(root)
-    clear_inline_annotations(root)
-    minted = ensure_uids(root)
-    corpus = build_corpus(root)
+    build_corpus(corpus_root)
+    clear_inline_annotations(corpus_root)
+    minted = ensure_uids(corpus_root)
+    corpus = build_corpus(corpus_root)
     compile_indexes(corpus)
-    corpus = build_corpus(root)
+    corpus = build_corpus(corpus_root)
     links = rewrite_control_links(corpus)
-    corpus = build_corpus(root)
+    corpus = build_corpus(corpus_root)
     diagnostics = tuple(validate(corpus))
     return CompileResult(
         artifacts=len(corpus.artifacts),
@@ -54,18 +54,18 @@ def compile_corpus(root: Path) -> CompileResult:
     )
 
 
-def resolve_address(root: Path, address: str) -> dict:
-    corpus = build_corpus(root)
-    location, section = parse_address(address, corpus.root)
+def resolve_address(corpus_root: Path, address: str) -> dict:
+    corpus = build_corpus(corpus_root)
+    location, section = parse_address(address, corpus.corpus_root)
     artifact = artifact_by_location(corpus).get(location)
     if artifact is not None:
         parent = corpus.parents.get(artifact.path)
         result = {
             "address": address,
-            "corpus_root": str(corpus.root),
+            "corpus_root": str(corpus.corpus_root),
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
-            "path": corpus_path(root, artifact.path),
-            "parent_index": corpus_path(root, parent) if parent else None,
+            "path": corpus_path(corpus_root, artifact.path),
+            "parent_index": corpus_path(corpus_root, parent) if parent else None,
             "location_ordinal": artifact.ordinal,
             "uid": artifact.uid,
             "title": artifact.title,
@@ -86,9 +86,9 @@ def resolve_address(root: Path, address: str) -> dict:
     if location_path is not None and section is None:
         return {
             "address": address,
-            "corpus_root": str(corpus.root),
+            "corpus_root": str(corpus.corpus_root),
             "type": "location",
-            "path": corpus_path(root, location_path) + "/",
+            "path": corpus_path(corpus_root, location_path) + "/",
             "index": None,
             "body": None,
         }

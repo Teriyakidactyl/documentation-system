@@ -49,14 +49,17 @@ canonical tool and concept name.
 ### 2.1 Corpus model
 
 `model.py` owns metadata adapters, normalized `Artifact`, `HeadingTarget`,
-and `Corpus` values, UID identity, root-relative location derivation, rooted
+and `Corpus` values, UID identity, corpus-root-relative location derivation,
 address parsing and rendering, Git repository root discovery, and corpus
 construction.
 
-A `Corpus` carries the selected corpus-root path as its root fact. The root
-declaration written in an address is derived from the selected directory's
-name; the `§` location is derived from descendants relative to that directory.
-Do not carry a second root-identity fact beside `Corpus.root`.
+A `Corpus` carries the corpus-root declaration selected for the current
+compiler job as its `corpus_root` fact. That fact is job-local runtime state,
+not a permanent designation of the filesystem directory. Address rendering declares
+the same role in address syntax by using the selected directory's name before
+`:`; the `§` location is derived from descendants relative to that directory.
+Do not carry a persistent or second corpus-root fact beside the job-local
+corpus-root declaration.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -85,10 +88,10 @@ the current `href` and displayed address.
 
 The UID is authority for target identity within the selected corpus. The
 displayed address is a projection of the current corpus-root declaration,
-root-relative location, and optional numbered section. Controlled links reject
-a displayed value that omits the corpus-root declaration, but a stale rooted
-value may be rewritten after the corpus root or target location changes because
-UID identity remains authoritative.
+corpus-root-relative location, and optional numbered section. Controlled links
+reject a displayed value that omits the corpus-root declaration, but a stale
+address may be rewritten after the corpus-root declaration or target location
+changes because UID identity remains authoritative.
 
 ### 2.5 Compilation engine
 
@@ -99,12 +102,13 @@ or presentation behavior.
 ### 2.6 Command line
 
 `cli.py` owns invocation, exit policy, address-resolution output, selection
-of diagnostic projections, and selection of the corpus-root declaration for
-the operation. A supplied `corpus_root` path wins; when it is omitted, the CLI
-uses the Git repository root containing the compiler.
+of diagnostic projections, and the job-local corpus-root declaration. A
+supplied `corpus_root` path declares which directory serves that role for the
+job; when omitted, the CLI declares the Git repository root containing the
+compiler.
 
 The command line orchestrates compiler behavior; it does not invent a second
-root-identity setting.
+corpus-root setting.
 
 ## 3. Compilation pipeline
 
@@ -168,9 +172,9 @@ presenters -> Diagnostic
 
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
-single artifact legitimately owns them. Derive rooted addresses from
-`Corpus.root`; do not introduce another authored or computed root-identity
-source of truth.
+single artifact legitimately owns them. Derive addresses from the job-local
+corpus-root declaration; do not introduce another authored or computed
+corpus-root source of truth.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.

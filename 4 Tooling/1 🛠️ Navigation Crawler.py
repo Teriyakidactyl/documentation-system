@@ -41,18 +41,21 @@ projections may have changed.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-The positional `corpus_root` path is the corpus-root declaration for this
-operation. When it is omitted, the compiler declares the root of the Git
-repository containing this tool. An explicit path overrides that default.
+The positional `corpus_root` path declares which filesystem directory serves
+as the corpus root for this compiler job. The designation exists for that job;
+it is not stored on or permanently assigned to the directory. When the argument
+is omitted, the job declares the root of the Git repository containing this
+tool. An explicit path overrides that default.
 
-The selected directory's name is the corpus-root declaration written at the
-start of every documentation address. For example, selecting a directory named
-`documentation-system` produces addresses beginning
-`documentation-system:§...`. The address root is not configured separately
-and is not stored in metadata. A rootless `§...` expression is location
-notation and is invalid where a documentation address is required. Renaming the
-selected corpus-root directory therefore changes the address root; moving that
-directory beneath a different ancestor without renaming it does not.
+Each documentation address separately declares its corpus root by directory
+name before `:`. For a job selecting a directory named
+`documentation-system`, generated addresses therefore begin
+`documentation-system:§...`. No second corpus-root designation is configured
+or stored in metadata. `§...` without a corpus-root declaration is location notation and is invalid
+where a documentation address is required. Renaming the directory
+serving as corpus root changes the corpus-root declaration in addresses that
+use it; moving that directory beneath a different ancestor without renaming it
+does not.
 
 A successful run refreshes deterministic projections and controlled links,
 then evaluates structured diagnostics. Errors make the run fail; warnings and
@@ -83,8 +86,9 @@ Use `--resolve` for read-only address resolution.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
-The address must declare the selected corpus root by directory name before
-`:`; `--resolve §2.1` is a syntax error rather than an implicit-root form.
+The address must declare the compiler job's corpus root by directory name before
+`:`; `--resolve §2.1` is a syntax error because `§2.1` is only location
+notation.
 Resolution returns JSON for the addressed document, location, or numbered
 section without compiling derived state.
 

@@ -32,15 +32,15 @@ CONTROL_LINK_RE = re.compile(
 
 def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
     if not UID_RE.fullmatch(uid):
-        raise CompilerError(f"{corpus_path(corpus.root, owner)}: invalid controlled-link uid {uid!r}")
+        raise CompilerError(f"{corpus_path(corpus.corpus_root, owner)}: invalid controlled-link uid {uid!r}")
     artifact = artifact_by_uid(corpus).get(uid)
     if artifact is None:
-        raise CompilerError(f"{corpus_path(corpus.root, owner)}: controlled link names missing uid {uid}")
+        raise CompilerError(f"{corpus_path(corpus.corpus_root, owner)}: controlled link names missing uid {uid}")
     match = ADDRESS_RE.fullmatch(label.strip())
     if match is None:
         raise CompilerError(
-            f"{corpus_path(corpus.root, owner)}: controlled link uid {uid} must display "
-            "a rooted documentation address"
+            f"{corpus_path(corpus.corpus_root, owner)}: controlled link uid {uid} must display "
+            "an address with a corpus-root declaration"
         )
     section = match.group("section")
     heading = heading_target(artifact.body, section, artifact.path) if section else None
@@ -155,7 +155,7 @@ def rewrite_python(path: Path, corpus: Corpus) -> int:
 
 def rewrite_control_links(corpus: Corpus) -> int:
     changed = 0
-    for path in sorted(walk_files(corpus.root), key=lambda p: corpus_path(corpus.root, p).casefold()):
+    for path in sorted(walk_files(corpus.corpus_root), key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
         suffix = path.suffix.lower()
         if suffix == ".md":
             changed += rewrite_markdown(path, corpus)
