@@ -11,6 +11,7 @@ import io
 import os
 import re
 import secrets
+import subprocess
 import tokenize
 from dataclasses import dataclass
 from pathlib import Path
@@ -31,7 +32,7 @@ NUMBERED_HEADING_RE = re.compile(
     r"^(?P<marks>#{2,6})\s+(?P<number>[0-9]+(?:\.[0-9]+)*)"
     r"(?P<trailing>\.)?\s+(?P<title>.+?)\s*$"
 )
-SKILL_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+ADDRESS_SPACE = "documentation-system"
 
 
 class CompilerError(RuntimeError):
@@ -65,7 +66,7 @@ class HeadingTarget:
 @dataclass(frozen=True)
 class Corpus:
     root: Path
-    address_space: str | None
+    address_space: str
     artifacts: dict[Path, Artifact]
     locations: dict[str, Path]
     origin: Path
@@ -85,11 +86,22 @@ def repo_path(root: Path, path: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
 
 
-def find_corpus_root(script: Path) -> Path:
-    for directory in (script.resolve().parent, *script.resolve().parents):
-        if (directory / "SKILL.md").is_file():
-            return directory
-    return script.resolve().parent
+def find_repository_root(script: Path) -> Path:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(script.resolve().parent), "rev-parse", "--show-toplevel"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise CompilerError(
+            "Cannot determine the containing Git repository root; pass corpus_root explicitly"
+        ) from exc
+    root = Path(result.stdout.strip()).resolve()
+    if not root.is_dir():
+        raise CompilerError(f"Git repository root is not a directory: {root}")
+    return root
 
 
 def split_frontmatter(text: str) -> tuple[str, str] | None:
@@ -114,24 +126,6 @@ def parse_yaml_mapping(raw: str, owner: Path) -> dict:
     if not isinstance(data, dict):
         raise CompilerError(f"{owner}: metadata must be a mapping")
     return data
-
-
-def address_space_name(root: Path) -> str | None:
-    skill = root / "SKILL.md"
-    if not skill.is_file():
-        return None
-    text = read_text(skill)
-    split = split_frontmatter(text)
-    if split is None:
-        raise CompilerError(f"{skill}: SKILL.md must begin with YAML frontmatter")
-    raw, _ = split
-    metadata = parse_yaml_mapping(raw, skill)
-    name = metadata.get("name")
-    if not isinstance(name, str) or not SKILL_NAME_RE.fullmatch(name):
-        raise CompilerError(
-            f"{skill}: skill name must match {SKILL_NAME_RE.pattern!r} to qualify addresses"
-        )
-    return name
 
 
 def title_from_body(body: str, fallback: str) -> str:
@@ -278,7 +272,7 @@ def heading_target(body: str, number: str, owner: Path) -> HeadingTarget:
     return matches[0]
 
 
-def parse_address(address: str, address_space: str | None) -> tuple[str, str | None]:
+def parse_address(address: str, address_space: str) -> tuple[str, str | None]:
     match = ADDRESS_RE.fullmatch(address)
     if not match:
         raise CompilerError(f"Invalid address: {address!r}")
@@ -542,7 +536,7 @@ def build_corpus(root: Path) -> Corpus:
     origin, owners, immediate, parents = derive_index(root, artifacts)
     return Corpus(
         root=root,
-        address_space=address_space_name(root),
+        address_space=ADDRESS_SPACE,
         artifacts=artifacts,
         locations=locations,
         origin=origin,
@@ -566,8 +560,7 @@ def qualified_address(corpus: Corpus, artifact: Artifact, section: str | None = 
             f"{repo_path(corpus.root, artifact.path)}: uid {artifact.uid} has no addressable location"
         )
     address = artifact.address
-    if corpus.address_space is not None:
-        address = f"{corpus.address_space}:{address}"
+    address = f"{corpus.address_space}:{address}"
     if section is not None:
         address += f"#{section}"
     return address
