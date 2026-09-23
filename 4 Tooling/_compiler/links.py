@@ -17,7 +17,6 @@ from .model import (
     Corpus,
     artifact_by_uid,
     heading_target,
-    parse_address,
     read_text,
     render_address,
     corpus_path,
@@ -43,7 +42,7 @@ def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> st
             f"{corpus_path(corpus.root, owner)}: controlled link uid {uid} must display "
             "a rooted documentation address"
         )
-    _, section = parse_address(label.strip(), corpus.root)
+    section = match.group("section")
     heading = heading_target(artifact.body, section, artifact.path) if section else None
     href = relative_link(owner, artifact.path)
     if heading is not None:
