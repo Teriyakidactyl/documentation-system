@@ -37,7 +37,7 @@ A qualifier such as `documentation-system:` names the address space.
 The address paragraph and callout above are the standard reader-facing entry
 contract for an Origin. Keep the address explanation compact: teach decimal
 path descent, the optional heading suffix, and address-space qualification,
-then leave UID, move, resolution, and crawler mechanics to Document Control.
+then leave UID, move, resolution, and compiler mechanics to Document Control.
 
 Keep the navigation behavior intact when adapting wording to a corpus:
 
@@ -50,10 +50,10 @@ Keep the navigation behavior intact when adapting wording to a corpus:
 - repeat for every remaining concern; and
 - satisfy every resulting document according to its directive.
 
-The Origin is README.md at the crawler root. Give it a corpus-specific H1 and a
+The Origin is README.md at the corpus root. Give it a corpus-specific H1 and a
 description that routes a reader into the corpus. The derived README.md carries
 a `form` controlled link in frontmatter back to this artifact. Place the
-crawler-owned immediate-child index after the reader-facing navigation
+compiler-owned immediate-child index after the reader-facing navigation
 contract.
 
 Do not copy this generic guidance block into the derived README.md; the
@@ -66,5 +66,5 @@ before choosing a location. Otherwise let the selected document own that
 information.
 
 Do not hand-author descendant summaries, duplicate child descriptions, or a
-parallel navigation map. Generated index content remains owned by the crawler.
+parallel navigation map. Generated index content remains owned by the compiler.
 -->
