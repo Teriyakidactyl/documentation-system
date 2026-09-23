@@ -19,6 +19,6 @@ artifact; this location governs how the document is conceived and written.
   - `Read in full and follow when` *authoring a technical document* `to` **commit its description, controlled placement, quadrant, outline, and writing style before drafting prose that satisfies them**.
 - <a href="2%20%F0%9F%A7%AD%20Routable%20Descriptions%20Recognized.md" uid="CCTBKN">documentation-system:§2.2</a> — 🧭 Routable Descriptions Recognized
   - `Read in full when` *an agent must author or review a `description` and the grammar alone is insufficient to tell whether a plausible statement will route a reader correctly* `to` **distinguish and repair descriptions by directive, exigence, acceptance criterion, pairing, abstraction, and scope**.
-- <a href="3%20Document%20Elements/INDEX.md" uid="5NV1K9">documentation-system:§2.3</a> — Document Elements
-  - `Consult when` *a technical document needs a reusable internal structure whose source pattern should remain recognizable across documents* `to` **select the Document Element that governs the heading-bounded structure before authoring its local content**.
+- <a href="3%20Document/INDEX.md" uid="7Z7MY0">documentation-system:§2.3</a> — Document
+  - `Consult when` *a technical document needs reusable structure and the applicable structural scope is not yet known* `to` **choose Document Forms for whole-document structure or Document Elements for heading-bounded structure before authoring the local content**.
 <!-- END index -->
