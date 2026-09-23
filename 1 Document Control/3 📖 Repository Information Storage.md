@@ -115,7 +115,7 @@ These are selecting conditions, not a progression toward more sophisticated
 storage. Ordinary files remain preferred unless another method models the
 information better or prevents a concrete control failure.
 
-## 5. Alternative-storage selecting conditions
+## 5. Alternative storage conditions
 
 A non-file or separate-history representation is justified when at least one
 concrete constraint materially applies:
