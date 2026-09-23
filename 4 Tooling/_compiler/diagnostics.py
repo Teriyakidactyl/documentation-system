@@ -22,7 +22,7 @@ from .model import (
     walk_files,
 )
 
-ROOTLESS_LOCATION_TOKEN_RE = re.compile(
+LOCATION_TOKEN_RE = re.compile(
     r"(?<!:)§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
 )
 ANNOTATION_LINE_RE = re.compile(
@@ -146,7 +146,7 @@ def _scan_markdown(
                 )
             )
 
-        for match in ROOTLESS_LOCATION_TOKEN_RE.finditer(line):
+        for match in LOCATION_TOKEN_RE.finditer(line):
             location = match.group(0)
             diagnostics.append(
                 Diagnostic(
@@ -155,7 +155,7 @@ def _scan_markdown(
                     path=path,
                     line=base_line + offset,
                     message=(
-                        f"Unrooted location {location} is not a valid documentation address; "
+                        f"Location notation {location} is not a documentation address; "
                         f"declare the corpus root as {corpus_root}:{location}."
                     ),
                 )
