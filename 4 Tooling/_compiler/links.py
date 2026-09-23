@@ -18,6 +18,7 @@ from .model import (
     artifact_by_uid,
     heading_target,
     qualified_address,
+    select_corpus,
     read_text,
     repo_path,
     source_offset,
@@ -30,32 +31,52 @@ CONTROL_LINK_RE = re.compile(
 )
 
 
-def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
+def render_control_link(
+    owner: Path,
+    corpus: Corpus,
+    uid: str,
+    label: str,
+    corpus_cache: dict[str, Corpus] | None = None,
+) -> str:
     if not UID_RE.fullmatch(uid):
         raise CompilerError(f"{repo_path(corpus.root, owner)}: invalid controlled-link uid {uid!r}")
-    artifact = artifact_by_uid(corpus).get(uid)
-    if artifact is None:
-        raise CompilerError(f"{repo_path(corpus.root, owner)}: controlled link names missing uid {uid}")
     match = ADDRESS_RE.fullmatch(label.strip())
     if match is None:
         raise CompilerError(
             f"{repo_path(corpus.root, owner)}: controlled link uid {uid} must display a documentation address"
         )
+
     qualifier = match.group("space")
-    if qualifier is not None and qualifier != corpus.address_space:
+    cache = corpus_cache if corpus_cache is not None else {corpus.address_space: corpus}
+    target_space = qualifier or corpus.address_space
+    target_corpus = cache.get(target_space)
+    if target_corpus is None:
+        target_corpus = select_corpus(corpus, qualifier)
+        cache[target_corpus.address_space] = target_corpus
+
+    artifact = artifact_by_uid(target_corpus).get(uid)
+    if artifact is None:
         raise CompilerError(
-            f"{repo_path(corpus.root, owner)}: controlled link uid {uid} names address space "
-            f"{qualifier!r}, not {corpus.address_space!r}"
+            f"{repo_path(corpus.root, owner)}: controlled link names missing uid {uid} "
+            f"in address space {target_corpus.address_space!r}"
         )
     section = match.group("section")
     heading = heading_target(artifact.body, section, artifact.path) if section else None
     href = relative_link(owner, artifact.path)
     if heading is not None:
         href += "#" + quote(heading.anchor, safe="-._~")
-    return f'<a href="{href}" uid="{uid}">{qualified_address(corpus, artifact, section)}</a>'
+    return (
+        f'<a href="{href}" uid="{uid}">'
+        f"{qualified_address(target_corpus, artifact, section)}</a>"
+    )
 
 
-def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, int]:
+def rewrite_markdown_text(
+    text: str,
+    owner: Path,
+    corpus: Corpus,
+    corpus_cache: dict[str, Corpus] | None = None,
+) -> tuple[str, int]:
     changed = 0
     out: list[str] = []
     in_fence = False
@@ -78,7 +99,13 @@ def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, 
 
         def replace(match: re.Match[str]) -> str:
             nonlocal changed
-            rendered = render_control_link(owner, corpus, match.group("uid"), match.group("label"))
+            rendered = render_control_link(
+                owner,
+                corpus,
+                match.group("uid"),
+                match.group("label"),
+                corpus_cache,
+            )
             if rendered != match.group(0):
                 changed += 1
             return rendered
@@ -106,15 +133,19 @@ def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, 
     return "".join(out), changed
 
 
-def rewrite_markdown(path: Path, corpus: Corpus) -> int:
+def rewrite_markdown(
+    path: Path, corpus: Corpus, corpus_cache: dict[str, Corpus] | None = None
+) -> int:
     text = read_text(path)
-    rewritten, changed = rewrite_markdown_text(text, path, corpus)
+    rewritten, changed = rewrite_markdown_text(text, path, corpus, corpus_cache)
     if changed:
         path.write_text(rewritten, encoding="utf-8")
     return changed
 
 
-def rewrite_python(path: Path, corpus: Corpus) -> int:
+def rewrite_python(
+    path: Path, corpus: Corpus, corpus_cache: dict[str, Corpus] | None = None
+) -> int:
     source = read_text(path)
     try:
         tree = ast.parse(source, filename=str(path))
@@ -147,7 +178,7 @@ def rewrite_python(path: Path, corpus: Corpus) -> int:
     if quote_mark is None:
         return 0
     body = rest[len(quote_mark) : -len(quote_mark)]
-    rewritten, changed = rewrite_markdown_text(body, path, corpus)
+    rewritten, changed = rewrite_markdown_text(body, path, corpus, corpus_cache)
     if not changed:
         return 0
     new_literal = prefix + quote_mark + rewritten + quote_mark
@@ -160,10 +191,11 @@ def rewrite_python(path: Path, corpus: Corpus) -> int:
 
 def rewrite_control_links(corpus: Corpus) -> int:
     changed = 0
+    corpus_cache = {corpus.address_space: corpus}
     for path in sorted(walk_files(corpus.root), key=lambda p: repo_path(corpus.root, p).casefold()):
         suffix = path.suffix.lower()
         if suffix == ".md":
-            changed += rewrite_markdown(path, corpus)
+            changed += rewrite_markdown(path, corpus, corpus_cache)
         elif suffix == ".py":
-            changed += rewrite_python(path, corpus)
+            changed += rewrite_python(path, corpus, corpus_cache)
     return changed
