@@ -56,13 +56,13 @@ def compile_corpus(root: Path) -> CompileResult:
 
 def resolve_address(root: Path, address: str) -> dict:
     corpus = build_corpus(root)
-    location, section = parse_address(address, corpus.root)
+    location, section = parse_address(address, corpus.corpus_root)
     artifact = artifact_by_location(corpus).get(location)
     if artifact is not None:
         parent = corpus.parents.get(artifact.path)
         result = {
             "address": address,
-            "corpus_root": str(corpus.root),
+            "corpus_root": str(corpus.corpus_root),
             "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
             "path": corpus_path(root, artifact.path),
             "parent_index": corpus_path(root, parent) if parent else None,
@@ -86,7 +86,7 @@ def resolve_address(root: Path, address: str) -> dict:
     if location_path is not None and section is None:
         return {
             "address": address,
-            "corpus_root": str(corpus.root),
+            "corpus_root": str(corpus.corpus_root),
             "type": "location",
             "path": corpus_path(root, location_path) + "/",
             "index": None,
