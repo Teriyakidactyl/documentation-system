@@ -44,7 +44,7 @@ description
 | **metamatter** | Structured YAML data inside an HTML comment whose first non-whitespace content is a data key (`key:`). Position supplies its scope; the key supplies its meaning. |
 | **ordinary HTML comment** | An HTML comment whose first non-whitespace content is not a YAML data key. It carries freeform maintenance or tool-control information, not structured metamatter or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
-| **form** | An optional file-level controlled link from a derived document to the Standard Form governing its recurring repository role. |
+| **form** | An optional file-level controlled link from a derived document to the Document Form governing its recurring repository role. |
 | **element** | A position-scoped controlled link in metamatter from a reusable document section to the Document Element governing its source structure. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
@@ -71,7 +71,7 @@ description: >-              # bound at step 2.1
   `Read in full and follow when` *a connector has stopped authenticating and
   the required credential fields are unknown* `to` **restore the connector to
   an authenticating state without escalating**.
-form: '<a href="*" uid="ABC123">documentation-system:§3.10</a>' # optional; bound by Standard Forms
+form: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>' # optional; bound by Document Forms
 quadrant: HowTo               # bound at step 2.2
 outline:                      # bound at step 4.1
   topology: linear
@@ -92,9 +92,9 @@ writing-style:                # bound at step 5
 Scope decides the container, not preference.
 
 `description` describes the whole file and stays in *frontmatter* whatever
-shape the document takes. When a document derives from a Standard Form, its
+shape the document takes. When a document derives from a Document Form, its
 `form` controlled link also stays in frontmatter because the provenance
-governs the whole file. Standard Forms owns when that key is required and how
+governs the whole file. Document Forms owns when that key is required and how
 the form is applied.
 
 `quadrant`, `outline`, and `writing-style` describe one quadrant: they sit
@@ -124,7 +124,7 @@ element:
 
 ```markdown
 ## Terms
-<!-- element: '<a href="*" uid="BJS5BZ">documentation-system:§2.3.1</a>' -->
+<!-- element: '<a href="*" uid="BJS5BZ">documentation-system:§2.3.2.1</a>' -->
 ```
 
 The key determines retention and semantics. `quadrant`, `outline`,
