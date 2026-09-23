@@ -22,12 +22,15 @@ writing-style:
 
 # 📖 Origin
 
-Addresses are relative to the corpus root, the filesystem directory at the top
-of this controlled corpus. `documentation-system:§2.3.2.1` means start at that
-directory, then descend through ordinal 2, child 3, child 2, and artifact 1; `#4.2`
-selects numbered heading 4.2 inside the resolved artifact. The
-`documentation-system:` qualifier names the logical address space independently
-of the corpus root's physical path.
+The **corpus root** is the root declaration for both compiler operations and
+documentation addresses. For a compiler operation, declare it with the optional
+`corpus_root` path argument; when omitted, the compiler defaults to the root of
+the Git repository containing the compiler. For an address, declare the same
+root by the selected directory's name before `:`; that declaration is required.
+Thus `documentation-system:§2.3.2.1` declares this corpus-root directory, then
+descends through ordinal 2, child 3, child 2, and artifact 1; `#4.2` selects
+numbered heading 4.2 inside the resolved artifact. A rootless `§2.3.2.1` is
+location notation, not a valid documentation address.
 
 > [!IMPORTANT]
 > Start here. A task may present several independent concerns; route each one
@@ -39,10 +42,13 @@ of the corpus root's physical path.
 <!--
 The address paragraph and callout above are the standard reader-facing entry
 contract for an Origin. Keep the address explanation compact: establish the
-corpus root as the filesystem directory that is the relative origin of the
-address tree, teach decimal path descent and the optional heading suffix, and
-distinguish the logical address-space qualifier from the root's physical path.
-Leave UID, move, resolution, and compiler mechanics to Document Control.
+corpus root as the declaration that selects the filesystem directory for the
+compiler operation, state the compiler's Git-repository-root default when the
+path argument is omitted, and state that every documentation address must
+declare that same root by the selected directory's name before `:`. Teach
+decimal location descent and the optional heading suffix. Make clear that
+rootless `§...` notation is not an address. Leave UID, move, and detailed
+compiler mechanics to Document Control.
 
 Keep the navigation behavior intact when adapting wording to a corpus:
 
@@ -55,11 +61,14 @@ Keep the navigation behavior intact when adapting wording to a corpus:
 - repeat for every remaining concern; and
 - satisfy every resulting document according to its directive.
 
-The Origin is README.md at the corpus root. Give it a corpus-specific H1 and a
-description that routes a reader into the corpus. The derived README.md carries
-a `form` controlled link in frontmatter back to this artifact. Place the
-compiler-owned immediate-child index after the reader-facing navigation
-contract.
+The Origin is `README.md` at the selected corpus root. Give it a
+corpus-specific H1 and a description that routes a reader into the corpus. Do
+do not add a second authored root-identity field: the compiler operation
+declares the corpus root by path, and addresses declare that same root by the
+selected directory's name.
+The derived README.md carries a `form` controlled link in frontmatter back to
+this artifact. Place the compiler-owned immediate-child index after the
+reader-facing navigation contract.
 
 Do not copy this generic guidance block into the derived README.md; the
 `form` link keeps this form as its owner.

@@ -41,10 +41,18 @@ projections may have changed.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
 ```
 
-When `corpus_root` is omitted, the compiler uses the root of the Git repository
-containing this tool. An explicit `corpus_root` overrides that default. The
-compiler uses `documentation-system` as this corpus's logical address-space
-name; the qualifier is independent of the repository's physical path.
+The positional `corpus_root` path is the corpus-root declaration for this
+operation. When it is omitted, the compiler declares the root of the Git
+repository containing this tool. An explicit path overrides that default.
+
+The selected directory's name is the corpus-root declaration written at the
+start of every documentation address. For example, selecting a directory named
+`documentation-system` produces addresses beginning
+`documentation-system:§...`. The address root is not configured separately
+and is not stored in metadata. A rootless `§...` expression is location
+notation and is invalid where a documentation address is required. Renaming the
+selected corpus-root directory therefore changes the address root; moving that
+directory beneath a different ancestor without renaming it does not.
 
 A successful run refreshes deterministic projections and controlled links,
 then evaluates structured diagnostics. Errors make the run fail; warnings and
@@ -75,6 +83,8 @@ Use `--resolve` for read-only address resolution.
 python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
+The address must declare the selected corpus root by directory name before
+`:`; `--resolve §2.1` is a syntax error rather than an implicit-root form.
 Resolution returns JSON for the addressed document, location, or numbered
 section without compiling derived state.
 

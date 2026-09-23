@@ -49,8 +49,14 @@ canonical tool and concept name.
 ### 2.1 Corpus model
 
 `model.py` owns metadata adapters, normalized `Artifact`, `HeadingTarget`,
-and `Corpus` values, UID identity, the compiler-owned address-space name,
-address derivation, Git repository root discovery, and corpus construction.
+and `Corpus` values, UID identity, root-relative location derivation, rooted
+address parsing and rendering, Git repository root discovery, and corpus
+construction.
+
+A `Corpus` carries the selected corpus-root path as its root fact. The root
+declaration written in an address is derived from the selected directory's
+name; the `§` location is derived from descendants relative to that directory.
+Do not carry a second root-identity fact beside `Corpus.root`.
 
 Model objects carry facts. They do not compile indexes, rewrite links, emit
 diagnostics, or choose presentation policy.
@@ -77,8 +83,12 @@ they do not become another authored topology.
 `links.py` owns UID-controlled target resolution and mechanical rewriting of
 the current `href` and displayed address.
 
-The UID is authority for target identity. The rendered address is a projection
-of current corpus structure.
+The UID is authority for target identity within the selected corpus. The
+displayed address is a projection of the current corpus-root declaration,
+root-relative location, and optional numbered section. Controlled links reject
+a displayed value that omits the corpus-root declaration, but a stale rooted
+value may be rewritten after the corpus root or target location changes because
+UID identity remains authoritative.
 
 ### 2.5 Compilation engine
 
@@ -88,17 +98,21 @@ or presentation behavior.
 
 ### 2.6 Command line
 
-`cli.py` owns invocation, exit policy, address-resolution output, and
-selection of diagnostic projections.
+`cli.py` owns invocation, exit policy, address-resolution output, selection
+of diagnostic projections, and selection of the corpus-root declaration for
+the operation. A supplied `corpus_root` path wins; when it is omitted, the CLI
+uses the Git repository root containing the compiler.
 
-The command line orchestrates compiler behavior; it does not own corpus rules.
+The command line orchestrates compiler behavior; it does not invent a second
+root-identity setting.
 
 ## 3. Compilation pipeline
 
 Use this canonical order:
 
 ```text
-clear stale inline diagnostics
+select corpus root
+-> clear stale inline diagnostics
 -> mint missing UIDs
 -> build corpus model
 -> compile deterministic projections
@@ -154,7 +168,9 @@ presenters -> Diagnostic
 
 Share corpus facts through the normalized model rather than hidden mutable
 state between passes. Keep cross-artifact invariants in validation when no
-single artifact legitimately owns them.
+single artifact legitimately owns them. Derive rooted addresses from
+`Corpus.root`; do not introduce another authored or computed root-identity
+source of truth.
 
 Do not move compiler behavior onto data objects merely to make those objects
 richer. Do not create a class hierarchy that mirrors the module layout.
