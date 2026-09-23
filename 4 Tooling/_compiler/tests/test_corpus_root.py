@@ -1,0 +1,119 @@
+from __future__ import annotations
+
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+TOOLING = Path(__file__).resolve().parents[2]
+if str(TOOLING) not in sys.path:
+    sys.path.insert(0, str(TOOLING))
+
+from _compiler.engine import compile_corpus, resolve_address
+from _compiler.model import CompilerError, find_repository_root
+
+
+def write(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") -> str:
+    uid_line = f"uid: {uid}\n" if uid is not None else ""
+    return f"""---
+{uid_line}description: >-
+  `Consult when` *a test corpus is entered* `to` **route through test content**.
+---
+# {root_name} Origin
+
+{extra_body}
+<!-- BEGIN index -->
+<!-- END index -->
+"""
+
+
+def page(uid: str = "DEF456") -> str:
+    return f"""---
+uid: {uid}
+description: >-
+  `Consult when` *a test page is needed* `to` **resolve the test page**.
+---
+# Test Page
+"""
+
+
+class CorpusRootTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.base = Path(self.temp.name)
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def make_corpus(self, name: str, *, origin_uid: str | None = "ABC123") -> Path:
+        root = self.base / name
+        write(root / "README.md", origin(name, uid=origin_uid))
+        write(root / "1 Page.md", page())
+        return root
+
+    def test_selected_directory_name_is_the_address_root(self) -> None:
+        root = self.make_corpus("Project Docs")
+        compile_corpus(root)
+
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("Project Docs:§1", compiled)
+
+        resolved = resolve_address(root, "Project Docs:§1")
+        self.assertEqual("DEF456", resolved["uid"])
+        self.assertEqual(str(root.resolve()), resolved["corpus_root"])
+
+    def test_rootless_location_is_not_an_address(self) -> None:
+        root = self.make_corpus("project")
+
+        with self.assertRaisesRegex(CompilerError, "must declare the corpus root"):
+            resolve_address(root, "§1")
+
+    def test_declared_address_root_must_match_selected_root(self) -> None:
+        root = self.make_corpus("project")
+
+        with self.assertRaisesRegex(CompilerError, "declares corpus root 'other'"):
+            resolve_address(root, "other:§1")
+
+    def test_controlled_links_refresh_after_corpus_root_rename(self) -> None:
+        root = self.base / "alpha"
+        controlled = '<a href="1%20Page.md" uid="DEF456">alpha:§1</a>'
+        write(root / "README.md", origin("alpha", extra_body=f"See {controlled}.\n"))
+        write(root / "1 Page.md", page())
+
+        compile_corpus(root)
+        renamed = self.base / "beta"
+        shutil.move(str(root), str(renamed))
+        compile_corpus(renamed)
+
+        compiled = (renamed / "README.md").read_text(encoding="utf-8")
+        self.assertIn('<a href="1%20Page.md" uid="DEF456">beta:§1</a>', compiled)
+        self.assertNotIn(">alpha:§1</a>", compiled)
+
+    def test_invalid_corpus_root_name_fails_before_uid_minting(self) -> None:
+        root = self.make_corpus("bad:root", origin_uid=None)
+        before = (root / "README.md").read_text(encoding="utf-8")
+
+        with self.assertRaisesRegex(CompilerError, "cannot be represented"):
+            compile_corpus(root)
+
+        self.assertEqual(before, (root / "README.md").read_text(encoding="utf-8"))
+
+    def test_default_corpus_root_is_compiler_git_repository_root(self) -> None:
+        root = self.base / "repo-root"
+        root.mkdir()
+        subprocess.run(["git", "init", "-q", str(root)], check=True)
+        script = root / "tools" / "crawler.py"
+        write(script, "# test tool\n")
+
+        self.assertEqual(root.resolve(), find_repository_root(script))
+
+
+if __name__ == "__main__":
+    unittest.main()
