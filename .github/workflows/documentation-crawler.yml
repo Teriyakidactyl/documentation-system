@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - fix/bare-root-address-violation
   workflow_dispatch:
 
 permissions:
