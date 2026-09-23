@@ -7,7 +7,7 @@ description: "`Consult when` *documented information must be authored, controlle
 # Documentation System
 
 Begin with [README.md](README.md). The directory containing this file is the
-intended crawler root. The skill name `documentation-system` is both the
+intended corpus root. The skill name `documentation-system` is both the
 harness-facing package identifier and the address-space qualifier rendered on
 controlled links; the containing repository or submodule may still use an
 ordinal classification name such as `4 Documentation System`.
