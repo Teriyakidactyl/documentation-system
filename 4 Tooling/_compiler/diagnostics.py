@@ -10,12 +10,20 @@ from enum import Enum
 from pathlib import Path
 
 from .links import CONTROL_LINK_RE
-from .model import CONTROLLED_SIDEBAND_DIRS, UID_RE, Corpus, artifact_by_uid, python_docstring, read_text, repo_path, walk_files
+from .model import (
+    CONTROLLED_SIDEBAND_DIRS,
+    UID_RE,
+    Corpus,
+    artifact_by_uid,
+    corpus_path,
+    corpus_root_name,
+    python_docstring,
+    read_text,
+    walk_files,
+)
 
-ADDRESS_TOKEN_RE = re.compile(
-    r"(?<![A-Za-z0-9_-])(?:(?:[a-z0-9][a-z0-9-]*):)?"
-    r"§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?",
-    re.IGNORECASE,
+ROOTLESS_LOCATION_TOKEN_RE = re.compile(
+    r"(?<!:)§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
 )
 ANNOTATION_LINE_RE = re.compile(
     r"^[ \t]*<!-- (?:ERROR|WARNING|INFO) DS[0-9]{3}: .* -->[ \t]*(?:\r?\n)?$",
@@ -76,7 +84,12 @@ def _strip_inline_code(line: str) -> str:
     return "".join(result)
 
 
-def _scan_markdown(text: str, path: Path, base_line: int = 1) -> list[Diagnostic]:
+def _scan_markdown(
+    text: str,
+    path: Path,
+    corpus_root: str,
+    base_line: int = 1,
+) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     in_fence = False
     fence_token: str | None = None
@@ -113,7 +126,12 @@ def _scan_markdown(text: str, path: Path, base_line: int = 1) -> list[Diagnostic
 
         line = CONTROL_LINK_RE.sub(lambda m: " " * len(m.group(0)), line)
         line = _strip_inline_code(line)
-        for match in ADDRESS_TOKEN_RE.finditer(line):
+
+        rooted_address_re = re.compile(
+            rf"(?<![^\s(\[])"
+            rf"{re.escape(corpus_root)}:§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
+        )
+        for match in rooted_address_re.finditer(line):
             address = match.group(0)
             diagnostics.append(
                 Diagnostic(
@@ -122,34 +140,50 @@ def _scan_markdown(text: str, path: Path, base_line: int = 1) -> list[Diagnostic
                     path=path,
                     line=base_line + offset,
                     message=(
-                        f"Bare documentation address {address} is location-only and not durable; "
+                        f"Documentation address {address} appears as plain prose; "
                         "use a UID-controlled link in reader-visible prose."
+                    ),
+                )
+            )
+
+        for match in ROOTLESS_LOCATION_TOKEN_RE.finditer(line):
+            location = match.group(0)
+            diagnostics.append(
+                Diagnostic(
+                    code="DS004",
+                    severity=Severity.ERROR,
+                    path=path,
+                    line=base_line + offset,
+                    message=(
+                        f"Unrooted location {location} is not a valid documentation address; "
+                        f"declare the corpus root as {corpus_root}:{location}."
                     ),
                 )
             )
     return diagnostics
 
 
-def validate_bare_addresses(corpus: Corpus) -> list[Diagnostic]:
+def validate_address_references(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
-    for path in sorted(walk_files(corpus.root), key=lambda p: repo_path(corpus.root, p).casefold()):
+    root_name = corpus_root_name(corpus.root)
+    for path in sorted(walk_files(corpus.root), key=lambda p: corpus_path(corpus.root, p).casefold()):
         rel = path.resolve().relative_to(corpus.root.resolve())
         if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
             continue
         if path.suffix.lower() == ".md":
-            diagnostics.extend(_scan_markdown(read_text(path), path))
+            diagnostics.extend(_scan_markdown(read_text(path), path, root_name))
         elif path.suffix.lower() == ".py":
             parsed = python_docstring(path)
             if parsed is not None:
                 doc, start_line = parsed
-                diagnostics.extend(_scan_markdown(doc, path, start_line))
+                diagnostics.extend(_scan_markdown(doc, path, root_name, start_line))
     return diagnostics
 
 
 def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     by_uid = artifact_by_uid(corpus)
-    for artifact in sorted(corpus.artifacts.values(), key=lambda a: repo_path(corpus.root, a.path).casefold()):
+    for artifact in sorted(corpus.artifacts.values(), key=lambda a: corpus_path(corpus.root, a.path).casefold()):
         prompt_uid = artifact.metadata.get("research-prompt")
         if prompt_uid is None:
             continue
@@ -210,7 +244,7 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
 
 
 def validate(corpus: Corpus) -> list[Diagnostic]:
-    return validate_bare_addresses(corpus) + validate_research_reports(corpus)
+    return validate_address_references(corpus) + validate_research_reports(corpus)
 
 
 def annotate(root: Path, diagnostics: list[Diagnostic]) -> int:
@@ -248,7 +282,7 @@ def _github_escape(value: str, *, property_value: bool = False) -> str:
 
 def emit(diagnostics: list[Diagnostic], root: Path) -> None:
     for diagnostic in diagnostics:
-        path = repo_path(root, diagnostic.path)
+        path = corpus_path(root, diagnostic.path)
         print(
             f"{diagnostic.severity.value.upper()} {diagnostic.code} "
             f"{path}:{diagnostic.line} {diagnostic.message}"
@@ -275,7 +309,7 @@ def write_json(path: Path, diagnostics: list[Diagnostic], root: Path) -> None:
             {
                 **asdict(d),
                 "severity": d.severity.value,
-                "path": repo_path(root, d.path),
+                "path": corpus_path(root, d.path),
             }
             for d in diagnostics
         ],
