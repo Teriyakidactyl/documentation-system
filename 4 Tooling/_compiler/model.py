@@ -27,6 +27,9 @@ ADDRESS_RE = re.compile(
     r"(?P<location>§[0-9]+(?:\.[0-9]+)*)"
     r"(?:#(?P<section>[0-9]+(?:\.[0-9]+)*))?$"
 )
+BARE_CORPUS_ROOT_ADDRESS_RE = re.compile(
+    r"^§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?$"
+)
 UID_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 UID_RE = re.compile(r"^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{6}$")
 NUMBERED_HEADING_RE = re.compile(
@@ -287,10 +290,12 @@ def heading_target(body: str, number: str, owner: Path) -> HeadingTarget:
 def parse_address(address: str, corpus_root: Path) -> tuple[str, str | None]:
     match = ADDRESS_RE.fullmatch(address)
     if not match:
-        raise CompilerError(
-            f"Invalid documentation address {address!r}; addresses must declare the corpus root "
-            "before ':'"
-        )
+        if BARE_CORPUS_ROOT_ADDRESS_RE.fullmatch(address):
+            raise CompilerError(
+                f"Bare corpus-root address {address!r} is invalid and unresolvable; "
+                "addresses must declare the corpus root before ':'"
+            )
+        raise CompilerError(f"Invalid documentation address {address!r}")
     declared_root = match.group("corpus_root")
     expected_root = corpus_root_name(corpus_root)
     if declared_root != expected_root:
