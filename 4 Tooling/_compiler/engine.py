@@ -34,7 +34,7 @@ class CompileResult:
 
 def compile_corpus(corpus_root: Path) -> CompileResult:
     corpus_root = corpus_root.resolve()
-    # Establish the corpus-corpus_root declaration and validate the modeled corpus
+    # Establish the corpus-root declaration and validate the modeled corpus
     # before any compiler-owned mutation occurs.
     build_corpus(corpus_root)
     clear_inline_annotations(corpus_root)
