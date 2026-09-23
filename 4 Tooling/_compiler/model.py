@@ -469,13 +469,14 @@ def location_addresses(root: Path) -> dict[str, Path]:
         ordinals = [part for part in ordinals if part is not None]
         if not ordinals:
             continue
-        address = "§" + ".".join(ordinals)
-        previous = result.get(address)
+        location = "§" + ".".join(ordinals)
+        previous = result.get(location)
         if previous is not None and previous != current_path:
             raise CompilerError(
-                f"Two locations derive {address}: {corpus_path(root, previous)} and {corpus_path(root, current_path)}"
+                f"Two locations derive {location}: "
+                f"{corpus_path(root, previous)} and {corpus_path(root, current_path)}"
             )
-        result[address] = current_path
+        result[location] = current_path
     return result
 
 
@@ -514,9 +515,9 @@ def derive_index(root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, fro
         raise CompilerError("Corpus root must contain indexed README.md")
     immediate: dict[Path, set[Path]] = {}
     parents: dict[Path, Path] = {}
-    addressed = [artifact for artifact in artifacts.values() if artifact.location is not None]
+    located = [artifact for artifact in artifacts.values() if artifact.location is not None]
 
-    root_children = {artifact.path for artifact in addressed if location_depth(artifact.location) == 1}
+    root_children = {artifact.path for artifact in located if location_depth(artifact.location) == 1}
     if root_children:
         immediate[origin] = root_children
         for child in root_children:
@@ -529,7 +530,7 @@ def derive_index(root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, fro
         depth = location_depth(owner.location) + 1
         children = {
             artifact.path
-            for artifact in addressed
+            for artifact in located
             if artifact.location.startswith(prefix) and location_depth(artifact.location) == depth
         }
         if children:
