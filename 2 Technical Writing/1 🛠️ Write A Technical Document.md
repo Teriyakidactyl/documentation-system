@@ -3,7 +3,8 @@ uid: 5CFFZW
 description: >-
   `Read in full and follow when` *authoring a technical document* `to` **commit
   its description, controlled placement, quadrant, outline, and writing style
-  before drafting prose that satisfies them**.
+  before drafting prose, then validate the finished artifact before claiming
+  that it satisfies those commitments**.
 ---
 
 # 🛠️ Write A Technical Document
@@ -23,7 +24,7 @@ writing-style:
   register: technical
 -->
 
-Work the seven steps in order; each constrains the next. Quadrant Reference
+Work the eight steps in order; each constrains the next. Quadrant Reference
 below carries every per-quadrant value they call for, plus the one format
 all four quadrants share.
 
@@ -701,6 +702,25 @@ The rules below are prose rules, not register. No style block exempts them.
   in the event that.
 - **Drop the em dash.** End the sentence, or use a comma. Reaching for
   parentheses instead trades one tell for another.
+
+## 8. Validate before acceptance
+
+Authoring establishes the document; it does not independently prove that the
+result satisfies the specification that guided it.
+
+Before presenting the document as complete or conforming, apply
+<a href="../7%20Editing/2%20%F0%9F%9B%A0%EF%B8%8F%20Validate%20an%20Artifact.md" uid="BCSYYG">documentation-system:§7.2</a>
+against the document's committed description, quadrant, outline, writing style,
+applicable Document Form or Document Elements, repository conventions, and any
+task-specific accepted criteria.
+
+Treat the authored document as the subject of validation. Do not revise it
+inside the validation pass. A finding that requires correction re-enters
+Revision or the applicable authoring decision before validation is rerun.
+
+A draft may exist without current validation evidence. Do not describe that
+draft as satisfying its governing commitments until the required lenses have
+current evidence.
 
 ---
 
