@@ -50,11 +50,12 @@ tool. An explicit path overrides that default.
 Each documentation address separately declares its corpus root by directory
 name before `:`. For a job selecting a directory named
 `documentation-system`, generated addresses therefore begin
-`documentation-system:§...`. The address root is not configured separately
-and is not stored in metadata. A rootless `§...` expression is location
-notation and is invalid where a documentation address is required. Renaming the
-selected corpus-root directory therefore changes the address root; moving that
-directory beneath a different ancestor without renaming it does not.
+`documentation-system:§...`. No second corpus-root designation is configured
+or stored in metadata. A rootless `§...` expression is location notation and
+is invalid where a documentation address is required. Renaming the directory
+serving as corpus root changes the corpus-root declaration in addresses that
+use it; moving that directory beneath a different ancestor without renaming it
+does not.
 
 A successful run refreshes deterministic projections and controlled links,
 then evaluates structured diagnostics. Errors make the run fail; warnings and
