@@ -1,8 +1,8 @@
 ---
 uid: PK9FPF
 description: >-
-  `Read in full and follow when` *a recurring repository document role needs a
-  reusable standard form or a document is being derived from one* `to`
+  `Read in full and follow when` *a recurring document role needs a
+  reusable Document Form or a document is being derived from one* `to`
   **author the canonical form, bind each derived document back to it, and keep
   recurring guidance owned by the form instead of copied into instances**.
 quadrant: HowTo
@@ -20,11 +20,12 @@ writing-style:
   register: technical
 ---
 
-# 🛠️ Author And Apply A Standard Form
+# 🛠️ Author And Apply A Document Form
 
-A standard form captures stable source structure and authoring guidance for a
+A Document Form captures stable source structure and authoring guidance for a
 recurring document role. It is not a template engine and does not own
-instance-specific content.
+instance-specific content. A controlled Document Form is the adopted standard
+for its role; standardization is its authority, not its concept type.
 
 ## 1. Confirm the recurring role
 
@@ -35,8 +36,8 @@ specific procedure.
 
 ## 2. Author the canonical form
 
-Create a Reference artifact in Standard Forms. Keep ordinals 1–9 for guidance
-about Standard Forms and place reusable forms at ordinal 10 or above. Show
+Create a Reference artifact in Document Forms. Keep ordinals 1–9 for guidance
+about Document Forms and place reusable forms at ordinal 10 or above. Show
 required reader-facing Markdown as live Markdown so the rendered form
 demonstrates the intended result. Place author guidance in an ordinary HTML
 comment immediately after the element it governs.
@@ -56,7 +57,7 @@ Add `form` to the derived document's file frontmatter as a controlled link to
 the governing form:
 
 ```yaml
-form: '<a href="*" uid="ABC123">documentation-system:§3.10</a>'
+form: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>'
 ```
 
 Use the form's real UID and current address. The compiler owns the link target

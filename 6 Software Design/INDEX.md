@@ -1,6 +1,6 @@
 ---
 uid: 1SGQXT
-form: '<a href="../3%20Standard%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§3.11</a>'
+form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *a software design concern must be resolved before its
   implementation pattern or boundary is chosen* `to` **select the canonical

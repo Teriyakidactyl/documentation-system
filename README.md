@@ -1,6 +1,6 @@
 ---
 uid: 6E9QHP
-form: '<a href="3%20Standard%20Forms/10%20%F0%9F%93%96%20Origin.md" uid="DNFDSK">documentation-system:§3.10</a>'
+form: '<a href="2%20Technical%20Writing/3%20Document/1%20Document%20Forms/10%20%F0%9F%93%96%20Origin.md" uid="DNFDSK">documentation-system:§2.3.1.10</a>'
 description: >-
   `Consult when` *repository work reaches a documentation, documented-information,
   or Documentation System tooling concern and the applicable procedure is not
@@ -11,8 +11,8 @@ description: >-
 # Documentation System Origin
 
 Addresses are relative to the corpus root, the filesystem directory at the top
-of this controlled corpus. `documentation-system:§2.3.1` means start at that
-directory, then descend through ordinal 2, child 3, and artifact 1; `#4.2`
+of this controlled corpus. `documentation-system:§2.3.2.1` means start at that
+directory, then descend through ordinal 2, child 3, child 2, and artifact 1; `#4.2`
 selects numbered heading 4.2 inside the resolved artifact. The
 `documentation-system:` qualifier names the logical address space independently
 of the corpus root's physical path.

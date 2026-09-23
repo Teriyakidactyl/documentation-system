@@ -49,7 +49,7 @@ artifact. Keep the title location-specific. Keep the blurb authored and
 compact; it defines the location boundary rather than summarizing its children.
 
 Add the optional local convention only when a reader must know it before
-choosing among immediate children. Standard Forms, for example, states its
+choosing among immediate children. Document Forms, for example, states its
 ordinal reservation before the generated region.
 
 Place exactly one compiler-owned region after authored context. Do not hand-list

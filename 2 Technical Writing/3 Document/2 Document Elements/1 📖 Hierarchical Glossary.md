@@ -55,4 +55,4 @@ do not turn it into a second hierarchy. The element heading owns the complete
 tree-plus-table unit.
 
 Instances record provenance with `element:` metamatter as defined by
-<a href="../1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#12-choose-the-container" uid="5CFFZW">documentation-system:§2.1#1.2</a>.
+<a href="../../1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#12-choose-the-container" uid="5CFFZW">documentation-system:§2.1#1.2</a>.
