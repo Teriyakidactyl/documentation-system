@@ -63,7 +63,7 @@ not. Conversely, a subtype repeated in two exclusive branches means the
 classification has not resolved the item.
 
 If neither relation fits convincingly, or more than one fits for independent
-reasons, keep the ambiguity open and continue to <a href="*" uid="M4R8XC">documentation-system:§5.1#7</a> rather than choosing the
+reasons, keep the ambiguity open and continue to <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md#7-resolve-or-escalate" uid="M4R8XC">documentation-system:§5.1#7</a> rather than choosing the
 nearer-looking branch.
 
 ## 3. Check the layer's axis

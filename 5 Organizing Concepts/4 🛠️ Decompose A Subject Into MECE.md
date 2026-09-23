@@ -123,7 +123,7 @@ non-negotiable shape.
 1. State the imposed shape and constraint.
 2. Draft the smallest set of candidate top-level containers or categories.
 3. Test the empty structure for overlap and obvious gaps.
-4. Populate it with the units from <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>.
+4. Populate it with the units from <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>.
 5. Abandon or revise the hypothesis when collisions are frequent rather than
    stretching category definitions to preserve it.
 
@@ -132,7 +132,7 @@ non-negotiable shape.
 Use bottom-up decomposition for unstructured data, overlapping concepts, or
 legacy structures whose current categories are not trustworthy.
 
-1. Atomize compound subjects into the facet-coherent units from <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>.
+1. Atomize compound subjects into the facet-coherent units from <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>.
 2. Record the attributes that distinguish those units.
 3. Compare units across the candidate axes.
 4. Merge true duplicates and surface uncovered combinations or concepts as
@@ -157,7 +157,7 @@ confirmation.
 Use the **structural horizon** only in nested structures where classification
 (`is-a`) and schema composition (`has-a`) can be confused by the same syntax.
 Do not force part-of relations or explicit graph edges through this test; they
-should already have been identified by <a href="*" uid="K8T4ZM">documentation-system:§5.4#2</a> and <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>.
+should already have been identified by <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#2-select-the-structural-topology" uid="K8T4ZM">documentation-system:§5.4#2</a> and <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>.
 
 For each candidate node `N` under parent `P`, apply both tests:
 
@@ -174,7 +174,7 @@ Classify the result explicitly:
 | holds | fails | `is-a` |
 | fails | holds | `has-a` |
 | holds | holds | `AMBIGUOUS` |
-| fails | fails | relation unresolved; revisit <a href="*" uid="K8T4ZM">documentation-system:§5.4#2</a>–<a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a> |
+| fails | fails | relation unresolved; revisit <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#2-select-the-structural-topology" uid="K8T4ZM">documentation-system:§5.4#2</a>–<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a> |
 
 The horizon is branch-local. Different branches may change from classification
 to composition at different depths.
@@ -215,15 +215,15 @@ exhaustiveness, not proof.
 **Record the validation evidence before issuing a verdict.** The record must let
 another reader audit the result without reconstructing unstated reasoning.
 
-- Record one row for every facet-coherent unit from <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>, including its active
+- Record one row for every facet-coherent unit from <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>, including its active
   PMEST values, owner, topology and axis, and boundary from adjacent units.
-- When <a href="*" uid="K8T4ZM">documentation-system:§5.4#5</a> applies, record every examined node with its parent, the literal Test A
+- When <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#5-locate-the-structural-horizon-where-needed" uid="K8T4ZM">documentation-system:§5.4#5</a> applies, record every examined node with its parent, the literal Test A
   and Test B propositions and their results, and the resulting classification.
   Do not replace the evaluated propositions with bare `holds` / `fails` labels.
 - Record each overlap or gap candidate that could affect the verdict and its
   disposition.
 - Confirm that the unit-record count matches the number of units identified in
-  <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a> and that every load-bearing parent relation required by a nested verdict
+  <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a> and that every load-bearing parent relation required by a nested verdict
   has been tested. Fill any shortfall before continuing.
 
 A verdict without this complete validation record is incomplete even when its
@@ -248,10 +248,10 @@ primitive is known.
 
 | Symptom | Likely failure | Corrective direction |
 |---|---|---|
-| “This could go in either of two branches for unrelated reasons.” | Axis tilting or a false tree | Revisit <a href="*" uid="K8T4ZM">documentation-system:§5.4#2</a>–<a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>; separate axes or use a matrix/graph. |
+| “This could go in either of two branches for unrelated reasons.” | Axis tilting or a false tree | Revisit <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#2-select-the-structural-topology" uid="K8T4ZM">documentation-system:§5.4#2</a>–<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>; separate axes or use a matrix/graph. |
 | “The list feels random.” | No meaningful ordering relation | Name the canonical order or remove the false sequence. |
 | “The parent name is also one of its own children.” | Superordinate shadowing | Raise or rename the parent so it remains more abstract. |
-| “The structure mixes very broad concepts with tiny details.” | Granularity mismatch | Re-run <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a> and split or regroup at coherent boundaries. |
+| “The structure mixes very broad concepts with tiny details.” | Granularity mismatch | Re-run <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a> and split or regroup at coherent boundaries. |
 | “The tree is deep because every attribute combination has a folder.” | Matrix forced into a tree | Represent the independent facets separately. |
 | “A new case fits only after stretching every existing definition.” | Collective-exhaustiveness gap | Add the missing concept or return the gap for decision. |
 | “The subject declares its categories non-exclusive.” | Exclusivity applied to the wrong topology | Validate qualified identity or independent axes instead of forcing exclusive siblings. |
@@ -259,7 +259,7 @@ primitive is known.
 
 ## 8. Author a taxonomy from scratch
 
-When no candidate structure exists, add concept nomination before <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>.
+When no candidate structure exists, add concept nomination before <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>.
 
 Produce a flat list of candidate concepts without imposing hierarchy. Enumerate
 directly when the domain and vocabulary are stable. For fuzzy domains, use
@@ -268,9 +268,9 @@ direct enumeration may miss. For collaborative or contested domains, collect
 candidate concepts before attempting to organize them.
 
 Nomination is complete when the candidate set exists without assumed parentage.
-Then run <a href="*" uid="K8T4ZM">documentation-system:§5.4#3</a>–<a href="*" uid="K8T4ZM">documentation-system:§5.4#6</a> unchanged. The hierarchy, axes, and topology are outputs of the
+Then run <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#3-identify-the-unit-of-analysis" uid="K8T4ZM">documentation-system:§5.4#3</a>–<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#6-run-terminal-mece-validation" uid="K8T4ZM">documentation-system:§5.4#6</a> unchanged. The hierarchy, axes, and topology are outputs of the
 decomposition, not inputs smuggled into concept nomination.
 
 Before putting a newly authored taxonomy into service, stress-test each
-load-bearing category with the gap probes from <a href="*" uid="K8T4ZM">documentation-system:§5.4#6</a> and return any unresolved
+load-bearing category with the gap probes from <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md#6-run-terminal-mece-validation" uid="K8T4ZM">documentation-system:§5.4#6</a> and return any unresolved
 relation as **AMBIGUOUS** rather than creating precedent from a guess.

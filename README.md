@@ -22,10 +22,10 @@ A qualifier such as `documentation-system:` names the address space.
 > concern, satisfying each resulting document according to its directive.
 
 <!-- BEGIN index -->
-<!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->
+<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
 
 - <a href="1%20Document%20Control/INDEX.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
-  - `Consult when` *documented information needs a controlled repository location, address, index presence, progressive-disclosure exposure, or crawler validation* `to` **select the Document Control procedure before changing controlled information**.
+  - `Consult when` *documented information needs a controlled repository location, address, index presence, progressive-disclosure exposure, or compiler validation* `to` **select the Document Control procedure before changing controlled information**.
 - <a href="2%20Technical%20Writing/INDEX.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
   - `Consult when` *technical documented information must be authored or substantially rewritten* `to` **select the Technical Writing procedure before drafting the document body**.
 - <a href="3%20Standard%20Forms/INDEX.md" uid="TTDJF8">documentation-system:§3</a> — Standard Forms
@@ -34,6 +34,6 @@ A qualifier such as `documentation-system:` names the address space.
   - `Consult when` *the Documentation System needs compilation, address resolution, or harness projection* `to` **select the tool that performs the required control operation**.
 - <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
   - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **select the organizing concept that resolves conceptual structure before domain-specific rules are applied**.
-- <a href="7%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§7</a> — Software Design
+- <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 <!-- END index -->

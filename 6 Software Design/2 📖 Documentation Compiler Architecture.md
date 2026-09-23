@@ -133,7 +133,7 @@ annotations, JSON, and inline source comments are projections of that value.
 Inline annotations are compiler-owned ordinary HTML comments such as:
 
 ```markdown
-<!-- ERROR DS001: Bare documentation address §2.1 is location-only and not durable. -->
+
 ```
 
 A normal compile removes stale compiler-owned diagnostic comments before

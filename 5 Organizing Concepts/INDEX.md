@@ -15,7 +15,7 @@ documents resolve conceptual organization only. A caller still applies its own
 domain-specific control, writing, or implementation rules afterward.
 
 <!-- BEGIN index -->
-<!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->
+<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.1</a> — 🛠️ Test A Placement
   - `Read in full and follow when` *a non-trivial item must be placed into an existing structure or more than one placement plausibly fits* `to` **test the candidate against topology, relation, axis, granularity, ownership, and coverage, then confirm it or surface the unresolved ambiguity instead of guessing**.
