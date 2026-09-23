@@ -3,8 +3,8 @@ uid: DNFDSK
 description: >-
   `Consult when` *the `README.md` representing a Documentation System origin
   is being authored or reviewed for conformance* `to` **confirm the required
-  root navigation contract, source guidance, and placement of its generated
-  immediate-child index**.
+  compact address legend, root navigation contract, source guidance, and
+  placement of its generated immediate-child index**.
 quadrant: Reference
 outline:
   topology: list
@@ -22,6 +22,10 @@ writing-style:
 
 # 📖 Origin
 
+Addresses mirror numbered paths: `§2.3.1` means ordinal 2, then child 3, then
+artifact 1; `#4.2` selects numbered heading 4.2 inside the resolved artifact.
+A qualifier such as `documentation-system:` names the address space.
+
 > [!IMPORTANT]
 > Start here. Compare the current need only against the immediate indexed
 > choices below. Select the narrowest matching description. If that choice
@@ -29,8 +33,12 @@ writing-style:
 > identifies the governing artifact.
 
 <!--
-The callout above is the standard reader-facing navigation contract for an
-Origin. Keep its behavior intact when adapting wording to a corpus:
+The address paragraph and callout above are the standard reader-facing entry
+contract for an Origin. Keep the address explanation compact: teach decimal
+path descent, the optional heading suffix, and address-space qualification,
+then leave UID, move, resolution, and crawler mechanics to Document Control.
+
+Keep the navigation behavior intact when adapting wording to a corpus:
 
 - begin at the Origin;
 - compare the current need only with immediate indexed choices;

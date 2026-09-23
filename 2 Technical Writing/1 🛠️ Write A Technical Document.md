@@ -7,7 +7,7 @@ description: >-
 ---
 
 # 🛠️ Write A Technical Document
-<!-- metamatter:
+<!--
 quadrant: HowTo
 outline:
   topology: linear
@@ -41,10 +41,11 @@ description
 |---|---|
 | **specification** | The record of what a document commits to, kept in frontmatter or metamatter. Never the document itself. |
 | **frontmatter** | YAML fenced by `---` at the top of a file. Governs the whole file. |
-| **metamatter** | YAML inside an HTML comment, beneath a heading. Governs that heading's section only. |
-| **ordinary HTML comment** | Markdown source wrapped in `<!-- ... -->` that carries document-maintenance or tool-control information, not document specification or reader-required topic content. |
+| **metamatter** | Structured YAML data inside an HTML comment whose first non-whitespace content is a data key (`key:`). Position supplies its scope; the key supplies its meaning. |
+| **ordinary HTML comment** | An HTML comment whose first non-whitespace content is not a YAML data key. It carries freeform maintenance or tool-control information, not structured metamatter or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
 | **form** | An optional file-level controlled link from a derived document to the Standard Form governing its recurring repository role. |
+| **element** | A position-scoped controlled link in metamatter from a reusable document section to the Document Element governing its source structure. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
 | **acceptance criterion** | The observable thing successful use enables the reader to do, decide, or understand in order to act. |
@@ -100,42 +101,58 @@ the form is applied.
 in frontmatter while a document carries one quadrant, and move into each H1's
 *metamatter* once it carries several (step 4.4).
 
-Metamatter sits immediately beneath a heading, with no blank line between
-them:
+Metamatter is structured YAML data carried by an HTML comment. An HTML comment
+is metamatter when its first non-whitespace content is a data key of the form
+`key:`; no literal wrapper is used. Position supplies scope and the leading
+key supplies meaning.
+
+Heading-scoped metamatter sits immediately beneath the heading it governs, with
+no blank line between them:
 
 ```markdown
 # 📖 Connector Field Reference
-<!-- metamatter:
+<!--
 quadrant: Reference
 outline:
   axis: field-name
 -->
 ```
 
-Three things make it work. Its **position** is its scope. It governs the
-heading it sits under and nothing else, and declares no scope field because
-it needs none. Its **`metamatter:` prefix** marks it as structure rather than
-an aside, so a reader knows it is operative and a tidying pass knows to leave
-it. And it is **permanent**. Strip it and the document loses its own account
-of what governs each part.
+A single-key comment is valid metamatter too. Reusable document-element
+provenance uses `element:` immediately beneath the heading that bounds the
+element:
 
-Nothing cascades between the two containers: a metamatter block that omits a
-key has not inherited it from frontmatter.
+```markdown
+## Terms
+<!-- element: '<a href="*" uid="BJS5BZ">documentation-system:§2.3.1</a>' -->
+```
+
+The key determines retention and semantics. `quadrant`, `outline`,
+`writing-style`, and `element` are controlled, permanent document data.
+Other structured maintenance keys may define their own lifecycle. A comment
+whose first content is prose or a non-data marker is an ordinary HTML comment.
+
+When an H1 carries quadrant specification in metamatter, state its complete
+`quadrant`, `outline`, and `writing-style` set; those specification keys do
+not inherit from file frontmatter or another H1. An `element:`-only comment
+records provenance without creating a new quadrant unit and does not cancel the
+quadrant specification already governing its containing document.
 
 ### 1.3 Classify ordinary HTML comments
 
-An ordinary HTML comment is not a specification container and is not body
-content. It carries information that a document maintainer or maintenance
+An ordinary HTML comment is not structured metamatter and is not body content.
+Its first non-whitespace content is prose or a non-data marker rather than a
+YAML data key. It carries information that a document maintainer or maintenance
 tool needs but the intended reader does not.
 
 | Information | Location |
 |---|---|
 | Governs the whole file | Frontmatter |
-| Governs one H1 section | Metamatter |
+| Structured hidden data scoped by position | Metamatter |
 | Needed by the reader to satisfy the acceptance criterion | Body, heading, table, or quadrant-qualified callout |
 | Needed only to maintain, generate, lint, or edit the source document | Ordinary HTML comment |
 
-Ordinary comments can hold deferred documentation-cleanup TODOs,
+Ordinary comments can hold freeform deferred documentation-cleanup TODOs,
 generated-region boundaries, stable insertion anchors, Markdown linter or
 formatter directives, source-formatting notes for editors, and temporary
 review markers that must be removed before acceptance. A maintenance tool
@@ -528,7 +545,7 @@ description: >-
 ---
 
 # 🛠️ Configure the Connector
-<!-- metamatter:
+<!--
 quadrant: HowTo
 outline:
   topology: linear
@@ -547,7 +564,7 @@ writing-style:
 ## 1. Check the credential fields
 
 # 📖 Connector Field Reference
-<!-- metamatter:
+<!--
 quadrant: Reference
 outline:
   axis: field-name
@@ -565,8 +582,9 @@ writing-style:
 ## client_id
 ```
 
-The `metamatter:` prefix marks it as load-bearing structure rather than a
-comment. Strip it and the document mixes shapes with no account of why.
+The leading data key makes each block metamatter rather than an ordinary
+comment. In these blocks the quadrant specification is load-bearing: strip it
+and the document mixes shapes with no account of why.
 Note what the two blocks share and where they part: same `formality`,
 `abstraction`, and `redundancy`, different `tone`, `mode`, `density`, and
 `signposting`. Each block states its full set anyway, because nothing
@@ -687,7 +705,7 @@ The rules below are prose rules, not register. No style block exempts them.
 ---
 
 # 📖 Quadrant Reference
-<!-- metamatter:
+<!--
 quadrant: Reference
 outline:
   axis: quadrant
@@ -725,15 +743,16 @@ format:                  # shared by all four quadrants
              names a document versus what titles it
 
   comments:
-    metamatter:
-      syntax: "<!-- metamatter: ... -->"
-      purpose: operative section specification
-      placement: immediately beneath the governed H1
+    structured:
+      name: metamatter
+      syntax: "HTML comment whose first non-whitespace content is a YAML data key"
+      purpose: position-scoped structured specification, provenance, or maintenance data
+      placement: immediately beneath the governed heading unless the key defines another scope
     ordinary: # Markdown has no native comment syntax; use an HTML comment.
-      syntax: "<!-- non-reader-facing document note -->"
-      purpose: hidden document maintenance or maintenance-tool control
+      syntax: "HTML comment beginning with prose or a non-data marker"
+      purpose: freeform hidden document maintenance or maintenance-tool control
       placement: adjacent to its target, or at file end for file-wide cleanup
-      forbidden: reader-required topic content or document specification
+      forbidden: reader-required topic content or structured document data
 
   # FIXME see if this can be compacted
   callouts:               # elevates one claim above prose's flat weighting;

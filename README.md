@@ -10,12 +10,15 @@ description: >-
 
 # Documentation System Origin
 
+Addresses mirror numbered paths: `§2.3.1` means ordinal 2, then child 3, then
+artifact 1; `#4.2` selects numbered heading 4.2 inside the resolved artifact.
+A qualifier such as `documentation-system:` names the address space.
+
 > [!IMPORTANT]
 > Start here. Compare the current need only against the immediate indexed
 > choices below. Select the narrowest matching description. If that choice
 > exposes another index, repeat there. Stop when the selected description
 > identifies the governing artifact.
-
 
 <!-- BEGIN index -->
 <!-- This block was created by running `4 Tooling/1 🛠️ Navigation Crawler.py`; run it whenever indexed information or classification may have changed. -->

@@ -35,10 +35,11 @@ specific procedure.
 
 ## 2. Author the canonical form
 
-Create a Reference artifact in Standard Forms. Show required reader-facing
-Markdown as live Markdown so the rendered form demonstrates the intended
-result. Place author guidance in an ordinary HTML comment immediately after
-the element it governs.
+Create a Reference artifact in Standard Forms. Keep ordinals 1–9 for guidance
+about Standard Forms and place reusable forms at ordinal 10 or above. Show
+required reader-facing Markdown as live Markdown so the rendered form
+demonstrates the intended result. Place author guidance in an ordinary HTML
+comment immediately after the element it governs.
 
 Use those comments to distinguish required behavior, adaptable wording,
 optional material, and forbidden duplication. Keep only rules that recur

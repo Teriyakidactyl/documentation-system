@@ -1,5 +1,6 @@
 ---
 uid: A7K3QF
+form: '<a href="../3%20Standard%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§3.11</a>'
 description: >-
   `Consult when` *a structural decision is shared across documents, code,
   schemas, or other repository artifacts* `to` **select the organizing concept
