@@ -10,10 +10,10 @@ quadrant: HowTo
 ---
 # 🛠️ Harness Installer
 
-Use this tool from a repository that contains the Documentation System as a
-folder or submodule. The canonical folder may carry an ordinal classification
-name such as `4 Documentation System`; the harness-facing symlink is named from
-`SKILL.md#name`, for example `documentation-system`.
+Use this tool from the Documentation System repository or submodule. The
+canonical source directory is the Git repository containing this tool; the
+harness-facing symlink name is read from `SKILL.md#name`, for example
+`documentation-system`.
 
 The installer never copies the corpus. It creates or validates symlinks so one
 canonical working tree is visible through harness-specific skill paths. A real
@@ -36,6 +36,7 @@ Requires PyYAML.
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -57,10 +58,19 @@ class InstallError(RuntimeError):
 
 
 def find_skill_root(script: Path) -> Path:
-    for directory in (script.resolve().parent, *script.resolve().parents):
-        if (directory / "SKILL.md").is_file():
-            return directory
-    raise InstallError("Could not find SKILL.md above the installer")
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(script.resolve().parent), "rev-parse", "--show-toplevel"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise InstallError("Could not determine the containing Git repository root") from exc
+    root = Path(result.stdout.strip()).resolve()
+    if not root.is_dir():
+        raise InstallError(f"Git repository root is not a directory: {root}")
+    return root
 
 
 def skill_name(skill_root: Path) -> str:
