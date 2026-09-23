@@ -40,5 +40,5 @@ of the corpus root's physical path.
 - <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 - <a href="7%20Editing/INDEX.md" uid="X74GZ1">documentation-system:§7</a> — Editing
-  - `Consult when` *an existing artifact must be changed or assessed against a stated change, specification, norm, or declared commitment* `to` **select the Editing procedure that revises the artifact or validates it without conflating mutation with assessment**.
+  - `Consult when` *an existing artifact must be changed or assessed against a stated change, specification, norm, or declared commitment* `to` **select the Editing authority and, for prose-bearing work, the editorial pass that govern the task without conflating mutation with assessment**.
 <!-- END index -->
