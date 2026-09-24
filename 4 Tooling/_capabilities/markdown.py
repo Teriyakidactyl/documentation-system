@@ -283,10 +283,13 @@ def renumber(body: str) -> tuple[str, dict[str, str]]:
         title = match.group("title")
         old = NUMBER_PREFIX_RE.match(title)
         clean_title = title[old.end() :] if old else title
+        punctuation = ""
         if old:
-            old_number = old.group(0).strip().rstrip(".")
+            old_prefix = old.group(0).strip()
+            old_number = old_prefix.rstrip(".")
+            punctuation = "." if old_prefix.endswith(".") else ""
             mapping[old_number] = number
-        output.append(f"{match.group('marks')} {number} {clean_title}{ending}")
+        output.append(f"{match.group('marks')} {number}{punctuation} {clean_title}{ending}")
         previous_level = level
 
     return "".join(output), mapping
