@@ -27,8 +27,8 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Organizing dependency
-        run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Install Tooling dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML pymarkdownlnt==0.9.40
 
       - name: Run Tooling tests
         run: python -m unittest discover -s "4 Tooling/tests" -p "test_*.py"
@@ -61,8 +61,8 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Organizing dependency
-        run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Install Tooling dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML pymarkdownlnt==0.9.40
 
       - name: Refresh organization
         run: python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
