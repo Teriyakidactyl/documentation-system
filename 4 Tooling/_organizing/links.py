@@ -126,6 +126,7 @@ def rewrite_python(path: Path, corpus: Corpus) -> int:
     path.write_text(updated, encoding="utf-8")
     return changed
 
+
 def rewrite_control_links(corpus: Corpus) -> int:
     changed = 0
     for path in sorted(walk_files(corpus.corpus_root), key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
