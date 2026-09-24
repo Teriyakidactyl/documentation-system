@@ -2,9 +2,9 @@
 uid: YT5Y7F
 form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
-  `Consult when` *the Documentation System needs compilation, address resolution,
-  or harness projection* `to` **select the tool that performs the required
-  control operation**.
+  `Consult when` *the Documentation System needs corpus organization, representation-level tooling,
+  or harness projection* `to` **select the narrowest executable capability that owns the required
+  mechanical operation**.
 ---
 
 # Tooling
