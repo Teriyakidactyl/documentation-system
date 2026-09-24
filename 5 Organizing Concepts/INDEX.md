@@ -3,16 +3,36 @@ uid: A7K3QF
 form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *a structural decision is shared across documents, code,
-  schemas, or other repository artifacts* `to` **select the organizing concept
-  that resolves conceptual structure before domain-specific rules are applied**.
+  schemas, or other repository artifacts* `to` **enter the earliest unresolved
+  organizing question and resolve conceptual structure before domain-specific
+  representation rules are applied**.
 ---
 
 # Organizing Concepts
 
-This location collects repository-agnostic concepts for deciding how things
-relate, where they belong, and how a structure should be decomposed. These
-documents resolve conceptual organization only. A caller still applies its own
-domain-specific control, writing, or implementation rules afterward.
+This location is a repository-agnostic structural resolution system. It decides
+what the conceptual units are, how they relate, who owns their meaning, where a
+known unit fits, and whether a consequential structure withstands formal
+validation. Domain-specific control, writing, or implementation rules represent
+the result afterward.
+
+## Resolution flow
+
+Enter at the earliest unresolved question. Do not rerun an upstream decision
+that is already established merely because a later stage is selected. If later
+evidence contradicts an earlier decision, return to the earliest contradicted
+stage instead of patching the downstream representation.
+
+| Stage | Question | Result |
+|---|---|---|
+| 1. Structural units | Is the candidate one cohesive unit or several? | Stable units and explicit unresolved boundaries. |
+| 2. Relationships and topology | What relation connects the units, and what topology preserves it? | Named relationship, axis where applicable, and topology. |
+| 3. Ownership and convergence | Who owns the meaning or invariant, where is it contained, and where do independent concerns merely meet? | Owner, container, and convergence distinctions. |
+| 4. Placement | Where does a known unit fit in an existing structure? | Confirmed placement or the earliest contradicted structural decision. |
+| 5. Structural validation | Does a consequential decomposition remain coherent and complete? | PASS, FAIL, or AMBIGUOUS with evidence. |
+
+A caller may stop as soon as its structural question is resolved. The stages are
+a dependency order, not a requirement to execute every document for every task.
 
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
