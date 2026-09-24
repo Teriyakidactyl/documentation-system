@@ -14,6 +14,13 @@ This location collects reusable, heading-bounded document structures. Each
 element owns source arrangement and provenance conventions; the consuming
 document owns its subject-specific content.
 
+An element may occupy a numbered directory when deterministic support code is
+part of using that element. In that representation, the directory's `INDEX.md`
+is the Document Element authority and unnumbered implementation and test files
+live beside it. Those support files may call common Tooling capabilities for
+generic Markdown, YAML, HTML, or other representation mechanics; they do not
+move the element's semantic rules into those generic capabilities.
+
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
@@ -23,4 +30,6 @@ document owns its subject-specific content.
   - `Consult when` *a bounded set of conditions maps deterministically to actions or outcomes and prose would obscure the branch boundaries* `to` **represent each decision rule as a scannable condition-to-result row**.
 - <a href="3%20%F0%9F%93%96%20Comparison%20Matrix.md" uid="Z3X0VE">documentation-system:§2.3.2.3</a> — 📖 Comparison Matrix
   - `Consult when` *several peer entities must be compared across the same independent attributes* `to` **represent the peers as rows and shared attributes as columns so differences can be located by intersection**.
+- <a href="4%20Semantic%20Registry/INDEX.md" uid="81D5SK">documentation-system:§2.3.2.4</a> — 📖 Semantic Registry
+  - `Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
 <!-- END index -->

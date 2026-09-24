@@ -94,8 +94,9 @@ filesystem mutation.
 
 ### 3.2 Markdown
 
-Markdown owns Markdown structure: headings, sections, anchors, local heading
-numbering, and mechanically decidable Markdown structural validation.
+Markdown owns Markdown structure: headings, sections, fenced code blocks,
+anchors, local heading numbering, and mechanically decidable Markdown structural
+validation.
 
 Markdown may return an old-to-new local section mapping after deterministic
 normalization. Organizing consumes that mapping when controlled references must

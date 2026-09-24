@@ -1,4 +1,4 @@
-"""Own Markdown heading structure, section coordinates, and local renumbering."""
+"""Own Markdown heading structure, section coordinates, fenced blocks, and local renumbering."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ NUMBERED_HEADING_RE = re.compile(
 )
 ATX_HEADING_RE = re.compile(r"^(?P<marks>#{1,6})\s+(?P<title>.+?)\s*$")
 NUMBER_PREFIX_RE = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
+FENCE_OPEN_RE = re.compile(r"^(?P<indent> {0,3})(?P<marks>`{3,}|~{3,})(?P<info>[^\r\n]*)$")
 
 
 class MarkdownError(ValueError):
@@ -38,6 +39,17 @@ class Section:
     start_line: int
     content_start_line: int
     end_line: int
+
+
+@dataclass(frozen=True)
+class FencedBlock:
+    language: str
+    info: str
+    fence: str
+    start_line: int
+    content_start_line: int
+    end_line: int
+    content: str
 
 
 def title_from_body(body: str, fallback: str) -> str:
@@ -177,6 +189,61 @@ def get_section(body: str, selector: str, *, include_heading: bool = True) -> st
     lines = body.splitlines(keepends=True)
     start = section.start_line - 1 if include_heading else section.content_start_line - 1
     return "".join(lines[start:section.end_line])
+
+
+def fenced_blocks(body: str, *, language: str | None = None) -> list[FencedBlock]:
+    """Return fenced code blocks with one-based line coordinates.
+
+    The opening fence may use backticks or tildes. Closing fences must use the
+    same character and at least the opening length. When language is supplied,
+    only blocks whose first info-string token matches case-insensitively are
+    returned.
+    """
+    lines = body.splitlines(keepends=True)
+    result: list[FencedBlock] = []
+    index = 0
+
+    while index < len(lines):
+        raw = lines[index].rstrip("\r\n")
+        opening = FENCE_OPEN_RE.match(raw)
+        if opening is None:
+            index += 1
+            continue
+
+        marks = opening.group("marks")
+        character = marks[0]
+        minimum = len(marks)
+        info = opening.group("info").strip()
+        block_language = info.split(None, 1)[0] if info else ""
+
+        closing_index: int | None = None
+        for candidate in range(index + 1, len(lines)):
+            stripped = lines[candidate].strip()
+            if not stripped or stripped[0] != character:
+                continue
+            if set(stripped) == {character} and len(stripped) >= minimum:
+                closing_index = candidate
+                break
+
+        if closing_index is None:
+            raise MarkdownError(f"unclosed fenced code block beginning at line {index + 1}")
+
+        content = "".join(lines[index + 1 : closing_index])
+        if language is None or block_language.lower() == language.lower():
+            result.append(
+                FencedBlock(
+                    language=block_language,
+                    info=info,
+                    fence=marks,
+                    start_line=index + 1,
+                    content_start_line=index + 2,
+                    end_line=closing_index + 1,
+                    content=content,
+                )
+            )
+        index = closing_index + 1
+
+    return result
 
 
 def transform_prose(text: str, transform) -> tuple[str, int]:
