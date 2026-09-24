@@ -27,6 +27,10 @@ An Architecture Document expresses the current implemented architecture of one
 governed software scope. It is current design authority, not a chronological
 decision log, implementation transcript, or speculative future-state proposal.
 
+Reusable architectures published under Software Design are not instances of this
+Form. They define reusable design contracts; this Form governs the code-local
+document that states how an actual implementation is architected.
+
 ## 1. Placement and filename
 
 Store the document in the `📐 Architecture/` store at the stable root of the
