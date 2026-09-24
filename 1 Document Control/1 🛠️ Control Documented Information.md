@@ -48,7 +48,7 @@ corpus root
 └── declared by address
     └── anchors location
         ├── location ordinal
-        └── INDEX.md
+        └── README.md
             └── index
 ```
 
@@ -56,17 +56,17 @@ corpus root
 |---|---|
 | **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. An Organizing job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing Organizing. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
 | **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current Organizing job. |
-| **origin** | The reader-facing entry point of a corpus, represented by `README.md` in the directory serving as corpus root for the current Organizing job. It contributes no location ordinal. |
+| **origin** | The reader-facing entry role of a corpus, carried by the `README.md` in the directory serving as corpus root for the current Organizing job. The root README uses the ordinary folder representation plus the additional corpus-entry contract required before the first routing choice. |
 | **controlled artifact** | A file on an Organizing-traversed path whose supported metadata surface contains a `description` and Organizing-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by Organizing for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
-| **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
+| **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `README.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
 | **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
-| **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
-| **index** | The Organizing-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
+| **`README.md`** | The reader-facing representation of its containing folder. In a numbered directory it contributes no location ordinal and resolves to that location's address; at the selected corpus root it carries the origin role and no location address of its own. |
+| **index** | The Document Element declared by an `## Index` section in a folder `README.md`; its generated body projects that folder's immediate indexed children as controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
 | **Organizing** | The Tooling capability that declares a corpus root for each job, scans supported metadata surfaces beneath it, maintains controlled identity and organization, derives navigation projections, refreshes controlled links, reports diagnostics, resolves locators, and plans deterministic structural normalization. |
 
@@ -140,9 +140,9 @@ For example:
 
 ```text
 2 Conventions/
-├── INDEX.md
+├── README.md
 └── 11 Technical Writing/
-    ├── INDEX.md
+    ├── README.md
     └── 9 Write A Technical Document.md
 ```
 
@@ -151,9 +151,9 @@ Organizing job:
 
 ```text
 2       2 Conventions/
-2       2 Conventions/INDEX.md
+2       2 Conventions/README.md
 2.11    2 Conventions/11 Technical Writing/
-2.11    2 Conventions/11 Technical Writing/INDEX.md
+2.11    2 Conventions/11 Technical Writing/README.md
 2.11.9  2 Conventions/11 Technical Writing/9 Write A Technical Document.md
 ```
 
@@ -169,7 +169,7 @@ identity with the artifact's UID rather than reserving historical coordinates.
 
 Treat the selected corpus structure as the source of truth. Derive the target's
 **location** by walking from the corpus root, taking each location ordinal, and
-appending a terminal artifact ordinal when the target is not `INDEX.md`. Join
+appending a terminal artifact ordinal when the target is not `README.md`. Join
 those ordinals with `.`. Form the address by declaring the corpus root's
 directory name before `:`, then prefixing the ordinal path with `§`:
 
@@ -240,25 +240,26 @@ Do not store the corpus-root declaration or derived location components in
 artifact metadata, and do not reconstruct location ancestry from generated
 projections. An unnumbered artifact outside a numbered location has no
 addressable location. A numbered location remains addressable without an
-`INDEX.md`, but a controlled link can target it only when an indexed body
+`README.md`, but a controlled link can target it only when an indexed body
 represents that location.
 
-## 4. Represent a location with INDEX.md
+## 4. Represent a folder with README.md
 
-Add `INDEX.md` when a location needs a reader-facing representation. The
-numbered directory already created the location; `INDEX.md` describes what the
-location collects and provides the surface on which Organizing can project
-its immediate indexed children.
+Use `README.md` for every folder that needs a reader-facing representation. A
+numbered directory already creates its addressable location; its `README.md`
+describes what the folder collects and contributes no additional ordinal. The
+`README.md` at the selected corpus root uses the same representation with the
+additional origin entry contract required before the first routing choice.
 
 Keep the index focused. Give it its own `description`, then place one generated
 region where immediate choices should appear. Organizing derives those choices
 from the filesystem and reuses each child's exact `description`; do not repeat
 descendant metadata by hand.
 
-`INDEX.md` is a reserved representation, so it carries neither an ordinal nor
-a quadrant glyph. Its location is exactly that of its containing directory, and
-its address is that location prefixed by the selected corpus-root directory
-name.
+`README.md` is a reserved folder representation, so it carries neither an
+ordinal nor a quadrant glyph. In a numbered directory its location is exactly
+that of its containing directory. At the selected corpus root it represents the
+origin rather than an addressed descendant location.
 
 ## 5. Add controlled metadata
 
@@ -285,24 +286,31 @@ uid               → which artifact it is
 address           → where it is now
 ```
 
-## 6. Generate the index
+## 6. Render the Index element
 
-The index is a derived reader projection, not authored topology. The filesystem
-already determines the hierarchy. `README.md` represents the origin and projects
-the immediate indexed items at the corpus root; each `INDEX.md` with immediate
-indexed children projects only those children. Traversing successive indexes
-provides progressive disclosure.
+The Index element is a derived reader projection, not authored topology. The
+filesystem already determines the hierarchy. A folder `README.md` with
+immediate indexed children declares one `## Index` section and projects only
+those children. The corpus-root `README.md` uses the same element after its
+additional origin context. Traversing successive Index elements provides
+progressive disclosure.
 
-Place exactly one generated region where those choices should appear:
+Declare the Index Document Element and place exactly one current Organizing
+write region inside it:
 
 ```markdown
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+
 <!-- BEGIN index -->
 <!-- END index -->
 ```
 
-Organizing owns everything between the markers and renders each immediate
-child as its controlled link, title, and exact `description`. Do not hand-edit
-generated content and do not author a parallel child list.
+The heading and `element:` provenance identify the semantic element. The marker
+pair is the current deterministic write boundary. Organizing owns everything
+between the markers and renders each immediate child as its controlled link,
+title, and exact `description`. Do not hand-edit generated content or author a
+parallel child list.
 
 ## 7. Run and validate Organizing
 
@@ -330,7 +338,7 @@ Organizing job's corpus root. A bare corpus-root address such as `§2.1` is a
 syntax error and cannot resolve.
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. An address naming a location resolves through its
-`INDEX.md` when one exists; a location with no index resolves as a location
+`README.md` when one exists; a location with no index resolves as a location
 with no body. A normal Organizing refresh also refreshes every controlled HTML anchor
 carrying a `uid`, including anchors carried by a supported Python module
 docstring.
