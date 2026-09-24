@@ -17,7 +17,7 @@ Ordinals 1–9 are reserved for Document Forms guidance. Reusable forms begin at
 ordinal 10 so guidance can grow without interleaving with the forms it governs.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Author%20And%20Apply%20A%20Document%20Form.md" uid="PK9FPF">documentation-system:§2.3.1.1</a> — 🛠️ Author And Apply A Document Form
   - `Read in full and follow when` *a recurring document role needs a reusable Document Form or a document is being derived from one* `to` **author the canonical form, bind each derived document back to it, and keep recurring guidance owned by the form instead of copied into instances**.

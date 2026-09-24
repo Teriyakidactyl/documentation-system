@@ -21,7 +21,7 @@ copyediting, and proofreading still name recognized scopes of prose work. The
 artifact may be prose, structured data, code, or a mixture.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Revise%20an%20Artifact.md" uid="SE6M58">documentation-system:§7.1</a> — 🛠️ Revise an Artifact
   - `Read in full and follow when` *an existing artifact must incorporate a stated change without leaving superseded meaning, broken dependencies, or unexamined residual* `to` **freeze the change frame, inspect the current state, propagate the change with validation reasoning, check the resulting state, and return a traceable revision record**.

@@ -13,7 +13,7 @@ technical documented information. Document Control governs the resulting
 artifact; this location governs how the document is conceived and written.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md" uid="5CFFZW">documentation-system:§2.1</a> — 🛠️ Write A Technical Document
   - `Read in full and follow when` *authoring a technical document* `to` **commit its description, controlled placement, quadrant, outline, and writing style before drafting prose that satisfies them while checking each representation against the commitments that govern it**.

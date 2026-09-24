@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 r'''---
+uid: 4M3G0Z
 architecture: '<a href="../6%20Software%20Design/2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a>'
 description: >-
   `Read in full and follow when` *a Markdown or Python artifact's metadata

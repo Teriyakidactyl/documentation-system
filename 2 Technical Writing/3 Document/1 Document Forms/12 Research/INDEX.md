@@ -19,7 +19,7 @@ prompt by UID so repeated runs can be compared without treating the report as
 current governing authority.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="10%20%F0%9F%93%96%20Research%20Prompt.md" uid="BSJY2D">documentation-system:§2.3.1.12.10</a> — 📖 Research Prompt
   - `Consult when` *a repeatable research request needs a durable source representation* `to` **preserve one exact rerunnable prompt under stable identity while keeping execution-specific model, version, date, and output information in the resulting Research Report**.
