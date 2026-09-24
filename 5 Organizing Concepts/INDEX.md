@@ -16,6 +16,9 @@ known unit fits, and whether a consequential structure withstands formal
 validation. Domain-specific control, writing, or implementation rules represent
 the result afterward.
 
+The index owns the resolution order and handoffs. Each child document owns one
+structural question and should not silently absorb an earlier or later stage.
+
 ## Resolution flow
 
 Enter at the earliest unresolved question. Do not rerun an upstream decision
@@ -25,11 +28,11 @@ stage instead of patching the downstream representation.
 
 | Stage | Question | Result |
 |---|---|---|
-| 1. Structural units | Is the candidate one cohesive unit or several? | Stable units and explicit unresolved boundaries. |
-| 2. Relationships and topology | What relation connects the units, and what topology preserves it? | Named relationship, axis where applicable, and topology. |
-| 3. Ownership and convergence | Who owns the meaning or invariant, where is it contained, and where do independent concerns merely meet? | Owner, container, and convergence distinctions. |
-| 4. Placement | Where does a known unit fit in an existing structure? | Confirmed placement or the earliest contradicted structural decision. |
-| 5. Structural validation | Does a consequential decomposition remain coherent and complete? | PASS, FAIL, or AMBIGUOUS with evidence. |
+| <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">1. Structural units</a> | Is the candidate one cohesive unit or several? | Stable units and explicit unresolved boundaries. |
+| <a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">2. Relationships and topology</a> | What relation connects the units, and what topology preserves it? | Named relationship, axis where applicable, and topology. |
+| <a href="3%20%F0%9F%92%A1%20Ownership%2C%20Containment%2C%20and%20Convergence.md" uid="W9D5TG">3. Ownership and convergence</a> | Who owns the meaning or invariant, where is it contained, and where do independent concerns merely meet? | Owner, container, and convergence distinctions. |
+| <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">4. Placement</a> | Where does a known unit fit in an existing structure? | Confirmed placement or the earliest contradicted structural decision. |
+| <a href="5%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20And%20Validate%20A%20Structure.md" uid="K8T4ZM">5. Structural validation</a> | Does a consequential decomposition remain coherent and complete? | PASS, FAIL, or AMBIGUOUS with evidence. |
 
 A caller may stop as soon as its structural question is resolved. The stages are
 a dependency order, not a requirement to execute every document for every task.
