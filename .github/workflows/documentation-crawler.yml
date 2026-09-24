@@ -1,21 +1,21 @@
-name: Compile documentation corpus
+name: Maintain documentation organization
 
 on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: documentation-crawler-main
+  group: documentation-organizing-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  compile:
-    if: github.actor != 'github-actions[bot]'
+  verify:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,29 +27,60 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install crawler dependency
+      - name: Install Organizing dependency
         run: python -m pip install --disable-pip-version-check PyYAML
 
-      - name: Run compiler tests
-        run: python -m unittest discover -s "4 Tooling/_compiler/tests" -p "test_*.py"
+      - name: Run Tooling tests
+        run: python -m unittest discover -s "4 Tooling/tests" -p "test_*.py"
 
-      - name: Run crawler
-        run: python "4 Tooling/1 🛠️ Navigation Crawler.py" .
+      - name: Refresh organization
+        run: python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
 
       - name: Verify idempotence
         shell: bash
         run: |
-          git diff > /tmp/crawler-first.diff
-          python "4 Tooling/1 🛠️ Navigation Crawler.py" .
-          git diff > /tmp/crawler-second.diff
-          cmp /tmp/crawler-first.diff /tmp/crawler-second.diff
+          git diff > /tmp/organizing-first.diff
+          python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
+          git diff > /tmp/organizing-second.diff
+          cmp /tmp/organizing-first.diff /tmp/organizing-second.diff
+          git diff --check
+
+  refresh-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
+    needs: verify
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out canonical source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Organizing dependency
+        run: python -m pip install --disable-pip-version-check PyYAML
+
+      - name: Refresh organization
+        run: python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
+
+      - name: Verify idempotence
+        shell: bash
+        run: |
+          git diff > /tmp/organizing-first.diff
+          python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
+          git diff > /tmp/organizing-second.diff
+          cmp /tmp/organizing-first.diff /tmp/organizing-second.diff
           git diff --check
 
       - name: Commit derived changes
         shell: bash
         run: |
           if git diff --quiet; then
-            echo "Crawler produced no changes."
+            echo "Organizing produced no changes."
             exit 0
           fi
 

@@ -68,6 +68,9 @@ child it contains.
 Do not add depth because a template has room for it, and do not keep a real
 group flat merely to avoid adding structure.
 
+> **User preference.** All else being equal, prefer peer names with similar word
+> counts and parallel form. Do not sacrifice meaning for symmetry.
+
 ## 4. Preserve ownership and convergence
 
 The receiving file, folder, heading, object, or module is not evidence that it
