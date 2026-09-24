@@ -11,7 +11,7 @@ if str(TOOLING) not in sys.path:
 
 from _capabilities.frontmatter import load as load_frontmatter
 from _capabilities.html import anchors, inspect as inspect_html
-from _capabilities.markdown import get_section, renumber, sections
+from _capabilities.markdown import fenced_blocks, get_section, renumber, sections
 from _capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
 from _capabilities.yaml import parse_mapping
 from _organizing.engine import refresh_corpus
@@ -80,6 +80,24 @@ class CapabilityTests(unittest.TestCase):
         selected = get_section(source, "1")
         self.assertIn("### 1.1 Child", selected)
         self.assertNotIn("## 2 Second", selected)
+
+    def test_markdown_fenced_blocks_expose_bounded_yaml_content(self) -> None:
+        source = (
+            "# Title\n\n"
+            "## Registry\n"
+            "\`\`\`yaml\n"
+            "a: 1\n"
+            "\`\`\`\n\n"
+            "\`\`\`text\n"
+            "ignored\n"
+            "\`\`\`\n"
+        )
+        found = fenced_blocks(source, language="yaml")
+        self.assertEqual(1, len(found))
+        self.assertEqual("yaml", found[0].language)
+        self.assertEqual("a: 1\n", found[0].content)
+        self.assertEqual(4, found[0].start_line)
+        self.assertEqual(6, found[0].end_line)
 
     def test_markdown_lint_policy_is_selective_and_adds_local_rules(self) -> None:
         codes = {item["code"] for item in rule_policy()}
