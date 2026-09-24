@@ -3,9 +3,9 @@ uid: YF43JX
 description: >-
   `Read in full and follow when` *a candidate subject, responsibility,
   document unit, module, or other structural item may combine concerns that do
-  not need to remain one unit* `to` **establish the smallest cohesive units
-  that later relationship, ownership, placement, and validation decisions may
-  safely treat as given**.
+  not need to remain one unit* `to` **establish cohesive structural units at
+  genuine semantic or reasoning boundaries before later relationship,
+  ownership, placement, and validation decisions treat them as given**.
 quadrant: HowTo
 outline:
   topology: linear
@@ -108,8 +108,10 @@ Carry convergence candidates forward for the ownership procedure to resolve.
 
 ## 6. Record the units
 
-Record the smallest units for which the preceding tests no longer expose a
-load-bearing internal boundary.
+Record each unit once further splitting would expose only local detail rather
+than a new meaning, invariant set, work context, or downstream structural
+decision. A structural unit can contain many parts; the goal is not to atomize
+the subject.
 
 For each unit, record:
 
