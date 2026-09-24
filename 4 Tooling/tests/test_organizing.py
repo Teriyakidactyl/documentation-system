@@ -12,7 +12,7 @@ if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
 from _organizing.engine import refresh_corpus, resolve_address
-from _organizing.model import OrganizingError, find_repository_root
+from _organizing.model import OrganizingError, build_corpus, find_repository_root
 
 
 def write(path: Path, text: str) -> None:
@@ -118,6 +118,29 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("location-representation", resolved["type"])
         self.assertEqual("1 Section/README.md", resolved["path"])
         self.assertEqual("GHJ789", resolved["uid"])
+
+    def test_decisions_sideband_is_controlled_but_unaddressed(self) -> None:
+        root = self.make_corpus("project")
+        decision = root / ".decisions" / "Decision.md"
+        write(
+            decision,
+            """---
+description: >-
+  `Read in full when` *a test decision needs review* `to` **preserve its provenance**.
+---
+# Test Decision
+""",
+        )
+
+        refresh_corpus(root)
+
+        refreshed = decision.read_text(encoding="utf-8")
+        self.assertIn("uid:", refreshed)
+        corpus = build_corpus(root)
+        artifact = corpus.artifacts[decision.resolve()]
+        self.assertIsNone(artifact.location)
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("Test Decision", compiled)
 
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
