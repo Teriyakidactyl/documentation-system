@@ -46,7 +46,7 @@ UID_RE = re.compile(r"^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{6}$")
 
 
 class OrganizingError(RuntimeError):
-    """Raised when the corpus cannot be modeled or compiled deterministically."""
+    """Raised when the corpus cannot be modeled or organized deterministically."""
 
 
 @dataclass(frozen=True)
@@ -320,10 +320,6 @@ def generate_uid(used: set[str]) -> str:
         if uid not in used:
             return uid
 
-
-def source_offset(lines: list[str], position: tuple[int, int]) -> int:
-    line, column = position
-    return sum(len(part) for part in lines[: line - 1]) + column
 
 
 def add_uid_to_metadata(path: Path, uid: str) -> None:
