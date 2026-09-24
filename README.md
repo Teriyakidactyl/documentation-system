@@ -7,7 +7,11 @@ description: >-
   location before changing the repository**.
 ---
 
-# Documentation System Origin
+# Documentation System
+
+This repository contains guidance documents and supporting tools for technical
+writing, document control, repository organization, software design, editing,
+and code creation.
 
 This repository's `main` branch is the canonical maintainer/source corpus.
 Skill consumers who need only the published consumer surface should clone the
