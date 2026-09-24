@@ -1,6 +1,8 @@
 ---
 uid: QWJ9VN
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§2.3.1.11</a>'
+form:
+  path: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§2.3.1.11</a>'
+  version: '1.0'
 description: >-
   `Read in full when` *the reason governing guidance must be reread after its
   complete source ceases to be identifiable in active non-compacted
