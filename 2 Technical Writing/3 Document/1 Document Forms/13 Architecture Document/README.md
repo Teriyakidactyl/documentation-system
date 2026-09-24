@@ -14,10 +14,11 @@ description: >-
 This Document Form governs durable Architecture Documents that express current
 implemented architecture.
 
-The Form defines the document representation. Software Design owns when an
-implemented architecture is warranted, where it lives, how its scope is
-discovered, and what architectural reasoning must be resolved before the
-document is authored.
+The Form defines the document representation.
+<a href="../../../../6%20Software%20Design/2%20Architecture/README.md" uid="20KRDM">documentation-system:§6.2</a>
+owns when an implemented architecture is warranted, where it lives, how its
+scope is discovered, and what architectural reasoning must be resolved before
+the document is authored.
 
 ## Index
 <!--
