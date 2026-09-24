@@ -40,7 +40,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install Tooling dependencies
-        run: python -m pip install --disable-pip-version-check PyYAML pymarkdownlnt==0.9.40
+        run: python -m pip install --disable-pip-version-check -r "4 Tooling/requirements.txt"
 
       - name: Verify canonical source is organized
         shell: bash
