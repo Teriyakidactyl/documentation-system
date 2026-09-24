@@ -10,7 +10,9 @@ if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
 from _capabilities.frontmatter import load as load_frontmatter
-from _capabilities.markdown import renumber
+from _capabilities.html import anchors, inspect as inspect_html
+from _capabilities.markdown import get_section, renumber, sections
+from _capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
 from _capabilities.yaml import parse_mapping
 from _organizing.engine import refresh_corpus
 from _organizing.model import OrganizingError
@@ -60,6 +62,50 @@ class CapabilityTests(unittest.TestCase):
             self.assertIsNotNone(value)
             self.assertEqual("ABC123", value.data["uid"])
             self.assertEqual("py", value.kind)
+
+    def test_html_inspection_and_anchor_attributes_are_generic(self) -> None:
+        source = "<!-- note --><a uid='ABC123' href='x'>Label</a>"
+        tokens = inspect_html(source)
+        self.assertEqual("comment", tokens[0].kind)
+        found = anchors(source)
+        self.assertEqual(1, len(found))
+        self.assertEqual("ABC123", found[0].attribute("uid"))
+        self.assertEqual("x", found[0].attribute("href"))
+        self.assertEqual("Label", found[0].text)
+
+    def test_markdown_sections_support_bounded_agent_reads(self) -> None:
+        source = "# Title\n\n## 1 First\nA\n\n### 1.1 Child\nB\n\n## 2 Second\nC\n"
+        found = sections(source)
+        self.assertEqual(["Title", "1", "1.1", "2"], [item.selector for item in found])
+        selected = get_section(source, "1")
+        self.assertIn("### 1.1 Child", selected)
+        self.assertNotIn("## 2 Second", selected)
+
+    def test_markdown_lint_policy_is_selective_and_adds_local_rules(self) -> None:
+        codes = {item["code"] for item in rule_policy()}
+        self.assertIn("MD001", codes)
+        self.assertIn("MD060", codes)
+        self.assertIn("PML100", codes)
+        self.assertIn("DSMD001", codes)
+        self.assertNotIn("MD013", codes)
+        self.assertNotIn("MD033", codes)
+
+    def test_markdown_fix_does_not_cross_into_coordinate_renumbering(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "doc.md"
+            write(
+                path,
+                "---\noutline:\n  numbering: hierarchical-decimal\n---\n"
+                "# Title\n\n## 9 Wrong\nParagraph with trailing spaces.  \n",
+            )
+            before = {item.code for item in lint_markdown(path)}
+            self.assertIn("DSMD002", before)
+            diagnostics, changed = fix_markdown(path)
+            self.assertTrue(changed)
+            rendered = path.read_text(encoding="utf-8")
+            self.assertIn("## 9 Wrong", rendered)
+            self.assertNotIn("spaces.  \n", rendered)
+            self.assertIn("DSMD002", {item.code for item in diagnostics})
 
     def test_markdown_renumber_uses_local_coordinates(self) -> None:
         source = (

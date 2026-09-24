@@ -9,8 +9,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 from _capabilities.folder import FolderError, Rename, apply as apply_renames
-
-from .links import CONTROL_LINK_RE
+from _capabilities.html import anchors
 from .model import OrganizingError, corpus_path
 from .schemes.ordinal import OrdinalSchemeError, as_dict, plan_normalization
 
@@ -60,7 +59,14 @@ def unmanaged_references(corpus_root: Path, plan: list[Rename]) -> list[Unmanage
             text = path.read_text(encoding="utf-8")
         except OSError:
             continue
-        text = CONTROL_LINK_RE.sub(lambda match: " " * len(match.group(0)), text)
+        chars = list(text)
+        for anchor in anchors(text):
+            if anchor.attribute("uid") is None:
+                continue
+            for index in range(anchor.start, anchor.end):
+                if chars[index] != "\n":
+                    chars[index] = " "
+        text = "".join(chars)
         for line_number, line in enumerate(text.splitlines(), start=1):
             for pattern in ordered_patterns:
                 if pattern in line:

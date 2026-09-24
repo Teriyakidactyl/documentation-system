@@ -39,8 +39,8 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Organizing dependency
-        run: python -m pip install --disable-pip-version-check PyYAML
+      - name: Install Tooling dependencies
+        run: python -m pip install --disable-pip-version-check PyYAML pymarkdownlnt==0.9.40
 
       - name: Verify canonical source is organized
         shell: bash

@@ -29,7 +29,7 @@ their organization, and the derived representations through which readers and
 tools find them.
 
 The public Organizing tool owns corpus-wide orchestration. Folder, Markdown,
-Frontmatter, and YAML are peer capabilities with independently routable work
+Frontmatter, YAML, and HTML are peer capabilities with independently routable work
 encounters. Organizing may call those capabilities when an organization
 operation requires their representation knowledge. A dependency does not make
 one capability a child of another in Tooling navigation.
@@ -101,6 +101,12 @@ Markdown may return an old-to-new local section mapping after deterministic
 normalization. Organizing consumes that mapping when controlled references must
 be refreshed. Markdown does not own corpus locations or UIDs.
 
+For linting, Markdown composes PyMarkdownLnt for generic Markdown rules and
+retains only Documentation-System-specific checks the package cannot express.
+Enable the generic rule set selectively so upgrading the dependency cannot
+silently create a new house opinion. Frontmatter supplies the host-document
+boundary when linting a controlled Markdown file.
+
 ### 3.3 Frontmatter
 
 Frontmatter owns the metadata envelope carried by a host artifact: locating,
@@ -117,6 +123,17 @@ organization schemes.
 
 YAML remains independently routable because pure YAML is a valid work encounter
 even when no frontmatter or Documentation System corpus is involved.
+
+### 3.5 HTML
+
+HTML owns generic element, attribute, comment, entity, and constrained anchor
+parsing. It does not know that a `uid` attribute is a controlled identity or
+that an anchor represents a Documentation System reference.
+
+Markdown may use HTML to understand raw HTML carried by Markdown. Organizing may
+use HTML when a controlled representation is encoded as HTML. HTML remains
+independently routable because inspecting an HTML fragment or file is a coherent
+work encounter without Markdown or corpus semantics.
 
 ## 4. Ordinal hierarchy scheme
 
@@ -159,7 +176,7 @@ Corpus construction discovers supported controlled artifacts, applies the
 selected organization scheme, validates unique identities and coordinates, and
 produces the normalized corpus consumed by later passes.
 
-Source-format adapters may call Frontmatter, Markdown, or YAML. Do not copy
+Source-format adapters may call Frontmatter, Markdown, YAML, or HTML. Do not copy
 those representation parsers into the corpus model.
 
 ### 5.3 Navigation projections
@@ -253,10 +270,14 @@ Organizing CLI -> organizing engine
                -> controlled references
                -> diagnostics
                -> Folder
-               -> Markdown
+               -> Markdown -> Frontmatter -> YAML
                -> Frontmatter -> YAML
+               -> HTML
+
+Markdown    -> PyMarkdownLnt
 
 YAML        <- independently routable
+HTML        <- independently routable
 Frontmatter <- independently routable
 Markdown    <- independently routable
 Folder      <- independently routable
