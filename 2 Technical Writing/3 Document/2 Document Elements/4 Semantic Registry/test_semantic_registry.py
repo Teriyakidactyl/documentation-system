@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-import importlib.util
 import tempfile
+import sys
 import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SPEC = importlib.util.spec_from_file_location("semantic_registry", HERE / "semantic_registry.py")
-assert SPEC is not None and SPEC.loader is not None
-semantic_registry = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(semantic_registry)
+if str(HERE) not in sys.path:
+    sys.path.insert(0, str(HERE))
+
+import semantic_registry
 
 
 class SemanticRegistryTests(unittest.TestCase):
