@@ -35,6 +35,10 @@ element:
   version: '1.0'
 -->
 
+This glossary uses the Semantic Registry Document Element. Editors should follow
+<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a>
+for its source contract and formatter.
+
 ```yaml
 # Terms: --------------------- # Definitions
   "Repository Root README":    # The literal README.md at the Git repository root; it carries project-wide entry context.
