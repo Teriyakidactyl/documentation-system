@@ -7,7 +7,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .frontmatter import FrontmatterError, load as load_frontmatter
-from .markdown import NUMBER_PREFIX_RE, headings, renumber
+from .markdown import NUMBER_PREFIX_RE, headings
 
 DEFAULT_RULES: dict[str, str] = {
     "MD001": "Heading levels do not skip depth.",
@@ -123,7 +123,7 @@ def rule_policy() -> list[dict]:
                 "When hierarchical-decimal numbering is declared, local heading "
                 "numbers follow source order and depth."
             ),
-            "fixable": True,
+            "fixable": False,
         },
     ])
     return policy
@@ -170,7 +170,7 @@ def _custom_diagnostics(body: str, metadata: dict) -> list[MarkdownDiagnostic]:
             diagnostics.append(MarkdownDiagnostic(
                 "DSMD002", int(item["line"]), 1,
                 f"Expected local heading number {expected}; found {actual or 'none'}.",
-                True, "documentation-system",
+                False, "documentation-system",
             ))
         previous_level = level
     return diagnostics
@@ -229,11 +229,6 @@ def fix_file(path: Path) -> tuple[list[MarkdownDiagnostic], bool]:
         raise MarkdownLintError(f"PyMarkdown fix failed: {exc}") from exc
 
     rendered = result.fixed_file
-    outline = metadata.get("outline")
-    numbering = outline.get("numbering") if isinstance(outline, dict) else None
-    if numbering == "hierarchical-decimal":
-        rendered, _ = renumber(rendered)
-
     changed = rendered != body
     if changed:
         path.write_text(prefix + rendered, encoding="utf-8")
