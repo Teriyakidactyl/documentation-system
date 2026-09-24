@@ -36,7 +36,7 @@ tree and prose definition table must remain separate representations.
 
 ## Source specimen
 
-```markdown
+````markdown
 ## Profiles
 <!-- element: [controlled link to this Document Element] -->
 
@@ -52,7 +52,7 @@ tree and prose definition table must remain separate representations.
     "Storage":                       "Prolog"
     "Inference Level":               "Deductive"
 ```
-```
+````
 
 ## Entry contract
 
