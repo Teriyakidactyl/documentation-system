@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import quote
 
-from _capabilities.markdown import Section, sections
+from _capabilities.markdown import Section, heading_comments
 from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
 from .model import (
     Artifact,
@@ -32,46 +32,26 @@ class ElementSection:
     metadata: dict
 
 
-def _comment_after_heading(text: str, section: Section) -> str | None:
-    lines = text.splitlines(keepends=True)
-    index = section.start_line
-    if index >= len(lines) or not lines[index].lstrip().startswith("<!--"):
-        return None
-
-    parts: list[str] = []
-    for line in lines[index:section.end_line]:
-        parts.append(line)
-        if "-->" in line:
-            raw = "".join(parts)
-            start = raw.find("<!--")
-            end = raw.find("-->", start + 4)
-            if end == -1:
-                return None
-            return raw[start + 4 : end].strip()
-    return None
-
-
 def _element_sections(text: str, uid: str) -> list[ElementSection]:
     found: list[ElementSection] = []
-    for section in sections(text):
-        payload = _comment_after_heading(text, section)
-        if payload is None:
+    for comment in heading_comments(text):
+        if not comment.content.lstrip().startswith("element:"):
             continue
         try:
-            metadata = parse_mapping(payload)
+            metadata = parse_mapping(comment.content)
         except YamlError as exc:
             raise OrganizingError(
-                f"line {section.start_line}: heading metamatter is not valid YAML: {exc}"
+                f"line {comment.section.start_line}: heading metamatter is not valid YAML: {exc}"
             ) from exc
 
         element = metadata.get("element")
         if isinstance(element, dict):
             path = element.get("path")
             if isinstance(path, dict) and path.get("uid") == uid:
-                found.append(ElementSection(section, metadata))
+                found.append(ElementSection(comment.section, metadata))
         elif isinstance(element, str) and f'uid="{uid}"' in element:
             # Migration compatibility for the pre-versioned controlled-link declaration.
-            found.append(ElementSection(section, metadata))
+            found.append(ElementSection(comment.section, metadata))
     return found
 
 
