@@ -55,7 +55,7 @@ def inspect(corpus_root: Path) -> list[OrdinalSequence]:
         paths.extend(
             parent / name
             for name in files
-            if Path(name).suffix.lower() in SUPPORTED_SUFFIXES and name != "INDEX.md"
+            if Path(name).suffix.lower() in SUPPORTED_SUFFIXES
         )
         numbered = [
             (int(ordinal), path.resolve())

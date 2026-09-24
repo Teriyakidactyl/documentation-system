@@ -45,7 +45,7 @@ description
 | **metamatter** | Structured YAML data inside an HTML comment whose first non-whitespace content is a data key (`key:`). Position supplies its scope; the key supplies its meaning. |
 | **ordinary HTML comment** | An HTML comment whose first non-whitespace content is not a YAML data key. It carries freeform maintenance or tool-control information, not structured metamatter or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
-| **form** | An optional file-level controlled link from a derived document to the Document Form governing its recurring document role. |
+| **form** | An optional file-level controlled link from a derived document to the `README.md` representing the Document Form package governing its recurring document role. |
 | **element** | A position-scoped controlled link in metamatter from a reusable document section to the Document Element governing its source structure. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
@@ -339,7 +339,7 @@ Authentication/
 
 Apply <a href="../1%20Document%20Control/1%20%F0%9F%9B%A0%EF%B8%8F%20Control%20Documented%20Information.md#2-place-information-in-the-location-hierarchy" uid="0AQHNH">documentation-system:§1.1#2</a> to the file or concept directory
 produced above. That procedure owns corpus
-placement, location ordinals and addresses, `INDEX.md`, indexing,
+placement, location ordinals and addresses, `README.md`, indexing,
 progressive disclosure, and compiler validation. The writing procedure owns none of those rules; it
 only requires that its output satisfy them before signoff.
 
@@ -754,8 +754,9 @@ format:                  # shared by all four quadrants
         step 4.4 carries more, and each of its H1s is a separate document
     h2-h6: sentence case
     syntax: ATX, no skipped levels, no emphasis, siblings uniquely named
-  filenames: title case, matching h1 — no separate casing rule for what
-             names a document versus what titles it
+  filenames: title case, matching h1. An applicable Document Form may add a
+             deterministic provenance or ordering prefix; after that prefix,
+             the title-bearing portion still matches the h1
 
   comments:
     structured:

@@ -1,10 +1,10 @@
 ---
 uid: PK9FPF
 description: >-
-  `Read in full and follow when` *a recurring document role needs a
-  reusable Document Form or a document is being derived from one* `to`
-  **author the canonical form, bind each derived document back to it, and keep
-  recurring guidance owned by the form instead of copied into instances**.
+  `Read in full and follow when` *a recurring document role needs a reusable
+  Document Form or a document is being derived from one* `to` **create or use
+  the folder-backed authoring package that separately specifies the artifact,
+  its assembly procedure, and any judgment that requires exemplars**.
 quadrant: HowTo
 outline:
   topology: linear
@@ -22,65 +22,94 @@ writing-style:
 
 # 🛠️ Author And Apply A Document Form
 
-A Document Form captures stable source structure and authoring guidance for a
-recurring document role. It is not a template engine and does not own
-instance-specific content. A controlled Document Form is the adopted standard
-for its role; standardization is its authority, not its concept type.
+A Document Form is a controlled authoring package for one recurring document
+role. The Form is the concept represented by its numbered directory and
+`README.md`; its quadrant documents divide specification, assembly, and
+instructional judgment instead of forcing those reader relationships into one
+file.
 
 ## 1. Confirm the recurring role
 
-Create a form when multiple documents can occupy the same repository role and
-should make the same structural or presentation decisions. Do not create one
-for a one-off artifact, a domain fact, or a shape already owned by a more
-specific procedure.
+Create a Form when multiple documents can occupy the same recurring role and
+should make the same structural, metadata, or presentation decisions. Do not
+create one for a one-off artifact, a domain fact, or a heading-bounded shape
+already owned by a Document Element.
 
-## 2. Author the canonical form
+## 2. Create the Form package
 
-Create a Reference artifact in Document Forms. Keep ordinals 1–9 for guidance
-about Document Forms and place reusable forms at ordinal 10 or above. Show
-required reader-facing Markdown as live Markdown so the rendered form
-demonstrates the intended result. Place author guidance in an ordinary HTML
-comment immediately after the element it governs.
+Create one numbered directory in Document Forms. Keep ordinals 1–9 for guidance
+about Document Forms and place Form packages at ordinal 10 or above.
 
-Use those comments to distinguish required behavior, adaptable wording,
-optional material, and forbidden duplication. Keep only rules that recur
-across instances. A form does not carry a `form` link to itself.
+The package has this minimum shape:
 
-When a required source construct cannot be live in the form because it would
-activate generation or another maintenance mechanism, show the nearest safe
-reader-facing specimen and state the exact source requirement in its adjacent
-comment.
+```text
+<Form>/
+├── README.md
+├── 1 📖 <Form>.md
+└── 2 🛠️ <Form assembly procedure>.md
+```
 
-## 3. Bind the derived document
+`README.md` represents the Form concept, carries its stable UID and routing
+`description`, and contains the Index element. It does not carry a `form`
+link to itself.
 
-Add `form` to the derived document's file frontmatter as a controlled link to
-the governing form:
+The Reference and HowTo are both required. Their separate reader relationships
+are part of the Form contract, not an optional decomposition discovered later.
+
+## 3. Specify the artifact in Reference
+
+Use the Reference document to define the canonical result: required metadata,
+filename grammar, section anatomy, ordering, special terms, required source
+constructs, and links to reusable Document Elements.
+
+Show required reader-facing Markdown as live Markdown when doing so cannot
+activate generation. Use a fenced specimen when a literal source construct
+would otherwise execute maintenance behavior.
+
+Keep assembly procedure out of the Reference. A reader consulting one entry
+must be able to confirm what the resulting artifact requires without following
+a sequence of authoring steps.
+
+## 4. Define assembly in HowTo
+
+Use the HowTo to tell an author how to produce a conforming instance. Walk the
+Reference requirements in the dependency order needed to author them, including
+how to determine section content rather than merely repeating that the section
+exists.
+
+Link back to the owning Reference entries when a requirement needs lookup. Do
+not duplicate the full structural contract in the procedure.
+
+## 5. Add Tutorial for ambiguous judgment
+
+Add a Tutorial when Reference plus HowTo still leave a recurring distinction
+that correct authors must learn by contrast. For an agent reader, use paired
+good and bad specimens that isolate one distinction at a time and state the
+rule separating them.
+
+Do not create a Tutorial merely to repeat the template or procedure. Its
+presence is selected by an actual judgment boundary.
+
+## 6. Bind the derived document
+
+Add `form` to the derived document's file frontmatter as a UID-controlled link
+to the Form package `README.md`, not to its Reference or HowTo child:
 
 ```yaml
 form: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>'
 ```
 
-Use the form's real UID and current address. The compiler owns the link target
-and displayed address after that. Keep the `form` field when the instance is
-moved or locally adapted.
+The package UID identifies the recurring role. The instance still owns its own
+`description`, quadrant specification, local content, and document-control
+state. Form provenance does not create metadata inheritance.
 
-The form records provenance, not inheritance. The derived document still owns
-its own `description`, quadrant specification, local content, and document
-control state.
+## 7. Apply and validate the instance
 
-## 4. Apply the instance-specific content
+Consult the Form Reference for the target contract, follow its HowTo for
+assembly, and use its Tutorial when the authored case crosses a documented
+judgment boundary. Keep instance-specific facts in the instance.
 
-Preserve the form's required structure and behavior while replacing
-corpus-specific names, routing language, and other local facts. Add an optional
-form element only when its stated condition is true for the instance.
-
-Do not copy the form's generic author-guidance comments into the derived
-document. Add a local maintenance comment only for an instance-specific reason;
-otherwise follow the `form` link back to the owning guidance.
-
-## 5. Validate the result
-
-Apply Technical Writing to the authored or revised document, apply Document
-Control to its controlled state, then run the Documentation Compiler. Finish only
-when the form link resolves and the generated projections agree with the
-filesystem.
+Apply Technical Writing to each Form document, Document Control to its
+controlled state, and Organizing after package, metadata, heading, or link
+changes. Finish when the package Index, Form link, and resulting instance agree
+with the filesystem.

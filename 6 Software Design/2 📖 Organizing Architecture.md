@@ -182,8 +182,11 @@ those representation parsers into the corpus model.
 
 ### 5.3 Navigation projections
 
-Index projection derives reader navigation from the normalized corpus. An index
-is a projection of current organization, never a second authored topology.
+Index projection derives reader navigation from the normalized corpus into the
+Index Document Element declared by a folder `README.md`. The `README.md`
+represents the folder; the Index element is generated navigation inside that
+representation. An index is a projection of current organization, never a
+second authored topology.
 
 ### 5.4 Controlled references
 

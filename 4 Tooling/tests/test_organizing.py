@@ -12,7 +12,7 @@ if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
 from _organizing.engine import refresh_corpus, resolve_address
-from _organizing.model import OrganizingError, find_repository_root
+from _organizing.model import OrganizingError, build_corpus, find_repository_root
 
 
 def write(path: Path, text: str) -> None:
@@ -33,6 +33,20 @@ def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") 
 <!-- END index -->
 """
 
+
+
+def location_readme(name: str, uid: str = "GHJ789") -> str:
+    return f"""---
+uid: {uid}
+description: >-
+  `Consult when` *a test location is entered* `to` **route through its immediate children**.
+---
+# {name}
+
+## Index
+<!-- BEGIN index -->
+<!-- END index -->
+"""
 
 def page(uid: str = "DEF456", *, body: str = "") -> str:
     return f"""---
@@ -85,6 +99,48 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("DEF456", nested_resolution["uid"])
         self.assertEqual(str(parent.resolve()), parent_resolution["corpus_root"])
         self.assertEqual(str(nested.resolve()), nested_resolution["corpus_root"])
+
+
+    def test_numbered_directory_readme_represents_location_and_owns_index(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(root / "1 Section" / "README.md", location_readme("Section"))
+        write(root / "1 Section" / "1 Child.md", page(uid="JKM234"))
+
+        refresh_corpus(root)
+
+        root_compiled = (root / "README.md").read_text(encoding="utf-8")
+        section_compiled = (root / "1 Section" / "README.md").read_text(encoding="utf-8")
+        self.assertIn('href="1%20Section/README.md"', root_compiled)
+        self.assertIn('href="1%20Child.md"', section_compiled)
+
+        resolved = resolve_address(root, "project:§1")
+        self.assertEqual("location-representation", resolved["type"])
+        self.assertEqual("1 Section/README.md", resolved["path"])
+        self.assertEqual("GHJ789", resolved["uid"])
+
+    def test_decisions_sideband_is_controlled_but_unaddressed(self) -> None:
+        root = self.make_corpus("project")
+        decision = root / ".decisions" / "Decision.md"
+        write(
+            decision,
+            """---
+description: >-
+  `Read in full when` *a test decision needs review* `to` **preserve its provenance**.
+---
+# Test Decision
+""",
+        )
+
+        refresh_corpus(root)
+
+        refreshed = decision.read_text(encoding="utf-8")
+        self.assertIn("uid:", refreshed)
+        corpus = build_corpus(root)
+        artifact = corpus.artifacts[decision.resolve()]
+        self.assertIsNone(artifact.location)
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("Test Decision", compiled)
 
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")

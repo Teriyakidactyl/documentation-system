@@ -9,7 +9,7 @@ import tokenize
 from dataclasses import dataclass
 from pathlib import Path
 
-from .yaml import YamlError, parse_mapping
+from .yaml import YamlError, parse_mapping, serialize as serialize_yaml
 
 
 class FrontmatterError(ValueError):
@@ -95,11 +95,13 @@ def add_missing_key(path: Path, key: str, value: str) -> None:
     except OSError as exc:
         raise FrontmatterError(f"Can't read {path}: {exc}") from exc
 
+    entry = serialize_yaml({key: value}).rstrip("\n") + "\n"
+
     suffix = path.suffix.lower()
     if suffix == ".md":
         if not source.startswith("---\n"):
             raise FrontmatterError(f"{path}: cannot add {key} without Markdown frontmatter")
-        updated = source.replace("---\n", f"---\n{key}: {value}\n", 1)
+        updated = source.replace("---\n", "---\n" + entry, 1)
         path.write_text(updated, encoding="utf-8")
         return
 
@@ -134,7 +136,7 @@ def add_missing_key(path: Path, key: str, value: str) -> None:
     if marker_at == -1:
         raise FrontmatterError(f"{path}: module docstring metadata must begin with ---")
     insert_at = marker_at + len(marker)
-    new_literal = literal[:insert_at] + f"{key}: {value}\n" + literal[insert_at:]
+    new_literal = literal[:insert_at] + entry + literal[insert_at:]
     lines = source.splitlines(keepends=True)
     start = _source_offset(lines, token.start)
     end = _source_offset(lines, token.end)
