@@ -101,8 +101,8 @@ Place each invariant at the narrowest boundary that legitimately owns every fact
 required to enforce it.
 
 **Default.** Keep object-local rules with the object, aggregate rules with the
-aggregate boundary, cross-object corpus or graph rules in compilation
-validation, and external-system rules at the integration boundary.
+aggregate boundary, cross-object corpus or graph rules in organization validation, and
+external-system rules at the integration boundary.
 
 Do not move a cross-object validation rule onto a model object merely to make
 that object richer.
@@ -122,8 +122,7 @@ their behavior.
 Place responsibility with the legitimate owner of the information needed to
 perform it.
 
-**Default.** Domain objects own domain facts and local invariants. Compiler,
-assembler, validation, and projection behavior remain in their corresponding
+**Default.** Domain objects own domain facts and local invariants. Orchestration, validation, and projection behavior remain in their corresponding
 processing stages unless the domain model itself demonstrates a stronger owner.
 
 ### 3.3 GRASP: High Cohesion and Low Coupling
@@ -191,9 +190,9 @@ operation happens to process them in sequence.
 Use modules to expose independently changing implementation responsibilities.
 Use lightweight typed objects to make stable domain facts explicit.
 
-**Default.** Data objects model facts. Compiler passes perform transformations.
-Validators evaluate invariants and return diagnostics. The command-line entry
-point orchestrates those passes and presents their results.
+**Default.** Data objects model facts. Processing passes perform transformations. Validators
+evaluate invariants and return diagnostics. A command-line entry point
+orchestrates the passes belonging to its domain and presents their results.
 
 Prefer immutable dataclasses or similarly lightweight values where identity and
 mutation are not part of the modeled concept. Do not create a class hierarchy
@@ -207,7 +206,7 @@ printing or exceptions when compilation can continue deterministically.
 **Default.**
 
 - an **error** means a valid deterministic result cannot be established and
-  compilation fails;
+  the requested operation fails;
 - a **warning** means compilation is valid but a condition requires attention;
 - **info** records a useful non-failing observation;
 - diagnostics carry stable codes, severity, location, and a concrete message;
