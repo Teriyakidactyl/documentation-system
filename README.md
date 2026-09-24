@@ -76,7 +76,10 @@ model is owned by
 Before relying on any selected document, confirm that its complete source text
 is identifiable in the active, non-compacted conversation history. If it is
 not, or if its prior presence is only within compacted history, read the
-document in full before relying on it.
+document in full before relying on it. Plan that read around the retrieval,
+output, and context limits of the available tools so the complete source can be
+delivered through EOF; if retrieval must be split or retried, preserve that
+completion requirement across the continuation.
 
 ## Contributing
 

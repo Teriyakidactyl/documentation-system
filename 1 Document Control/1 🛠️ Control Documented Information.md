@@ -368,8 +368,10 @@ Before its first routing choice, an Origin additionally:
   and satisfy every selected concern-specific document according to its
   directive;
 - requires the complete source text of a selected document to be identifiable
-  in active, non-compacted conversation history before relying on it, and a
-  full read when that condition is not met.
+  in active, non-compacted conversation history before relying on it; when a
+  full read is required, requires the reader to plan around retrieval, output,
+  and context limits so the complete source can be delivered through EOF and
+  to preserve that completion requirement across split or retried retrieval.
 
 Do not add a persistent Origin or corpus-root metadata field. The Organizing job
 declares the corpus root by path, the address declares it by directory name,
