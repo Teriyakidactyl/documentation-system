@@ -291,12 +291,16 @@ Immediately after the preamble and before the first H2, state in an IMPORTANT
 callout that progressive disclosure is the interaction model. Explain that
 readers navigate themselves through successive `README.md` locations, acquire
 only the context needed for the current decision, compare only immediate routing
-choices, and load deeper guidance only when routing requires it. When a task
-presents several independent concerns, require each concern to be routed
-separately and every selected concern-specific document to be satisfied
-according to its directive. State the authoring consequence in the same callout:
-place definitions and instructions at the earliest scope where readers need them
-rather than exposing repository-wide knowledge by default.
+choices, and load deeper guidance only when routing requires it. State that
+displayed descendant filenames are orientation clues rather than routing choices:
+they do not authorize bypassing the indexed child that exposes them, and a reader
+pursuing one must enter that child and read its `README.md` before making the
+next routing decision. When a task presents several independent concerns,
+require each concern to be routed separately and every selected concern-specific
+document to be satisfied according to its directive. State the authoring
+consequence in the same callout: place definitions and instructions at the
+earliest scope where readers need them rather than exposing repository-wide
+knowledge by default.
 
 When the entering reader needs project-specific vocabulary to use this README
 or continue through progressive disclosure, add a project glossary after that
