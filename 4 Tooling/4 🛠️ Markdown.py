@@ -38,8 +38,9 @@ python3 "4 Tooling/4 🛠️ Markdown.py" rules
 python3 "4 Tooling/4 🛠️ Markdown.py" renumber [--write] PATH
 ```
 
-`lint` is read-only. `fix` applies only deterministic PyMarkdown fixes and
-declared local renumbering; unresolved findings remain for the agent. `rules`
+`lint` is read-only. `fix` applies only deterministic PyMarkdown autofixes; coordinate renumbering
+remains an explicit operation because higher-level references may depend on the
+old coordinates. Unresolved findings remain for the agent. `rules`
 is the executable source of truth for default lint opinions.
 
 The defaults deliberately do not impose line length, forbid HTML, forbid
