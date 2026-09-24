@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - organizing-concepts-resolution-flow
   workflow_dispatch:
 
 permissions:
