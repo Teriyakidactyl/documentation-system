@@ -1,4 +1,4 @@
-"""Own normalized corpus facts, metadata adapters, identity, and address derivation.
+"""Own normalized corpus facts, identity, and address derivation.
 
 This module owns stable facts about the controlled corpus. It does not render
 indexes, rewrite links, emit diagnostics, or decide presentation policy.
@@ -6,17 +6,28 @@ indexes, rewrite links, emit diagnostics, or decide presentation policy.
 
 from __future__ import annotations
 
-import ast
-import io
 import os
 import re
 import secrets
 import subprocess
-import tokenize
 from dataclasses import dataclass
 from pathlib import Path
 
-import yaml
+from _capabilities.frontmatter import (
+    FrontmatterError,
+    add_missing_key,
+    module_docstring,
+    split as split_frontmatter_text,
+)
+from _capabilities.markdown import (
+    HeadingTarget,
+    MarkdownError,
+    heading_target as markdown_heading_target,
+    numbered_headings as markdown_numbered_headings,
+    title_from_body as markdown_title_from_body,
+)
+from _capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
+
 
 IGNORED_DIRS = {"__pycache__"}
 CONTROLLED_SIDEBAND_DIRS = {".research"}
@@ -32,14 +43,10 @@ BARE_CORPUS_ROOT_ADDRESS_RE = re.compile(
 )
 UID_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 UID_RE = re.compile(r"^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{6}$")
-NUMBERED_HEADING_RE = re.compile(
-    r"^(?P<marks>#{2,6})\s+(?P<number>[0-9]+(?:\.[0-9]+)*)"
-    r"(?P<trailing>\.)?\s+(?P<title>.+?)\s*$"
-)
 
 
-class CompilerError(RuntimeError):
-    """Raised when the corpus cannot be modeled or compiled deterministically."""
+class OrganizingError(RuntimeError):
+    """Raised when the corpus cannot be modeled or organized deterministically."""
 
 
 @dataclass(frozen=True)
@@ -53,17 +60,6 @@ class Artifact:
     location: str | None
     ordinal: str | None
     uid: str | None
-
-
-@dataclass(frozen=True)
-class HeadingTarget:
-    number: str
-    level: int
-    title: str
-    heading: str
-    anchor: str
-    start: int
-    end: int
 
 
 @dataclass(frozen=True)
@@ -81,7 +77,7 @@ def read_text(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
     except OSError as exc:
-        raise CompilerError(f"Can't read {path}: {exc}") from exc
+        raise OrganizingError(f"Can't read {path}: {exc}") from exc
 
 
 def corpus_path(corpus_root: Path, path: Path) -> str:
@@ -91,9 +87,9 @@ def corpus_path(corpus_root: Path, path: Path) -> str:
 def corpus_root_name(corpus_root: Path) -> str:
     name = corpus_root.resolve().name
     if not name:
-        raise CompilerError(f"Corpus root has no directory name: {corpus_root}")
+        raise OrganizingError(f"Corpus root has no directory name: {corpus_root}")
     if ":" in name or "\r" in name or "\n" in name:
-        raise CompilerError(
+        raise OrganizingError(
             f"Corpus root directory name {name!r} cannot be represented in a documentation address"
         )
     return name
@@ -108,72 +104,46 @@ def find_repository_root(script: Path) -> Path:
             text=True,
         )
     except (OSError, subprocess.CalledProcessError) as exc:
-        raise CompilerError(
+        raise OrganizingError(
             "Cannot determine the containing Git repository root; pass corpus_root explicitly"
         ) from exc
     root = Path(result.stdout.strip()).resolve()
     if not root.is_dir():
-        raise CompilerError(f"Git repository root is not a directory: {root}")
+        raise OrganizingError(f"Git repository root is not a directory: {root}")
     return root
 
 
 def split_frontmatter(text: str) -> tuple[str, str] | None:
-    if not text.startswith("---\n"):
-        return None
-    close = text.find("\n---", 4)
-    if close == -1:
-        return None
-    fence_end = close + 4
-    if fence_end < len(text) and text[fence_end] == "\n":
-        fence_end += 1
-    return text[4:close], text[fence_end:]
+    return split_frontmatter_text(text)
 
 
 def parse_yaml_mapping(raw: str, owner: Path) -> dict:
     try:
-        data = yaml.safe_load(raw)
-    except yaml.YAMLError as exc:
-        raise CompilerError(f"Invalid YAML metadata in {owner}: {exc}") from exc
-    if data is None:
-        return {}
-    if not isinstance(data, dict):
-        raise CompilerError(f"{owner}: metadata must be a mapping")
-    return data
+        return yaml_parse_mapping(raw)
+    except YamlError as exc:
+        raise OrganizingError(f"Invalid YAML metadata in {owner}: {exc}") from exc
 
 
 def title_from_body(body: str, fallback: str) -> str:
-    for line in body.splitlines():
-        if line.startswith("# "):
-            return line[2:].strip()
-    return fallback
-
-
-def markdown_adapter(path: Path) -> tuple[dict, str, str] | None:
-    text = read_text(path)
-    split = split_frontmatter(text)
-    if split is None:
-        return None
-    raw, body = split
-    metadata = parse_yaml_mapping(raw, path)
-    return metadata, body, title_from_body(body, path.stem)
+    return markdown_title_from_body(body, fallback)
 
 
 def python_docstring(path: Path) -> tuple[str, int] | None:
     source = read_text(path)
     try:
-        tree = ast.parse(source, filename=str(path))
-    except SyntaxError as exc:
-        raise CompilerError(f"Can't parse Python documentation in {path}: {exc}") from exc
-    if not tree.body:
+        return module_docstring(source, str(path))
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
+
+
+def markdown_adapter(path: Path) -> tuple[dict, str, str] | None:
+    text = read_text(path)
+    separated = split_frontmatter(text)
+    if separated is None:
         return None
-    first = tree.body[0]
-    if not (
-        isinstance(first, ast.Expr)
-        and isinstance(first.value, ast.Constant)
-        and isinstance(first.value.value, str)
-    ):
-        return None
-    return first.value.value, first.value.lineno
+    raw, body = separated
+    metadata = parse_yaml_mapping(raw, path)
+    return metadata, body, title_from_body(body, path.stem)
 
 
 def python_adapter(path: Path) -> tuple[dict, str, str] | None:
@@ -181,10 +151,10 @@ def python_adapter(path: Path) -> tuple[dict, str, str] | None:
     if parsed is None:
         return None
     doc, _ = parsed
-    split = split_frontmatter(doc)
-    if split is None:
+    separated = split_frontmatter(doc)
+    if separated is None:
         return None
-    raw, body = split
+    raw, body = separated
     metadata = parse_yaml_mapping(raw, path)
     return metadata, body, title_from_body(body, path.stem)
 
@@ -205,7 +175,7 @@ def clean(text: str) -> str:
 def description_from_metadata(metadata: dict, owner: Path) -> str:
     value = metadata.get("description")
     if not isinstance(value, str) or not value.strip():
-        raise CompilerError(f"{owner}: description must be a non-empty Markdown scalar")
+        raise OrganizingError(f"{owner}: description must be a non-empty Markdown scalar")
     return clean(value)
 
 
@@ -235,71 +205,30 @@ def location_for(corpus_root: Path, path: Path) -> str | None:
     return "§" + ".".join(components) if components else None
 
 
-def markdown_anchor(heading: str) -> str:
-    value = heading.strip().lower()
-    value = re.sub(r"<[^>]+>", "", value)
-    value = re.sub(r"[^\w\- ]", "", value, flags=re.UNICODE)
-    return re.sub(r"\s+", "-", value)
-
-
 def numbered_headings(body: str) -> list[HeadingTarget]:
-    raw: list[tuple[str, int, str, str, str, int]] = []
-    in_fence = False
-    fence_token: str | None = None
-    offset = 0
-    for line in body.splitlines(keepends=True):
-        stripped = line.lstrip()
-        if stripped.startswith("```") or stripped.startswith("~~~"):
-            token = stripped[:3]
-            if not in_fence:
-                in_fence = True
-                fence_token = token
-            elif token == fence_token:
-                in_fence = False
-                fence_token = None
-        elif not in_fence:
-            match = NUMBERED_HEADING_RE.match(line.rstrip("\r\n"))
-            if match:
-                marks = match.group("marks")
-                number = match.group("number")
-                title = match.group("title")
-                heading = f"{number}{match.group('trailing') or ''} {title}"
-                raw.append((number, len(marks), title, heading, markdown_anchor(heading), offset))
-        offset += len(line)
-
-    result: list[HeadingTarget] = []
-    for index, (number, level, title, heading, anchor, start) in enumerate(raw):
-        end = len(body)
-        for _, next_level, _, _, _, next_start in raw[index + 1 :]:
-            if next_level <= level:
-                end = next_start
-                break
-        result.append(HeadingTarget(number, level, title, heading, anchor, start, end))
-    return result
+    return markdown_numbered_headings(body)
 
 
 def heading_target(body: str, number: str, owner: Path) -> HeadingTarget:
-    matches = [heading for heading in numbered_headings(body) if heading.number == number]
-    if not matches:
-        raise CompilerError(f"{owner}: no numbered heading resolves #{number}")
-    if len(matches) > 1:
-        raise CompilerError(f"{owner}: numbered heading #{number} is ambiguous")
-    return matches[0]
+    try:
+        return markdown_heading_target(body, number)
+    except MarkdownError as exc:
+        raise OrganizingError(f"{owner}: {exc}") from exc
 
 
 def parse_address(address: str, corpus_root: Path) -> tuple[str, str | None]:
     match = ADDRESS_RE.fullmatch(address)
     if not match:
         if BARE_CORPUS_ROOT_ADDRESS_RE.fullmatch(address):
-            raise CompilerError(
+            raise OrganizingError(
                 f"Bare corpus-root address {address!r} is invalid and unresolvable; "
                 "addresses must declare the corpus root before ':'"
             )
-        raise CompilerError(f"Invalid documentation address {address!r}")
+        raise OrganizingError(f"Invalid documentation address {address!r}")
     declared_root = match.group("corpus_root")
     expected_root = corpus_root_name(corpus_root)
     if declared_root != expected_root:
-        raise CompilerError(
+        raise OrganizingError(
             f"Address {address!r} declares corpus root {declared_root!r}; "
             f"current corpus root is {expected_root!r}"
         )
@@ -353,12 +282,12 @@ def load_artifacts(corpus_root: Path) -> dict[Path, Artifact]:
         uid = metadata.get("uid")
         if uid is not None:
             if not isinstance(uid, str) or not UID_RE.fullmatch(uid):
-                raise CompilerError(
+                raise OrganizingError(
                     f"{corpus_path(corpus_root, path)}: uid must be six Crockford Base32 characters"
                 )
             previous_uid = uids.get(uid)
             if previous_uid is not None:
-                raise CompilerError(
+                raise OrganizingError(
                     f"Duplicate uid {uid}: {corpus_path(corpus_root, previous_uid)} and {corpus_path(corpus_root, path)}"
                 )
             uids[uid] = path
@@ -376,7 +305,7 @@ def load_artifacts(corpus_root: Path) -> dict[Path, Artifact]:
         if location is not None:
             previous = artifact_locations.get(location)
             if previous is not None:
-                raise CompilerError(
+                raise OrganizingError(
                     f"Duplicate artifact location {location}: "
                     f"{corpus_path(corpus_root, previous)} and {corpus_path(corpus_root, path)}"
                 )
@@ -392,53 +321,12 @@ def generate_uid(used: set[str]) -> str:
             return uid
 
 
-def source_offset(lines: list[str], position: tuple[int, int]) -> int:
-    line, column = position
-    return sum(len(part) for part in lines[: line - 1]) + column
-
 
 def add_uid_to_metadata(path: Path, uid: str) -> None:
-    source = read_text(path)
-    if path.suffix.lower() == ".md":
-        if not source.startswith("---\n"):
-            raise CompilerError(f"{path}: cannot add uid without Markdown frontmatter")
-        path.write_text(source.replace("---\n", f"---\nuid: {uid}\n", 1), encoding="utf-8")
-        return
-
-    if path.suffix.lower() != ".py":
-        raise CompilerError(f"{path}: cannot add uid to unsupported metadata surface")
     try:
-        tree = ast.parse(source, filename=str(path))
-    except SyntaxError as exc:
-        raise CompilerError(f"Can't parse Python metadata in {path}: {exc}") from exc
-    if not tree.body:
-        raise CompilerError(f"{path}: cannot find Python module docstring")
-    first = tree.body[0]
-    if not (
-        isinstance(first, ast.Expr)
-        and isinstance(first.value, ast.Constant)
-        and isinstance(first.value.value, str)
-    ):
-        raise CompilerError(f"{path}: cannot find Python module docstring")
-
-    token = None
-    for candidate in tokenize.generate_tokens(io.StringIO(source).readline):
-        if candidate.type == tokenize.STRING and candidate.start[0] == first.value.lineno:
-            token = candidate
-            break
-    if token is None:
-        raise CompilerError(f"{path}: cannot locate Python module docstring token")
-    literal = token.string
-    marker = "---\n"
-    marker_at = literal.find(marker)
-    if marker_at == -1:
-        raise CompilerError(f"{path}: module docstring metadata must begin with ---")
-    insert_at = marker_at + len(marker)
-    new_literal = literal[:insert_at] + f"uid: {uid}\n" + literal[insert_at:]
-    lines = source.splitlines(keepends=True)
-    start = source_offset(lines, token.start)
-    end = source_offset(lines, token.end)
-    path.write_text(source[:start] + new_literal + source[end:], encoding="utf-8")
+        add_missing_key(path, "uid", uid)
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
 
 
 def ensure_uids(corpus_root: Path) -> int:
@@ -476,7 +364,7 @@ def location_addresses(corpus_root: Path) -> dict[str, Path]:
         location = "§" + ".".join(ordinals)
         previous = result.get(location)
         if previous is not None and previous != current_path:
-            raise CompilerError(
+            raise OrganizingError(
                 f"Two locations derive {location}: "
                 f"{corpus_path(corpus_root, previous)} and {corpus_path(corpus_root, current_path)}"
             )
@@ -502,7 +390,7 @@ def validate_sibling_ordinals(corpus_root: Path) -> None:
                 continue
             previous = seen.get(ordinal)
             if previous is not None:
-                raise CompilerError(
+                raise OrganizingError(
                     f"Duplicate sibling location ordinal {ordinal} in {corpus_path(corpus_root, current_path)}: "
                     f"{previous!r} and {name!r}"
                 )
@@ -516,7 +404,7 @@ def location_depth(location: str) -> int:
 def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Path, frozenset[Path], dict[Path, frozenset[Path]], dict[Path, Path]]:
     origin = (corpus_root / "README.md").resolve()
     if origin not in artifacts:
-        raise CompilerError("Corpus root must contain indexed README.md")
+        raise OrganizingError("Corpus root must contain indexed README.md")
     immediate: dict[Path, set[Path]] = {}
     parents: dict[Path, Path] = {}
     located = [artifact for artifact in artifacts.values() if artifact.location is not None]
@@ -542,7 +430,7 @@ def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Pa
             for child in children:
                 previous = parents.get(child)
                 if previous is not None and previous != owner.path:
-                    raise CompilerError(
+                    raise OrganizingError(
                         f"{corpus_path(corpus_root, child)} derives multiple index parents: "
                         f"{corpus_path(corpus_root, previous)} and {corpus_path(corpus_root, owner.path)}"
                     )
@@ -555,12 +443,12 @@ def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Pa
 def build_corpus(corpus_root: Path) -> Corpus:
     corpus_root = corpus_root.resolve()
     if not corpus_root.is_dir():
-        raise CompilerError(f"Corpus root is not a directory: {corpus_root}")
+        raise OrganizingError(f"Corpus root is not a directory: {corpus_root}")
     corpus_root_name(corpus_root)
     validate_sibling_ordinals(corpus_root)
     artifacts = load_artifacts(corpus_root)
     if not artifacts:
-        raise CompilerError(f"No recognized metadata-bearing artifacts beneath {corpus_root}")
+        raise OrganizingError(f"No recognized metadata-bearing artifacts beneath {corpus_root}")
     locations = location_addresses(corpus_root)
     origin, owners, immediate, parents = derive_index(corpus_root, artifacts)
     return Corpus(
@@ -584,7 +472,7 @@ def artifact_by_uid(corpus: Corpus) -> dict[str, Artifact]:
 
 def render_address(corpus: Corpus, artifact: Artifact, section: str | None = None) -> str:
     if artifact.location is None:
-        raise CompilerError(
+        raise OrganizingError(
             f"{corpus_path(corpus.corpus_root, artifact.path)}: uid {artifact.uid} has no addressable location"
         )
     address = f"{corpus_root_name(corpus.corpus_root)}:{artifact.location}"

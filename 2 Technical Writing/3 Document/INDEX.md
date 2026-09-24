@@ -16,7 +16,7 @@ Document Element governs one heading-bounded structure inside a document. The
 consuming document owns its subject-specific content in either case.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20Document%20Forms/INDEX.md" uid="TTDJF8">documentation-system:§2.3.1</a> — Document Forms
   - `Consult when` *a recurring document role may have an adopted reusable whole-document structure* `to` **confirm whether a Document Form already governs the role before inventing a local arrangement**.

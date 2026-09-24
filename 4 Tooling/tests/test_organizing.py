@@ -7,12 +7,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-TOOLING = Path(__file__).resolve().parents[2]
+TOOLING = Path(__file__).resolve().parents[1]
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from _compiler.engine import compile_corpus, resolve_address
-from _compiler.model import CompilerError, find_repository_root
+from _organizing.engine import refresh_corpus, resolve_address
+from _organizing.model import OrganizingError, find_repository_root
 
 
 def write(path: Path, text: str) -> None:
@@ -62,7 +62,7 @@ class CorpusRootTests(unittest.TestCase):
 
     def test_selected_directory_name_is_the_corpus_root_declaration(self) -> None:
         root = self.make_corpus("Project Docs")
-        compile_corpus(root)
+        refresh_corpus(root)
 
         compiled = (root / "README.md").read_text(encoding="utf-8")
         self.assertIn("Project Docs:§1", compiled)
@@ -90,7 +90,7 @@ class CorpusRootTests(unittest.TestCase):
         root = self.make_corpus("project")
 
         with self.assertRaisesRegex(
-            CompilerError,
+            OrganizingError,
             "Bare corpus-root address '§1' is invalid and unresolvable",
         ):
             resolve_address(root, "§1")
@@ -98,7 +98,7 @@ class CorpusRootTests(unittest.TestCase):
     def test_address_corpus_root_must_match_job_corpus_root(self) -> None:
         root = self.make_corpus("project")
 
-        with self.assertRaisesRegex(CompilerError, "declares corpus root 'other'"):
+        with self.assertRaisesRegex(OrganizingError, "declares corpus root 'other'"):
             resolve_address(root, "other:§1")
 
     def test_controlled_links_refresh_after_corpus_root_rename(self) -> None:
@@ -107,10 +107,10 @@ class CorpusRootTests(unittest.TestCase):
         write(root / "README.md", origin("alpha", extra_body=f"See {controlled}.\n"))
         write(root / "1 Page.md", page())
 
-        compile_corpus(root)
+        refresh_corpus(root)
         renamed = self.base / "beta"
         shutil.move(str(root), str(renamed))
-        compile_corpus(renamed)
+        refresh_corpus(renamed)
 
         compiled = (renamed / "README.md").read_text(encoding="utf-8")
         self.assertIn('<a href="1%20Page.md" uid="DEF456">beta:§1</a>', compiled)
@@ -121,7 +121,7 @@ class CorpusRootTests(unittest.TestCase):
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See project:§1.\n"))
 
-        result = compile_corpus(root)
+        result = refresh_corpus(root)
 
         self.assertIn("DS001", {diagnostic.code for diagnostic in result.diagnostics})
 
@@ -130,7 +130,7 @@ class CorpusRootTests(unittest.TestCase):
         write(root / "README.md", origin("project"))
         write(root / "1 Page.md", page(body="See §1.\n"))
 
-        result = compile_corpus(root)
+        result = refresh_corpus(root)
 
         self.assertIn("DS004", {diagnostic.code for diagnostic in result.diagnostics})
         self.assertTrue(
@@ -145,8 +145,8 @@ class CorpusRootTests(unittest.TestCase):
         root = self.make_corpus("bad:root", origin_uid=None)
         before = (root / "README.md").read_text(encoding="utf-8")
 
-        with self.assertRaisesRegex(CompilerError, "cannot be represented"):
-            compile_corpus(root)
+        with self.assertRaisesRegex(OrganizingError, "cannot be represented"):
+            refresh_corpus(root)
 
         self.assertEqual(before, (root / "README.md").read_text(encoding="utf-8"))
 

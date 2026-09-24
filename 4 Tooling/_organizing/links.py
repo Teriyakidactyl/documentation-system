@@ -2,25 +2,23 @@
 
 from __future__ import annotations
 
-import ast
-import io
 import re
-import tokenize
 from pathlib import Path
 from urllib.parse import quote
+
+from _capabilities.frontmatter import FrontmatterError, module_docstring, replace_module_docstring
 
 from .indexes import relative_link
 from .model import (
     ADDRESS_RE,
     UID_RE,
-    CompilerError,
+    OrganizingError,
     Corpus,
     artifact_by_uid,
     heading_target,
     read_text,
     render_address,
     corpus_path,
-    source_offset,
     walk_files,
 )
 
@@ -32,13 +30,13 @@ CONTROL_LINK_RE = re.compile(
 
 def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
     if not UID_RE.fullmatch(uid):
-        raise CompilerError(f"{corpus_path(corpus.corpus_root, owner)}: invalid controlled-link uid {uid!r}")
+        raise OrganizingError(f"{corpus_path(corpus.corpus_root, owner)}: invalid controlled-link uid {uid!r}")
     artifact = artifact_by_uid(corpus).get(uid)
     if artifact is None:
-        raise CompilerError(f"{corpus_path(corpus.corpus_root, owner)}: controlled link names missing uid {uid}")
+        raise OrganizingError(f"{corpus_path(corpus.corpus_root, owner)}: controlled link names missing uid {uid}")
     match = ADDRESS_RE.fullmatch(label.strip())
     if match is None:
-        raise CompilerError(
+        raise OrganizingError(
             f"{corpus_path(corpus.corpus_root, owner)}: controlled link uid {uid} must display "
             "an address with a corpus-root declaration"
         )
@@ -112,44 +110,20 @@ def rewrite_markdown(path: Path, corpus: Corpus) -> int:
 def rewrite_python(path: Path, corpus: Corpus) -> int:
     source = read_text(path)
     try:
-        tree = ast.parse(source, filename=str(path))
-    except SyntaxError as exc:
-        raise CompilerError(f"Can't parse Python documentation in {path}: {exc}") from exc
-    if not tree.body:
+        parsed = module_docstring(source, str(path))
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
+    if parsed is None:
         return 0
-    first = tree.body[0]
-    if not (
-        isinstance(first, ast.Expr)
-        and isinstance(first.value, ast.Constant)
-        and isinstance(first.value.value, str)
-    ):
-        return 0
-    token = None
-    for candidate in tokenize.generate_tokens(io.StringIO(source).readline):
-        if candidate.type == tokenize.STRING and candidate.start[0] == first.value.lineno:
-            token = candidate
-            break
-    if token is None:
-        return 0
-    literal = token.string
-    prefix_match = re.match(r"(?i)^([rub]*)", literal)
-    prefix = prefix_match.group(1) if prefix_match else ""
-    rest = literal[len(prefix) :]
-    quote_mark = next(
-        (q for q in ("'''", '"""') if rest.startswith(q) and rest.endswith(q)),
-        None,
-    )
-    if quote_mark is None:
-        return 0
-    body = rest[len(quote_mark) : -len(quote_mark)]
+    body, _ = parsed
     rewritten, changed = rewrite_markdown_text(body, path, corpus)
     if not changed:
         return 0
-    new_literal = prefix + quote_mark + rewritten + quote_mark
-    lines = source.splitlines(keepends=True)
-    start = source_offset(lines, token.start)
-    end = source_offset(lines, token.end)
-    path.write_text(source[:start] + new_literal + source[end:], encoding="utf-8")
+    try:
+        updated = replace_module_docstring(source, rewritten, str(path))
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
+    path.write_text(updated, encoding="utf-8")
     return changed
 
 

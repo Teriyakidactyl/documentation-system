@@ -15,7 +15,7 @@ element owns source arrangement and provenance conventions; the consuming
 document owns its subject-specific content.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20%F0%9F%93%96%20Hierarchical%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Hierarchical Glossary
   - `Consult when` *related terms must be defined without losing the hierarchy that distinguishes parent, child, and sibling concepts* `to` **pair a relationship tree with a lookup table whose definition column explains each named term**.

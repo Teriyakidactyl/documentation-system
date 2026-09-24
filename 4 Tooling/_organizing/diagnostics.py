@@ -1,4 +1,4 @@
-"""Own structured validation findings and their presentation projections."""
+"""Own structured organization findings and their presentation projections."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from enum import Enum
 from pathlib import Path
 
 from .links import CONTROL_LINK_RE
+from .schemes.ordinal import OrdinalSchemeError, inspect as inspect_ordinal_sequences
 from .model import (
     CONTROLLED_SIDEBAND_DIRS,
     UID_RE,
@@ -243,8 +244,45 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
     return diagnostics
 
 
+def validate_ordinal_sequences(corpus: Corpus) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    try:
+        sequences = inspect_ordinal_sequences(corpus.corpus_root)
+    except OrdinalSchemeError:
+        return diagnostics
+    for sequence in sequences:
+        if sequence.contiguous:
+            continue
+        owner = corpus.origin
+        candidate = (sequence.parent / "INDEX.md").resolve()
+        if candidate in corpus.artifacts:
+            owner = candidate
+        found = ", ".join(str(value) for value, _ in sequence.entries)
+        expected = ", ".join(str(value) for value in range(1, len(sequence.entries) + 1))
+        parent = "." if sequence.parent == corpus.corpus_root else corpus_path(
+            corpus.corpus_root, sequence.parent
+        )
+        diagnostics.append(
+            Diagnostic(
+                code="DS005",
+                severity=Severity.WARNING,
+                path=owner,
+                line=1,
+                message=(
+                    f"Ordinal sequence under {parent} is not contiguous: "
+                    f"found [{found}], normalized sequence is [{expected}]."
+                ),
+            )
+        )
+    return diagnostics
+
+
 def validate(corpus: Corpus) -> list[Diagnostic]:
-    return validate_address_references(corpus) + validate_research_reports(corpus)
+    return (
+        validate_address_references(corpus)
+        + validate_research_reports(corpus)
+        + validate_ordinal_sequences(corpus)
+    )
 
 
 def annotate(corpus_root: Path, diagnostics: list[Diagnostic]) -> int:

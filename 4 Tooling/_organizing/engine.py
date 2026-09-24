@@ -1,4 +1,4 @@
-"""Orchestrate deterministic compiler passes over the normalized corpus model."""
+"""Orchestrate deterministic Organizing passes over the normalized corpus model."""
 
 from __future__ import annotations
 
@@ -6,21 +6,21 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validate
-from .indexes import compile_indexes
+from .indexes import refresh_indexes
 from .links import rewrite_control_links
 from .model import (
-    CompilerError,
+    OrganizingError,
     artifact_by_location,
     build_corpus,
+    corpus_path,
     ensure_uids,
     heading_target,
     parse_address,
-    corpus_path,
 )
 
 
 @dataclass(frozen=True)
-class CompileResult:
+class RefreshResult:
     artifacts: int
     locations: int
     links_refreshed: int
@@ -32,20 +32,20 @@ class CompileResult:
         return sum(d.severity is Severity.ERROR for d in self.diagnostics)
 
 
-def compile_corpus(corpus_root: Path) -> CompileResult:
+def refresh_corpus(corpus_root: Path) -> RefreshResult:
     corpus_root = corpus_root.resolve()
-    # Establish the corpus-root declaration and validate the modeled corpus
-    # before any compiler-owned mutation occurs.
+    # Establish the selected root and validate modelable canonical state before
+    # any Organizing-owned mutation occurs.
     build_corpus(corpus_root)
     clear_inline_annotations(corpus_root)
     minted = ensure_uids(corpus_root)
     corpus = build_corpus(corpus_root)
-    compile_indexes(corpus)
+    refresh_indexes(corpus)
     corpus = build_corpus(corpus_root)
     links = rewrite_control_links(corpus)
     corpus = build_corpus(corpus_root)
     diagnostics = tuple(validate(corpus))
-    return CompileResult(
+    return RefreshResult(
         artifacts=len(corpus.artifacts),
         locations=len(corpus.locations),
         links_refreshed=links,
@@ -93,5 +93,5 @@ def resolve_address(corpus_root: Path, address: str) -> dict:
             "body": None,
         }
     if location_path is not None:
-        raise CompilerError(f"{address}: location has no indexed body to resolve #{section}")
-    raise CompilerError(f"No indexed document or location resolves from {address}")
+        raise OrganizingError(f"{address}: location has no indexed body to resolve #{section}")
+    raise OrganizingError(f"No indexed document or location resolves from {address}")

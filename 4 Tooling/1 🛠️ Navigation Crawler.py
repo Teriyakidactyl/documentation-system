@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 r'''---
 uid: 45E225
-architecture: '<a href="../6%20Software%20Design/2%20%F0%9F%93%96%20Documentation%20Compiler%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a>'
+architecture: '<a href="../6%20Software%20Design/2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a>'
 description: >-
-  `Read in full and follow when` *a Documentation System corpus may have changed
-  or an address must be resolved* `to` **compile derived control state, validate
-  durable references, refresh projections and controlled links, or resolve the
-  requested address without hand-maintaining derived information**.
+  `Read in full and follow when` *a controlled corpus must be refreshed,
+  inspected, resolved, or structurally normalized* `to` **maintain stable
+  identities, organization-scheme invariants, navigation projections, and
+  controlled references through deterministic corpus operations**.
 quadrant: HowTo
 outline:
-  topology: linear
+  topology: branching
+  axis: operation
   numbering: hierarchical-decimal
 writing-style:
   formality: professional
@@ -21,91 +22,85 @@ writing-style:
   signposting: light
   register: technical
 ---
-# 🛠️ Documentation Compiler
+# 🛠️ Organizing
 
-Use the Documentation Compiler as the single public entry point for corpus
-compilation and address resolution. Its `_compiler` package owns implementation
-stages; do not invoke those modules as independent tools.
+Use Organizing for corpus-wide control operations. Folder, Markdown,
+Frontmatter, and YAML remain independently routable peer tools; Organizing
+calls their implementation capabilities when a corpus operation needs them.
 
-The current repository filename is retained temporarily as a compatibility
-entry point for existing automation. **Documentation Compiler** is the canonical
-tool name.
+The historical `Navigation Crawler.py` filename remains an automation-compatibility
+constraint. **Organizing** is the canonical tool and concept name.
 
-## 1. Compile the corpus
+## 1. Refresh organized state
 
-Run the compiler after controlled classification, recognized metadata, numbered
-headings, generated-index membership, controlled links, or compiler-owned
-projections may have changed.
+Run `refresh` after controlled identity, organization, generated navigation,
+or controlled references may have changed:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
 ```
 
-The positional `corpus_root` path declares which filesystem directory serves
-as the corpus root for this compiler job. The designation exists for that job;
-it is not stored on or permanently assigned to the directory. When the argument
-is omitted, the job declares the root of the Git repository containing this
-tool. An explicit path overrides that default.
+For compatibility, omitting the subcommand still means `refresh`.
 
-Each documentation address separately declares its corpus root by directory
-name before `:`. For a job selecting a directory named
-`documentation-system`, generated addresses therefore begin
-`documentation-system:§...`. No second corpus-root designation is configured
-or stored in metadata. A bare form such as `§2.1` omits the required
-corpus-root declaration, is invalid address syntax, and cannot resolve.
-Renaming the directory
-serving as corpus root changes the corpus-root declaration in addresses that
-use it; moving that directory beneath a different ancestor without renaming it
-does not.
+Refresh establishes missing UIDs, rebuilds generated indexes, refreshes
+UID-controlled links, and reports organization diagnostics. Use `--annotate`
+or `--diagnostics-json PATH` with `refresh` when another surface needs the
+same diagnostics.
 
-A successful run refreshes deterministic projections and controlled links,
-then evaluates structured diagnostics. Errors make the run fail; warnings and
-info remain successful unless a future invocation policy explicitly promotes
-them.
+## 2. Inspect organization
 
-## 2. Project diagnostics beside source
-
-Use `--annotate` when an editor or agent benefits from diagnostics immediately
-beside the offending source.
+Use `inspect` to see organization-scheme facts without mutation:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --annotate [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" inspect [corpus_root]
 ```
 
-The compiler owns comments beginning `ERROR DS`, `WARNING DS`, or `INFO DS` and
-removes stale compiler annotations before each normal compile. Do not author
-those comments manually.
+The current ordinal-hierarchy inspection reports each sibling ordinal sequence,
+gaps, the complete compact normalization plan, and unmanaged literal path
+references that could make structural renaming unsafe.
 
-Use `--diagnostics-json PATH` when another tool needs the same diagnostics as
-machine-readable data.
+## 3. Normalize ordinal structure
 
-## 3. Resolve an address
-
-Use `--resolve` for read-only address resolution.
+Preview normalization first:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" normalize [corpus_root]
 ```
 
-The address must declare the compiler job's corpus root by directory name before
-`:`. `--resolve §2.1` is a syntax error because the bare address omits that
-required declaration and is unresolvable.
-Resolution returns JSON for the addressed document, location, or numbered
-section without compiling derived state.
+The command is dry-run by default. Add `--apply` only after the reported plan
+is acceptable:
 
-## 4. Preserve the architecture boundary
+```text
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" normalize --apply [corpus_root]
+```
 
-Treat the controlled `architecture` link in this module's metadata as the
-normative software-architecture provenance for the tool. Internal `_compiler`
-modules inherit that architecture and state only their local responsibility in
-ordinary module docstrings.
+Organizing refuses the apply operation when it finds literal repository-path
+references outside UID-controlled links that it cannot prove safe to migrate.
+When the filesystem transaction succeeds, Organizing refreshes indexes,
+controlled links, and diagnostics against the new corpus state.
+
+## 4. Resolve a locator
+
+Resolve a current Documentation System locator without refreshing state:
+
+```text
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
+```
+
+The historical `--resolve ADDRESS` form remains accepted for compatibility.
+
+## 5. Preserve capability boundaries
+
+Treat the controlled `architecture` link in this module as the normative
+software-architecture provenance. `_organizing` owns corpus semantics and
+orchestration. `_capabilities` owns reusable representation mechanics.
 
 Requires PyYAML.
 '''
 
 from pathlib import Path
 
-from _compiler.cli import main
+from _organizing.cli import main
 
 
 if __name__ == "__main__":

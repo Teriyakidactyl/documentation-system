@@ -38,7 +38,7 @@ A caller may stop as soon as its structural question is resolved. The stages are
 a dependency order, not a requirement to execute every document for every task.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a> — 🛠️ Determine Structural Units
   - `Read in full and follow when` *a candidate subject, responsibility, document unit, module, or other structural item may combine concerns that do not need to remain one unit* `to` **establish cohesive structural units at genuine semantic or reasoning boundaries before later relationship, ownership, placement, and validation decisions treat them as given**.

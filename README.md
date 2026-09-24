@@ -27,9 +27,9 @@ such as `v1.2.0`, when published, identify immutable states of the distribution
 history.
 
 **Corpus root** is a contextual role declared for a filesystem directory; it
-is not a permanent designation of that directory. A compiler job declares its
+is not a permanent designation of that directory. An Organizing job declares its
 corpus root with the optional `corpus_root` path argument; when omitted, that
-job defaults to the root of the Git repository containing the compiler. A
+job defaults to the root of the Git repository containing Organizing. A
 documentation address separately declares its corpus root by directory name
 before `:`, and that declaration is required. Thus
 `documentation-system:§2.3.2.1` declares the directory named
@@ -52,14 +52,14 @@ unresolvable.
 > only within compacted history, read the document in full before relying on it.
 
 <!-- BEGIN index -->
-<!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
+<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20Document%20Control/INDEX.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
-  - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or compiler validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
+  - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
 - <a href="2%20Technical%20Writing/INDEX.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
   - `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
 - <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
-  - `Consult when` *the Documentation System needs compilation, address resolution, or harness projection* `to` **select the tool that performs the required control operation**.
+  - `Consult when` *the Documentation System needs corpus organization, representation-level tooling, or harness projection* `to` **select the narrowest executable capability that owns the required mechanical operation**.
 - <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
   - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
 - <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
