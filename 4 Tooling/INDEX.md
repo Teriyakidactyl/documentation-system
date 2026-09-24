@@ -34,4 +34,6 @@ into the operating system's Python installation.
   - `Read in full and follow when` *a YAML file or YAML value must be parsed or validated independently of frontmatter and corpus semantics* `to` **confirm its generic YAML structure through the shared YAML capability without importing higher-level document rules**.
 - <a href="7%20%F0%9F%9B%A0%EF%B8%8F%20HTML.py" uid="PPVYWD">documentation-system:§4.7</a> — 🛠️ HTML
   - `Read in full and follow when` *HTML elements, attributes, comments, or inline anchors must be inspected independently of Markdown or corpus semantics* `to` **parse HTML syntax into structured tokens and expose constrained anchor facts without assigning higher-level meaning to them**.
+- <a href="8%20%F0%9F%9B%A0%EF%B8%8F%20Prepare%20Tooling%20Environment.md" uid="THAV5S">documentation-system:§4.8</a> — 🛠️ Prepare Tooling Environment
+  - `Read in full and follow when` *Documentation System Python tooling cannot import a required package, pip is unavailable, or the host Python is externally managed* `to` **create a repository-local virtual environment, install the declared Tooling dependencies, and run Documentation System tools without modifying system Python**.
 <!-- END index -->
