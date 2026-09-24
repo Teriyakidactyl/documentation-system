@@ -50,6 +50,23 @@ unresolvable.
 > non-compacted conversation history. If it is not, or if its prior presence is
 > only within compacted history, read the document in full before relying on it.
 
+## Scope
+
+A folder `README.md` represents exactly its containing folder. Unless a
+`README.md` states a different boundary in its own `## Scope` section, its
+guidance applies to that folder and recursively to descendant folders that do
+not provide their own `README.md`.
+
+A descendant `README.md` becomes the nearest folder representation for its
+location. When it omits a Scope section, it inherits this recursive default.
+More-specific folder guidance does not silently cancel still-applicable
+requirements established by an ancestor representation.
+
+For this repository, this Origin applies across the complete controlled
+Documentation System corpus beneath the declared corpus root. Descendant
+`README.md` files specialize their local context while inheriting the default
+scope behavior unless they state a different boundary.
+
 ## Index
 <!-- element: '<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
