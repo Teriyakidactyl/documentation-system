@@ -1,7 +1,7 @@
 ---
 uid: BZJASV
 version:
-  value: '1.0'
+  value: '2.0'
 description: >-
   `Consult when` *a controlled folder representation needs deterministic
   immediate-child navigation* `to` **declare an Index section whose generated
@@ -29,7 +29,11 @@ from canonical corpus structure; it does not create a second authored topology.
 
 ## Anatomy
 
-Use an H2 to bound the Index Element in a controlled folder `README.md`.
+Use an H1-H5 heading to bound the Index Element in a controlled folder
+`README.md`; ordinary folder representations normally place it at H2.
+Organizing reserves exactly one deeper heading level for generated entries and
+fails preflight before mutation when the Index itself is H6.
+
 Record the dynamic Element declaration immediately beneath the heading:
 
 ````markdown
@@ -39,7 +43,7 @@ element:
   path:
     uid: BZJASV
     filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
-  version: '1.0'
+  version: '2.0'
   renderer:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
@@ -56,13 +60,25 @@ contract does not change the Index element.
 
 ## Projection
 
-Each generated entry represents one immediate indexed child and contains the
-child's UID-controlled link, title, and exact controlled `description`.
-Ordering follows the active organization scheme.
+Each generated entry represents one immediate indexed child. Render the child
+title as a heading exactly one level below the Index, followed by the child's
+exact controlled `description`, then a UID-controlled `relative-path` link.
+The link's visible text is the unescaped filesystem path from the Index-owning
+`README.md` artifact itself to the child; its `href` remains the encoded
+browser-resolvable path from the README's containing directory.
 
-Do not hand-author descendant summaries, duplicate deeper navigation, or put
-authored prose inside the generated region. Put folder-specific authored context
-before the Index heading.
+When the child is another `README.md` that owns an Index, trigger a one-hop
+hint immediately beneath its link. The hint is a small unordered list derived
+only from that downstream Index's actual immediate membership, preserving that
+Index's order. Render filenames only for ordinary files and include the child
+folder with `README.md` when the indexed member is itself a folder
+representation. Hint items are unlinked, carry no descriptions, and never
+recurse.
+
+Ordering of primary entries follows the active organization scheme. Do not
+hand-author descendant summaries, duplicate deeper navigation, or put authored
+prose inside the generated region. Put folder-specific authored context before
+the Index heading.
 
 ## Boundary
 

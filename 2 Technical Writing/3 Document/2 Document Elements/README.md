@@ -39,19 +39,38 @@ element:
   path:
     uid: BZJASV
     filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
-  version: '1.0'
+  version: '2.0'
   renderer:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
 
-- <a href="1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Glossary
-  - `Consult when` *a document boundary needs a glossary to orient readers to project-specific terms or concepts relevant at that scope* `to` **select only entries required at the reader's current knowledge horizon, define them to the depth needed for correct use, and choose the smallest representation that preserves necessary relationships**.
-- <a href="2%20%F0%9F%93%96%20Decision%20Table.md" uid="EEG680">documentation-system:§2.3.2.2</a> — 📖 Decision Table
-  - `Consult when` *a bounded set of conditions maps deterministically to actions or outcomes and prose would obscure the branch boundaries* `to` **represent each decision rule as a scannable condition-to-result row**.
-- <a href="3%20%F0%9F%93%96%20Comparison%20Matrix.md" uid="Z3X0VE">documentation-system:§2.3.2.3</a> — 📖 Comparison Matrix
-  - `Consult when` *several peer entities must be compared across the same independent attributes* `to` **represent the peers as rows and shared attributes as columns so differences can be located by intersection**.
-- <a href="4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a> — 📖 Semantic Registry
-  - `Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
-- <a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a> — 📖 Index
-  - `Consult when` *a controlled folder representation needs deterministic immediate-child navigation* `to` **declare an Index section whose generated body projects only the folder's immediate indexed children**.
+### 📖 Glossary
+
+`Consult when` *a document boundary needs a glossary to orient readers to project-specific terms or concepts relevant at that scope* `to` **select only entries required at the reader's current knowledge horizon, define them to the depth needed for correct use, and choose the smallest representation that preserves necessary relationships**.
+
+<a href="1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ" data-ds-link="relative-path">../1 📖 Glossary.md</a>
+
+### 📖 Decision Table
+
+`Consult when` *a bounded set of conditions maps deterministically to actions or outcomes and prose would obscure the branch boundaries* `to` **represent each decision rule as a scannable condition-to-result row**.
+
+<a href="2%20%F0%9F%93%96%20Decision%20Table.md" uid="EEG680" data-ds-link="relative-path">../2 📖 Decision Table.md</a>
+
+### 📖 Comparison Matrix
+
+`Consult when` *several peer entities must be compared across the same independent attributes* `to` **represent the peers as rows and shared attributes as columns so differences can be located by intersection**.
+
+<a href="3%20%F0%9F%93%96%20Comparison%20Matrix.md" uid="Z3X0VE" data-ds-link="relative-path">../3 📖 Comparison Matrix.md</a>
+
+### 📖 Semantic Registry
+
+`Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
+
+<a href="4%20Semantic%20Registry/README.md" uid="81D5SK" data-ds-link="relative-path">../4 Semantic Registry/README.md</a>
+
+### 📖 Index
+
+`Consult when` *a controlled folder representation needs deterministic immediate-child navigation* `to` **declare an Index section whose generated body projects only the folder's immediate indexed children**.
+
+<a href="5%20Index/README.md" uid="BZJASV" data-ds-link="relative-path">../5 Index/README.md</a>

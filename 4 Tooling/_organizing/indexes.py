@@ -5,10 +5,9 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import quote
-
 from _capabilities.markdown import Section, heading_comments
 from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
+from .links import relative_display_path, relative_link
 from .model import (
     Artifact,
     Corpus,
@@ -21,7 +20,7 @@ from .model import (
 
 INDEX_UID = "BZJASV"
 INDEX_RENDERER_UID = "45E225"
-INDEX_VERSION = "1.0"
+INDEX_VERSION = "2.0"
 LEGACY_BEGIN = "<!-- BEGIN index -->"
 LEGACY_END = "<!-- END index -->"
 
@@ -160,14 +159,8 @@ def validate_regions(corpus: Corpus) -> None:
             )
 
 
-def relative_link(from_path: Path, to_path: Path) -> str:
-    relative = os.path.relpath(to_path, start=from_path.parent)
-    return quote(Path(relative).as_posix(), safe="/@")
-
-
-def render_index(corpus: Corpus, owner: Path, children: frozenset[Path]) -> str:
-    lines: list[str] = []
-    ordered = sorted(
+def _ordered_children(corpus: Corpus, children: frozenset[Path]) -> list[Path]:
+    return sorted(
         children,
         key=lambda path: (
             tuple(int(part) for part in corpus.artifacts[path].location[1:].split("."))
@@ -176,15 +169,50 @@ def render_index(corpus: Corpus, owner: Path, children: frozenset[Path]) -> str:
             corpus_path(corpus.corpus_root, path).casefold(),
         ),
     )
-    for path in ordered:
+
+
+def _hint_label(owner: Path, target: Path) -> str:
+    """Render a downstream Index member as a non-link filename/path clue."""
+    relative = os.path.relpath(target, start=owner.parent)
+    return Path(relative).as_posix()
+
+
+def render_index(
+    corpus: Corpus,
+    owner: Path,
+    children: frozenset[Path],
+    *,
+    index_level: int,
+) -> str:
+    if index_level >= 6:
+        raise OrganizingError(
+            f"{corpus_path(corpus.corpus_root, owner)}: Index Element at H{index_level} "
+            "cannot render child headings; maximum Markdown heading depth is H6"
+        )
+
+    lines: list[str] = []
+    entry_marks = "#" * (index_level + 1)
+    for path in _ordered_children(corpus, children):
         artifact: Artifact = corpus.artifacts[path]
         if artifact.uid is None:
             raise OrganizingError(f"{corpus_path(corpus.corpus_root, path)}: indexed child has no uid")
-        label = render_address(corpus, artifact)
+
+        lines.append(f"{entry_marks} {artifact.title}")
+        lines.append("")
+        lines.append(artifact.description)
+        lines.append("")
         lines.append(
-            f'- <a href="{relative_link(owner, path)}" uid="{artifact.uid}">{label}</a> — {artifact.title}'
+            f'<a href="{relative_link(owner, path)}" uid="{artifact.uid}" '
+            f'data-ds-link="relative-path">{relative_display_path(owner, path)}</a>'
         )
-        lines.append(f"  - {artifact.description}")
+
+        if path.name == "README.md" and path in corpus.immediate:
+            lines.append("")
+            for hinted in _ordered_children(corpus, corpus.immediate[path]):
+                lines.append(f"- `{_hint_label(path, hinted)}`")
+
+        lines.append("")
+
     return "\n".join(lines).rstrip()
 
 
@@ -198,15 +226,32 @@ def _render_section(corpus: Corpus, path: Path, element: ElementSection, content
     return "".join(lines[: section.start_line - 1]) + rendered + "".join(lines[section.end_line :])
 
 
-def refresh_indexes(corpus: Corpus) -> None:
+def preflight_indexes(corpus: Corpus) -> None:
+    """Reject invalid Index deployments before any refresh mutation occurs."""
     validate_regions(corpus)
+    for owner in sorted(corpus.index_owners, key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
+        element = _index_section(owner)
+        if element.section.level >= 6:
+            raise OrganizingError(
+                f"{corpus_path(corpus.corpus_root, owner)}: Index Element at H{element.section.level} "
+                "cannot render child headings; maximum Markdown heading depth is H6"
+            )
+
+
+def refresh_indexes(corpus: Corpus) -> None:
+    preflight_indexes(corpus)
     for owner in sorted(corpus.index_owners, key=lambda p: corpus_path(corpus.corpus_root, p).casefold()):
         element = _index_section(owner)
         replacement = _render_section(
             corpus,
             owner,
             element,
-            render_index(corpus, owner, corpus.immediate[owner]),
+            render_index(
+                corpus,
+                owner,
+                corpus.immediate[owner],
+                index_level=element.section.level,
+            ),
         )
         if replacement != read_text(owner):
             owner.write_text(replacement, encoding="utf-8")

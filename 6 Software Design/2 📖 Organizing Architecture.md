@@ -203,11 +203,19 @@ of current organization, never a second authored topology.
 ### 5.4 Controlled references
 
 Controlled-reference processing owns UID target resolution and mechanical
-refresh of physical links and displayed locators.
+refresh of physical links plus the display projection selected by the
+catalogued link type. UID identity is invariant across link types.
 
-A stale location is repairable when UID identity remains valid. A missing or
-ambiguous UID, invalid locator syntax, or unresolved local section is not
-repairable by guessing.
+The default address type displays the current Documentation System locator and
+may select a numbered local section. The relative-path type displays the
+filesystem path from the source artifact itself while retaining a
+browser-resolvable `href`; the Index Element is the current representation
+that selects this type. HTML owns only the anchor syntax and attributes, not
+their Documentation System meaning.
+
+A stale location or relative path is repairable when UID identity remains
+valid. A missing or ambiguous UID, unknown link type, invalid locator syntax,
+or unresolved local section is not repairable by guessing.
 
 ### 5.5 Diagnostics
 
@@ -227,6 +235,7 @@ Refresh reconciles deterministic derived state with current canonical sources:
 
 ```text
 select corpus root
+-> preflight generated navigation boundaries
 -> clear stale inline diagnostics
 -> establish controlled identities
 -> build normalized corpus
