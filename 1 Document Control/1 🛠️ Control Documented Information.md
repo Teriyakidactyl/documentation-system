@@ -35,29 +35,28 @@ entering that navigation surface.
 **Terms.** One name per concept, with relationships shown before definitions:
 
 ```text
+README.md
+├── Repository Root README
+│   └── position: Git repository root
+└── Folder README
+    └── position: descendant folder
+
 corpus root
 ├── declared by Organizing job
-│   └── bounds corpus
-│       ├── controlled artifact
-│       │   ├── uid
-│       │   ├── description
-│       │   ├── indexed artifact
-│       │   └── controlled sideband artifact
-│       └── origin
-│           └── README.md
-│               └── index
-└── declared by address
-    └── anchors location
-        ├── location ordinal
-        └── README.md
-            └── index
+├── bounds corpus
+│   ├── controlled artifact
+│   ├── indexed artifact
+│   └── controlled sideband artifact
+└── represented by README.md when present
+    └── Origin
+        └── reader-entry role
 ```
 
 | Term | Meaning |
 |---|---|
 | **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. An Organizing job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing Organizing. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
 | **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current Organizing job. |
-| **origin** | The reader-facing entry role of a corpus, carried by the `README.md` in the directory serving as corpus root for the current Organizing job. The root README uses the ordinary folder representation plus the additional corpus-entry contract required before the first routing choice. |
+| **Origin** | The reader-facing entry role carried by the `README.md` that represents the corpus root for the current Organizing job. Origin is contextual and independent of README subtype. |
 | **controlled artifact** | A file on an Organizing-traversed path whose supported metadata surface contains a `description` and Organizing-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
@@ -66,8 +65,10 @@ corpus root
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `README.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
 | **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
-| **`README.md`** | The reader-facing representation of its containing folder. In a numbered directory it contributes no location ordinal and resolves to that location's address; at the selected corpus root it carries the origin role and no location address of its own. |
-| **index** | The Document Element declared by an `## Index` section in a folder `README.md`; its generated body projects that folder's immediate indexed children as controlled link, title, and exact `description`. |
+| **`README.md`** | The reserved reader-facing representation of a directory. Its subtype follows filesystem position; the README representing the selected corpus root additionally carries the Origin role. |
+| **Repository Root README** | The literal `README.md` at the Git repository root. It carries project-wide entry context whether or not that directory is selected as a corpus root. |
+| **Folder README** | A literal `README.md` in a descendant directory. It represents that folder and remains a Folder README even when that directory is selected as a corpus root. |
+| **index** | The Document Element declared by an `## Index` section in a `README.md`; its generated body projects that directory's immediate indexed children as controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
 | **Organizing** | The Tooling capability that declares a corpus root for each job, scans supported metadata surfaces beneath it, maintains controlled identity and organization, derives navigation projections, refreshes controlled links, reports diagnostics, resolves locators, and plans deterministic structural normalization. |
 
@@ -244,35 +245,86 @@ addressable location. A numbered location remains addressable without a
 `README.md`, but a controlled link can target it only when a reader-facing body
 represents that location.
 
-## 4. Represent a folder with README.md
+## 4. Represent repository positions with README.md
 
-Use `README.md` for every folder that needs a reader-facing representation. A
-numbered directory already creates its addressable location; its `README.md`
-describes what the folder collects and contributes no additional ordinal. The
-`README.md` at the selected corpus root uses the same representation with the
-additional origin entry contract required before the first routing choice.
+Use `README.md` for every directory that needs a reader-facing representation.
+The filename is reserved: it carries neither a location ordinal nor a quadrant
+glyph. When the containing directory is addressable, its `README.md` resolves
+to that directory's location and contributes no additional ordinal.
 
-The corpus Origin defines the default reader-facing scope semantics for folder
-representations. A downstream `README.md` needs its own `## Scope` section
-only when it must state a different or more specific boundary; otherwise apply
-the Origin's default recursive scope rule.
+Give every `README.md` one routing `description`. When it has immediate
+indexed children, declare one Index element where those choices should appear.
+Organizing derives the choices from the filesystem and reuses each child's exact
+`description`; do not repeat descendant metadata by hand.
 
-Keep the folder representation focused. Give the `README.md` one routing
-`description`. When it has immediate indexed children, declare one Index element
-where those choices should appear. Organizing derives the choices from the
-filesystem and reuses each child's exact `description`; do not repeat descendant
-metadata by hand.
+### 4.1 Select the README subtype
 
-`README.md` is a reserved folder representation, so it carries neither an
-ordinal nor a quadrant glyph. In a numbered directory its location is exactly
-that of its containing directory. At the selected corpus root it represents the
-origin rather than an addressed descendant location.
+Classify the representation by filesystem position:
 
-For a `README.md` serving as the corpus origin, put the corpus entry contract
-before its Index element. That contract:
+```text
+README.md
+├── Repository Root README  → Git repository root
+└── Folder README           → descendant directory
+```
 
-- gives the corpus a specific H1 and a `description` that routes a reader into
-  the corpus;
+The subtype does not change when Organizing selects a corpus root. A Folder
+README selected as the corpus entry remains a Folder README and additionally
+carries the Origin role. A Repository Root README remains that subtype even
+when another directory is selected as the corpus root.
+
+### 4.2 Author a Repository Root README
+
+Use the Repository Root README as the project-wide entry surface. Put the
+project title, not the repository slug or directory name, in its H1. When a
+project logo exists, place it directly beneath the H1. Follow with a compact
+preamble that tells an entering reader what the project is and what work the
+repository supports.
+
+State repository-wide scope before definitions that depend on it. When
+project-defined terms recur across repository concerns or are required to
+interpret the Repository Root README, add a project glossary after Scope. Use
+the <a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a>
+Document Element when the glossary needs definitions plus repeated attributes
+in one dense lookup surface. When the Semantic Registry is used, include a
+reader-visible controlled link to its Element folder beside the instance so an
+editor can reach the source contract and formatter without interpreting
+metamatter. Keep domain-local terminology with its owning document instead of
+expanding the project glossary into a repository-wide term dump.
+
+State the repository authority model before asking the reader to route work.
+Tell an entering agent which information is current authority, require the
+literal `README.md` chain that applies to a descendant target to be read
+before relying on that target, and distinguish that chain from the
+concern-specific documents selected afterward.
+
+Add source, distribution, addressing, or other project-level context only when
+it changes how a reader should interpret or enter the repository. Put the Index
+after that entry context.
+
+### 4.3 Author a Folder README
+
+Use a Folder README to represent one descendant folder. Name the represented
+concept or location in its H1 and state compactly what the folder collects.
+
+Unless the Folder README states a different boundary in its own `## Scope`
+section, its guidance applies to its containing folder and recursively to
+descendants that do not state a more specific boundary. A descendant Folder
+README specializes local context without silently cancelling still-applicable
+ancestor requirements.
+
+Keep the representation local. Do not repeat project preamble, project glossary,
+source-distribution policy, or other Repository Root context merely to make the
+folder self-contained. Put its Index after any local context required to choose
+among its immediate children.
+
+### 4.4 Apply the Origin role
+
+The `README.md` representing the corpus root selected for an Organizing job
+carries the Origin role regardless of subtype. Origin is a reader-entry role,
+not a synonym for Repository Root README or corpus root.
+
+Before its first routing choice, an Origin additionally:
+
 - explains compactly that corpus-root status is contextual to the Organizing
   job, while each documentation address declares the root by directory name,
   then descends through decimal locations and may select a numbered heading
@@ -281,14 +333,16 @@ before its Index element. That contract:
   corpus-root declaration;
 - tells the reader to separate independent concerns, compare each concern only
   with the immediate indexed choices, select the narrowest matching
-  `description`, descend one Index at a time, and satisfy every resulting
-  governing document according to its directive.
+  `description`, read the literal `README.md` of each entered directory,
+  and satisfy every selected concern-specific document according to its
+  directive;
+- requires the complete source text of a selected document to be identifiable
+  in active, non-compacted conversation history before relying on it, and a
+  full read when that condition is not met.
 
-Add corpus-specific source, distribution, glossary, or folder context before
-the first routing choice only when a reader must know it to choose correctly.
-Do not add a persistent corpus-root metadata field: the Organizing job declares
-that role by path and an address declares it by root directory name. The root
-`README.md` carries no `form` link merely because it serves as the origin.
+Do not add a persistent Origin or corpus-root metadata field. The Organizing job
+declares the corpus root by path, the address declares it by directory name,
+and the represented README acquires Origin contextually.
 
 ## 5. Add controlled metadata
 
@@ -318,10 +372,10 @@ address           → where it is now
 ## 6. Render the Index element
 
 The Index element is a derived reader projection, not authored topology. The
-filesystem already determines the hierarchy. A folder `README.md` with
-immediate indexed children declares one `## Index` section and projects only
-those children. The corpus-root `README.md` uses the same element after its
-additional origin context. Traversing successive Index elements provides
+filesystem already determines the hierarchy. A `README.md` with immediate
+indexed children declares one `## Index` section and projects only those
+children. A README carrying the Origin role uses the same element after its
+additional entry context. Traversing successive Index elements provides
 progressive disclosure.
 
 Declare the dynamic Index Document Element directly beneath its heading:

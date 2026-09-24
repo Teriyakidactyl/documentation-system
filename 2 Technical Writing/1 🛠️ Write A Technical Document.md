@@ -430,7 +430,9 @@ Start with the concepts required by the acceptance criterion. Separate facts
 that can vary independently, relationship-dependent values, and
 representations derived through composition or formatting. Give each concept
 one term and each term one meaning. Fix any term that recurs across
-independently written sections in the outline itself.
+independently written sections in the outline itself. Preserve established
+names for project-defined concepts and exact referents; generalize only when
+the statement applies to the broader class.
 
 Test each proposed term:
 
