@@ -44,6 +44,18 @@ class SemanticRegistryTests(unittest.TestCase):
         codes = {item.code for item in semantic_registry._line_diagnostics(source)}
         self.assertIn("SR007", codes)
 
+    def test_check_requires_two_space_root_and_no_depth_jump(self) -> None:
+        wrong_root = (
+            '"Profile": # A named execution configuration.\n'
+            '  "Storage": "Semantic YAML"\n'
+        )
+        jump = (
+            '  "Profile": # A named execution configuration.\n'
+            '      "Storage": "Semantic YAML"\n'
+        )
+        self.assertIn("SR005", {item.code for item in semantic_registry._line_diagnostics(wrong_root)})
+        self.assertIn("SR005", {item.code for item in semantic_registry._line_diagnostics(jump)})
+
     def test_check_requires_double_quoted_keys(self) -> None:
         source = (
             '  Profile: # A named execution configuration.\n'
