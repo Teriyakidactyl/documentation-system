@@ -34,10 +34,16 @@ explicitly remain untracked when per-instance metadata would outweigh the
 benefit; controlled HTML links are the current example.
 
 ## Index
-<!-- element: '<a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20%F0%9F%93%96%20Hierarchical%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Hierarchical Glossary
   - `Consult when` *related terms must be defined without losing the hierarchy that distinguishes parent, child, and sibling concepts* `to` **pair a relationship tree with a lookup table whose definition column explains each named term**.
@@ -49,4 +55,3 @@ benefit; controlled HTML links are the current example.
   - `Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
 - <a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a> — 📖 Index
   - `Consult when` *a controlled folder representation needs deterministic immediate-child navigation* `to` **declare an Index section whose generated body projects only the folder's immediate indexed children**.
-<!-- END index -->
