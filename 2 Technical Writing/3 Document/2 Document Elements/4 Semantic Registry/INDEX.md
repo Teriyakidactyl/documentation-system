@@ -1,4 +1,5 @@
 ---
+uid: 81D5SK
 description: >-
   `Consult when` *named entries need definitions and repeated attributes in one
   dense lookup surface whose source hierarchy must remain directly readable*
