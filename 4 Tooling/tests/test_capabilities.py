@@ -90,7 +90,7 @@ class CapabilityTests(unittest.TestCase):
         self.assertNotIn("MD013", codes)
         self.assertNotIn("MD033", codes)
 
-    def test_markdown_fix_combines_safe_fixes_with_declared_renumbering(self) -> None:
+    def test_markdown_fix_does_not_cross_into_coordinate_renumbering(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "doc.md"
             write(
@@ -103,9 +103,9 @@ class CapabilityTests(unittest.TestCase):
             diagnostics, changed = fix_markdown(path)
             self.assertTrue(changed)
             rendered = path.read_text(encoding="utf-8")
-            self.assertIn("## 1 Wrong", rendered)
+            self.assertIn("## 9 Wrong", rendered)
             self.assertNotIn("spaces.  \n", rendered)
-            self.assertNotIn("DSMD002", {item.code for item in diagnostics})
+            self.assertIn("DSMD002", {item.code for item in diagnostics})
 
     def test_markdown_renumber_uses_local_coordinates(self) -> None:
         source = (
