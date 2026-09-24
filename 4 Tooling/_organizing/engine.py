@@ -63,9 +63,9 @@ def resolve_address(corpus_root: Path, address: str) -> dict:
         result = {
             "address": address,
             "corpus_root": str(corpus.corpus_root),
-            "type": "document" if artifact.path.name != "INDEX.md" else "location-index",
+            "type": "document" if artifact.path.name != "README.md" else "location-representation",
             "path": corpus_path(corpus_root, artifact.path),
-            "parent_index": corpus_path(corpus_root, parent) if parent else None,
+            "parent_representation": corpus_path(corpus_root, parent) if parent else None,
             "location_ordinal": artifact.ordinal,
             "uid": artifact.uid,
             "title": artifact.title,
@@ -89,9 +89,9 @@ def resolve_address(corpus_root: Path, address: str) -> dict:
             "corpus_root": str(corpus.corpus_root),
             "type": "location",
             "path": corpus_path(corpus_root, location_path) + "/",
-            "index": None,
+            "representation": None,
             "body": None,
         }
     if location_path is not None:
-        raise OrganizingError(f"{address}: location has no indexed body to resolve #{section}")
+        raise OrganizingError(f"{address}: location has no reader-facing representation to resolve #{section}")
     raise OrganizingError(f"No indexed document or location resolves from {address}")
