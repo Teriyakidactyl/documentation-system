@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from urllib.parse import quote
 
@@ -9,7 +10,6 @@ from _capabilities.frontmatter import FrontmatterError, module_docstring, replac
 from _capabilities.html import HtmlAnchor, rewrite_anchors
 from _capabilities.markdown import transform_prose
 
-from .indexes import relative_link
 from .model import (
     ADDRESS_RE,
     UID_RE,
@@ -23,12 +23,49 @@ from .model import (
     walk_files,
 )
 
-def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
+LINK_TYPE_ATTRIBUTE = "data-ds-link"
+ADDRESS_LINK_TYPE = "address"
+RELATIVE_PATH_LINK_TYPE = "relative-path"
+LINK_TYPES = frozenset({ADDRESS_LINK_TYPE, RELATIVE_PATH_LINK_TYPE})
+
+
+def relative_link(from_path: Path, to_path: Path) -> str:
+    relative = os.path.relpath(to_path, start=from_path.parent)
+    return quote(Path(relative).as_posix(), safe="/@")
+
+
+def relative_display_path(from_path: Path, to_path: Path) -> str:
+    relative = os.path.relpath(to_path, start=from_path)
+    return Path(relative).as_posix()
+
+
+def render_control_link(
+    owner: Path,
+    corpus: Corpus,
+    uid: str,
+    label: str,
+    *,
+    link_type: str = ADDRESS_LINK_TYPE,
+) -> str:
     if not UID_RE.fullmatch(uid):
         raise OrganizingError(f"{corpus_path(corpus.corpus_root, owner)}: invalid controlled-link uid {uid!r}")
     artifact = artifact_by_uid(corpus).get(uid)
     if artifact is None:
         raise OrganizingError(f"{corpus_path(corpus.corpus_root, owner)}: controlled link names missing uid {uid}")
+    if link_type not in LINK_TYPES:
+        raise OrganizingError(
+            f"{corpus_path(corpus.corpus_root, owner)}: controlled link uid {uid} "
+            f"uses unknown link type {link_type!r}"
+        )
+
+    href = relative_link(owner, artifact.path)
+    if link_type == RELATIVE_PATH_LINK_TYPE:
+        display = relative_display_path(owner, artifact.path)
+        return (
+            f'<a href="{href}" uid="{uid}" '
+            f'{LINK_TYPE_ATTRIBUTE}="{RELATIVE_PATH_LINK_TYPE}">{display}</a>'
+        )
+
     match = ADDRESS_RE.fullmatch(label.strip())
     if match is None:
         raise OrganizingError(
@@ -37,7 +74,6 @@ def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> st
         )
     section = match.group("section")
     heading = heading_target(artifact.body, section, artifact.path) if section else None
-    href = relative_link(owner, artifact.path)
     if heading is not None:
         href += "#" + quote(heading.anchor, safe="-._~")
     return f'<a href="{href}" uid="{uid}">{render_address(corpus, artifact, section)}</a>'
@@ -49,7 +85,14 @@ def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, 
             uid = anchor.attribute("uid")
             if uid is None:
                 return None
-            return render_control_link(owner, corpus, uid, anchor.text)
+            link_type = anchor.attribute(LINK_TYPE_ATTRIBUTE) or ADDRESS_LINK_TYPE
+            return render_control_link(
+                owner,
+                corpus,
+                uid,
+                anchor.text,
+                link_type=link_type,
+            )
 
         return rewrite_anchors(segment, render)
 
