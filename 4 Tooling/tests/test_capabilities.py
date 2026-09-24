@@ -85,12 +85,12 @@ class CapabilityTests(unittest.TestCase):
         source = (
             "# Title\n\n"
             "## Registry\n"
-            "\`\`\`yaml\n"
+            "```yaml\n"
             "a: 1\n"
-            "\`\`\`\n\n"
-            "\`\`\`text\n"
+            "```\n\n"
+            "```text\n"
             "ignored\n"
-            "\`\`\`\n"
+            "```\n"
         )
         found = fenced_blocks(source, language="yaml")
         self.assertEqual(1, len(found))
