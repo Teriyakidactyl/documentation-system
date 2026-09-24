@@ -292,6 +292,53 @@ description: >-
             {item.severity.value for item in drift},
         )
 
+    def test_static_element_drift_and_filepath_refresh(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(
+            root / "1 Instance.md",
+            """---
+uid: DEF456
+description: >-
+  `Consult when` *a versioned Element instance is tested* `to` **exercise Element drift diagnostics**.
+---
+# Instance
+
+## Terms
+<!--
+element:
+  path:
+    uid: E1M123
+    filepath: stale/Element.md
+  version: '1.1'
+-->
+Body.
+""",
+        )
+        write(
+            root / "2 Element.md",
+            """---
+uid: E1M123
+version:
+  value: '1.2'
+  warn: minor
+  error: major
+description: >-
+  `Consult when` *a test Element is needed* `to` **supply Element version authority**.
+---
+# Element
+""",
+        )
+
+        result = refresh_corpus(root)
+
+        rendered = (root / "1 Instance.md").read_text(encoding="utf-8")
+        self.assertIn("filepath: 2 Element.md", rendered)
+        drift = [item for item in result.diagnostics if item.code == "DS007"]
+        self.assertEqual(1, len(drift))
+        self.assertEqual("warning", drift[0].severity.value)
+        self.assertIn("minor drift", drift[0].message)
+
     def test_reader_visible_address_requires_controlled_link(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
