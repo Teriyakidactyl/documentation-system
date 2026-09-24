@@ -80,7 +80,7 @@ def _api():
         from pymarkdown.api import PyMarkdownApi
     except ImportError as exc:
         raise MarkdownLintError(
-            "PyMarkdownLnt is required; install pymarkdownlnt==0.9.40"
+            "PyMarkdownLnt is required; prepare the repository-local Documentation System Tooling environment and install 4 Tooling/requirements.txt"
         ) from exc
 
     api = PyMarkdownApi(inherit_logging=True).enable_strict_configuration().disable_rule_by_identifier("*")
