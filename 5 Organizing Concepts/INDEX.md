@@ -37,12 +37,14 @@ a dependency order, not a requirement to execute every document for every task.
 <!-- BEGIN index -->
 <!-- This block is owned by the Documentation Compiler; run the compiler whenever indexed information or classification may have changed. -->
 
-- <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.1</a> — 🛠️ Test A Placement
-  - `Read in full and follow when` *a non-trivial item must be placed into an existing structure or more than one placement plausibly fits* `to` **test the candidate against topology, relation, axis, granularity, ownership, and coverage, then confirm it or surface the unresolved ambiguity instead of guessing**.
-- <a href="2%20%F0%9F%93%96%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a> — 📖 Structural Topologies
-  - `Consult when` *the relation governing a structural layer is unclear* `to` **distinguish tree, list, matrix, and graph topology by the relation each preserves and the failure signal each exposes**.
-- <a href="3%20%F0%9F%92%A1%20Ownership%20and%20Containment.md" uid="W9D5TG">documentation-system:§5.3</a> — 💡 Ownership and Containment
-  - `Read in full when` *the place holding an item and the concept responsible for it are being treated as the same thing* `to` **separate containment from ownership and choose the owner before domain-specific placement rules determine the container**.
-- <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20A%20Subject%20Into%20MECE.md" uid="K8T4ZM">documentation-system:§5.4</a> — 🛠️ Decompose A Subject Into MECE
-  - `Read in full and follow when` *a consequential structure must be authored from scratch, an existing structure requires formal MECE validation, or Test A Placement leaves an ambiguity whose resolution will become structural precedent* `to` **derive and validate the structure explicitly, returning PASS, FAIL, or AMBIGUOUS without guessing**.
+- <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a> — 🛠️ Determine Structural Units
+  - `Read in full and follow when` *a candidate subject, responsibility, document unit, module, or other structural item may combine concerns that do not need to remain one unit* `to` **establish the smallest cohesive units that later relationship, ownership, placement, and validation decisions may safely treat as given**.
+- <a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a> — 📖 Relationships and Structural Topologies
+  - `Consult when` *structural units are known but the relationship among them or the topology that preserves it is unclear* `to` **name the governing relation first and select tree, list, matrix, or graph without letting a representation invent the relationship**.
+- <a href="3%20%F0%9F%92%A1%20Ownership%2C%20Containment%2C%20and%20Convergence.md" uid="W9D5TG">documentation-system:§5.3</a> — 💡 Ownership, Containment, and Convergence
+  - `Read in full when` *semantic responsibility, physical containment, or a location where independently owned concerns meet are being treated as the same thing* `to` **separate ownership from containment and convergence before domain-specific placement chooses a representation**.
+- <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.4</a> — 🛠️ Test A Placement
+  - `Read in full and follow when` *a known structural unit with an established relationship and owner must be placed into an existing structure or more than one container plausibly fits* `to` **test candidate containers against the established structure and either confirm one placement or surface the structural contradiction without redefining the unit to make it fit**.
+- <a href="5%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20And%20Validate%20A%20Structure.md" uid="K8T4ZM">documentation-system:§5.5</a> — 🛠️ Decompose And Validate A Structure
+  - `Read in full and follow when` *established structural units must be organized into a consequential reusable structure, an existing structure requires formal validation, or placement exposes a contradiction that would become structural precedent* `to` **construct or test the structure under one relation and axis at a time, returning PASS, FAIL, or AMBIGUOUS without changing unit boundaries merely to force a fit**.
 <!-- END index -->

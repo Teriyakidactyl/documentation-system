@@ -61,7 +61,7 @@ unresolvable.
 - <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
   - `Consult when` *the Documentation System needs compilation, address resolution, or harness projection* `to` **select the tool that performs the required control operation**.
 - <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
-  - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **select the organizing concept that resolves conceptual structure before domain-specific rules are applied**.
+  - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
 - <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 - <a href="7%20Editing/INDEX.md" uid="X74GZ1">documentation-system:§7</a> — Editing
