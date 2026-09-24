@@ -120,21 +120,76 @@ element:
   path:
     uid: BZJASV
     filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
-  version: '1.0'
+  version: '2.0'
   renderer:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
 
-- <a href="1%20Document%20Control/README.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
-  - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
-- <a href="2%20Technical%20Writing/README.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
-  - `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
-- <a href="4%20Tooling/README.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
-  - `Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, or harness projection* `to` **prepare the required execution environment or select the narrowest capability that owns the mechanical operation**.
-- <a href="5%20Organizing%20Concepts/README.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
-  - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
-- <a href="6%20Software%20Design/README.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
-  - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
-- <a href="7%20Editing/README.md" uid="X74GZ1">documentation-system:§7</a> — Editing
-  - `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
+### Document Control
+
+`Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
+
+<a href="1%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../1 Document Control/README.md</a>
+
+- `1 🛠️ Control Documented Information.md`
+- `2 📖 Folder Conventions.md`
+- `3 📖 Repository Information Storage.md`
+
+### Technical Writing
+
+`Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
+
+<a href="2%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../2 Technical Writing/README.md</a>
+
+- `1 🛠️ Write A Technical Document.md`
+- `2 🧭 Routable Descriptions Recognized.md`
+- `3 Document/README.md`
+
+### Tooling
+
+`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, or harness projection* `to` **prepare the required execution environment or select the narrowest capability that owns the mechanical operation**.
+
+<a href="4%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../4 Tooling/README.md</a>
+
+- `1 🛠️ Navigation Crawler.py`
+- `2 🛠️ Harness Installer.py`
+- `3 🛠️ Folder.py`
+- `4 🛠️ Markdown.py`
+- `5 🛠️ Frontmatter.py`
+- `6 🛠️ YAML.py`
+- `7 🛠️ HTML.py`
+- `8 🛠️ Prepare Tooling Environment.md`
+
+### Organizing Concepts
+
+`Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
+
+<a href="5%20Organizing%20Concepts/README.md" uid="A7K3QF" data-ds-link="relative-path">../5 Organizing Concepts/README.md</a>
+
+- `1 🛠️ Determine Structural Units.md`
+- `2 📖 Relationships and Structural Topologies.md`
+- `3 💡 Ownership, Containment, and Convergence.md`
+- `4 🛠️ Test A Placement.md`
+- `5 🛠️ Decompose And Validate A Structure.md`
+
+### Software Design
+
+`Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
+
+<a href="6%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../6 Software Design/README.md</a>
+
+- `1 📖 Software Design Principles.md`
+- `2 📖 Organizing Architecture.md`
+
+### Editing
+
+`Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
+
+<a href="7%20Editing/README.md" uid="X74GZ1" data-ds-link="relative-path">../7 Editing/README.md</a>
+
+- `1 🛠️ Revise an Artifact.md`
+- `2 🛠️ Validate an Artifact.md`
+- `3 💡 Editing Under Conceptual Shift.md`
+- `4 📖 Editorial Terms.md`
+- `5 📖 Validation Evidence.md`
