@@ -13,13 +13,18 @@ implementation work. Prefer its documented defaults over reopening equivalent
 architectural alternatives.
 
 ## Index
-<!-- element: '<a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY">documentation-system:§6.1</a> — 📖 Software Design Principles
   - `Consult when` *a software design decision admits several plausible implementations or an existing implementation boundary is being materially changed* `to` **apply the Documentation System's canonical defaults for concepts, ownership, classes, modules, validation, and projections without reopening equivalent alternatives**.
 - <a href="2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a> — 📖 Organizing Architecture
   - `Consult when` *the Organizing tool, an organization scheme, a peer representation capability, a validation rule, a projection, or a structural refactor is being introduced or materially changed* `to` **place responsibility with the owning capability while preserving one normalized corpus and one deterministic organization workflow**.
-<!-- END index -->

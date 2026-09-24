@@ -42,8 +42,10 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
 
 For compatibility, omitting the subcommand still means `refresh`.
 
-Refresh establishes missing UIDs, rebuilds generated indexes, refreshes
-UID-controlled links, and reports organization diagnostics. Use `--annotate`
+Refresh establishes missing UIDs, refreshes structured Element filepaths,
+renders dynamic Index Elements, refreshes UID-controlled links, and reports
+organization diagnostics. Index rendering uses heading-bounded Element
+metamatter rather than generated-region marker comments. Use `--annotate`
 or `--diagnostics-json PATH` with `refresh` when another surface needs the
 same diagnostics.
 

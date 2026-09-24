@@ -5,13 +5,14 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from markdown_it import MarkdownIt
+
 NUMBERED_HEADING_RE = re.compile(
     r"^(?P<marks>#{2,6})\s+(?P<number>[0-9]+(?:\.[0-9]+)*)"
     r"(?P<trailing>\.)?\s+(?P<title>.+?)\s*$"
 )
 ATX_HEADING_RE = re.compile(r"^(?P<marks>#{1,6})\s+(?P<title>.+?)\s*$")
 NUMBER_PREFIX_RE = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
-FENCE_OPEN_RE = re.compile(r"^(?P<indent> {0,3})(?P<marks>`{3,}|~{3,})(?P<info>[^\r\n]*)$")
 
 
 class MarkdownError(ValueError):
@@ -50,6 +51,25 @@ class FencedBlock:
     content_start_line: int
     end_line: int
     content: str
+
+
+@dataclass(frozen=True)
+class ParsedHeading:
+    line: int
+    level: int
+    title: str
+    inline_types: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class HeadingComment:
+    section: Section
+    start_line: int
+    end_line: int
+    content: str
+
+
+_PARSER = MarkdownIt("commonmark").enable(["table", "strikethrough"])
 
 
 def title_from_body(body: str, fallback: str) -> str:
@@ -111,33 +131,33 @@ def heading_target(body: str, number: str) -> HeadingTarget:
     return matches[0]
 
 
-def headings(body: str) -> list[dict]:
-    result: list[dict] = []
-    in_fence = False
-    fence_token: str | None = None
-    for line_number, line in enumerate(body.splitlines(), start=1):
-        stripped = line.lstrip()
-        if stripped.startswith("```") or stripped.startswith("~~~"):
-            token = stripped[:3]
-            if not in_fence:
-                in_fence = True
-                fence_token = token
-            elif token == fence_token:
-                in_fence = False
-                fence_token = None
+def parsed_headings(body: str) -> list[ParsedHeading]:
+    """Return parser-backed heading facts without exposing parser token objects."""
+    tokens = _PARSER.parse(body)
+    result: list[ParsedHeading] = []
+    for index, token in enumerate(tokens):
+        if token.type != "heading_open" or token.map is None:
             continue
-        if in_fence:
-            continue
-        match = ATX_HEADING_RE.match(line)
-        if match:
-            result.append(
-                {
-                    "line": line_number,
-                    "level": len(match.group("marks")),
-                    "title": match.group("title"),
-                }
+        inline = tokens[index + 1] if index + 1 < len(tokens) else None
+        if inline is None or inline.type != "inline":
+            raise MarkdownError(f"heading at line {token.map[0] + 1} has no inline content token")
+        children = inline.children or []
+        result.append(
+            ParsedHeading(
+                line=token.map[0] + 1,
+                level=int(token.tag[1:]),
+                title=inline.content,
+                inline_types=tuple(child.type for child in children),
             )
+        )
     return result
+
+
+def headings(body: str) -> list[dict]:
+    return [
+        {"line": item.line, "level": item.level, "title": item.title}
+        for item in parsed_headings(body)
+    ]
 
 
 
@@ -171,6 +191,41 @@ def sections(body: str) -> list[Section]:
     return result
 
 
+def heading_comments(body: str) -> list[HeadingComment]:
+    """Return HTML comments placed immediately beneath heading lines."""
+    lines = body.splitlines(keepends=True)
+    result: list[HeadingComment] = []
+    for section in sections(body):
+        index = section.start_line
+        if index >= len(lines) or not lines[index].lstrip().startswith("<!--"):
+            continue
+        parts: list[str] = []
+        end_line: int | None = None
+        for candidate in range(index, min(section.end_line, len(lines))):
+            parts.append(lines[candidate])
+            if "-->" in lines[candidate]:
+                end_line = candidate + 1
+                break
+        if end_line is None:
+            raise MarkdownError(
+                f"unclosed HTML comment beneath heading at line {section.start_line}"
+            )
+        raw = "".join(parts)
+        start = raw.find("<!--")
+        end = raw.find("-->", start + 4)
+        if start == -1 or end == -1:
+            continue
+        result.append(
+            HeadingComment(
+                section=section,
+                start_line=index + 1,
+                end_line=end_line,
+                content=raw[start + 4 : end].strip(),
+            )
+        )
+    return result
+
+
 def resolve_section(body: str, selector: str) -> Section:
     matches = [
         section
@@ -192,59 +247,27 @@ def get_section(body: str, selector: str, *, include_heading: bool = True) -> st
 
 
 def fenced_blocks(body: str, *, language: str | None = None) -> list[FencedBlock]:
-    """Return fenced code blocks with one-based line coordinates.
-
-    The opening fence may use backticks or tildes. Closing fences must use the
-    same character and at least the opening length. When language is supplied,
-    only blocks whose first info-string token matches case-insensitively are
-    returned.
-    """
-    lines = body.splitlines(keepends=True)
+    """Return parser-backed fenced code blocks with one-based line coordinates."""
     result: list[FencedBlock] = []
-    index = 0
-
-    while index < len(lines):
-        raw = lines[index].rstrip("\r\n")
-        opening = FENCE_OPEN_RE.match(raw)
-        if opening is None:
-            index += 1
+    for token in _PARSER.parse(body):
+        if token.type != "fence" or token.map is None:
             continue
-
-        marks = opening.group("marks")
-        character = marks[0]
-        minimum = len(marks)
-        info = opening.group("info").strip()
+        info = token.info.strip()
         block_language = info.split(None, 1)[0] if info else ""
-
-        closing_index: int | None = None
-        for candidate in range(index + 1, len(lines)):
-            stripped = lines[candidate].strip()
-            if not stripped or stripped[0] != character:
-                continue
-            if set(stripped) == {character} and len(stripped) >= minimum:
-                closing_index = candidate
-                break
-
-        if closing_index is None:
-            raise MarkdownError(f"unclosed fenced code block beginning at line {index + 1}")
-
-        content = "".join(lines[index + 1 : closing_index])
-        if language is None or block_language.lower() == language.lower():
-            result.append(
-                FencedBlock(
-                    language=block_language,
-                    info=info,
-                    fence=marks,
-                    start_line=index + 1,
-                    content_start_line=index + 2,
-                    end_line=closing_index + 1,
-                    content=content,
-                )
+        if language is not None and block_language.lower() != language.lower():
+            continue
+        result.append(
+            FencedBlock(
+                language=block_language,
+                info=info,
+                fence=token.markup,
+                start_line=token.map[0] + 1,
+                content_start_line=token.map[0] + 2,
+                end_line=token.map[1],
+                content=token.content,
             )
-        index = closing_index + 1
-
+        )
     return result
-
 
 def transform_prose(text: str, transform) -> tuple[str, int]:
     changed = 0

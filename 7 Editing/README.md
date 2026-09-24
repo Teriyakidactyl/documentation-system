@@ -20,10 +20,16 @@ copyediting, and proofreading still name recognized scopes of prose work. The
 artifact may be prose, structured data, code, or a mixture.
 
 ## Index
-<!-- element: '<a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Revise%20an%20Artifact.md" uid="SE6M58">documentation-system:§7.1</a> — 🛠️ Revise an Artifact
   - `Read in full and follow when` *an existing artifact must incorporate a stated change without leaving superseded meaning, broken dependencies, or unexamined residual* `to` **freeze the change frame, inspect the current state, propagate the change with validation reasoning, check the resulting state, and return a traceable revision record**.
@@ -35,4 +41,3 @@ artifact may be prose, structured data, code, or a mixture.
   - `Consult when` *prose-bearing work needs an established editorial term for the level of intervention, detection scope, or consistency aid* `to` **select the recognized editorial term and apply its Documentation System rule without replacing established vocabulary with a local synonym**.
 - <a href="5%20%F0%9F%93%96%20Validation%20Evidence.md" uid="5SK5Z4">documentation-system:§7.5</a> — 📖 Validation Evidence
   - `Consult when` *a formal Validation result must be communicated beyond the validating context or retained as assurance evidence* `to` **distinguish validation reasoning, bounded validation records, transmissible receipts, and optional durable evidence without turning ordinary self-checking into a persistent process ledger**.
-<!-- END index -->

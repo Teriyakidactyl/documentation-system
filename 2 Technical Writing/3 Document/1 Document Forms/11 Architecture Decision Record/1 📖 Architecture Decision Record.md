@@ -47,7 +47,9 @@ Every ADR carries:
 
 ```yaml
 uid: <Organizing-minted>
-form: '<controlled link to the ADR Form package>'
+form:
+  path: '<controlled link to the ADR Form package>'
+  version: '<major.minor contract used by this ADR>'
 description: >-
   <routing statement for reviewing this decision provenance>
 quadrant: Explanation

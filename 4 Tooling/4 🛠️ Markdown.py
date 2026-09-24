@@ -24,9 +24,15 @@ writing-style:
 # 🛠️ Markdown
 
 Use Markdown as structural perception and deterministic feedback around an
-authored edit. Its default lint policy is selective: PyMarkdown rules are
-disabled as a set and only explicit Documentation System defaults are enabled,
-so a dependency upgrade cannot silently add a house opinion.
+authored edit. The shared capability uses markdown-it-py as its structural
+parser and exposes repository-owned heading, section, fenced-block, and source
+coordinate values rather than parser-specific tokens. PyMarkdownLnt remains the
+separate generic lint-and-fix engine.
+
+The default lint policy is selective: PyMarkdown rules are disabled as a set
+and only explicit Documentation System defaults are enabled, so a dependency
+upgrade cannot silently add a house opinion. Documentation-System-specific
+rules consume the shared structural model when Markdown semantics matter.
 
 ```text
 python3 "4 Tooling/4 🛠️ Markdown.py" headings PATH
@@ -51,8 +57,9 @@ technical-writing forms.
 Markdown owns document-local structure and coordinates. Organizing owns how
 those coordinates participate in controlled corpus references.
 
-Lint and fix require the dependencies declared by Tooling `requirements.txt`.
-When an import is unavailable, prepare the repository-local Tooling environment
+Structural inspection, lint, and fix require the dependencies declared by
+Tooling `requirements.txt`. When an import is unavailable, prepare the
+repository-local Tooling environment
 before retrying; do not install the dependency into the operating system's
 Python installation.
 '''

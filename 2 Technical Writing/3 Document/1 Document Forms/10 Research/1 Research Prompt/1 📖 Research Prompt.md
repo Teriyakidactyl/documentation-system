@@ -41,7 +41,9 @@ produce separate Research Reports beside it:
 ## 2. Prompt frontmatter
 
 A prompt carries its controlled `uid`, routing `description`, and `form`
-link to the Research Prompt Form package `README.md`.
+mapping. `form.path` points to the Research Prompt Form package `README.md`
+by controlled UID link; `form.version` records the major.minor Form contract
+used by the prompt.
 
 Execution-specific model, version, time, findings, and encountered sources do
 not belong to the prompt.

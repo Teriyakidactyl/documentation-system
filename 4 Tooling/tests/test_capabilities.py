@@ -32,8 +32,18 @@ description: >-
 ---
 # Root
 
-<!-- BEGIN index -->
-<!-- END index -->
+## Index
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: system/Index.md
+  version: '0.9'
+  renderer:
+    uid: 45E225
+    filepath: system/Renderer.py
+-->
+
 """
 
 
@@ -120,6 +130,20 @@ class CapabilityTests(unittest.TestCase):
         self.assertIn("DSMD001", codes)
         self.assertNotIn("MD013", codes)
         self.assertNotIn("MD033", codes)
+
+    def test_heading_emphasis_uses_markdown_semantics(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "doc.md"
+            write(
+                path,
+                "---\n---\n"
+                "# Title\n\n"
+                "## _Emphasized heading_\n"
+                "## L129_VPN_INT multihop forced tunnel\n"
+                "## **Strong heading**\n",
+            )
+            found = [item for item in lint_markdown(path) if item.code == "DSMD001"]
+            self.assertEqual([5, 7], [item.line for item in found])
 
     def test_markdown_fix_does_not_cross_into_coordinate_renumbering(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

@@ -252,6 +252,11 @@ describes what the folder collects and contributes no additional ordinal. The
 `README.md` at the selected corpus root uses the same representation with the
 additional origin entry contract required before the first routing choice.
 
+The corpus Origin defines the default reader-facing scope semantics for folder
+representations. A downstream `README.md` needs its own `## Scope` section
+only when it must state a different or more specific boundary; otherwise apply
+the Origin's default recursive scope rule.
+
 Keep the folder representation focused. Give the `README.md` one routing
 `description`. When it has immediate indexed children, declare one Index element
 where those choices should appear. Organizing derives the choices from the
@@ -319,22 +324,29 @@ those children. The corpus-root `README.md` uses the same element after its
 additional origin context. Traversing successive Index elements provides
 progressive disclosure.
 
-Declare the Index Document Element and place exactly one current Organizing
-write region inside it:
+Declare the dynamic Index Document Element directly beneath its heading:
 
 ```markdown
 ## Index
-<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- END index -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 ```
 
-The heading and `element:` provenance identify the semantic element. The marker
-pair is the current deterministic write boundary. Organizing owns everything
-between the markers and renders each immediate child as its controlled link,
-title, and exact `description`. Do not hand-edit generated content or author a
-parallel child list.
+The `element.path.uid` identifies the Index contract, `filepath` is its
+refreshable physical projection, `version` records the contract emitted by the
+renderer, and `renderer` identifies the controlled Python entry point that
+owns regeneration. The heading supplies the structural write boundary.
+Organizing owns the remainder of that heading-bounded section and renders each
+immediate child as its controlled link, title, and exact `description`. Do not
+hand-edit generated content or author a parallel child list.
 
 ## 7. Run and validate Organizing
 

@@ -1,5 +1,7 @@
 ---
 uid: BZJASV
+version:
+  value: '1.0'
 description: >-
   `Consult when` *a controlled folder representation needs deterministic
   immediate-child navigation* `to` **declare an Index section whose generated
@@ -27,17 +29,27 @@ from canonical corpus structure; it does not create a second authored topology.
 
 ## Anatomy
 
-Use an exact H2 named `Index` in a controlled folder `README.md`. Record
-element provenance immediately beneath the heading, then provide the generated
-region owned by Organizing:
+Use an H2 to bound the Index Element in a controlled folder `README.md`.
+Record the dynamic Element declaration immediately beneath the heading:
 
 ````markdown
 ## Index
-<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- END index -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 ````
+
+The declaration identifies the Element contract, the version currently embodied
+by the generated section, and the controlled Python renderer that owns
+regeneration. A successful render rewrites the generated body and stamps the
+renderer-supported Element version in the same operation.
 
 The repository-root `README.md` uses the same element. Its additional origin
 contract does not change the Index element.
@@ -54,10 +66,13 @@ before the Index heading.
 
 ## Boundary
 
-The heading and `element:` provenance identify the semantic element. The
-`BEGIN index` and `END index` comments are the current Organizing write
-boundary; they are maintenance mechanics rather than the element's identity.
+The `element.path.uid` identifies the semantic Element. The heading containing
+that metamatter supplies the structural boundary; the heading text itself is not
+Element identity. Organizing replaces the remainder of that heading-bounded
+section rather than relying on generated-region marker comments.
 
-Organizing currently discovers folder `README.md` representations from the
-corpus model and refreshes this region directly. A later general Renderer may
-dispatch the same element contract without changing what the Index means.
+`element.path.filepath` and `element.renderer.filepath` are current physical
+projections associated with their durable UIDs. When those targets participate
+in the selected corpus, Organizing refreshes the filepaths from UID identity.
+The renderer owns the generated body and the deployed `element.version`;
+authored context remains outside the Index section.

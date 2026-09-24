@@ -20,11 +20,30 @@ live beside it. Those support files may call common Tooling capabilities for
 generic Markdown, YAML, HTML, or other representation mechanics; they do not
 move the element's semantic rules into those generic capabilities.
 
-## Index
-<!-- element: '<a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+Every tracked Document Element authority declares a major.minor contract under
+`version.value`. An instance records that consumed version together with
+`element.path.uid` and `element.path.filepath`. Non-dynamic instances retain
+that provenance until deliberately migrated. Dynamic heading-bounded Elements
+also record a controlled Python `renderer`; a successful render updates the
+generated representation and its recorded Element version together.
 
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+The version policy may use the same optional `info`, `warn`, and `error`
+keys as a Document Form: informational drift is on by default, while warning
+and error thresholds are off unless configured. Atomic representations may
+explicitly remain untracked when per-instance metadata would outweigh the
+benefit; controlled HTML links are the current example.
+
+## Index
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20%F0%9F%93%96%20Hierarchical%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Hierarchical Glossary
   - `Consult when` *related terms must be defined without losing the hierarchy that distinguishes parent, child, and sibling concepts* `to` **pair a relationship tree with a lookup table whose definition column explains each named term**.
@@ -36,4 +55,3 @@ move the element's semantic rules into those generic capabilities.
   - `Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
 - <a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a> — 📖 Index
   - `Consult when` *a controlled folder representation needs deterministic immediate-child navigation* `to` **declare an Index section whose generated body projects only the folder's immediate indexed children**.
-<!-- END index -->

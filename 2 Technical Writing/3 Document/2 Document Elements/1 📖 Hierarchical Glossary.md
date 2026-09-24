@@ -1,5 +1,7 @@
 ---
 uid: BJS5BZ
+version:
+  value: '1.0'
 description: >-
   `Consult when` *related terms must be defined without losing the hierarchy
   that distinguishes parent, child, and sibling concepts* `to` **pair a
@@ -32,7 +34,13 @@ relate; the table answers what each term means.
 
 ```markdown
 ## Terms
-<!-- element: [controlled link to this Document Element] -->
+<!--
+element:
+  path:
+    uid: BJS5BZ
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Hierarchical Glossary.md
+  version: '1.0'
+-->
 
 ```text
 request
