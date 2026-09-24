@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from urllib.parse import quote
 
 from _capabilities.frontmatter import FrontmatterError, module_docstring, replace_module_docstring
+from _capabilities.html import HtmlAnchor, rewrite_anchors
+from _capabilities.markdown import transform_prose
 
 from .indexes import relative_link
 from .model import (
@@ -21,12 +22,6 @@ from .model import (
     corpus_path,
     walk_files,
 )
-
-CONTROL_LINK_RE = re.compile(
-    r'<a\b(?P<attrs>[^>\n]*?\buid="(?P<uid>[^"]+)"[^>\n]*?)>'
-    r'(?P<label>[^<\n]+)</a>'
-)
-
 
 def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> str:
     if not UID_RE.fullmatch(uid):
@@ -49,54 +44,16 @@ def render_control_link(owner: Path, corpus: Corpus, uid: str, label: str) -> st
 
 
 def rewrite_markdown_text(text: str, owner: Path, corpus: Corpus) -> tuple[str, int]:
-    changed = 0
-    out: list[str] = []
-    in_fence = False
-    fence_token: str | None = None
-    for line in text.splitlines(keepends=True):
-        stripped = line.lstrip()
-        if stripped.startswith("```") or stripped.startswith("~~~"):
-            token = stripped[:3]
-            if not in_fence:
-                in_fence = True
-                fence_token = token
-            elif token == fence_token:
-                in_fence = False
-                fence_token = None
-            out.append(line)
-            continue
-        if in_fence:
-            out.append(line)
-            continue
+    def rewrite_segment(segment: str) -> tuple[str, int]:
+        def render(anchor: HtmlAnchor) -> str | None:
+            uid = anchor.attribute("uid")
+            if uid is None:
+                return None
+            return render_control_link(owner, corpus, uid, anchor.text)
 
-        def replace(match: re.Match[str]) -> str:
-            nonlocal changed
-            rendered = render_control_link(owner, corpus, match.group("uid"), match.group("label"))
-            if rendered != match.group(0):
-                changed += 1
-            return rendered
+        return rewrite_anchors(segment, render)
 
-        cursor = 0
-        rendered_line: list[str] = []
-        while cursor < len(line):
-            tick = line.find("`", cursor)
-            if tick == -1:
-                rendered_line.append(CONTROL_LINK_RE.sub(replace, line[cursor:]))
-                break
-            rendered_line.append(CONTROL_LINK_RE.sub(replace, line[cursor:tick]))
-            run_end = tick
-            while run_end < len(line) and line[run_end] == "`":
-                run_end += 1
-            delimiter = line[tick:run_end]
-            close = line.find(delimiter, run_end)
-            if close == -1:
-                rendered_line.append(line[tick:])
-                break
-            close_end = close + len(delimiter)
-            rendered_line.append(line[tick:close_end])
-            cursor = close_end
-        out.append("".join(rendered_line))
-    return "".join(out), changed
+    return transform_prose(text, rewrite_segment)
 
 
 def rewrite_markdown(path: Path, corpus: Corpus) -> int:
