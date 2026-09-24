@@ -118,7 +118,7 @@ than silently treating documentation as proof.
 ## 8. Author the Architecture Document
 
 Use the
-<a href="../../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/13%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§2.3.1.13</a>
+<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/13%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§2.3.1.13</a>
 Form.
 
 Write the required Scope, Drivers, Architecture, Realization, Verification, and
