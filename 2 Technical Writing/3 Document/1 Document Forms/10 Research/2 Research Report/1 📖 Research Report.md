@@ -1,4 +1,5 @@
 ---
+uid: 7KXYGE
 description: >-
   `Consult when` *a Research Report instance is being authored or reviewed
   for conformance* `to` **confirm its prompt relationship, run provenance,

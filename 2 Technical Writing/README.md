@@ -12,7 +12,7 @@ technical documented information. Document Control governs the resulting
 artifact; this location governs how the document is conceived and written.
 
 ## Index
-<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+<!-- element: '<a href="3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

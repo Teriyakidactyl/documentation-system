@@ -21,7 +21,7 @@ generic Markdown, YAML, HTML, or other representation mechanics; they do not
 move the element's semantic rules into those generic capabilities.
 
 ## Index
-<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+<!-- element: '<a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
@@ -34,4 +34,6 @@ move the element's semantic rules into those generic capabilities.
   - `Consult when` *several peer entities must be compared across the same independent attributes* `to` **represent the peers as rows and shared attributes as columns so differences can be located by intersection**.
 - <a href="4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a> — 📖 Semantic Registry
   - `Consult when` *named entries need definitions and repeated attributes in one dense lookup surface whose source hierarchy must remain directly readable* `to` **render a column-aligned Semantic YAML registry in which labels, definitions, values, and nesting remain visually distinct without becoming runtime data**.
+- <a href="5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a> — 📖 Index
+  - `Consult when` *a controlled folder representation needs deterministic immediate-child navigation* `to` **declare an Index section whose generated body projects only the folder's immediate indexed children**.
 <!-- END index -->

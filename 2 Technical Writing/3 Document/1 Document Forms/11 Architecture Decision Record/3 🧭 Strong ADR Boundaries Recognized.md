@@ -1,4 +1,5 @@
 ---
+uid: K8XBTR
 description: >-
   `Read in full when` *ADR instructions are understood but the boundary
   between useful decision provenance and implementation narrative remains

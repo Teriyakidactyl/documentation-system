@@ -1,4 +1,5 @@
 ---
+uid: 68PAX9
 description: >-
   `Consult when` *an Architecture Decision Record is being authored or
   reviewed for conformance* `to` **confirm its chronological filename,

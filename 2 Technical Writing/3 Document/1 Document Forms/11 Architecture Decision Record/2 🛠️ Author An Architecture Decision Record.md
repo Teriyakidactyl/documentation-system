@@ -1,4 +1,5 @@
 ---
+uid: JY52E3
 description: >-
   `Read in full and follow when` *an architectural choice has reached a state
   worth retaining as explicit decision provenance* `to` **capture the forcing

@@ -51,7 +51,7 @@ unresolvable.
 > only within compacted history, read the document in full before relying on it.
 
 ## Index
-<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+<!-- element: '<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

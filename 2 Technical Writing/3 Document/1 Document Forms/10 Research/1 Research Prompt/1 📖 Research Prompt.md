@@ -1,4 +1,5 @@
 ---
+uid: 4D0K9Z
 description: >-
   `Consult when` *a Research Prompt instance is being authored or reviewed
   for conformance* `to` **confirm its payload boundary, identity rule, folder
