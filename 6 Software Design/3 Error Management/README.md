@@ -1,4 +1,5 @@
 ---
+uid: TJBYJ1
 description: >-
   `Consult when` *software failure behavior must be designed or an established
   error architecture must be selected* `to` **route between general error
@@ -26,3 +27,17 @@ element:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
+
+### 📖 Error Management
+
+`Consult when` *software can reject input, fail during execution, or propagate failures across component boundaries and the governing error architecture is not already fixed* `to` **identify the consumer, failure boundary, identity, propagation, accumulation, recovery, presentation, and persistence decisions that an error design must resolve**.
+
+<a href="1%20%F0%9F%93%96%20Error%20Management.md" uid="0NXV04" data-ds-link="relative-path">../1 📖 Error Management.md</a>
+
+### Architectures
+
+`Consult when` *a recurring error-consumer constraint calls for an established arrangement rather than ad-hoc error design* `to` **select the Error Management architecture whose boundaries and response contract match the system being built**.
+
+<a href="2%20Architectures/README.md" uid="400HRN" data-ds-link="relative-path">../2 Architectures/README.md</a>
+
+- `1 Agent-Facing Errors/README.md`

@@ -1,4 +1,5 @@
 ---
+uid: 2W7ZSK
 description: >-
   `Consult when` *an agent is the primary consumer of a command boundary and
   failures must support immediate diagnosis and recovery* `to` **apply the

@@ -1,4 +1,5 @@
 ---
+uid: YBKY99
 description: >-
   `Consult when` *a mechanically discoverable callable surface should carry
   baseline verification that expands with the surface itself* `to` **route to
@@ -26,3 +27,9 @@ element:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
+
+### 📖 Self-Assembling Verification Architecture
+
+`Consult when` *a callable software surface is mechanically discoverable and baseline verification should expand when that surface changes* `to` **design verification that discovers public operations, derives safe cases from canonical runtime declarations, evaluates independent contracts, and exposes coverage gaps without maintaining a duplicate handwritten test inventory**.
+
+<a href="1%20%F0%9F%93%96%20Self-Assembling%20Verification%20Architecture.md" uid="ZV7H77" data-ds-link="relative-path">../1 📖 Self-Assembling Verification Architecture.md</a>

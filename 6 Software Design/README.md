@@ -35,3 +35,21 @@ element:
 `Consult when` *the Organizing tool, an organization scheme, a peer representation capability, a validation rule, a projection, or a structural refactor is being introduced or materially changed* `to` **place responsibility with the owning capability while preserving one normalized corpus and one deterministic organization workflow**.
 
 <a href="2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB" data-ds-link="relative-path">../2 📖 Organizing Architecture.md</a>
+
+### Error Management
+
+`Consult when` *software failure behavior must be designed or an established error architecture must be selected* `to` **route between general error management concepts and formal architectures that apply those concepts under recurring consumer constraints**.
+
+<a href="3%20Error%20Management/README.md" uid="TJBYJ1" data-ds-link="relative-path">../3 Error Management/README.md</a>
+
+- `1 📖 Error Management.md`
+- `2 Architectures/README.md`
+
+### Testing
+
+`Consult when` *software behavior or architecture requires executable verification, or an established verification architecture must be selected* `to` **route between general testing principles and formal architectures that implement those principles for recurring verification surfaces**.
+
+<a href="4%20Testing/README.md" uid="R0J5KF" data-ds-link="relative-path">../4 Testing/README.md</a>
+
+- `1 📖 Testing.md`
+- `2 Architectures/README.md`

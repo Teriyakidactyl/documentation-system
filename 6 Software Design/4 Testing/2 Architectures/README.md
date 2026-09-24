@@ -1,4 +1,5 @@
 ---
+uid: G5NHDT
 description: >-
   `Consult when` *a recurring verification surface calls for an established
   arrangement rather than ad-hoc test design* `to` **select the Testing
@@ -26,3 +27,11 @@ element:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
+
+### Self-Assembling Verification
+
+`Consult when` *a mechanically discoverable callable surface should carry baseline verification that expands with the surface itself* `to` **route to the current Self-Assembling Verification Architecture while keeping research and design provenance subordinate to that authority**.
+
+<a href="1%20Self-Assembling%20Verification/README.md" uid="YBKY99" data-ds-link="relative-path">../1 Self-Assembling Verification/README.md</a>
+
+- `1 📖 Self-Assembling Verification Architecture.md`

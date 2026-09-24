@@ -1,4 +1,5 @@
 ---
+uid: 0NXV04
 description: >-
   `Consult when` *software can reject input, fail during execution, or
   propagate failures across component boundaries and the governing error

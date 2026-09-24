@@ -1,4 +1,5 @@
 ---
+uid: XW9VC3
 description: >-
   `Consult when` *software behavior, invariants, or component relationships
   require executable verification and the appropriate test boundary,

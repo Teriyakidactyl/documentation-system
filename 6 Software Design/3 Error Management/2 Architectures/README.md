@@ -1,4 +1,5 @@
 ---
+uid: 400HRN
 description: >-
   `Consult when` *a recurring error-consumer constraint calls for an
   established arrangement rather than ad-hoc error design* `to` **select the
@@ -27,3 +28,11 @@ element:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
+
+### Agent-Facing Errors
+
+`Consult when` *an agent is the primary consumer of command failures and the repository-standard response architecture is being implemented, reviewed, or extended* `to` **route to the current Agent-Facing Error Architecture while keeping its supporting evidence and decisions subordinate to that authority**.
+
+<a href="1%20Agent-Facing%20Errors/README.md" uid="WN3BGM" data-ds-link="relative-path">../1 Agent-Facing Errors/README.md</a>
+
+- `1 📖 Agent-Facing Error Architecture.md`
