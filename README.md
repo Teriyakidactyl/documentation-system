@@ -195,6 +195,8 @@ element:
 
 - `1 📖 Software Design Principles.md`
 - `2 📖 Organizing Architecture.md`
+- `3 Error Management/README.md`
+- `4 Testing/README.md`
 
 ### Editing
 
