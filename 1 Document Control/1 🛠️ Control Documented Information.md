@@ -28,8 +28,7 @@ hierarchy own classification and location. Each documentation address makes its
 own corpus-root declaration by directory name, then names a location beneath
 that declared root. A `uid` owns durable document identity; a numbered internal
 outline can extend an address into a file. Recognized metadata makes an artifact
-controlled. An addressable position additionally makes it indexable. The
-Organizing derives indexes from the corpus hierarchy established for the current
+controlled. An addressable position additionally makes it indexable. Organizing derives indexes from the corpus hierarchy established for the current
 job; controlled sideband artifacts can retain identity and validation without
 entering that navigation surface.
 
@@ -58,7 +57,7 @@ corpus root
 | **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. An Organizing job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing Organizing. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
 | **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current Organizing job. |
 | **origin** | The reader-facing entry point of a corpus, represented by `README.md` in the directory serving as corpus root for the current Organizing job. It contributes no location ordinal. |
-| **controlled artifact** | A file on a Organizing-traversed path whose supported metadata surface contains a `description` and Organizing-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
+| **controlled artifact** | A file on an Organizing-traversed path whose supported metadata surface contains a `description` and Organizing-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by Organizing for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
@@ -74,8 +73,7 @@ corpus root
 ## 1. Declare the corpus root
 
 Declare the **corpus root** for the Organizing operation by passing its filesystem
-path as the optional `corpus_root` argument. When that argument is omitted, the
-Organizing selects the root of the Git repository containing Organizing. The
+path as the optional `corpus_root` argument. When that argument is omitted, Organizing selects the root of the Git repository containing Organizing. The
 declaration is operational state; do not store a second corpus-root name in
 artifact metadata.
 
@@ -85,15 +83,14 @@ the same directory may be a corpus root in one job and an ordinary descendant
 or unrelated path in another.
 
 An address makes its own corpus-root declaration: the directory name before
-`:` designates which directory serves as the root for that address. When the
-Organizing resolves an address, that declared name must match the directory
+`:` designates which directory serves as the root for that address. When Organizing resolves an address, that declared name must match the directory
 selected as the corpus root for the current job. Changing only that directory's
 ancestor path does not change addresses that declare it. Renaming the directory
 changes the corpus-root declaration in addresses that use it. A directory name
 containing `:` cannot be represented by the address grammar and cannot serve as
 a corpus root for Organizing or addressing.
 
-A file becomes a controlled artifact only when it is on a Organizing-traversed
+A file becomes a controlled artifact only when it is on an Organizing-traversed
 path beneath the selected corpus root and Organizing recognizes its metadata
 surface. Address and index participation are additional properties rather than
 requirements for controlled identity.
