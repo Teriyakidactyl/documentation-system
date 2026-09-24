@@ -291,10 +291,12 @@ Immediately after the preamble and before the first H2, state in an IMPORTANT
 callout that progressive disclosure is the interaction model. Explain that
 readers navigate themselves through successive `README.md` locations, acquire
 only the context needed for the current decision, compare only immediate routing
-choices, and load deeper guidance only when routing requires it. State the
-authoring consequence in the same callout: place definitions and instructions
-at the earliest scope where readers need them rather than exposing
-repository-wide knowledge by default.
+choices, and load deeper guidance only when routing requires it. When a task
+presents several independent concerns, require each concern to be routed
+separately and every selected concern-specific document to be satisfied
+according to its directive. State the authoring consequence in the same callout:
+place definitions and instructions at the earliest scope where readers need them
+rather than exposing repository-wide knowledge by default.
 
 When the entering reader needs project-specific vocabulary to use this README
 or continue through progressive disclosure, add a project glossary after that
@@ -312,6 +314,15 @@ Tell an entering agent which information is current authority, require the
 literal `README.md` chain that applies to a descendant target to be read
 before relying on that target, and distinguish that chain from the
 concern-specific documents selected afterward.
+
+Add a `## Contributing` section after Authority. Treat a reader navigating the
+repository under a request to modify it as a user before they are a contributor.
+Require that reader, before changing the repository, to follow progressive
+disclosure from the Repository Root README, establish the applicable
+`README.md` chain, gather the concern-specific guidance that governs the work,
+and adhere to that guidance throughout the contribution. Keep this section as
+an entry gate into the repository's existing guidance rather than duplicating
+contribution procedures.
 
 Add source, distribution, addressing, or other project-level context only when
 it changes how a reader should interpret or enter the repository. Put the Index
