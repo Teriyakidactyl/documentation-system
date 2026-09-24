@@ -26,7 +26,10 @@ Containment answers where information or behavior is held. Convergence answers
 where independently owned concerns must meet to produce one local result.
 
 The three often coincide in simple structures, which makes them easy to
-confuse. None implies the others.
+confuse. None implies the others. This distinction assumes the structural unit
+itself is stable; if assigning ownership reveals that the candidate contains
+independently meaningful concerns, return to
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>.
 
 ## 1. Ownership
 
@@ -115,3 +118,7 @@ module, package, type, dependency boundary, or explicit coordinator.
 
 The shared rule is that representation follows identified ownership and
 convergence rather than inventing them from physical containment.
+
+When a known unit, relationship, and owner must now be matched to an existing
+structure, follow
+<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.4</a>.
