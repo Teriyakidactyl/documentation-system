@@ -280,12 +280,25 @@ project logo exists, place it directly beneath the H1. Follow with a compact
 preamble that tells an entering reader what the project is and what work the
 repository supports.
 
-When project-defined terms recur across repository concerns or are required to
-interpret the Repository Root README, add a project glossary immediately after
-the preamble and before Scope. Use a simple two-column `Term | Meaning` table
-unless the definitions genuinely require a richer structure. Keep domain-local
-terminology with its owning document instead of expanding the project glossary
-into a repository-wide term dump.
+Immediately after the preamble and before the first H2, state in an IMPORTANT
+callout that progressive disclosure is the interaction model. Explain that
+readers navigate themselves through successive `README.md` locations, acquire
+only the context needed for the current decision, compare only immediate routing
+choices, and load deeper guidance only when routing requires it. State the
+authoring consequence in the same callout: place definitions and instructions
+at the earliest scope where readers need them rather than exposing
+repository-wide knowledge by default.
+
+When the entering reader needs project-specific vocabulary to use this README
+or continue through progressive disclosure, add a project glossary after that
+callout and before Scope. Apply the
+<a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a>
+Document Element. Select entries from the reader's current knowledge horizon,
+not from the complete project vocabulary: include project-specific terms or
+concepts relevant to this scope that must be understood before the reader can
+use this README correctly or navigate to narrower owning guidance. Defer terms
+that can safely be learned later. Prefer a simple `Term | Meaning` table when
+the selected entries are peers.
 
 State the repository authority model before asking the reader to route work.
 Tell an entering agent which information is current authority, require the

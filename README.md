@@ -13,30 +13,40 @@ This repository contains guidance documents and supporting tools for technical
 writing, document control, repository organization, software design, editing,
 and code creation.
 
+> [!IMPORTANT]
+> **Progressive disclosure is the interaction model.** The Documentation System
+> is designed for readers to navigate themselves from `README.md` to
+> `README.md`, acquiring only the context needed for the current decision. At
+> each location, use the local guidance and glossary, compare only the immediate
+> Index choices, select the narrowest matching `description`, and load deeper
+> guidance only when the route requires it. Authors therefore place definitions
+> and instructions at the earliest scope where they become necessary rather
+> than exposing repository-wide knowledge by default.
+
 ## Project glossary
+<!--
+element:
+  path:
+    uid: BJS5BZ
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Glossary.md
+  version: '2.0'
+-->
 
 | Term | Meaning |
 |---|---|
-| **Repository Root README** | The literal `README.md` at the Git repository root; it carries project-wide entry context. |
-| **Folder README** | A literal `README.md` in a descendant directory; it represents that folder and its local navigation. |
-| **Origin** | The reader-facing entry role carried by the `README.md` that represents the corpus root for the current use. |
-| **corpus root** | The directory selected for an Organizing job and declared by name at the start of a documentation address. |
-| **description** | The canonical routing statement that says when and how deeply to use a controlled artifact. |
-| **current authority** | Information a user must be able to rely on when acting now. |
-| **Organizing** | The tooling capability that maintains controlled identity, hierarchy, indexes, links, and diagnostics. |
+| **Folder README** | The literal `README.md` representing a descendant folder. Read it when entering that folder; it supplies applicable local guidance and the next routing choices. |
+| **Index** | The immediate routing choices exposed by the current `README.md`. |
+| **description** | The project-defined routing statement used to decide whether a choice applies and how it must be used. |
+| **directive** | The part of a `description` that specifies the required interaction depth with the selected document. |
+| **current authority** | Information that may be relied on when acting now. |
 
 ## Scope
 
-This Repository Root README provides project-wide entry context for the complete
-Git repository. Folder READMEs specialize the context of their containing
-folders. Unless a Folder README states a different boundary in its own Scope,
-its guidance applies recursively beneath that folder; more-specific guidance
-does not silently cancel still-applicable ancestor requirements.
-
-When Organizing is run without an explicit `corpus_root`, the Git repository
-root is selected as the corpus root, so this Repository Root README also carries
-the Origin role. Selecting a descendant directory as a corpus root gives that
-directory's Folder README the Origin role without changing its subtype.
+This `README.md` provides repository-wide entry guidance for the complete Git
+repository. A Folder README specializes the context of its containing folder.
+Unless a Folder README states a different boundary in its own Scope, its
+guidance applies recursively beneath that folder; more-specific guidance does
+not silently cancel still-applicable ancestor requirements.
 
 ## Authority
 

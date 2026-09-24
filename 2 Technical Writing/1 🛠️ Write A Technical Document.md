@@ -131,8 +131,8 @@ element:
 element:
   path:
     uid: BJS5BZ
-    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Hierarchical Glossary.md
-  version: '1.0'
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Glossary.md
+  version: '2.0'
 -->
 ```
 
@@ -462,15 +462,20 @@ lets the declared reader satisfy the acceptance criterion:
 |---|---|
 | The declared reader already knows the term and the document uses its standard meaning | No definition |
 | One project-specific term has a local use | Define it inline at first use |
-| Several terms apply only within one section | Use section-local definitions or a local glossary |
-| Interdependent terms recur throughout the document | Use a document-wide glossary |
+| Several project-specific terms or concepts must be understood at the same document boundary | Apply the <a href="3%20Document/2%20Document%20Elements/1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> Element |
+| A project-specific term can be learned safely after progressive disclosure reaches narrower owning guidance | Defer its definition to that narrower scope |
 | The definitions have independent lookup value across documents | Move them to an owning Reference document and link it |
 
-Place a document-wide glossary before its first load-bearing use. Put it after
-Scope by default; when an applicable Form or representation contract requires
-entry terms to define Scope, place the glossary before Scope. Place a
-section-local glossary at the smallest common parent of every section that uses
-it. Never place a definition after its first load-bearing use.
+A glossary is not a project dictionary. The Glossary Element owns the
+scope, knowledge-horizon, project-specificity, deferral, definition-depth, and
+representation tests for selecting its entries. Apply those tests before
+choosing a table, hierarchy, or other presentation.
+
+Place a document-wide glossary before the first body content whose correct use
+depends on its project-specific meanings. Put it after Scope by default; when an
+applicable Form or representation contract establishes an entry glossary before
+Scope, follow that contract. Place a section-local glossary at the smallest
+common parent of every section that uses it.
 
 A dedicated glossary gives the reader a Reference lookup task. Carry it into
 <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#44-check-whether-one-quadrant-still-holds" uid="5CFFZW">documentation-system:§2.1#4.4</a>'s quadrant check when it could stand as an independent lookup document.
