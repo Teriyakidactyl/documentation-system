@@ -101,6 +101,17 @@ class CorpusRootTests(unittest.TestCase):
         with self.assertRaisesRegex(OrganizingError, "declares corpus root 'other'"):
             resolve_address(root, "other:§1")
 
+    def test_controlled_link_refresh_accepts_html_attribute_variants(self) -> None:
+        root = self.base / "project"
+        controlled = "<a uid='DEF456' href='stale.md'>project:§1</a>"
+        write(root / "README.md", origin("project", extra_body=f"See {controlled}.\n"))
+        write(root / "1 Page.md", page())
+
+        refresh_corpus(root)
+
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertIn('<a href="1%20Page.md" uid="DEF456">project:§1</a>', compiled)
+
     def test_controlled_links_refresh_after_corpus_root_rename(self) -> None:
         root = self.base / "alpha"
         controlled = '<a href="1%20Page.md" uid="DEF456">alpha:§1</a>'

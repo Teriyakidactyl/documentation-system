@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from pathlib import Path
 
-from .links import CONTROL_LINK_RE
+from _capabilities.html import anchors
 from .schemes.ordinal import OrdinalSchemeError, inspect as inspect_ordinal_sequences
 from .model import (
     CONTROLLED_SIDEBAND_DIRS,
@@ -129,8 +129,13 @@ def _scan_markdown(
                 break
             line = line[:start] + " " * (end + 3 - start) + line[end + 3 :]
 
-        line = CONTROL_LINK_RE.sub(lambda m: " " * len(m.group(0)), line)
-        line = _strip_inline_code(line)
+        chars = list(line)
+        for anchor in anchors(line):
+            if anchor.attribute("uid") is None:
+                continue
+            for index in range(anchor.start, anchor.end):
+                chars[index] = " "
+        line = _strip_inline_code("".join(chars))
 
         for match in address_re.finditer(line):
             address = match.group("address")

@@ -28,6 +28,18 @@ class HeadingTarget:
     end: int
 
 
+@dataclass(frozen=True)
+class Section:
+    selector: str
+    number: str | None
+    level: int
+    title: str
+    heading: str
+    start_line: int
+    content_start_line: int
+    end_line: int
+
+
 def title_from_body(body: str, fallback: str) -> str:
     for line in body.splitlines():
         if line.startswith("# "):
@@ -116,6 +128,104 @@ def headings(body: str) -> list[dict]:
     return result
 
 
+
+def sections(body: str) -> list[Section]:
+    found = headings(body)
+    total_lines = len(body.splitlines())
+    result: list[Section] = []
+    for index, item in enumerate(found):
+        level = int(item["level"])
+        raw_title = str(item["title"])
+        number_match = NUMBER_PREFIX_RE.match(raw_title)
+        number = number_match.group(0).strip().rstrip(".") if number_match else None
+        title = raw_title[number_match.end():] if number_match else raw_title
+        end_line = total_lines
+        for candidate in found[index + 1:]:
+            if int(candidate["level"]) <= level:
+                end_line = int(candidate["line"]) - 1
+                break
+        result.append(
+            Section(
+                selector=number or title,
+                number=number,
+                level=level,
+                title=title,
+                heading=raw_title,
+                start_line=int(item["line"]),
+                content_start_line=int(item["line"]) + 1,
+                end_line=end_line,
+            )
+        )
+    return result
+
+
+def resolve_section(body: str, selector: str) -> Section:
+    matches = [
+        section
+        for section in sections(body)
+        if selector in {section.selector, section.number, section.title, section.heading}
+    ]
+    if not matches:
+        raise MarkdownError(f"no section resolves {selector!r}")
+    if len(matches) > 1:
+        raise MarkdownError(f"section selector {selector!r} is ambiguous")
+    return matches[0]
+
+
+def get_section(body: str, selector: str, *, include_heading: bool = True) -> str:
+    section = resolve_section(body, selector)
+    lines = body.splitlines(keepends=True)
+    start = section.start_line - 1 if include_heading else section.content_start_line - 1
+    return "".join(lines[start:section.end_line])
+
+
+def transform_prose(text: str, transform) -> tuple[str, int]:
+    changed = 0
+    out: list[str] = []
+    in_fence = False
+    fence_token: str | None = None
+    for line in text.splitlines(keepends=True):
+        stripped = line.lstrip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            token = stripped[:3]
+            if not in_fence:
+                in_fence = True
+                fence_token = token
+            elif token == fence_token:
+                in_fence = False
+                fence_token = None
+            out.append(line)
+            continue
+        if in_fence:
+            out.append(line)
+            continue
+
+        cursor = 0
+        rendered_line: list[str] = []
+        while cursor < len(line):
+            tick = line.find("`", cursor)
+            if tick == -1:
+                rendered, count = transform(line[cursor:])
+                rendered_line.append(rendered)
+                changed += count
+                break
+            rendered, count = transform(line[cursor:tick])
+            rendered_line.append(rendered)
+            changed += count
+            run_end = tick
+            while run_end < len(line) and line[run_end] == "`":
+                run_end += 1
+            delimiter = line[tick:run_end]
+            close = line.find(delimiter, run_end)
+            if close == -1:
+                rendered_line.append(line[tick:])
+                break
+            close_end = close + len(delimiter)
+            rendered_line.append(line[tick:close_end])
+            cursor = close_end
+        out.append("".join(rendered_line))
+    return "".join(out), changed
+
 def renumber(body: str) -> tuple[str, dict[str, str]]:
     lines = body.splitlines(keepends=True)
     counters = [0, 0, 0, 0, 0]
@@ -173,10 +283,13 @@ def renumber(body: str) -> tuple[str, dict[str, str]]:
         title = match.group("title")
         old = NUMBER_PREFIX_RE.match(title)
         clean_title = title[old.end() :] if old else title
+        punctuation = ""
         if old:
-            old_number = old.group(0).strip().rstrip(".")
+            old_prefix = old.group(0).strip()
+            old_number = old_prefix.rstrip(".")
+            punctuation = "." if old_prefix.endswith(".") else ""
             mapping[old_number] = number
-        output.append(f"{match.group('marks')} {number} {clean_title}{ending}")
+        output.append(f"{match.group('marks')} {number}{punctuation} {clean_title}{ending}")
         previous_level = level
 
     return "".join(output), mapping

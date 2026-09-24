@@ -22,9 +22,11 @@ indexed documentation.
 - <a href="3%20%F0%9F%9B%A0%EF%B8%8F%20Folder.py" uid="6JTNRT">documentation-system:§4.3</a> — 🛠️ Folder
   - `Read in full and follow when` *one filesystem sibling must be renamed without clobbering another path* `to` **preview or execute the rename through the same collision-safe Folder capability used by structural organization refactors**.
 - <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Markdown.py" uid="XS6515">documentation-system:§4.4</a> — 🛠️ Markdown
-  - `Read in full and follow when` *Markdown heading structure must be inspected or hierarchical heading numbers have drifted* `to` **read the structural heading model or deterministically regenerate local heading coordinates without treating corpus addresses as heading numbers**.
+  - `Read in full and follow when` *Markdown structure must be inspected, linted, mechanically corrected, or locally renumbered* `to` **give an agent bounded section access, deterministic diagnostics, safe formatting fixes, and stable document-local coordinates around authored edits**.
 - <a href="5%20%F0%9F%9B%A0%EF%B8%8F%20Frontmatter.py" uid="4M3G0Z">documentation-system:§4.5</a> — 🛠️ Frontmatter
   - `Read in full and follow when` *a Markdown or Python artifact's metadata envelope must be inspected independently of corpus semantics* `to` **parse and validate the frontmatter boundary and its YAML payload without treating the host body as metadata**.
 - <a href="6%20%F0%9F%9B%A0%EF%B8%8F%20YAML.py" uid="4N9G7E">documentation-system:§4.6</a> — 🛠️ YAML
   - `Read in full and follow when` *a YAML file or YAML value must be parsed or validated independently of frontmatter and corpus semantics* `to` **confirm its generic YAML structure through the shared YAML capability without importing higher-level document rules**.
+- <a href="7%20%F0%9F%9B%A0%EF%B8%8F%20HTML.py" uid="PPVYWD">documentation-system:§4.7</a> — 🛠️ HTML
+  - `Read in full and follow when` *HTML elements, attributes, comments, or inline anchors must be inspected independently of Markdown or corpus semantics* `to` **parse HTML syntax into structured tokens and expose constrained anchor facts without assigning higher-level meaning to them**.
 <!-- END index -->
