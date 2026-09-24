@@ -35,6 +35,7 @@ element:
 - `1 🛠️ Author And Apply A Document Form.md`
 - `10 Research/README.md`
 - `11 Architecture Decision Record/README.md`
+- `12 Fault Record/README.md`
 
 ### Document Elements
 

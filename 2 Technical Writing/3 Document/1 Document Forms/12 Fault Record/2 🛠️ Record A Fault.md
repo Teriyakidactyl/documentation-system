@@ -1,4 +1,5 @@
 ---
+uid: DYZW24
 description: >-
   `Read in full and follow when` *an observed failure should be retained as
   explicit fault evidence* `to` **create a reconstructable record that
