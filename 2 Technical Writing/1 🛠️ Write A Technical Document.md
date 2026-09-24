@@ -138,7 +138,10 @@ element:
 
 For a dynamic Element, the same mapping also carries `renderer.uid` and
 `renderer.filepath`. The Element metadata identifies the contract and its
-renderer; the Markdown heading supplies the structural boundary. Atomic
+renderer; the Markdown heading supplies the structural boundary. That
+`element:` metamatter is sufficient provenance: do not add reader-visible
+prose merely to tell editors which Element governs the section. Add visible
+guidance only when the intended reader needs it to use the document. Atomic
 representations that deliberately define a lighter provenance contract, such as
 controlled HTML links, need not carry this heading-scoped mapping.
 
@@ -463,10 +466,11 @@ lets the declared reader satisfy the acceptance criterion:
 | Interdependent terms recur throughout the document | Use a document-wide glossary |
 | The definitions have independent lookup value across documents | Move them to an owning Reference document and link it |
 
-Place a document-wide glossary after the scope statement and before the first
-content that depends on it. Place a section-local glossary at the smallest
-common parent of every section that uses it. Never place a definition after
-its first load-bearing use.
+Place a document-wide glossary before its first load-bearing use. Put it after
+Scope by default; when an applicable Form or representation contract requires
+entry terms to define Scope, place the glossary before Scope. Place a
+section-local glossary at the smallest common parent of every section that uses
+it. Never place a definition after its first load-bearing use.
 
 A dedicated glossary gives the reader a Reference lookup task. Carry it into
 <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#44-check-whether-one-quadrant-still-holds" uid="5CFFZW">documentation-system:§2.1#4.4</a>'s quadrant check when it could stand as an independent lookup document.
