@@ -7,7 +7,7 @@ from pathlib import Path
 
 from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validate
 from .elements import refresh_element_filepaths
-from .indexes import refresh_indexes
+from .indexes import preflight_indexes, refresh_indexes
 from .links import rewrite_control_links
 from .model import (
     OrganizingError,
@@ -37,7 +37,8 @@ def refresh_corpus(corpus_root: Path) -> RefreshResult:
     corpus_root = corpus_root.resolve()
     # Establish the selected root and validate modelable canonical state before
     # any Organizing-owned mutation occurs.
-    build_corpus(corpus_root)
+    corpus = build_corpus(corpus_root)
+    preflight_indexes(corpus)
     clear_inline_annotations(corpus_root)
     minted = ensure_uids(corpus_root)
     corpus = build_corpus(corpus_root)

@@ -207,36 +207,43 @@ because the declaration uses the directory's name, not its ancestor path.
 Renaming that directory changes the corpus-root declaration in addresses that
 use it. The UID does not change when an artifact moves.
 
-Use a controlled HTML anchor when the reference must survive a move or rename:
+Use a controlled HTML anchor when the reference must survive a move or rename.
+The `uid` is the durable identity; the link type selects which current
+projection readers see. A representation may select any catalogued link type
+without changing target identity.
 
-```text
-control-link = '<a href="' physical-target '" uid="' uid '">' address '</a>'
-uid          = 6 Crockford Base32 characters
-```
+| Link type | Declaration | Display projection | Selection rule |
+|---|---|---|---|
+| **address** | omit `data-ds-link` | Current Documentation System address; an optional displayed `#` section selects a numbered heading. | Default for durable reader-visible prose. |
+| **relative-path** | `data-ds-link="relative-path"` | Human-readable filesystem path from the source artifact itself to the target; `href` remains the browser-resolvable path from the source artifact's containing directory. | Use only when the owning representation explicitly calls for physical-path navigation. The Index Element selects this type. |
 
-For example:
+Address type:
 
 ```html
 <a href="*" uid="5CFFZW">documentation-system:§2.1#4.2</a>
 ```
 
-The `uid` identifies the document within the selected corpus; the optional
-`#` in the displayed address selects a numbered heading within it. On every
-refresh Organizing finds the current document by UID, derives its current
-location, prefixes the selected corpus root's current directory name, validates
-the section when present, and rewrites both `href` and the displayed address.
-A controlled link may therefore carry a stale corpus-root declaration or location
-after a rename or move; the UID remains authority and Organizing refreshes
-that projection. Ordinary Markdown links are not touched. If the UID is missing
-or duplicated, the displayed value is not valid address syntax, or the selected
-heading no longer exists, Organizing fails rather than guessing.
+Relative-path type, when rendered in the repository-root `README.md`:
 
-Use a controlled UID anchor for every durable reference in reader-visible
-prose. An address written as plain reader-visible prose is a current coordinate
-rather than durable identity, so Organizing reports it as `ERROR DS001`.
-A bare corpus-root address such as `§2.1` is invalid and unresolvable because
-it omits the required corpus-root declaration; Organizing reports that
-violation as `ERROR DS004`.
+```html
+<a href="1%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../1 Document Control/README.md</a>
+```
+
+On every refresh Organizing finds the current target by UID and rewrites the
+physical `href` plus the display projection selected by the link type.
+Address links additionally validate and refresh the displayed locator and any
+numbered section. Relative-path links currently target whole artifacts. An
+unknown link type, missing or duplicate UID, invalid address projection, or
+unresolved selected section fails rather than guessing. Ordinary Markdown
+links are not touched.
+
+Use the default address type for durable references in ordinary reader-visible
+prose unless the governing representation selects another catalogued type. An
+address written as plain reader-visible prose is a current coordinate rather
+than durable identity, so Organizing reports it as `ERROR DS001`. A bare
+corpus-root address such as `§2.1` is invalid and unresolvable because it
+omits the required corpus-root declaration; Organizing reports that violation
+as `ERROR DS004`.
 
 Do not store the corpus-root declaration or derived location components in
 artifact metadata, and do not reconstruct location ancestry from generated
@@ -382,10 +389,15 @@ address           → where it is now
 
 The Index element is a derived reader projection, not authored topology. The
 filesystem already determines the hierarchy. A `README.md` with immediate
-indexed children declares one `## Index` section and projects only those
-children. A README carrying the Origin role uses the same element after its
-additional entry context. Traversing successive Index elements provides
-progressive disclosure.
+indexed children declares one Index section and projects only those children.
+A README carrying the Origin role uses the same element after its additional
+entry context. Traversing successive Index elements provides progressive
+disclosure.
+
+Place the Index heading no deeper than H5. Organizing preflights this boundary
+before any refresh mutation because every generated child becomes a heading
+exactly one level below the Index. An H6 Index would require invalid H7
+headings and therefore fails the refresh.
 
 Declare the dynamic Index Document Element directly beneath its heading:
 
@@ -396,7 +408,7 @@ element:
   path:
     uid: BZJASV
     filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
-  version: '1.0'
+  version: '2.0'
   renderer:
     uid: 45E225
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
@@ -407,9 +419,14 @@ The `element.path.uid` identifies the Index contract, `filepath` is its
 refreshable physical projection, `version` records the contract emitted by the
 renderer, and `renderer` identifies the controlled Python entry point that
 owns regeneration. The heading supplies the structural write boundary.
-Organizing owns the remainder of that heading-bounded section and renders each
-immediate child as its controlled link, title, and exact `description`. Do not
-hand-edit generated content or author a parallel child list.
+
+For each immediate indexed child, Organizing renders the child's title as the
+subheading, then its exact `description`, then a UID-controlled
+`relative-path` link. If that child is a `README.md` that itself owns an
+Index, Organizing additionally renders a triggered one-hop bullet hint
+containing only the targets actually indexed by that downstream README, in the
+same order. Hint entries carry no descriptions or links and do not recurse.
+Do not hand-edit generated content or author a parallel child list.
 
 ## 7. Run and validate Organizing
 
@@ -423,8 +440,8 @@ python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
 
 Organizing validates the corpus-root declaration, duplicate sibling ordinals,
 duplicate artifact locations and UIDs, missing descriptions, malformed generated
-regions, controlled links with address declarations, and supported sideband
-relationships before it writes indexes.
+regions, Index heading depth, controlled-link types and projections, and supported
+sideband relationships before it writes indexes.
 
 Resolve an address without writing anything:
 
