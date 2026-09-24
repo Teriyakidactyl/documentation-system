@@ -45,8 +45,8 @@ element:
     filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
 -->
 
-- <a href="1%20%F0%9F%93%96%20Hierarchical%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Hierarchical Glossary
-  - `Consult when` *related terms must be defined without losing the hierarchy that distinguishes parent, child, and sibling concepts* `to` **pair a relationship tree with a lookup table whose definition column explains each named term**.
+- <a href="1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a> — 📖 Glossary
+  - `Consult when` *a document boundary needs a glossary to orient readers to project-specific terms or concepts relevant at that scope* `to` **select only entries required at the reader's current knowledge horizon, define them to the depth needed for correct use, and choose the smallest representation that preserves necessary relationships**.
 - <a href="2%20%F0%9F%93%96%20Decision%20Table.md" uid="EEG680">documentation-system:§2.3.2.2</a> — 📖 Decision Table
   - `Consult when` *a bounded set of conditions maps deterministically to actions or outcomes and prose would obscure the branch boundaries* `to` **represent each decision rule as a scannable condition-to-result row**.
 - <a href="3%20%F0%9F%93%96%20Comparison%20Matrix.md" uid="Z3X0VE">documentation-system:§2.3.2.3</a> — 📖 Comparison Matrix

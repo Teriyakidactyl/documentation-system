@@ -33,9 +33,13 @@ runtime configuration format: keys are visible labels, trailing comments may
 carry definitions, scalar values carry entry attributes, and indentation scopes
 those attributes beneath their entry.
 
-Use a Semantic Registry when definitions and repeated attributes belong in one
-dense source surface. Use Hierarchical Glossary instead when the relationship
-tree and prose definition table must remain separate representations.
+Use a Semantic Registry when named entries need repeated attributes in one
+dense source surface. When the entries are project-specific terms or concepts
+selected to orient a reader at a document boundary, apply the
+<a href="../1%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§2.3.2.1</a>
+selection contract first. Use the Glossary Element itself when definitions are
+the primary lookup task and a table or relationship tree with definitions is
+sufficient.
 
 ## Source specimen
 
