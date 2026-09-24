@@ -20,8 +20,15 @@ def write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") -> str:
+def origin(
+    root_name: str,
+    *,
+    extra_body: str = "",
+    uid: str | None = "ABC123",
+    index_level: int = 2,
+) -> str:
     uid_line = f"uid: {uid}\n" if uid is not None else ""
+    index_marks = "#" * index_level
     return f"""---
 {uid_line}description: >-
   `Consult when` *a test corpus is entered* `to` **route through test content**.
@@ -29,7 +36,7 @@ def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") 
 # {root_name} Origin
 
 {extra_body}
-## Index
+{index_marks} Index
 <!--
 element:
   path:
@@ -96,7 +103,11 @@ class CorpusRootTests(unittest.TestCase):
         refresh_corpus(root)
 
         compiled = (root / "README.md").read_text(encoding="utf-8")
-        self.assertIn("Project Docs:§1", compiled)
+        self.assertIn("### Test Page", compiled)
+        self.assertIn(
+            '<a href="1%20Page.md" uid="DEF456" data-ds-link="relative-path">../1 Page.md</a>',
+            compiled,
+        )
 
         resolved = resolve_address(root, "Project Docs:§1")
         self.assertEqual("DEF456", resolved["uid"])
@@ -128,9 +139,20 @@ class CorpusRootTests(unittest.TestCase):
 
         root_compiled = (root / "README.md").read_text(encoding="utf-8")
         section_compiled = (root / "1 Section" / "README.md").read_text(encoding="utf-8")
-        self.assertIn('href="1%20Section/README.md"', root_compiled)
-        self.assertIn('href="1%20Child.md"', section_compiled)
-        self.assertIn("version: '1.0'", section_compiled)
+        self.assertIn("### Section", root_compiled)
+        self.assertIn(
+            '<a href="1%20Section/README.md" uid="GHJ789" data-ds-link="relative-path">'
+            "../1 Section/README.md</a>",
+            root_compiled,
+        )
+        self.assertIn("- `1 Child.md`", root_compiled)
+        self.assertIn("### Test Page", section_compiled)
+        self.assertIn(
+            '<a href="1%20Child.md" uid="JKM234" data-ds-link="relative-path">'
+            "../1 Child.md</a>",
+            section_compiled,
+        )
+        self.assertIn("version: '2.0'", section_compiled)
         self.assertNotIn("BEGIN index", section_compiled)
         self.assertNotIn("END index", section_compiled)
 
@@ -138,6 +160,57 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("location-representation", resolved["type"])
         self.assertEqual("1 Section/README.md", resolved["path"])
         self.assertEqual("GHJ789", resolved["uid"])
+
+    def test_index_entries_float_one_heading_level_below_index(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project", index_level=4))
+        write(root / "1 Page.md", page())
+
+        refresh_corpus(root)
+
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("#### Index", compiled)
+        self.assertIn("##### Test Page", compiled)
+
+    def test_index_h6_fails_preflight_without_mutation(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project", uid=None, index_level=6))
+        write(root / "1 Page.md", page())
+        before = (root / "README.md").read_text(encoding="utf-8")
+
+        with self.assertRaisesRegex(
+            OrganizingError,
+            "Index Element at H6 cannot render child headings",
+        ):
+            refresh_corpus(root)
+
+        self.assertEqual(before, (root / "README.md").read_text(encoding="utf-8"))
+        self.assertNotIn("uid:", before.split("---", 2)[1])
+
+    def test_readme_hint_uses_only_downstream_index_members_in_order(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(root / "1 Section" / "README.md", location_readme("Section"))
+        write(root / "1 Section" / "2 Second.md", page(uid="MNP345"))
+        write(root / "1 Section" / "1 First.md", page(uid="JKM234"))
+        write(
+            root / "1 Section" / "Unindexed.md",
+            """---
+uid: QRS456
+description: >-
+  `Consult when` *an unindexed test page exists* `to` **remain outside the Index hint**.
+---
+# Unindexed
+""",
+        )
+
+        refresh_corpus(root)
+
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        first = compiled.index("- `1 First.md`")
+        second = compiled.index("- `2 Second.md`")
+        self.assertLess(first, second)
+        self.assertNotIn("Unindexed.md", compiled)
 
     def test_decisions_sideband_is_controlled_but_unaddressed(self) -> None:
         root = self.make_corpus("project")
