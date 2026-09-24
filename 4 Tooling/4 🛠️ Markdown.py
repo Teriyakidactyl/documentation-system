@@ -51,7 +51,10 @@ technical-writing forms.
 Markdown owns document-local structure and coordinates. Organizing owns how
 those coordinates participate in controlled corpus references.
 
-Requires PyMarkdownLnt 0.9.40 for lint/fix.
+Lint and fix require the dependencies declared by Tooling `requirements.txt`.
+When an import is unavailable, prepare the repository-local Tooling environment
+before retrying; do not install the dependency into the operating system's
+Python installation.
 '''
 
 from __future__ import annotations
