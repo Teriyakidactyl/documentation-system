@@ -1,0 +1,124 @@
+---
+uid: W9D5TG
+description: >-
+  `Read in full when` *semantic responsibility, physical containment, or a
+  location where independently owned concerns meet are being treated as the
+  same thing* `to` **separate ownership from containment and convergence
+  before domain-specific placement chooses a representation**.
+quadrant: Explanation
+outline:
+  numbering: hierarchical-decimal
+writing-style:
+  formality: professional
+  tone: collegial/earnest
+  mode: declarative
+  density: moderate
+  abstraction: mixed
+  redundancy: zero
+  signposting: suppressed
+  register: accessible
+---
+
+# 💡 Ownership, Containment, and Convergence
+
+Ownership answers which concept is responsible for meaning and invariants.
+Containment answers where information or behavior is held. Convergence answers
+where independently owned concerns must meet to produce one local result.
+
+The three often coincide in simple structures, which makes them easy to
+confuse. None implies the others. This distinction assumes the structural unit
+itself is stable; if assigning ownership reveals that the candidate contains
+independently meaningful concerns, return to
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>.
+
+## 1. Ownership
+
+An owner is the smallest stable concept whose responsibility includes the fact,
+rule, behavior, or relationship in question. The owner is where a reader should
+look to learn why it exists and which invariant would be violated by changing
+it.
+
+Ownership is semantic rather than physical. Several independently owned facts
+may share one file, while one concept may be represented across several files.
+
+A relationship can itself have an owner when one concept legitimately owns the
+invariant that connects its participants. Do not assign a relationship to one
+endpoint merely because that endpoint is easier to edit.
+
+## 2. Containment
+
+A container is a representation boundary: a file, directory, heading, object,
+module, table, or other structure that physically or syntactically holds an
+item.
+
+Containers are often selected under constraints unrelated to conceptual
+ownership: delivery format, runtime behavior, addressability, tool syntax,
+reader navigation, or a host representation that must carry several concerns.
+
+Moving an item can therefore change its container without changing what owns
+it.
+
+## 3. Proximity
+
+Physical proximity is weak evidence of ownership. An item can be placed in the
+file already open because it concerns the same host, uses the same variable, or
+touches the same subsystem while still belonging to a different responsibility.
+
+That error is durable: later work sees the first placement and treats it as
+precedent. Proximity then compounds into a false boundary.
+
+Naming the owner before choosing the container prevents the current workspace
+from becoming the taxonomy.
+
+## 4. Convergence
+
+A **convergence site** is a location where independently owned concerns must be
+combined, coordinated, or rendered together.
+
+A request handler can converge transport, authorization, domain behavior, and
+presentation. A document section can converge a domain fact with formatting and
+reader-specific explanation. The local container needs all of those concerns,
+but their co-occurrence does not transfer their semantic ownership to the
+container.
+
+Treat convergence as coordination, not consolidation. Keep each governing rule
+with its legitimate owner and let the convergence site reference or invoke
+those owners rather than duplicating their reasoning locally.
+
+A convergence site becomes evidence for a new owner only when a new invariant
+exists at the intersection and no participating concern can own that invariant
+alone.
+
+## 5. Record divergence
+
+When ownership, containment, and convergence do not coincide, state the
+relationships explicitly:
+
+```text
+owner       → concept responsible for meaning or invariant
+container   → representation in which the item currently resolves
+converges   → independently owned concerns that meet here, when any
+constraint  → reason this representation or convergence is required
+```
+
+The container should point toward the owner when a reader would otherwise infer
+the wrong responsibility. Do not duplicate the owner's reasoning merely to make
+the container look self-contained.
+
+## 6. Domain-specific placement
+
+Ownership does not choose a filesystem path, heading number, package, schema
+key, or runtime boundary by itself. It establishes semantic authority that a
+domain-specific procedure then represents.
+
+For documented information, document control can turn the result into a
+classification location and address. For a document outline, technical writing
+can turn it into a heading boundary. Software architecture may turn it into a
+module, package, type, dependency boundary, or explicit coordinator.
+
+The shared rule is that representation follows identified ownership and
+convergence rather than inventing them from physical containment.
+
+When a known unit, relationship, and owner must now be matched to an existing
+structure, follow
+<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.4</a>.

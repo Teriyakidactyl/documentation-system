@@ -1,0 +1,149 @@
+---
+uid: YF43JX
+description: >-
+  `Read in full and follow when` *a candidate subject, responsibility,
+  document unit, module, or other structural item may combine concerns that do
+  not need to remain one unit* `to` **establish cohesive structural units at
+  genuine semantic or reasoning boundaries before later relationship,
+  ownership, placement, and validation decisions treat them as given**.
+quadrant: HowTo
+outline:
+  topology: linear
+  numbering: hierarchical-decimal
+writing-style:
+  formality: professional
+  tone: neutral/detached
+  mode: imperative
+  density: moderate
+  abstraction: mixed
+  redundancy: zero
+  signposting: light
+  register: technical
+---
+
+# 🛠️ Determine Structural Units
+
+Use this procedure when the boundary of the thing being organized is itself
+uncertain. It decides whether a candidate should be treated as one conceptual
+unit or several before later procedures assign relationships, ownership,
+placement, or formal structure.
+
+Do not split because an artifact is long, contains many members, or spans
+several files. Do not keep things together because they already share a file,
+folder, class, heading, or workflow step. Existing representation is evidence
+about the current state, not authority for the conceptual boundary.
+
+## 1. Bound the candidate
+
+Name the candidate and the structural decision that needs it to have a stable
+boundary.
+
+State what is currently being treated as one thing without presuming that the
+treatment is correct. Include only the material whose cohesion is in question;
+do not expand the analysis to the whole repository merely because adjacent
+material exists.
+
+## 2. Test semantic cohesion
+
+Ask whether the candidate can be reasoned about under one stable meaning and
+one compatible set of invariants.
+
+Evidence for one unit includes:
+
+- its parts acquire their meaning from the same concept;
+- changing one part normally requires checking the same invariant set as the
+  others;
+- separating a part would require restating the defining rules of the whole;
+- the same vocabulary and distinctions remain sufficient across the candidate.
+
+Evidence for several units includes a stable point where the meaning,
+invariants, lifecycle, or reasoning model changes. A new label alone is not
+enough; the distinction must change what a reader or implementation must know
+or preserve.
+
+## 3. Test work and reasoning co-occurrence
+
+Name the changes, decisions, lookups, validations, or other work encounters
+that consume the candidate.
+
+Keep material together when the same encounter normally requires its parts at
+the same time and separating them would force the consumer to reconstruct one
+reasoning context from several places.
+
+Treat a stable partition as boundary evidence when one group is repeatedly
+needed without the other and each group can be reasoned about without importing
+the other's defining rules.
+
+Size is not a criterion. A large cohesive unit can remain one unit; a small
+candidate can still contain two independent units.
+
+## 4. Probe downstream divergence
+
+Use downstream questions as probes without trying to settle them here.
+
+A boundary is suspect when different parts of the candidate appear to require:
+
+- different semantic owners;
+- different governing relationships or structural axes;
+- independently changing invariants or lifecycles;
+- different rules for deciding what counts as a valid member.
+
+Do not assign the final owner, topology, or placement in this procedure. Record
+the divergence and let the corresponding downstream procedure resolve it.
+
+Consumer-specific representation alone is not a split signal. Several
+projections can legitimately derive from one canonical unit.
+
+## 5. Distinguish convergence from cohesion
+
+Several independently owned concerns can meet at one execution or presentation
+site without becoming one unit.
+
+Treat a location as a possible **convergence site** when its job is to combine,
+coordinate, or render concerns whose meanings and invariants remain independently
+owned. Co-location at that site is not evidence that the concerns should be
+merged.
+
+Carry convergence candidates forward for the ownership procedure to resolve.
+
+## 6. Record the units
+
+Record each unit once further splitting would expose only local detail rather
+than a new meaning, invariant set, work context, or downstream structural
+decision. A structural unit can contain many parts; the goal is not to atomize
+the subject.
+
+For each unit, record:
+
+```yaml
+unit: <canonical concept name>
+includes: []
+cohesion:
+  semantic: <why these parts share one meaning and invariant set>
+  work: <why they are normally reasoned about together>
+boundary:
+  from: <adjacent unit or outside concern>
+  evidence: <what changes at the boundary>
+unresolved: []
+```
+
+Do not invent a hierarchy between the units yet. The result of this procedure
+is a set of defensible units and any unresolved boundaries, not their final
+organization.
+
+If a load-bearing boundary still admits competing readings, return the
+uncertainty rather than forcing one unit count.
+
+## 7. Route the next unresolved question
+
+Continue from the earliest unresolved structural question:
+
+- When the relation among established units is unclear, consult
+  <a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a>.
+- When semantic ownership and physical containment are unclear, read
+  <a href="3%20%F0%9F%92%A1%20Ownership%2C%20Containment%2C%20and%20Convergence.md" uid="W9D5TG">documentation-system:§5.3</a>.
+- When a known unit must be placed into an existing structure, follow
+  <a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.4</a>.
+- When established units must form or formally validate a consequential
+  reusable structure, follow
+  <a href="5%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20And%20Validate%20A%20Structure.md" uid="K8T4ZM">documentation-system:§5.5</a>.
