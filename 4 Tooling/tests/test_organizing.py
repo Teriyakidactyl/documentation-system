@@ -203,6 +203,95 @@ description: >-
         self.assertIn('<a href="1%20Page.md" uid="DEF456">beta:§1</a>', compiled)
         self.assertNotIn(">alpha:§1</a>", compiled)
 
+    def test_form_version_drift_uses_form_policy(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(
+            root / "1 Instance.md",
+            """---
+uid: DEF456
+form:
+  path: '<a href="2%20Form/README.md" uid="FRM123">project:§2</a>'
+  version: '1.1'
+description: >-
+  `Consult when` *a versioned instance is tested* `to` **exercise Form drift diagnostics**.
+---
+# Instance
+""",
+        )
+        write(
+            root / "2 Form" / "README.md",
+            """---
+uid: FRM123
+version:
+  value: '1.2'
+  warn: minor
+  error: major
+description: >-
+  `Consult when` *a test Form is needed* `to` **supply version authority**.
+---
+# Form
+""",
+        )
+
+        result = refresh_corpus(root)
+
+        drift = [item for item in result.diagnostics if item.code == "DS006"]
+        self.assertEqual(1, len(drift))
+        self.assertEqual("warning", drift[0].severity.value)
+        self.assertIn("minor drift", drift[0].message)
+
+    def test_form_version_info_is_default_and_newer_claim_is_error(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(
+            root / "1 Older.md",
+            """---
+uid: DEF456
+form:
+  path: '<a href="3%20Form/README.md" uid="FRM123">project:§3</a>'
+  version: '1.0'
+description: >-
+  `Consult when` *default drift behavior is tested* `to` **exercise informational diagnostics**.
+---
+# Older
+""",
+        )
+        write(
+            root / "2 Newer.md",
+            """---
+uid: GHJ789
+form:
+  path: '<a href="3%20Form/README.md" uid="FRM123">project:§3</a>'
+  version: '1.3'
+description: >-
+  `Consult when` *impossible provenance is tested* `to` **reject a future Form claim**.
+---
+# Newer
+""",
+        )
+        write(
+            root / "3 Form" / "README.md",
+            """---
+uid: FRM123
+version:
+  value: '1.2'
+description: >-
+  `Consult when` *a test Form is needed* `to` **supply version authority**.
+---
+# Form
+""",
+        )
+
+        result = refresh_corpus(root)
+
+        drift = [item for item in result.diagnostics if item.code == "DS006"]
+        self.assertEqual(2, len(drift))
+        self.assertEqual(
+            {"info", "error"},
+            {item.severity.value for item in drift},
+        )
+
     def test_reader_visible_address_requires_controlled_link(self) -> None:
         root = self.base / "project"
         write(root / "README.md", origin("project"))
