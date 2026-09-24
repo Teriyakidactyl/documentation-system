@@ -32,8 +32,18 @@ description: >-
 ---
 # Root
 
-<!-- BEGIN index -->
-<!-- END index -->
+## Index
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: system/Index.md
+  version: '0.9'
+  renderer:
+    uid: 45E225
+    filepath: system/Renderer.py
+-->
+
 """
 
 
