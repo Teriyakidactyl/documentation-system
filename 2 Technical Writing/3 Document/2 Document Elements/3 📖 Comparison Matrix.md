@@ -1,5 +1,7 @@
 ---
 uid: Z3X0VE
+version:
+  value: '1.0'
 description: >-
   `Consult when` *several peer entities must be compared across the same
   independent attributes* `to` **represent the peers as rows and shared
@@ -30,7 +32,13 @@ and whose columns are the same independent attributes for every peer.
 
 ```markdown
 ## Storage comparison
-<!-- element: [controlled link to this Document Element] -->
+<!--
+element:
+  path:
+    uid: Z3X0VE
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/3 📖 Comparison Matrix.md
+  version: '1.0'
+-->
 
 | Option | Persistence | Lookup key | Ordering |
 |---|---|---|---|
