@@ -2,9 +2,9 @@
 uid: TTDJF8
 description: >-
   `Consult when` *a recurring document role may have an adopted reusable
-  authoring package* `to` **select the Document Form whose Reference,
-  assembly procedure, and judgment examples govern that role before inventing
-  a local arrangement**.
+  authoring package* `to` **select the Document Form whose Reference and
+  assembly procedure, plus any required judgment examples, govern that role
+  before inventing a local arrangement**.
 ---
 
 # Document Forms

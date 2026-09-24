@@ -754,8 +754,9 @@ format:                  # shared by all four quadrants
         step 4.4 carries more, and each of its H1s is a separate document
     h2-h6: sentence case
     syntax: ATX, no skipped levels, no emphasis, siblings uniquely named
-  filenames: title case, matching h1 — no separate casing rule for what
-             names a document versus what titles it
+  filenames: title case, matching h1. An applicable Document Form may add a
+             deterministic provenance or ordering prefix; after that prefix,
+             the title-bearing portion still matches the h1
 
   comments:
     structured:

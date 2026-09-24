@@ -36,7 +36,10 @@ YYYY-MM-DDTHHmm <Decision title>.md
 ```
 
 The local timestamp prefix makes directory ordering chronological without a
-separate ADR ordinal. Use the time the decision entered its recorded status.
+separate ADR ordinal. It is the Form-defined deterministic filename prefix
+permitted by Technical Writing; the remainder of the filename matches the H1
+title after its quadrant glyph. Use the time the decision entered its recorded
+status.
 
 ## 2. Frontmatter
 

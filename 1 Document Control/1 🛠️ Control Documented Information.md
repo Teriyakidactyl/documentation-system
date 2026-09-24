@@ -44,7 +44,8 @@ corpus root
 │       │   ├── indexed artifact
 │       │   └── controlled sideband artifact
 │       └── origin
-│           └── index
+│           └── README.md
+│               └── index
 └── declared by address
     └── anchors location
         ├── location ordinal
