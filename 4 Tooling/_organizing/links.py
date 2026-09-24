@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import ast
-import io
 import re
-import tokenize
 from pathlib import Path
 from urllib.parse import quote
+
+from _capabilities.frontmatter import FrontmatterError, module_docstring, replace_module_docstring
 
 from .indexes import relative_link
 from .model import (
@@ -20,7 +19,6 @@ from .model import (
     read_text,
     render_address,
     corpus_path,
-    source_offset,
     walk_files,
 )
 
@@ -112,46 +110,21 @@ def rewrite_markdown(path: Path, corpus: Corpus) -> int:
 def rewrite_python(path: Path, corpus: Corpus) -> int:
     source = read_text(path)
     try:
-        tree = ast.parse(source, filename=str(path))
-    except SyntaxError as exc:
-        raise OrganizingError(f"Can't parse Python documentation in {path}: {exc}") from exc
-    if not tree.body:
+        parsed = module_docstring(source, str(path))
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
+    if parsed is None:
         return 0
-    first = tree.body[0]
-    if not (
-        isinstance(first, ast.Expr)
-        and isinstance(first.value, ast.Constant)
-        and isinstance(first.value.value, str)
-    ):
-        return 0
-    token = None
-    for candidate in tokenize.generate_tokens(io.StringIO(source).readline):
-        if candidate.type == tokenize.STRING and candidate.start[0] == first.value.lineno:
-            token = candidate
-            break
-    if token is None:
-        return 0
-    literal = token.string
-    prefix_match = re.match(r"(?i)^([rub]*)", literal)
-    prefix = prefix_match.group(1) if prefix_match else ""
-    rest = literal[len(prefix) :]
-    quote_mark = next(
-        (q for q in ("'''", '"""') if rest.startswith(q) and rest.endswith(q)),
-        None,
-    )
-    if quote_mark is None:
-        return 0
-    body = rest[len(quote_mark) : -len(quote_mark)]
+    body, _ = parsed
     rewritten, changed = rewrite_markdown_text(body, path, corpus)
     if not changed:
         return 0
-    new_literal = prefix + quote_mark + rewritten + quote_mark
-    lines = source.splitlines(keepends=True)
-    start = source_offset(lines, token.start)
-    end = source_offset(lines, token.end)
-    path.write_text(source[:start] + new_literal + source[end:], encoding="utf-8")
+    try:
+        updated = replace_module_docstring(source, rewritten, str(path))
+    except FrontmatterError as exc:
+        raise OrganizingError(str(exc)) from exc
+    path.write_text(updated, encoding="utf-8")
     return changed
-
 
 def rewrite_control_links(corpus: Corpus) -> int:
     changed = 0
