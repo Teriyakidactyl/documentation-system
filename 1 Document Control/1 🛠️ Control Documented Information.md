@@ -239,8 +239,8 @@ violation as `ERROR DS004`.
 Do not store the corpus-root declaration or derived location components in
 artifact metadata, and do not reconstruct location ancestry from generated
 projections. An unnumbered artifact outside a numbered location has no
-addressable location. A numbered location remains addressable without an
-`README.md`, but a controlled link can target it only when an indexed body
+addressable location. A numbered location remains addressable without a
+`README.md`, but a controlled link can target it only when a reader-facing body
 represents that location.
 
 ## 4. Represent a folder with README.md
@@ -251,15 +251,38 @@ describes what the folder collects and contributes no additional ordinal. The
 `README.md` at the selected corpus root uses the same representation with the
 additional origin entry contract required before the first routing choice.
 
-Keep the index focused. Give it its own `description`, then place one generated
-region where immediate choices should appear. Organizing derives those choices
-from the filesystem and reuses each child's exact `description`; do not repeat
-descendant metadata by hand.
+Keep the folder representation focused. Give the `README.md` one routing
+`description`. When it has immediate indexed children, declare one Index element
+where those choices should appear. Organizing derives the choices from the
+filesystem and reuses each child's exact `description`; do not repeat descendant
+metadata by hand.
 
 `README.md` is a reserved folder representation, so it carries neither an
 ordinal nor a quadrant glyph. In a numbered directory its location is exactly
 that of its containing directory. At the selected corpus root it represents the
 origin rather than an addressed descendant location.
+
+For a `README.md` serving as the corpus origin, put the corpus entry contract
+before its Index element. That contract:
+
+- gives the corpus a specific H1 and a `description` that routes a reader into
+  the corpus;
+- explains compactly that corpus-root status is contextual to the Organizing
+  job, while each documentation address declares the root by directory name,
+  then descends through decimal locations and may select a numbered heading
+  after `#`;
+- states that a bare `§...` locator is invalid because it omits the required
+  corpus-root declaration;
+- tells the reader to separate independent concerns, compare each concern only
+  with the immediate indexed choices, select the narrowest matching
+  `description`, descend one Index at a time, and satisfy every resulting
+  governing document according to its directive.
+
+Add corpus-specific source, distribution, glossary, or folder context before
+the first routing choice only when a reader must know it to choose correctly.
+Do not add a persistent corpus-root metadata field: the Organizing job declares
+that role by path and an address declares it by root directory name. The root
+`README.md` carries no `form` link merely because it serves as the origin.
 
 ## 5. Add controlled metadata
 
@@ -338,8 +361,8 @@ Organizing job's corpus root. A bare corpus-root address such as `§2.1` is a
 syntax error and cannot resolve.
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. An address naming a location resolves through its
-`README.md` when one exists; a location with no index resolves as a location
-with no body. A normal Organizing refresh also refreshes every controlled HTML anchor
+`README.md` when one exists; a location with no `README.md` resolves as a
+location with no body. A normal Organizing refresh also refreshes every controlled HTML anchor
 carrying a `uid`, including anchors carried by a supported Python module
 docstring.
 
