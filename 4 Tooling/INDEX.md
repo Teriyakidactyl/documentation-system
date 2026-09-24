@@ -2,15 +2,20 @@
 uid: YT5Y7F
 form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
-  `Consult when` *the Documentation System needs corpus organization, representation-level tooling,
-  or harness projection* `to` **select the narrowest executable capability that owns the required
-  mechanical operation**.
+  `Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization,
+  representation-level tooling, or harness projection* `to` **prepare the required execution
+  environment or select the narrowest capability that owns the mechanical operation**.
 ---
 
 # Tooling
 
 This location contains executable tools whose module docstrings are themselves
-indexed documentation.
+indexed documentation, plus the runtime procedure required to execute them.
+
+When a Python tool cannot import a dependency, `pip` is unavailable, or the
+host Python is externally managed, select **Prepare Tooling Environment** below
+before retrying the tool. Do not install Documentation System Tooling libraries
+into the operating system's Python installation.
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
@@ -29,4 +34,6 @@ indexed documentation.
   - `Read in full and follow when` *a YAML file or YAML value must be parsed or validated independently of frontmatter and corpus semantics* `to` **confirm its generic YAML structure through the shared YAML capability without importing higher-level document rules**.
 - <a href="7%20%F0%9F%9B%A0%EF%B8%8F%20HTML.py" uid="PPVYWD">documentation-system:§4.7</a> — 🛠️ HTML
   - `Read in full and follow when` *HTML elements, attributes, comments, or inline anchors must be inspected independently of Markdown or corpus semantics* `to` **parse HTML syntax into structured tokens and expose constrained anchor facts without assigning higher-level meaning to them**.
+- <a href="8%20%F0%9F%9B%A0%EF%B8%8F%20Prepare%20Tooling%20Environment.md" uid="THAV5S">documentation-system:§4.8</a> — 🛠️ Prepare Tooling Environment
+  - `Read in full and follow when` *Documentation System Python tooling cannot import a required package, pip is unavailable, or the host Python is externally managed* `to` **create a repository-local virtual environment, install the declared Tooling dependencies, and run Documentation System tools without modifying system Python**.
 <!-- END index -->

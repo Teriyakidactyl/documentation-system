@@ -59,7 +59,7 @@ unresolvable.
 - <a href="2%20Technical%20Writing/INDEX.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
   - `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
 - <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
-  - `Consult when` *the Documentation System needs corpus organization, representation-level tooling, or harness projection* `to` **select the narrowest executable capability that owns the required mechanical operation**.
+  - `Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, or harness projection* `to` **prepare the required execution environment or select the narrowest capability that owns the mechanical operation**.
 - <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
   - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
 - <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
