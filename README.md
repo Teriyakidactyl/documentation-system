@@ -15,8 +15,10 @@ and code creation.
 
 > [!IMPORTANT]
 > **Progressive disclosure is the interaction model.** The Documentation System
-> is designed for readers to navigate themselves from `README.md` to
-> `README.md`, acquiring only the context needed for the current decision. At
+> assumes no repository-specific context for any user or contributor arriving
+> at this root `README.md`; it calls that arriving reader an *amnesia agent*.
+> Readers navigate themselves from `README.md` to `README.md`, acquiring only
+> the context needed for the current decision. At
 > each location, use the local guidance and glossary, compare only the immediate
 > Index choices, select the narrowest matching `description`, and load deeper
 > guidance only when the route requires it. Displayed descendant filenames are
