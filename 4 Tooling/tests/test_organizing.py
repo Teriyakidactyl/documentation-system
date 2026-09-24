@@ -29,8 +29,17 @@ def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") 
 # {root_name} Origin
 
 {extra_body}
-<!-- BEGIN index -->
-<!-- END index -->
+## Index
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: system/Index.md
+  version: '0.9'
+  renderer:
+    uid: 45E225
+    filepath: system/Renderer.py
+-->
 """
 
 
@@ -44,8 +53,16 @@ description: >-
 # {name}
 
 ## Index
-<!-- BEGIN index -->
-<!-- END index -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: system/Index.md
+  version: '0.9'
+  renderer:
+    uid: 45E225
+    filepath: system/Renderer.py
+-->
 """
 
 def page(uid: str = "DEF456", *, body: str = "") -> str:
@@ -113,6 +130,9 @@ class CorpusRootTests(unittest.TestCase):
         section_compiled = (root / "1 Section" / "README.md").read_text(encoding="utf-8")
         self.assertIn('href="1%20Section/README.md"', root_compiled)
         self.assertIn('href="1%20Child.md"', section_compiled)
+        self.assertIn("version: '1.0'", section_compiled)
+        self.assertNotIn("BEGIN index", section_compiled)
+        self.assertNotIn("END index", section_compiled)
 
         resolved = resolve_address(root, "project:§1")
         self.assertEqual("location-representation", resolved["type"])
