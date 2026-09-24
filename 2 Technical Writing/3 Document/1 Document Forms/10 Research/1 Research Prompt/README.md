@@ -1,5 +1,7 @@
 ---
 uid: BSJY2D
+version:
+  value: '1.0'
 description: >-
   `Consult when` *a repeatable research request needs a durable source
   representation* `to` **select the Research Prompt specification or assembly
