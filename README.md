@@ -27,9 +27,9 @@ such as `v1.2.0`, when published, identify immutable states of the distribution
 history.
 
 **Corpus root** is a contextual role declared for a filesystem directory; it
-is not a permanent designation of that directory. A compiler job declares its
+is not a permanent designation of that directory. An Organizing job declares its
 corpus root with the optional `corpus_root` path argument; when omitted, that
-job defaults to the root of the Git repository containing the compiler. A
+job defaults to the root of the Git repository containing Organizing. A
 documentation address separately declares its corpus root by directory name
 before `:`, and that declaration is required. Thus
 `documentation-system:§2.3.2.1` declares the directory named
