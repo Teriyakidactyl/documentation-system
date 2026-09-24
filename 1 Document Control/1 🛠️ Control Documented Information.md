@@ -68,7 +68,7 @@ corpus root
 | **`README.md`** | The reserved reader-facing representation of a directory. Its subtype follows filesystem position; the README representing the selected corpus root additionally carries the Origin role. |
 | **Repository Root README** | The literal `README.md` at the Git repository root. It carries project-wide entry context whether or not that directory is selected as a corpus root. |
 | **Folder README** | A literal `README.md` in a descendant directory. It represents that folder and remains a Folder README even when that directory is selected as a corpus root. |
-| **index** | The Document Element declared by an `## Index` section in a folder `README.md`; its generated body projects that folder's immediate indexed children as controlled link, title, and exact `description`. |
+| **index** | The Document Element declared by an `## Index` section in a `README.md`; its generated body projects that directory's immediate indexed children as controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
 | **Organizing** | The Tooling capability that declares a corpus root for each job, scans supported metadata surfaces beneath it, maintains controlled identity and organization, derives navigation projections, refreshes controlled links, reports diagnostics, resolves locators, and plans deterministic structural normalization. |
 
