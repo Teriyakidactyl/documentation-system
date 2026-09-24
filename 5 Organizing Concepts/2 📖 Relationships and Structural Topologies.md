@@ -1,10 +1,10 @@
 ---
 uid: P6V2HN
 description: >-
-  `Consult when` *structural units are known but the relationship among them
-  or the topology that preserves it is unclear* `to` **name the governing
-  relation first and select tree, list, matrix, or graph without letting a
-  representation invent the relationship**.
+  `Consult when` *structural units are known but the relationship, axis, or
+  topology that organizes them is unclear* `to` **name the governing relation
+  and axis first, then select tree, list, matrix, or graph without letting a
+  representation invent the structure**.
 quadrant: Reference
 outline:
   topology: list
@@ -27,6 +27,11 @@ A structural relationship states why established units are connected. A
 *topology* is the shape that preserves that relationship. Choose the relation
 before the topology; folders, indentation, headings, object fields, and other
 syntax can render the same visual shape while meaning different things.
+
+This reference assumes the unit boundaries are already established. When the
+relationship problem exposes a compound or unstable unit, return to
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>
+rather than choosing a relation that only fits the current representation.
 
 ## 1. Classification
 
@@ -86,7 +91,21 @@ Use a **graph** when the connections carry information equal to the nodes.
 falsely implies one of its relationships. Store the edge explicitly instead of
 making containment stand in for it.
 
-## 6. Mixed structures
+## 6. Layer axis
+
+A relationship says how units connect. An **axis** says which question selects
+siblings within one classificatory or ordered layer.
+
+Keep one such question per layer. A sibling set where one member groups by
+function and another groups by component mixes axes even if both can be drawn
+as a tree. Move the independent concern to another layer or represent
+independent dimensions as a matrix.
+
+An axis is not required for every topology. Graph edges carry their own named
+relations, and a composition can be meaningful without forming an exclusive
+classification.
+
+## 7. Mixed structures
 
 A larger structure may change topology across layers. A tree of components can
 contain an ordered procedure; a matrix-selected entity can expose a tree of
@@ -99,3 +118,8 @@ they are an unresolved axis.
 When two relationship readings both remain valid, keep the ambiguity open.
 Ownership or placement must not choose a topology merely because one
 representation is convenient.
+
+Once the relationship, applicable axis, and topology are established, resolve
+semantic ownership separately with
+<a href="3%20%F0%9F%92%A1%20Ownership%2C%20Containment%2C%20and%20Convergence.md" uid="W9D5TG">documentation-system:§5.3</a>
+when that question remains open.
