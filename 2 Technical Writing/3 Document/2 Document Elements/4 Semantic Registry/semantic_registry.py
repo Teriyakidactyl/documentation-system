@@ -94,8 +94,36 @@ def _line_diagnostics(content: str) -> list[Diagnostic]:
         return diagnostics
 
     root_indent = min(len(match.group("indent")) for _, match in entries)
+    if root_indent != 2:
+        first_root_line = next(
+            line_number
+            for line_number, match in entries
+            if len(match.group("indent")) == root_indent
+        )
+        diagnostics.append(
+            Diagnostic(
+                "SR005",
+                "error",
+                first_root_line,
+                f"Root registry entries are indented {root_indent} spaces; use exactly two.",
+            )
+        )
+
+    previous_indent: int | None = None
     for line_number, match in entries:
-        if len(match.group("indent")) != root_indent:
+        indent = len(match.group("indent"))
+        if previous_indent is not None and indent > previous_indent + 2:
+            diagnostics.append(
+                Diagnostic(
+                    "SR005",
+                    "error",
+                    line_number,
+                    f"Semantic Registry indentation jumps from {previous_indent} to {indent} spaces; advance one two-space level at a time.",
+                )
+            )
+        previous_indent = indent
+
+        if indent != root_indent:
             continue
         rest = match.group("rest").strip()
         if not rest.startswith("#") or not rest[1:].strip():
