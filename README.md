@@ -68,10 +68,16 @@ Documentation System corpus beneath the declared corpus root. Descendant
 scope behavior unless they state a different boundary.
 
 ## Index
-<!-- element: '<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20Document%20Control/README.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
   - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
@@ -85,4 +91,3 @@ scope behavior unless they state a different boundary.
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 - <a href="7%20Editing/README.md" uid="X74GZ1">documentation-system:§7</a> — Editing
   - `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
-<!-- END index -->
