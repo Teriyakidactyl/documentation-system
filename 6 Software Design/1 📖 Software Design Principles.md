@@ -217,17 +217,25 @@ Use exceptions for failures that prevent the compiler from constructing or
 evaluating the model at all, not as the ordinary representation of every
 validation finding.
 
-### 5.4 Architecture provenance
+### 5.4 Implemented architecture
 
-Record a recurring subsystem architecture when it constrains where future
-implementation responsibilities may be placed.
+Record durable implemented architecture when several interacting design
+decisions constrain future work beyond one local contract.
 
-**Default.** Code inherits this Software Design Reference without repeating its
-principle list. An indexed executable entry point may carry a file-level
-`architecture` controlled link to the architecture that governs the subsystem.
-Implementation modules beneath that entry point inherit the architecture and
-state only their local responsibility and boundary in ordinary module
-docstrings.
+**Default.** Follow
+<a href="2%20Architecture/1%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ">documentation-system:§6.2.1</a>
+for selecting conditions, locality, scope, authority, realization, and
+verification.
+
+Project- or subsystem-specific Architecture Documents live beside the code they
+govern in that implementation root's `📐 Architecture` store. Do not place a
+project-specific architecture in Software Design merely because it applies
+several reusable design principles.
+
+An indexed executable entry point governed by a formal architecture carries a
+file-level `architecture` controlled link to the applicable Architecture
+Document. Internal modules inherit that architecture unless a narrower
+Architecture Document states otherwise.
 
 Add local principle metadata only when a documented exception must override an
 inherited default.
