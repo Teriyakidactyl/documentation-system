@@ -4,7 +4,7 @@ form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%
 description: >-
   `Consult when` *documented information needs a controlled repository
   location, retrieval policy, storage representation, address, index presence,
-  progressive-disclosure exposure, or compiler validation* `to` **select the
+  progressive-disclosure exposure, or Organizing validation* `to` **select the
   Document Control rule or procedure that governs how users encounter and rely
   on the information**.
 ---
