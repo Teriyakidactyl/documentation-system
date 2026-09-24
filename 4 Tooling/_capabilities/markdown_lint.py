@@ -48,10 +48,9 @@ DEFAULT_RULES: dict[str, str] = {
 }
 
 AUTOFIX_RULES = frozenset({
-    "MD001", "MD003", "MD004", "MD005", "MD009", "MD010", "MD012",
-    "MD018", "MD019", "MD023", "MD027", "MD029", "MD030", "MD031",
-    "MD032", "MD035", "MD037", "MD038", "MD039", "MD046", "MD047",
-    "MD048",
+    "MD001", "MD004", "MD005", "MD009", "MD010", "MD019", "MD023",
+    "MD027", "MD029", "MD030", "MD035", "MD037", "MD038", "MD039",
+    "MD046", "MD047", "MD048",
 })
 
 EMPHASIS_IN_HEADING_RE = re.compile(
