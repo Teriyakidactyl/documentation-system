@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validate
+from .elements import refresh_element_filepaths
 from .indexes import refresh_indexes
 from .links import rewrite_control_links
 from .model import (
@@ -39,6 +40,8 @@ def refresh_corpus(corpus_root: Path) -> RefreshResult:
     build_corpus(corpus_root)
     clear_inline_annotations(corpus_root)
     minted = ensure_uids(corpus_root)
+    corpus = build_corpus(corpus_root)
+    refresh_element_filepaths(corpus)
     corpus = build_corpus(corpus_root)
     refresh_indexes(corpus)
     corpus = build_corpus(corpus_root)
