@@ -1,6 +1,5 @@
 ---
 uid: X74GZ1
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *an existing artifact must be changed, checked against
   governing criteria, or subjected to an explicitly required assurance pass*
@@ -19,6 +18,9 @@ selects it. These are authority and assurance distinctions, not replacements
 for established editorial terms: developmental editing, line editing,
 copyediting, and proofreading still name recognized scopes of prose work. The
 artifact may be prose, structured data, code, or a mixture.
+
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

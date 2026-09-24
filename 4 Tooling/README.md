@@ -1,6 +1,5 @@
 ---
 uid: YT5Y7F
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization,
   representation-level tooling, or harness projection* `to` **prepare the required execution
@@ -16,6 +15,9 @@ When a Python tool cannot import a dependency, `pip` is unavailable, or the
 host Python is externally managed, select **Prepare Tooling Environment** below
 before retrying the tool. Do not install Documentation System Tooling libraries
 into the operating system's Python installation.
+
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

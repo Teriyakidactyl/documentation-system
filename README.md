@@ -1,6 +1,5 @@
 ---
 uid: 6E9QHP
-form: '<a href="2%20Technical%20Writing/3%20Document/1%20Document%20Forms/10%20%F0%9F%93%96%20Origin.md" uid="DNFDSK">documentation-system:§2.3.1.10</a>'
 description: >-
   `Consult when` *repository work reaches a documentation, documented-information,
   or Documentation System tooling concern and the applicable procedure is not
@@ -51,19 +50,22 @@ unresolvable.
 > non-compacted conversation history. If it is not, or if its prior presence is
 > only within compacted history, read the document in full before relying on it.
 
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
-- <a href="1%20Document%20Control/INDEX.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
+- <a href="1%20Document%20Control/README.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
   - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
-- <a href="2%20Technical%20Writing/INDEX.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
+- <a href="2%20Technical%20Writing/README.md" uid="6J52FM">documentation-system:§2</a> — Technical Writing
   - `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
-- <a href="4%20Tooling/INDEX.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
+- <a href="4%20Tooling/README.md" uid="YT5Y7F">documentation-system:§4</a> — Tooling
   - `Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, or harness projection* `to` **prepare the required execution environment or select the narrowest capability that owns the mechanical operation**.
-- <a href="5%20Organizing%20Concepts/INDEX.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
+- <a href="5%20Organizing%20Concepts/README.md" uid="A7K3QF">documentation-system:§5</a> — Organizing Concepts
   - `Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
-- <a href="6%20Software%20Design/INDEX.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
+- <a href="6%20Software%20Design/README.md" uid="1SGQXT">documentation-system:§6</a> — Software Design
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
-- <a href="7%20Editing/INDEX.md" uid="X74GZ1">documentation-system:§7</a> — Editing
+- <a href="7%20Editing/README.md" uid="X74GZ1">documentation-system:§7</a> — Editing
   - `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
 <!-- END index -->

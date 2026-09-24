@@ -1,6 +1,5 @@
 ---
 uid: YVXKT9
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *documented information needs a controlled repository
   location, retrieval policy, storage representation, address, index presence,
@@ -20,6 +19,9 @@ repository information through Visual Studio Code. Document Control therefore
 treats ordinary filesystem navigation, search, editing, diff, and source-control
 review as baseline human capabilities when evaluating information organization
 and storage mechanisms.
+
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

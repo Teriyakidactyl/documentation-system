@@ -1,6 +1,5 @@
 ---
 uid: 6AZDY2
-form: '<a href="../11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *repeatable research must preserve both the investigation
   request and one or more run outputs* `to` **select the Research Prompt or
@@ -17,6 +16,9 @@ of one execution of that prompt.
 The prompt and reports belong to one investigation folder. Reports identify the
 prompt by UID so repeated runs can be compared without treating the report as
 current governing authority.
+
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->

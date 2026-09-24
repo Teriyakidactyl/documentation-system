@@ -1,6 +1,5 @@
 ---
 uid: A7K3QF
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20%F0%9F%93%96%20Index.md" uid="BZJASV">documentation-system:§2.3.1.11</a>'
 description: >-
   `Consult when` *a structural decision is shared across documents, code,
   schemas, or other repository artifacts* `to` **enter the earliest unresolved
@@ -36,6 +35,9 @@ stage instead of patching the downstream representation.
 
 A caller may stop as soon as its structural question is resolved. The stages are
 a dependency order, not a requirement to execute every document for every task.
+
+## Index
+<!-- element: '<a href="*" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
 
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
