@@ -1,5 +1,7 @@
 ---
 uid: AKNN1G
+version:
+  value: '1.0'
 description: >-
   `Consult when` *the output of one Research Prompt execution must be retained
   for later review, comparison, or promotion* `to` **select the Research
