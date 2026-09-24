@@ -1,5 +1,7 @@
 ---
 uid: A1FANY
+version:
+  value: '1.0'
 description: >-
   `Consult when` *an architectural choice and its reasoning must be retained
   without making the historical record current authority* `to` **select the
