@@ -25,15 +25,21 @@ writing-style:
 # 🛠️ Decompose And Validate A Structure
 
 Use this procedure when the consequences justify formal structural construction
-or assurance. Routine placement belongs in the placement procedure. This
-procedure takes over when a reusable taxonomy or other consequential structure
-must be authored, when an important existing structure needs formal validation,
-or when a placement contradiction would otherwise become precedent.
+or assurance. Routine placement belongs in
+<a href="4%20%F0%9F%9B%A0%EF%B8%8F%20Test%20A%20Placement.md" uid="M4R8XC">documentation-system:§5.4</a>.
+This procedure takes over when a reusable taxonomy or other consequential
+structure must be authored, when an important existing structure needs formal
+validation, or when a placement contradiction would otherwise become
+precedent.
 
-The procedure assumes that the structural units being organized are already
-defensible. If construction repeatedly requires splitting, merging, or
-redefining those units, return upstream rather than treating the decomposition
-as authority over their boundaries.
+The procedure assumes that the structural units have already been established
+by
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>
+and that load-bearing relationships are explicit under
+<a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a>.
+If construction repeatedly requires splitting, merging, or redefining those
+units, return upstream rather than treating the decomposition as authority over
+their boundaries.
 
 ## 1. Apply the invariants
 
@@ -190,10 +196,13 @@ unresolved decision and route back to it.
 When no candidate structure exists, nominate a flat set of candidate concepts
 without imposing hierarchy.
 
-Determine whether those candidates are stable structural units before
-organizing them. Merge true duplicates, split compound candidates only through
-the unit-boundary procedure, and keep unresolved boundaries explicit.
+Determine whether those candidates are stable structural units with
+<a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>.
+Merge true duplicates, split compound candidates only through that procedure,
+and keep unresolved boundaries explicit.
 
-Then establish the relationships among the units and run this procedure from
-step 2. The hierarchy, axes, and topology are outputs of the structural
-reasoning, not assumptions smuggled into concept nomination.
+Then establish their relationships with
+<a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a>
+and run this procedure from step 2. The hierarchy, axes, and topology are
+outputs of the structural reasoning, not assumptions smuggled into concept
+nomination.
