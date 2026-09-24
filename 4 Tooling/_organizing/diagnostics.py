@@ -259,7 +259,7 @@ def validate_ordinal_sequences(corpus: Corpus) -> list[Diagnostic]:
         if sequence.contiguous:
             continue
         owner = corpus.origin
-        candidate = (sequence.parent / "INDEX.md").resolve()
+        candidate = (sequence.parent / "README.md").resolve()
         if candidate in corpus.artifacts:
             owner = candidate
         found = ", ".join(str(value) for value, _ in sequence.entries)

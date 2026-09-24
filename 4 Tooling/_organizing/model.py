@@ -193,7 +193,7 @@ def location_components(corpus_root: Path, path: Path) -> list[str]:
         ordinal = ordinal_from_name(part)
         if ordinal is not None:
             components.append(ordinal)
-    if path.name != "INDEX.md":
+    if path.name != "README.md":
         ordinal = ordinal_from_name(path.name)
         if ordinal is not None:
             components.append(ordinal)
@@ -278,7 +278,7 @@ def load_artifacts(corpus_root: Path) -> dict[Path, Artifact]:
             continue
         metadata, body, title = extracted
         location = location_for(corpus_root, path)
-        ordinal = None if path.name == "INDEX.md" else ordinal_from_name(path.name)
+        ordinal = None if path.name == "README.md" else ordinal_from_name(path.name)
         uid = metadata.get("uid")
         if uid is not None:
             if not isinstance(uid, str) or not UID_RE.fullmatch(uid):
@@ -382,7 +382,7 @@ def validate_sibling_ordinals(corpus_root: Path) -> None:
         ]
         seen: dict[str, str] = {}
         names = dirs + [
-            name for name in files if Path(name).suffix.lower() in SUPPORTED_SUFFIXES and name != "INDEX.md"
+            name for name in files if Path(name).suffix.lower() in SUPPORTED_SUFFIXES and name != "README.md"
         ]
         for name in names:
             ordinal = ordinal_from_name(name)
@@ -416,7 +416,7 @@ def derive_index(corpus_root: Path, artifacts: dict[Path, Artifact]) -> tuple[Pa
             parents[child] = origin
 
     for owner in artifacts.values():
-        if owner.path.name != "INDEX.md" or owner.location is None:
+        if owner.path.name != "README.md" or owner.location is None:
             continue
         prefix = owner.location + "."
         depth = location_depth(owner.location) + 1

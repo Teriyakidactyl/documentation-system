@@ -34,6 +34,20 @@ def origin(root_name: str, *, extra_body: str = "", uid: str | None = "ABC123") 
 """
 
 
+
+def location_readme(name: str, uid: str = "GHJ789") -> str:
+    return f"""---
+uid: {uid}
+description: >-
+  `Consult when` *a test location is entered* `to` **route through its immediate children**.
+---
+# {name}
+
+## Index
+<!-- BEGIN index -->
+<!-- END index -->
+"""
+
 def page(uid: str = "DEF456", *, body: str = "") -> str:
     return f"""---
 uid: {uid}
@@ -85,6 +99,25 @@ class CorpusRootTests(unittest.TestCase):
         self.assertEqual("DEF456", nested_resolution["uid"])
         self.assertEqual(str(parent.resolve()), parent_resolution["corpus_root"])
         self.assertEqual(str(nested.resolve()), nested_resolution["corpus_root"])
+
+
+    def test_numbered_directory_readme_represents_location_and_owns_index(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        write(root / "1 Section" / "README.md", location_readme("Section"))
+        write(root / "1 Section" / "1 Child.md", page(uid="JKM234"))
+
+        refresh_corpus(root)
+
+        root_compiled = (root / "README.md").read_text(encoding="utf-8")
+        section_compiled = (root / "1 Section" / "README.md").read_text(encoding="utf-8")
+        self.assertIn('href="1%20Section/README.md"', root_compiled)
+        self.assertIn('href="1%20Child.md"', section_compiled)
+
+        resolved = resolve_address(root, "project:§1")
+        self.assertEqual("location-representation", resolved["type"])
+        self.assertEqual("1 Section/README.md", resolved["path"])
+        self.assertEqual("GHJ789", resolved["uid"])
 
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
