@@ -54,3 +54,12 @@ element:
 - `1 📖 Architecture Decision Record.md`
 - `2 🛠️ Author An Architecture Decision Record.md`
 - `3 🧭 Strong ADR Boundaries Recognized.md`
+
+### Fault Record
+
+`Consult when` *an observed failure and its causal evidence must be retained without making the historical fault record current authority* `to` **select the Fault Record specification or assembly procedure needed to reconstruct the failure, analyze its recurrence conditions, and trace resulting corrective action into current authority**.
+
+<a href="12%20Fault%20Record/README.md" uid="CD4R6P" data-ds-link="relative-path">../12 Fault Record/README.md</a>
+
+- `1 📖 Fault Record.md`
+- `2 🛠️ Record A Fault.md`
