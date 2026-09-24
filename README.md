@@ -19,7 +19,10 @@ and code creation.
 > `README.md`, acquiring only the context needed for the current decision. At
 > each location, use the local guidance and glossary, compare only the immediate
 > Index choices, select the narrowest matching `description`, and load deeper
-> guidance only when the route requires it. A task may present several
+> guidance only when the route requires it. Displayed descendant filenames are
+> orientation clues, not routing choices: they do not authorize bypassing the
+> indexed child that exposes them; enter that child and read its `README.md`
+> before making the next routing decision. A task may present several
 > independent concerns; route each concern separately and satisfy every selected
 > concern-specific document according to its directive. Authors therefore place
 > definitions and instructions at the earliest scope where they become
