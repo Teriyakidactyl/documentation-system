@@ -83,7 +83,7 @@ def _api():
             "PyMarkdownLnt is required; install pymarkdownlnt==0.9.40"
         ) from exc
 
-    api = PyMarkdownApi(inherit_logging=True).disable_rule_by_identifier("*")
+    api = PyMarkdownApi(inherit_logging=True).enable_strict_configuration().disable_rule_by_identifier("*")
     for rule_id in DEFAULT_RULES:
         api.enable_rule_by_identifier(rule_id)
     api.enable_extension_by_identifier("markdown-tables")
@@ -101,6 +101,7 @@ def _api():
     }
     for key, value in settings.items():
         api.set_string_property(key, value)
+    api.set_boolean_property("plugins.md009.strict", True)
     api.set_boolean_property("plugins.md024.siblings_only", True)
     return api
 
