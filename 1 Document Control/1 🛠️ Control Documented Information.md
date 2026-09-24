@@ -280,16 +280,12 @@ project logo exists, place it directly beneath the H1. Follow with a compact
 preamble that tells an entering reader what the project is and what work the
 repository supports.
 
-State repository-wide scope before definitions that depend on it. When
-project-defined terms recur across repository concerns or are required to
-interpret the Repository Root README, add a project glossary after Scope. Use
-the <a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a>
-Document Element when the glossary needs definitions plus repeated attributes
-in one dense lookup surface. When the Semantic Registry is used, include a
-reader-visible controlled link to its Element folder beside the instance so an
-editor can reach the source contract and formatter without interpreting
-metamatter. Keep domain-local terminology with its owning document instead of
-expanding the project glossary into a repository-wide term dump.
+When project-defined terms recur across repository concerns or are required to
+interpret the Repository Root README, add a project glossary immediately after
+the preamble and before Scope. Use a simple two-column `Term | Meaning` table
+unless the definitions genuinely require a richer structure. Keep domain-local
+terminology with its owning document instead of expanding the project glossary
+into a repository-wide term dump.
 
 State the repository authority model before asking the reader to route work.
 Tell an entering agent which information is current authority, require the
