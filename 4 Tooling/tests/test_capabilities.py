@@ -9,7 +9,7 @@ TOOLING = Path(__file__).resolve().parents[1]
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from _capabilities.frontmatter import load as load_frontmatter
+from _capabilities.frontmatter import add_missing_key, load as load_frontmatter
 from _capabilities.html import anchors, inspect as inspect_html
 from _capabilities.markdown import fenced_blocks, get_section, renumber, sections
 from _capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
@@ -62,6 +62,19 @@ class CapabilityTests(unittest.TestCase):
             self.assertIsNotNone(value)
             self.assertEqual("ABC123", value.data["uid"])
             self.assertEqual("py", value.kind)
+
+    def test_frontmatter_insertion_preserves_numeric_looking_string(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "doc.md"
+            write(
+                path,
+                "---\ndescription: test\n---\n# Document\n",
+            )
+            add_missing_key(path, "uid", "123456")
+            value = load_frontmatter(path)
+            self.assertIsNotNone(value)
+            self.assertEqual("123456", value.data["uid"])
+            self.assertIsInstance(value.data["uid"], str)
 
     def test_html_inspection_and_anchor_attributes_are_generic(self) -> None:
         source = "<!-- note --><a uid='ABC123' href='x'>Label</a>"
