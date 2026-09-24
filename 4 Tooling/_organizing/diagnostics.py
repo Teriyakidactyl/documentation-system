@@ -10,6 +10,7 @@ from enum import Enum
 from pathlib import Path
 
 from _capabilities.html import anchors
+from .elements import element_instances
 from .schemes.ordinal import OrdinalSchemeError, inspect as inspect_ordinal_sequences
 from .model import (
     CONTROLLED_SIDEBAND_DIRS,
@@ -31,7 +32,7 @@ ANNOTATION_LINE_RE = re.compile(
     re.MULTILINE,
 )
 
-VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$")
+VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
 DRIFT_RANK = {"minor": 1, "major": 2}
 
 
@@ -384,6 +385,121 @@ def validate_form_versions(corpus: Corpus) -> list[Diagnostic]:
     return diagnostics
 
 
+def validate_element_versions(corpus: Corpus) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    by_uid = artifact_by_uid(corpus)
+
+    for instance in element_instances(corpus):
+        element = instance.element
+        path_value = element.get("path")
+        consumed_value = element.get("version")
+        consumed = _version_tuple(consumed_value)
+
+        if not isinstance(path_value, dict):
+            diagnostics.append(Diagnostic(
+                code="DS007",
+                severity=Severity.ERROR,
+                path=instance.owner,
+                line=1,
+                message="element.path must be a mapping containing uid and filepath",
+            ))
+            continue
+
+        uid = path_value.get("uid")
+        filepath = path_value.get("filepath")
+        if (
+            not isinstance(uid, str)
+            or not UID_RE.fullmatch(uid)
+            or not isinstance(filepath, str)
+            or not filepath
+            or consumed is None
+        ):
+            diagnostics.append(Diagnostic(
+                code="DS007",
+                severity=Severity.ERROR,
+                path=instance.owner,
+                line=1,
+                message=(
+                    "element.path.uid must be a controlled UID, element.path.filepath "
+                    "must be non-empty, and element.version must use major.minor"
+                ),
+            ))
+            continue
+
+        renderer = element.get("renderer")
+        if renderer is not None:
+            if (
+                not isinstance(renderer, dict)
+                or not isinstance(renderer.get("uid"), str)
+                or not UID_RE.fullmatch(renderer["uid"])
+                or not isinstance(renderer.get("filepath"), str)
+                or not renderer["filepath"]
+            ):
+                diagnostics.append(Diagnostic(
+                    code="DS007",
+                    severity=Severity.ERROR,
+                    path=instance.owner,
+                    line=1,
+                    message="element.renderer must contain a controlled uid and non-empty filepath",
+                ))
+                continue
+
+        target = by_uid.get(uid)
+        if target is None:
+            # External Element authorities remain valid declarations, but this
+            # corpus cannot compare their current contract version.
+            continue
+
+        current, info_enabled, warn_at, error_at = _version_policy(target.metadata)
+        if current is None:
+            diagnostics.append(Diagnostic(
+                code="DS007",
+                severity=Severity.ERROR,
+                path=instance.owner,
+                line=1,
+                message=f"Element uid {uid} must declare version.value as major.minor",
+            ))
+            continue
+
+        if consumed == current:
+            continue
+        if consumed > current:
+            diagnostics.append(Diagnostic(
+                code="DS007",
+                severity=Severity.ERROR,
+                path=instance.owner,
+                line=1,
+                message=(
+                    f"element.version {consumed_value} is newer than Element uid {uid} "
+                    f"authority version {current[0]}.{current[1]}"
+                ),
+            ))
+            continue
+
+        drift = "major" if consumed[0] != current[0] else "minor"
+        rank = DRIFT_RANK[drift]
+        severity: Severity | None = None
+        if error_at is not None and rank >= DRIFT_RANK[error_at]:
+            severity = Severity.ERROR
+        elif warn_at is not None and rank >= DRIFT_RANK[warn_at]:
+            severity = Severity.WARNING
+        elif info_enabled:
+            severity = Severity.INFO
+
+        if severity is not None:
+            diagnostics.append(Diagnostic(
+                code="DS007",
+                severity=severity,
+                path=instance.owner,
+                line=1,
+                message=(
+                    f"element.version {consumed_value} has {drift} drift from Element uid {uid} "
+                    f"version {current[0]}.{current[1]}"
+                ),
+            ))
+    return diagnostics
+
+
 def validate_ordinal_sequences(corpus: Corpus) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     try:
@@ -422,6 +538,7 @@ def validate(corpus: Corpus) -> list[Diagnostic]:
         validate_address_references(corpus)
         + validate_research_reports(corpus)
         + validate_form_versions(corpus)
+        + validate_element_versions(corpus)
         + validate_ordinal_sequences(corpus)
     )
 
