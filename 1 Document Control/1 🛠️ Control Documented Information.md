@@ -271,8 +271,10 @@ origin rather than an addressed descendant location.
 For a `README.md` serving as the corpus origin, put the corpus entry contract
 before its Index element. That contract:
 
-- gives the corpus a specific H1 and a `description` that routes a reader into
-  the corpus;
+- uses the project title, not the repository slug or corpus-root directory name,
+  as the H1; when a project logo exists, places it directly beneath that H1,
+  followed by a compact project preamble;
+- gives the corpus a `description` that routes a reader into the corpus;
 - explains compactly that corpus-root status is contextual to the Organizing
   job, while each documentation address declares the root by directory name,
   then descends through decimal locations and may select a numbered heading
