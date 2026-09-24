@@ -3,10 +3,10 @@ r'''---
 uid: XS6515
 architecture: '<a href="../6%20Software%20Design/2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a>'
 description: >-
-  `Read in full and follow when` *Markdown heading structure must be
-  inspected or hierarchical heading numbers have drifted* `to` **read the
-  structural heading model or deterministically regenerate local heading
-  coordinates without treating corpus addresses as heading numbers**.
+  `Read in full and follow when` *Markdown structure must be inspected, linted,
+  mechanically corrected, or locally renumbered* `to` **give an agent bounded
+  section access, deterministic diagnostics, safe formatting fixes, and stable
+  document-local coordinates around authored edits**.
 quadrant: HowTo
 outline:
   topology: branching
@@ -23,17 +23,34 @@ writing-style:
 ---
 # 🛠️ Markdown
 
-Use `headings` to inspect Markdown structure. Use `renumber` to derive
-hierarchical-decimal H2-H6 numbering from heading depth and source order.
-Renumbering is dry-run by default; add `--write` to replace the file.
+Use Markdown as structural perception and deterministic feedback around an
+authored edit. Its default lint policy is selective: PyMarkdown rules are
+disabled as a set and only explicit Documentation System defaults are enabled,
+so a dependency upgrade cannot silently add a house opinion.
 
 ```text
 python3 "4 Tooling/4 🛠️ Markdown.py" headings PATH
+python3 "4 Tooling/4 🛠️ Markdown.py" sections PATH
+python3 "4 Tooling/4 🛠️ Markdown.py" get-section PATH SELECTOR
+python3 "4 Tooling/4 🛠️ Markdown.py" lint PATH
+python3 "4 Tooling/4 🛠️ Markdown.py" fix PATH
+python3 "4 Tooling/4 🛠️ Markdown.py" rules
 python3 "4 Tooling/4 🛠️ Markdown.py" renumber [--write] PATH
 ```
 
-Markdown owns document-local section coordinates. Organizing owns how those
-coordinates participate in controlled corpus references.
+`lint` is read-only. `fix` applies only deterministic PyMarkdown fixes and
+declared local renumbering; unresolved findings remain for the agent. `rules`
+is the executable source of truth for default lint opinions.
+
+The defaults deliberately do not impose line length, forbid HTML, forbid
+heading punctuation, or require generic blank lines beneath headings. Those
+would conflict with controlled anchors, metamatter placement, or valid
+technical-writing forms.
+
+Markdown owns document-local structure and coordinates. Organizing owns how
+those coordinates participate in controlled corpus references.
+
+Requires PyMarkdownLnt 0.9.40 for lint/fix.
 '''
 
 from __future__ import annotations
@@ -42,8 +59,20 @@ import argparse
 import json
 from pathlib import Path
 
+from _capabilities.frontmatter import FrontmatterError, load as load_frontmatter
 from _capabilities.markdown import MarkdownError, get_section, headings, renumber, sections
 from _capabilities.markdown_lint import MarkdownLintError, fix_file, lint_file, rule_policy
+
+
+def markdown_body(path: Path) -> tuple[str, str]:
+    source = path.read_text(encoding="utf-8")
+    try:
+        frontmatter = load_frontmatter(path)
+    except FrontmatterError as exc:
+        raise SystemExit(f"markdown: {exc}") from exc
+    if frontmatter is None:
+        return "", source
+    return source[: len(source) - len(frontmatter.body)], frontmatter.body
 
 
 def main() -> None:
@@ -85,7 +114,7 @@ def main() -> None:
         print(json.dumps({"path": str(args.path), "changed": changed, "diagnostics": [item.to_dict() for item in diagnostics]}, indent=2, ensure_ascii=False))
         raise SystemExit(1 if diagnostics else 0)
 
-    text = args.path.read_text(encoding="utf-8")
+    prefix, text = markdown_body(args.path)
     if args.command == "headings":
         print(json.dumps(headings(text), indent=2, ensure_ascii=False))
         return
@@ -103,7 +132,7 @@ def main() -> None:
     except MarkdownError as exc:
         raise SystemExit(f"markdown: {exc}") from exc
     if args.write and rendered != text:
-        args.path.write_text(rendered, encoding="utf-8")
+        args.path.write_text(prefix + rendered, encoding="utf-8")
     print(json.dumps({"changed": rendered != text, "mapping": mapping, "written": args.write}, indent=2))
 
 
