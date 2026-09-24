@@ -23,13 +23,13 @@ writing-style:
 # 🛠️ Control Documented Information
 
 Apply these steps to an existing artifact or to the output of an authoring
-procedure. For each compiler job, the declared corpus root and filesystem
+procedure. For each Organizing job, the declared corpus root and filesystem
 hierarchy own classification and location. Each documentation address makes its
 own corpus-root declaration by directory name, then names a location beneath
 that declared root. A `uid` owns durable document identity; a numbered internal
 outline can extend an address into a file. Recognized metadata makes an artifact
 controlled. An addressable position additionally makes it indexable. The
-compiler derives indexes from the corpus hierarchy established for the current
+Organizing derives indexes from the corpus hierarchy established for the current
 job; controlled sideband artifacts can retain identity and validation without
 entering that navigation surface.
 
@@ -37,7 +37,7 @@ entering that navigation surface.
 
 ```text
 corpus root
-├── declared by compiler job
+├── declared by Organizing job
 │   └── bounds corpus
 │       ├── controlled artifact
 │       │   ├── uid
@@ -55,50 +55,50 @@ corpus root
 
 | Term | Meaning |
 |---|---|
-| **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. A compiler job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing the compiler. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
-| **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current compiler job. |
-| **origin** | The reader-facing entry point of a corpus, represented by `README.md` in the directory serving as corpus root for the current compiler job. It contributes no location ordinal. |
-| **controlled artifact** | A file on a compiler-traversed path whose supported metadata surface contains a `description` and compiler-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
+| **corpus root** | A contextual role declared for a filesystem directory, not a permanent property of that directory. An Organizing job declares its corpus root by filesystem path; when omitted, that job defaults to the Git repository root containing Organizing. A documentation address separately declares its corpus root by directory name before `:`; omission is a syntax error. |
+| **corpus** | The controlled artifacts and locations discovered beneath the corpus root declared for the current Organizing job. |
+| **origin** | The reader-facing entry point of a corpus, represented by `README.md` in the directory serving as corpus root for the current Organizing job. It contributes no location ordinal. |
+| **controlled artifact** | A file on a Organizing-traversed path whose supported metadata surface contains a `description` and Organizing-minted `uid`. It participates in durable identity and validation whether or not it has an address. |
 | **indexed artifact** | A controlled artifact whose filesystem position derives an address and can therefore participate in generated index navigation. |
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
-| **uid** | A permanent six-character Crockford Base32 identifier minted by the compiler for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
+| **uid** | A permanent six-character Crockford Base32 identifier minted by Organizing for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
 | **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `INDEX.md`. |
 | **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
 | **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
 | **`INDEX.md`** | The reader-facing representation of its containing location. It contributes no location ordinal of its own and therefore resolves to the containing location's address. |
-| **index** | The compiler-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
+| **index** | The Organizing-generated projection of an origin or `INDEX.md`'s immediate indexed children, each shown with its controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
-| **compiler** | The Documentation Compiler that declares a corpus root for each job, scans supported metadata surfaces beneath it, mints and validates UIDs, validates locations and corpus-root declarations in addresses, derives projections, refreshes controlled links, reports diagnostics, and resolves addresses. |
+| **Organizing** | The Tooling capability that declares a corpus root for each job, scans supported metadata surfaces beneath it, maintains controlled identity and organization, derives navigation projections, refreshes controlled links, reports diagnostics, resolves locators, and plans deterministic structural normalization. |
 
 ## 1. Declare the corpus root
 
-Declare the **corpus root** for the compiler operation by passing its filesystem
+Declare the **corpus root** for the Organizing operation by passing its filesystem
 path as the optional `corpus_root` argument. When that argument is omitted, the
-compiler selects the root of the Git repository containing the compiler. The
+Organizing selects the root of the Git repository containing Organizing. The
 declaration is operational state; do not store a second corpus-root name in
 artifact metadata.
 
-For that compiler job, the selected directory **serves as** the corpus root.
+For that Organizing job, the selected directory **serves as** the corpus root.
 The role belongs to the declaration and job, not permanently to the directory;
 the same directory may be a corpus root in one job and an ordinary descendant
 or unrelated path in another.
 
 An address makes its own corpus-root declaration: the directory name before
 `:` designates which directory serves as the root for that address. When the
-compiler resolves an address, that declared name must match the directory
+Organizing resolves an address, that declared name must match the directory
 selected as the corpus root for the current job. Changing only that directory's
 ancestor path does not change addresses that declare it. Renaming the directory
 changes the corpus-root declaration in addresses that use it. A directory name
 containing `:` cannot be represented by the address grammar and cannot serve as
-a corpus root for compilation or addressing.
+a corpus root for Organizing or addressing.
 
-A file becomes a controlled artifact only when it is on a compiler-traversed
-path beneath the selected corpus root and the compiler recognizes its metadata
+A file becomes a controlled artifact only when it is on a Organizing-traversed
+path beneath the selected corpus root and Organizing recognizes its metadata
 surface. Address and index participation are additional properties rather than
 requirements for controlled identity.
 
-The compiler currently recognizes two shapes:
+Organizing currently recognizes two shapes:
 
 - Markdown: YAML frontmatter fenced by `---` at the start of the file.
 - Python: YAML frontmatter fenced by `---` at the start of the module docstring.
@@ -109,23 +109,23 @@ new source format by adding a metadata adapter; do not change the address model
 for each file type.
 
 Do not infer that every file under the corpus root is controlled information.
-Presence establishes physical location; compiler traversal plus recognizable
+Presence establishes physical location; Organizing traversal plus recognizable
 metadata establishes controlled participation. Addressability determines index
 participation separately.
 
 Most dot-prefixed directories remain outside the controlled corpus. Reserved
 exceptions can define a controlled sideband when information needs durable UID
-identity and compiler validation without normal routing. The current reserved
+identity and Organizing validation without normal routing. The current reserved
 behavior is defined by
 <a href="2%20%F0%9F%93%96%20Folder%20Conventions.md" uid="TRJS8V">documentation-system:§1.2</a>.
 Apply
 <a href="3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>
 before introducing another sideband representation.
 
-On a normal compile, the compiler adds a missing `uid` to each controlled
+On a normal refresh, Organizing adds a missing `uid` to each controlled
 artifact. Never change an existing UID because an artifact moved or was renamed.
 Copying a controlled artifact also copies its UID, so the duplicate must be
-replaced by a newly minted UID before the corpus can compile.
+replaced by a newly minted UID before the corpus can refresh.
 
 ## 2. Place information in the location hierarchy
 
@@ -150,7 +150,7 @@ For example:
 ```
 
 contains these ordinal paths relative to the corpus root declared for the
-compiler job:
+Organizing job:
 
 ```text
 2       2 Conventions/
@@ -223,20 +223,20 @@ For example:
 
 The `uid` identifies the document within the selected corpus; the optional
 `#` in the displayed address selects a numbered heading within it. On every
-pass the compiler finds the current document by UID, derives its current
+refresh Organizing finds the current document by UID, derives its current
 location, prefixes the selected corpus root's current directory name, validates
 the section when present, and rewrites both `href` and the displayed address.
 A controlled link may therefore carry a stale corpus-root declaration or location
-after a rename or move; the UID remains authority and the compiler refreshes
+after a rename or move; the UID remains authority and Organizing refreshes
 that projection. Ordinary Markdown links are not touched. If the UID is missing
 or duplicated, the displayed value is not valid address syntax, or the selected
-heading no longer exists, the compiler fails rather than guessing.
+heading no longer exists, Organizing fails rather than guessing.
 
 Use a controlled UID anchor for every durable reference in reader-visible
 prose. An address written as plain reader-visible prose is a current coordinate
-rather than durable identity, so the compiler reports it as `ERROR DS001`.
+rather than durable identity, so Organizing reports it as `ERROR DS001`.
 A bare corpus-root address such as `§2.1` is invalid and unresolvable because
-it omits the required corpus-root declaration; the compiler reports that
+it omits the required corpus-root declaration; Organizing reports that
 violation as `ERROR DS004`.
 
 Do not store the corpus-root declaration or derived location components in
@@ -250,11 +250,11 @@ represents that location.
 
 Add `INDEX.md` when a location needs a reader-facing representation. The
 numbered directory already created the location; `INDEX.md` describes what the
-location collects and provides the surface on which the compiler can project
+location collects and provides the surface on which Organizing can project
 its immediate indexed children.
 
 Keep the index focused. Give it its own `description`, then place one generated
-region where immediate choices should appear. The compiler derives those choices
+region where immediate choices should appear. Organizing derives those choices
 from the filesystem and reuses each child's exact `description`; do not repeat
 descendant metadata by hand.
 
@@ -267,12 +267,12 @@ name.
 
 Put descriptive metadata on the artifact itself when its native format can
 carry it safely. Markdown uses frontmatter. Python uses its module docstring.
-The compiler reads metadata without executing the artifact.
+Organizing reads metadata without executing the artifact.
 
 Every controlled artifact carries exactly one canonical `description`. Author
 or correct it with
 <a href="../2%20Technical%20Writing/1%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#2-write-the-description" uid="5CFFZW">documentation-system:§2.1#2</a>
-rather than inventing another routing or rule schema here. The compiler mints a
+rather than inventing another routing or rule schema here. Organizing mints a
 missing `uid`; never author a replacement UID merely because the artifact
 moves.
 
@@ -303,21 +303,21 @@ Place exactly one generated region where those choices should appear:
 <!-- END index -->
 ```
 
-The compiler owns everything between the markers and renders each immediate
+Organizing owns everything between the markers and renders each immediate
 child as its controlled link, title, and exact `description`. Do not hand-edit
 generated content and do not author a parallel child list.
 
-## 7. Run and validate the compiler
+## 7. Run and validate Organizing
 
-Run the Documentation Compiler after classification, recognized metadata, numbered
+Run Organizing refresh after classification, recognized metadata, numbered
 headings, generated-index membership, or controlled-link targets may have
 changed:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
 ```
 
-The compiler validates the corpus-root declaration, duplicate sibling ordinals,
+Organizing validates the corpus-root declaration, duplicate sibling ordinals,
 duplicate artifact locations and UIDs, missing descriptions, malformed generated
 regions, controlled links with address declarations, and supported sideband
 relationships before it writes indexes.
@@ -325,18 +325,18 @@ relationships before it writes indexes.
 Resolve an address without writing anything:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" --resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 Resolution requires an address whose corpus-root declaration matches the
-compiler job's corpus root. A bare corpus-root address such as `§2.1` is a
+Organizing job's corpus root. A bare corpus-root address such as `§2.1` is a
 syntax error and cannot resolve.
 Resolution returns the indexed body and provenance for the addressed document
 or numbered section. An address naming a location resolves through its
 `INDEX.md` when one exists; a location with no index resolves as a location
-with no body. A normal compiler pass also refreshes every controlled HTML anchor
+with no body. A normal Organizing refresh also refreshes every controlled HTML anchor
 carrying a `uid`, including anchors carried by a supported Python module
 docstring.
 
-Finish only when the compiler succeeds and each generated projection contains
+Finish only when Organizing succeeds and each generated projection contains
 the immediate indexed children implied by the filesystem.
