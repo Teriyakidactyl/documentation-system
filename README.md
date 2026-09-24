@@ -19,9 +19,11 @@ and code creation.
 > `README.md`, acquiring only the context needed for the current decision. At
 > each location, use the local guidance and glossary, compare only the immediate
 > Index choices, select the narrowest matching `description`, and load deeper
-> guidance only when the route requires it. Authors therefore place definitions
-> and instructions at the earliest scope where they become necessary rather
-> than exposing repository-wide knowledge by default.
+> guidance only when the route requires it. A task may present several
+> independent concerns; route each concern separately and satisfy every selected
+> concern-specific document according to its directive. Authors therefore place
+> definitions and instructions at the earliest scope where they become
+> necessary rather than exposing repository-wide knowledge by default.
 
 ## Project glossary
 <!--
@@ -71,6 +73,18 @@ is identifiable in the active, non-compacted conversation history. If it is
 not, or if its prior presence is only within compacted history, read the
 document in full before relying on it.
 
+## Contributing
+
+Are you navigating this repository under a request to modify it? Then you are a
+user of the repository before you are a contributor.
+
+Before making changes, follow the repository's progressive-disclosure path from
+this `README.md`, establish the applicable `README.md` chain, gather the
+concern-specific guidance that governs the work, and adhere to that guidance
+throughout the contribution. Do not begin from the intended edit location and
+work backward; establish the applicable guidance before modifying the
+repository.
+
 ## Source and distribution
 
 This repository's `main` branch is the canonical maintainer/source corpus.
@@ -103,16 +117,6 @@ heading after `#`. For example,
 `documentation-system` as the corpus root, descends through locations
 `2.3.2.1`, and selects heading `4.2`. A bare form such as `§2.3.2.1`
 omits the required corpus-root declaration and is invalid.
-
-## Enter the corpus
-
-A task may present several independent concerns. Route each concern separately.
-
-For the current concern, compare only the immediate choices in the current
-Index and select the narrowest matching `description`. When that choice enters
-a folder, read that folder's literal `README.md` before using its Index.
-Repeat until the concern-specific document or documents are selected, then
-satisfy each according to its directive.
 
 ## Index
 <!--
