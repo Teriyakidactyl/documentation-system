@@ -193,10 +193,9 @@ def location_components(corpus_root: Path, path: Path) -> list[str]:
         ordinal = ordinal_from_name(part)
         if ordinal is not None:
             components.append(ordinal)
-    if path.name != "README.md":
-        ordinal = ordinal_from_name(path.name)
-        if ordinal is not None:
-            components.append(ordinal)
+    ordinal = ordinal_from_name(path.name)
+    if ordinal is not None:
+        components.append(ordinal)
     return components
 
 
@@ -278,7 +277,7 @@ def load_artifacts(corpus_root: Path) -> dict[Path, Artifact]:
             continue
         metadata, body, title = extracted
         location = location_for(corpus_root, path)
-        ordinal = None if path.name == "README.md" else ordinal_from_name(path.name)
+        ordinal = ordinal_from_name(path.name)
         uid = metadata.get("uid")
         if uid is not None:
             if not isinstance(uid, str) or not UID_RE.fullmatch(uid):
@@ -382,7 +381,7 @@ def validate_sibling_ordinals(corpus_root: Path) -> None:
         ]
         seen: dict[str, str] = {}
         names = dirs + [
-            name for name in files if Path(name).suffix.lower() in SUPPORTED_SUFFIXES and name != "README.md"
+            name for name in files if Path(name).suffix.lower() in SUPPORTED_SUFFIXES
         ]
         for name in names:
             ordinal = ordinal_from_name(name)
