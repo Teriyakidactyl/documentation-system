@@ -1,4 +1,5 @@
 ---
+uid: 7ANS19
 form:
   path: '<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§2.3.1.11</a>'
   version: '1.0'
