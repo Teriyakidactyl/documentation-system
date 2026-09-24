@@ -21,6 +21,7 @@ from .model import (
 
 INDEX_UID = "BZJASV"
 INDEX_RENDERER_UID = "45E225"
+INDEX_VERSION = "1.0"
 LEGACY_BEGIN = "<!-- BEGIN index -->"
 LEGACY_END = "<!-- END index -->"
 
@@ -100,26 +101,55 @@ def _version_value(artifact: Artifact) -> str:
     return value
 
 
-def _canonical_declaration(corpus: Corpus) -> dict:
+def _declared_filepath(metadata: dict, key: str, uid: str) -> str | None:
+    element = metadata.get("element")
+    if not isinstance(element, dict):
+        return None
+    value = element.get(key)
+    if not isinstance(value, dict) or value.get("uid") != uid:
+        return None
+    filepath = value.get("filepath")
+    return filepath if isinstance(filepath, str) and filepath else None
+
+
+def _canonical_declaration(corpus: Corpus, current: dict) -> dict:
     by_uid = artifact_by_uid(corpus)
     element = by_uid.get(INDEX_UID)
-    if element is None:
-        raise OrganizingError(f"Index Element uid {INDEX_UID} is not present in the corpus")
     renderer = by_uid.get(INDEX_RENDERER_UID)
-    if renderer is None:
-        raise OrganizingError(
-            f"Index renderer uid {INDEX_RENDERER_UID} is not present in the corpus"
-        )
+
+    if element is not None:
+        element_filepath = corpus_path(corpus.corpus_root, element.path)
+        supported = _version_value(element)
+        if supported != INDEX_VERSION:
+            raise OrganizingError(
+                f"{element.path}: Index renderer emits {INDEX_VERSION} but Element authority declares {supported}"
+            )
+    else:
+        element_filepath = _declared_filepath(current, "path", INDEX_UID)
+        if element_filepath is None:
+            raise OrganizingError(
+                f"Index Element uid {INDEX_UID} is external to the corpus and its declaration has no filepath"
+            )
+
+    if renderer is not None:
+        renderer_filepath = corpus_path(corpus.corpus_root, renderer.path)
+    else:
+        renderer_filepath = _declared_filepath(current, "renderer", INDEX_RENDERER_UID)
+        if renderer_filepath is None:
+            raise OrganizingError(
+                f"Index renderer uid {INDEX_RENDERER_UID} is external to the corpus and its declaration has no filepath"
+            )
+
     return {
         "element": {
             "path": {
                 "uid": INDEX_UID,
-                "filepath": corpus_path(corpus.corpus_root, element.path),
+                "filepath": element_filepath,
             },
-            "version": _version_value(element),
+            "version": INDEX_VERSION,
             "renderer": {
                 "uid": INDEX_RENDERER_UID,
-                "filepath": corpus_path(corpus.corpus_root, renderer.path),
+                "filepath": renderer_filepath,
             },
         }
     }
@@ -178,11 +208,12 @@ def render_index(corpus: Corpus, owner: Path, children: frozenset[Path]) -> str:
     return "\n".join(lines).rstrip()
 
 
-def _render_section(corpus: Corpus, path: Path, section: Section, content: str) -> str:
+def _render_section(corpus: Corpus, path: Path, element: ElementSection, content: str) -> str:
     text = read_text(path)
     lines = text.splitlines(keepends=True)
+    section = element.section
     heading = lines[section.start_line - 1].rstrip("\r\n")
-    declaration = serialize_yaml(_canonical_declaration(corpus)).rstrip("\n")
+    declaration = serialize_yaml(_canonical_declaration(corpus, element.metadata)).rstrip("\n")
     rendered = f"{heading}\n<!--\n{declaration}\n-->\n\n{content}\n"
     return "".join(lines[: section.start_line - 1]) + rendered + "".join(lines[section.end_line :])
 
@@ -194,7 +225,7 @@ def refresh_indexes(corpus: Corpus) -> None:
         replacement = _render_section(
             corpus,
             owner,
-            element.section,
+            element,
             render_index(corpus, owner, corpus.immediate[owner]),
         )
         if replacement != read_text(owner):
