@@ -23,8 +23,6 @@ KEY_RE = re.compile(
     r'^(?P<indent> *)(?P<key>"(?:[^"\\]|\\.)*"):(?P<rest>.*?)(?P<ending>\r?\n)?$'
 )
 ANY_MAPPING_RE = re.compile(r"^(?P<indent> *)(?P<key>[^#][^:]*):(?P<rest>.*)$")
-HEADER_RE = re.compile(r"^# Terms:.*# Definitions(?:\s|-)*$")
-
 
 class SemanticRegistryError(ValueError):
     """Raised when a Semantic Registry operation cannot be established."""
@@ -195,16 +193,16 @@ def _locate(path: Path, selector: str) -> tuple[str, RegistryBlock]:
 
 def diagnostics(path: Path, selector: str) -> tuple[list[Diagnostic], RegistryBlock]:
     _, block = _locate(path, selector)
-    result = _line_diagnostics(block.content)
+    local = _line_diagnostics(block.content)
     try:
         parse_mapping(block.content)
     except YamlError as exc:
-        result.append(Diagnostic("SR002", "error", 1, f"Semantic Registry YAML is invalid: {exc}"))
+        local.append(Diagnostic("SR002", "error", 1, f"Semantic Registry YAML is invalid: {exc}"))
 
-    if not any(item.code in {"SR002", "SR003", "SR004", "SR005", "SR006", "SR007"} for item in result):
+    if not any(item.code in {"SR002", "SR003", "SR004", "SR005", "SR006", "SR007"} for item in local):
         canonical = format_content(block.content)
         if canonical != block.content:
-            result.append(
+            local.append(
                 Diagnostic(
                     "SR008",
                     "error",
@@ -212,7 +210,12 @@ def diagnostics(path: Path, selector: str) -> tuple[list[Diagnostic], RegistryBl
                     "Semantic Registry is not in canonical absolute-column alignment; run format.",
                 )
             )
-    return result, block
+
+    offset = block.content_start_line - 1
+    return [
+        Diagnostic(item.code, item.severity, item.line + offset, item.message)
+        for item in local
+    ], block
 
 
 def _replace_block(body: str, block: RegistryBlock, replacement: str) -> str:
