@@ -31,6 +31,9 @@ ANNOTATION_LINE_RE = re.compile(
     re.MULTILINE,
 )
 
+VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$")
+DRIFT_RANK = {"minor": 1, "major": 2}
+
 
 class Severity(str, Enum):
     ERROR = "error"
