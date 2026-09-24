@@ -101,6 +101,12 @@ Markdown may return an old-to-new local section mapping after deterministic
 normalization. Organizing consumes that mapping when controlled references must
 be refreshed. Markdown does not own corpus locations or UIDs.
 
+For linting, Markdown composes PyMarkdownLnt for generic Markdown rules and
+retains only Documentation-System-specific checks the package cannot express.
+Enable the generic rule set selectively so upgrading the dependency cannot
+silently create a new house opinion. Frontmatter supplies the host-document
+boundary when linting a controlled Markdown file.
+
 ### 3.3 Frontmatter
 
 Frontmatter owns the metadata envelope carried by a host artifact: locating,
@@ -264,10 +270,11 @@ Organizing CLI -> organizing engine
                -> controlled references
                -> diagnostics
                -> Folder
-               -> Markdown
+               -> Markdown -> Frontmatter -> YAML
                -> Frontmatter -> YAML
                -> HTML
-               -> Markdown -> HTML
+
+Markdown    -> PyMarkdownLnt
 
 YAML        <- independently routable
 HTML        <- independently routable
