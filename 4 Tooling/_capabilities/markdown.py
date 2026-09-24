@@ -13,7 +13,6 @@ NUMBERED_HEADING_RE = re.compile(
 )
 ATX_HEADING_RE = re.compile(r"^(?P<marks>#{1,6})\s+(?P<title>.+?)\s*$")
 NUMBER_PREFIX_RE = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
-FENCE_OPEN_RE = re.compile(r"^(?P<indent> {0,3})(?P<marks>`{3,}|~{3,})(?P<info>[^\r\n]*)$")
 
 
 class MarkdownError(ValueError):
@@ -60,6 +59,14 @@ class ParsedHeading:
     level: int
     title: str
     inline_types: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class HeadingComment:
+    section: Section
+    start_line: int
+    end_line: int
+    content: str
 
 
 _PARSER = MarkdownIt("commonmark").enable(["table", "strikethrough"])
@@ -179,6 +186,41 @@ def sections(body: str) -> list[Section]:
                 start_line=int(item["line"]),
                 content_start_line=int(item["line"]) + 1,
                 end_line=end_line,
+            )
+        )
+    return result
+
+
+def heading_comments(body: str) -> list[HeadingComment]:
+    """Return HTML comments placed immediately beneath heading lines."""
+    lines = body.splitlines(keepends=True)
+    result: list[HeadingComment] = []
+    for section in sections(body):
+        index = section.start_line
+        if index >= len(lines) or not lines[index].lstrip().startswith("<!--"):
+            continue
+        parts: list[str] = []
+        end_line: int | None = None
+        for candidate in range(index, min(section.end_line, len(lines))):
+            parts.append(lines[candidate])
+            if "-->" in lines[candidate]:
+                end_line = candidate + 1
+                break
+        if end_line is None:
+            raise MarkdownError(
+                f"unclosed HTML comment beneath heading at line {section.start_line}"
+            )
+        raw = "".join(parts)
+        start = raw.find("<!--")
+        end = raw.find("-->", start + 4)
+        if start == -1 or end == -1:
+            continue
+        result.append(
+            HeadingComment(
+                section=section,
+                start_line=index + 1,
+                end_line=end_line,
+                content=raw[start + 4 : end].strip(),
             )
         )
     return result
