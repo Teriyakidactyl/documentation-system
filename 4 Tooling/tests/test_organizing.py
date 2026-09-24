@@ -235,6 +235,29 @@ description: >-
         compiled = (root / "README.md").read_text(encoding="utf-8")
         self.assertNotIn("Test Decision", compiled)
 
+    def test_fault_sideband_is_controlled_but_unaddressed(self) -> None:
+        root = self.make_corpus("project")
+        fault = root / ".fault" / "Fault.md"
+        write(
+            fault,
+            """---
+description: >-
+  `Read in full when` *a test fault needs review* `to` **preserve its evidence**.
+---
+# Test Fault
+""",
+        )
+
+        refresh_corpus(root)
+
+        refreshed = fault.read_text(encoding="utf-8")
+        self.assertIn("uid:", refreshed)
+        corpus = build_corpus(root)
+        artifact = corpus.artifacts[fault.resolve()]
+        self.assertIsNone(artifact.location)
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("Test Fault", compiled)
+
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
 

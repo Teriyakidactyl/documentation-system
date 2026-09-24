@@ -30,7 +30,7 @@ from _capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
 
 
 IGNORED_DIRS = {"__pycache__"}
-CONTROLLED_SIDEBAND_DIRS = {".research", ".decisions"}
+CONTROLLED_SIDEBAND_DIRS = {".research", ".decisions", ".fault"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
 ADDRESS_RE = re.compile(
