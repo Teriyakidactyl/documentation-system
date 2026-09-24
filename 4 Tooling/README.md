@@ -17,10 +17,16 @@ before retrying the tool. Do not install Documentation System Tooling libraries
 into the operating system's Python installation.
 
 ## Index
-<!-- element: '<a href="../2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
-
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Navigation%20Crawler.py" uid="45E225">documentation-system:§4.1</a> — 🛠️ Organizing
   - `Read in full and follow when` *a controlled corpus must be refreshed, inspected, resolved, or structurally normalized* `to` **maintain stable identities, organization-scheme invariants, navigation projections, and controlled references through deterministic corpus operations**.
@@ -38,4 +44,3 @@ into the operating system's Python installation.
   - `Read in full and follow when` *HTML elements, attributes, comments, or inline anchors must be inspected independently of Markdown or corpus semantics* `to` **parse HTML syntax into structured tokens and expose constrained anchor facts without assigning higher-level meaning to them**.
 - <a href="8%20%F0%9F%9B%A0%EF%B8%8F%20Prepare%20Tooling%20Environment.md" uid="THAV5S">documentation-system:§4.8</a> — 🛠️ Prepare Tooling Environment
   - `Read in full and follow when` *Documentation System Python tooling cannot import a required package, pip is unavailable, or the host Python is externally managed* `to` **create a repository-local virtual environment, install the declared Tooling dependencies, and run Documentation System tools without modifying system Python**.
-<!-- END index -->

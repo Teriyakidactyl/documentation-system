@@ -45,8 +45,8 @@ description
 | **metamatter** | Structured YAML data inside an HTML comment whose first non-whitespace content is a data key (`key:`). Position supplies its scope; the key supplies its meaning. |
 | **ordinary HTML comment** | An HTML comment whose first non-whitespace content is not a YAML data key. It carries freeform maintenance or tool-control information, not structured metamatter or reader-required topic content. |
 | **description** | One imperative Markdown routing statement composed from a `directive`, *exigence*, and **acceptance criterion**. The exact scalar is reusable by indexes, skills, and harness instructions. |
-| **form** | An optional file-level controlled link from a derived document to the `README.md` representing the Document Form package governing its recurring document role. |
-| **element** | A position-scoped controlled link in metamatter from a reusable document section to the Document Element governing its source structure. |
+| **form** | An optional file-level mapping from a derived document to the Document Form package governing its recurring role; `form.path` is the UID-controlled package link and `form.version` records the consumed major.minor contract. |
+| **element** | A position-scoped metamatter mapping from a reusable heading-bounded section to the Document Element governing its source structure; it records the Element UID, current filepath, and consumed contract version, plus the renderer identity and filepath when the Element is dynamic. |
 | `directive` | The imperative phrase that specifies what the document user must do with the information and how deeply they must interact with it. |
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
 | **acceptance criterion** | The observable thing successful use enables the reader to do, decide, or understand in order to act. |
@@ -72,7 +72,9 @@ description: >-              # bound at step 2.1
   `Read in full and follow when` *a connector has stopped authenticating and
   the required credential fields are unknown* `to` **restore the connector to
   an authenticating state without escalating**.
-form: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>' # optional; bound by Document Forms
+form:                         # optional; bound by Document Forms
+  path: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>'
+  version: '1.0'
 quadrant: HowTo               # bound at step 2.2
 outline:                      # bound at step 4.1
   topology: linear
@@ -94,9 +96,9 @@ Scope decides the container, not preference.
 
 `description` describes the whole file and stays in *frontmatter* whatever
 shape the document takes. When a document derives from a Document Form, its
-`form` controlled link also stays in frontmatter because the provenance
-governs the whole file. Document Forms owns when that key is required and how
-the form is applied.
+`form` mapping also stays in frontmatter because the package path and consumed
+contract version govern the whole file. Document Forms owns when that key is
+required and how the Form is applied.
 
 `quadrant`, `outline`, and `writing-style` describe one quadrant: they sit
 in frontmatter while a document carries one quadrant, and move into each H1's
@@ -119,14 +121,26 @@ outline:
 -->
 ```
 
-A single-key comment is valid metamatter too. Reusable document-element
+A single-key comment is valid metamatter too. Reusable Document Element
 provenance uses `element:` immediately beneath the heading that bounds the
 element:
 
 ```markdown
 ## Terms
-<!-- element: '<a href="*" uid="BJS5BZ">documentation-system:§2.3.2.1</a>' -->
+<!--
+element:
+  path:
+    uid: BJS5BZ
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Hierarchical Glossary.md
+  version: '1.0'
+-->
 ```
+
+For a dynamic Element, the same mapping also carries `renderer.uid` and
+`renderer.filepath`. The Element metadata identifies the contract and its
+renderer; the Markdown heading supplies the structural boundary. Atomic
+representations that deliberately define a lighter provenance contract, such as
+controlled HTML links, need not carry this heading-scoped mapping.
 
 The key determines retention and semantics. `quadrant`, `outline`,
 `writing-style`, and `element` are controlled, permanent document data.

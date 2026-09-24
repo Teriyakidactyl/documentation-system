@@ -50,8 +50,29 @@ The package has this minimum shape:
 ```
 
 `README.md` represents the Form concept, carries its stable UID and routing
-`description`, and contains the Index element. It does not carry a `form`
-link to itself.
+`description`, declares the Form contract version, and contains the Index
+element. It does not carry a `form` link to itself.
+
+Declare the Form contract in that package `README.md`:
+
+```yaml
+version:
+  value: '1.0'
+  info: true
+  warn: minor
+  error: major
+```
+
+Use `major.minor`. Increment `minor` when the contract changes without making
+existing conforming instances nonconforming. Increment `major` when an existing
+conforming instance may no longer conform. Pure editorial changes that do not
+change the contract do not increment the version.
+
+`info` is optional and defaults to `true`; set it to `false` only when stale
+contract provenance should produce no informational diagnostic. `warn` and
+`error` are optional and disabled when absent. When present, each value is
+`minor` or `major` and acts as the minimum drift class for that severity; the
+highest applicable configured severity wins.
 
 The Reference and HowTo are both required. Their separate reader relationships
 are part of the Form contract, not an optional decomposition discovered later.
@@ -92,16 +113,27 @@ presence is selected by an actual judgment boundary.
 
 ## 6. Bind the derived document
 
-Add `form` to the derived document's file frontmatter as a UID-controlled link
-to the Form package `README.md`, not to its Reference or HowTo child:
+Add `form` to the derived document's file frontmatter. Its `path` is the
+UID-controlled link to the Form package `README.md`, not to its Reference or
+HowTo child; its `version` records the Form contract actually used to author
+or last deliberately migrate the instance:
 
 ```yaml
-form: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>'
+form:
+  path: '<a href="*" uid="ABC123">documentation-system:§2.3.1.10</a>'
+  version: '1.0'
 ```
 
-The package UID identifies the recurring role. The instance still owns its own
-`description`, quadrant specification, local content, and document-control
-state. Form provenance does not create metadata inheritance.
+The package UID identifies the recurring role. `form.version` is retained
+provenance rather than a projection of the Form's current version: do not rewrite
+it merely because the Form advances. Organizing compares it with the Form
+authority and emits drift according to the Form's `version.info`,
+`version.warn`, and `version.error` policy. A document claiming a newer
+version than its Form authority knows is invalid provenance and is an error.
+
+The instance still owns its own `description`, quadrant specification, local
+content, and document-control state. Form provenance does not create metadata
+inheritance.
 
 ## 7. Apply and validate the instance
 

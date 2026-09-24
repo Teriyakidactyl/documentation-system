@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .frontmatter import FrontmatterError, load as load_frontmatter
-from .markdown import NUMBER_PREFIX_RE, headings
+from .markdown import NUMBER_PREFIX_RE, headings, parsed_headings
 
 DEFAULT_RULES: dict[str, str] = {
     "MD001": "Heading levels do not skip depth.",
@@ -52,11 +51,6 @@ AUTOFIX_RULES = frozenset({
     "MD027", "MD029", "MD030", "MD035", "MD037", "MD038", "MD039",
     "MD046", "MD047", "MD048",
 })
-
-EMPHASIS_IN_HEADING_RE = re.compile(
-    r"(\*\*[^*\n]+\*\*|__[^_\n]+__|(?<!\*)\*[^*\n]+\*(?!\*)|(?<!_)_[^_\n]+_(?!_))"
-)
-
 
 class MarkdownLintError(ValueError):
     """Raised when linting cannot establish a deterministic result."""
@@ -132,10 +126,10 @@ def rule_policy() -> list[dict]:
 def _custom_diagnostics(body: str, metadata: dict) -> list[MarkdownDiagnostic]:
     diagnostics: list[MarkdownDiagnostic] = []
     found = headings(body)
-    for item in found:
-        if EMPHASIS_IN_HEADING_RE.search(str(item["title"])):
+    for item in parsed_headings(body):
+        if "em_open" in item.inline_types or "strong_open" in item.inline_types:
             diagnostics.append(MarkdownDiagnostic(
-                "DSMD001", int(item["line"]), 1,
+                "DSMD001", item.line, 1,
                 "Heading contains emphasis; headings use plain text.",
                 False, "documentation-system",
             ))

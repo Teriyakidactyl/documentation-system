@@ -94,19 +94,23 @@ filesystem mutation.
 
 ### 3.2 Markdown
 
-Markdown owns Markdown structure: headings, sections, fenced code blocks,
-anchors, local heading numbering, and mechanically decidable Markdown structural
-validation.
+Markdown owns Markdown structure: headings, heading-scoped comments, sections,
+fenced code blocks, anchors, local heading numbering, and mechanically
+decidable Markdown structural validation.
 
+markdown-it-py is the structural parser behind that capability. The capability
+translates parser output into repository-owned values with source coordinates;
+parser-specific tokens are not public Documentation System architecture.
 Markdown may return an old-to-new local section mapping after deterministic
-normalization. Organizing consumes that mapping when controlled references must
-be refreshed. Markdown does not own corpus locations or UIDs.
+normalization. Organizing consumes those structures and mappings when Element
+metadata, generated sections, or controlled references must be maintained.
+Markdown does not own corpus locations or UIDs.
 
-For linting, Markdown composes PyMarkdownLnt for generic Markdown rules and
-retains only Documentation-System-specific checks the package cannot express.
-Enable the generic rule set selectively so upgrading the dependency cannot
-silently create a new house opinion. Frontmatter supplies the host-document
-boundary when linting a controlled Markdown file.
+For linting, Markdown separately composes PyMarkdownLnt for generic Markdown
+rules and retains only Documentation-System-specific checks the package cannot
+express. Enable the generic rule set selectively so upgrading the dependency
+cannot silently create a new house opinion. Frontmatter supplies the
+host-document boundary when linting a controlled Markdown file.
 
 ### 3.3 Frontmatter
 
@@ -185,8 +189,16 @@ those representation parsers into the corpus model.
 Index projection derives reader navigation from the normalized corpus into the
 Index Document Element declared by a folder `README.md`. The `README.md`
 represents the folder; the Index element is generated navigation inside that
-representation. An index is a projection of current organization, never a
-second authored topology.
+representation. Its heading-scoped `element` metamatter records the Element
+UID, current contract version, and controlled Python renderer. The heading
+supplies the generated section boundary; marker comments do not define that
+boundary.
+
+Structured Element `path.filepath` and `renderer.filepath` values are
+projections of their durable UIDs when those targets participate in the selected
+corpus. A renderer that changes a dynamic Element representation updates the
+generated body and deployed Element version together. An index is a projection
+of current organization, never a second authored topology.
 
 ### 5.4 Controlled references
 
@@ -218,6 +230,8 @@ select corpus root
 -> clear stale inline diagnostics
 -> establish controlled identities
 -> build normalized corpus
+-> refresh structured Element filepath projections
+-> rebuild corpus
 -> refresh deterministic navigation projections
 -> rebuild corpus
 -> refresh UID-controlled references
@@ -278,6 +292,7 @@ Organizing CLI -> organizing engine
                -> Frontmatter -> YAML
                -> HTML
 
+Markdown    -> markdown-it-py
 Markdown    -> PyMarkdownLnt
 
 YAML        <- independently routable

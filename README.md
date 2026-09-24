@@ -50,11 +50,34 @@ unresolvable.
 > non-compacted conversation history. If it is not, or if its prior presence is
 > only within compacted history, read the document in full before relying on it.
 
-## Index
-<!-- element: '<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/5%20Index/README.md" uid="BZJASV">documentation-system:§2.3.2.5</a>' -->
+## Scope
 
-<!-- BEGIN index -->
-<!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
+A folder `README.md` represents exactly its containing folder. Unless a
+`README.md` states a different boundary in its own `## Scope` section, its
+guidance applies to that folder and recursively to descendant folders that do
+not provide their own `README.md`.
+
+A descendant `README.md` becomes the nearest folder representation for its
+location. When it omits a Scope section, it inherits this recursive default.
+More-specific folder guidance does not silently cancel still-applicable
+requirements established by an ancestor representation.
+
+For this repository, this Origin applies across the complete controlled
+Documentation System corpus beneath the declared corpus root. Descendant
+`README.md` files specialize their local context while inheriting the default
+scope behavior unless they state a different boundary.
+
+## Index
+<!--
+element:
+  path:
+    uid: BZJASV
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+  version: '1.0'
+  renderer:
+    uid: 45E225
+    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+-->
 
 - <a href="1%20Document%20Control/README.md" uid="YVXKT9">documentation-system:§1</a> — Document Control
   - `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
@@ -68,4 +91,3 @@ unresolvable.
   - `Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
 - <a href="7%20Editing/README.md" uid="X74GZ1">documentation-system:§7</a> — Editing
   - `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
-<!-- END index -->

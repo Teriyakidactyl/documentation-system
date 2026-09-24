@@ -1,5 +1,7 @@
 ---
 uid: EEG680
+version:
+  value: '1.0'
 description: >-
   `Consult when` *a bounded set of conditions maps deterministically to
   actions or outcomes and prose would obscure the branch boundaries* `to`
@@ -30,7 +32,13 @@ Columns hold the inputs a reader can test and the resulting action or outcome.
 
 ```markdown
 ## Retry decision
-<!-- element: [controlled link to this Document Element] -->
+<!--
+element:
+  path:
+    uid: EEG680
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/2 📖 Decision Table.md
+  version: '1.0'
+-->
 
 | Condition | Additional condition | Result |
 |---|---|---|

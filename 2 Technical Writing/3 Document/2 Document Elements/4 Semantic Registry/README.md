@@ -1,5 +1,7 @@
 ---
 uid: 81D5SK
+version:
+  value: '1.0'
 description: >-
   `Consult when` *named entries need definitions and repeated attributes in one
   dense lookup surface whose source hierarchy must remain directly readable*
@@ -39,7 +41,13 @@ tree and prose definition table must remain separate representations.
 
 ````markdown
 ## Profiles
-<!-- element: [controlled link to this Document Element] -->
+<!--
+element:
+  path:
+    uid: 81D5SK
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/4 Semantic Registry/README.md
+  version: '1.0'
+-->
 
 ```yaml
 # Terms: -------------------------- # Definitions -----------------------------------------

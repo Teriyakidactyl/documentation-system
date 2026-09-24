@@ -1,6 +1,8 @@
 ---
 uid: G9J8W8
-form: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§2.3.1.11</a>'
+form:
+  path: '<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/11%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§2.3.1.11</a>'
+  version: '1.0'
 description: >-
   `Read in full when` *the rationale for using separate Markdown parsing and
   linting dependencies must be reviewed* `to` **understand why
