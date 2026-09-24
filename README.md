@@ -13,6 +13,70 @@ This repository contains guidance documents and supporting tools for technical
 writing, document control, repository organization, software design, editing,
 and code creation.
 
+## Scope
+
+This Repository Root README provides project-wide entry context for the complete
+Git repository. Folder READMEs specialize the context of their containing
+folders. Unless a Folder README states a different boundary in its own Scope,
+its guidance applies recursively beneath that folder; more-specific guidance
+does not silently cancel still-applicable ancestor requirements.
+
+When Organizing is run without an explicit `corpus_root`, the Git repository
+root is selected as the corpus root, so this Repository Root README also carries
+the Origin role. Selecting a descendant directory as a corpus root gives that
+directory's Folder README the Origin role without changing its subtype.
+
+## Project glossary
+<!--
+element:
+  path:
+    uid: 81D5SK
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/4 Semantic Registry/README.md
+  version: '1.0'
+-->
+
+```yaml
+# Terms: --------------------- # Definitions
+  "Repository Root README":    # The literal README.md at the Git repository root; it carries project-wide entry context.
+    "Kind":                    "README subtype"
+  "Folder README":             # A literal README.md in a descendant directory; it represents that folder and its local navigation.
+    "Kind":                    "README subtype"
+  "Origin":                    # The reader-facing entry role carried by the README.md that represents the corpus root for the current use.
+    "Kind":                    "Reader role"
+  "corpus root":               # The directory selected for an Organizing job and declared by name at the start of a documentation address.
+    "Kind":                    "Organizing role"
+  "description":               # The canonical routing statement that says when and how deeply to use a controlled artifact.
+    "Kind":                    "Routing metadata"
+  "current authority":         # Information a user must be able to rely on when acting now.
+    "Kind":                    "Information role"
+  "Organizing":                # The tooling capability that maintains controlled identity, hierarchy, indexes, links, and diagnostics.
+    "Kind":                    "Tooling capability"
+```
+
+## Authority
+
+Repository entry begins with this literal `README.md`. Before relying on a
+descendant controlled document, read every literal `README.md` on the
+filesystem path from the repository root to that document. Each Folder README
+adds local context; it does not silently cancel still-applicable ancestor
+requirements. After that README chain is established, route each concern to its
+specific controlled documents and obey each selected document according to its
+`description` directive.
+
+Current authority is information a user must be able to rely on when acting
+now. Working information, evidence and provenance, and historical or cold
+information do not become current authority because of their storage mechanism
+or proximity to current guidance. The complete information-role and retrieval
+model is owned by
+<a href="1%20Document%20Control/3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>.
+
+Before relying on any selected document, confirm that its complete source text
+is identifiable in the active, non-compacted conversation history. If it is
+not, or if its prior presence is only within compacted history, read the
+document in full before relying on it.
+
+## Source and distribution
+
 This repository's `main` branch is the canonical maintainer/source corpus.
 Skill consumers who need only the published consumer surface should clone the
 generated `latest` branch instead:
@@ -26,50 +90,33 @@ repository's Skill Distribution projection. This repository's publication
 process omits dot-prefixed directories from that projection; that publication
 choice applies to this repository and does not prescribe how repositories that
 consume the Documentation System must package their own skills. Version tags
-such as `v1.2.0`, when published, identify immutable states of the distribution
-history.
+such as `v1.2.0`, when published, identify immutable states of the
+distribution history.
 
-**Corpus root** is a contextual role declared for a filesystem directory; it
-is not a permanent designation of that directory. An Organizing job declares its
-corpus root with the optional `corpus_root` path argument; when omitted, that
-job defaults to the root of the Git repository containing Organizing. A
-documentation address separately declares its corpus root by directory name
-before `:`, and that declaration is required. Thus
-`documentation-system:§2.3.2.1` declares the directory named
-`documentation-system` as the corpus root for that address, then descends
-through ordinal 2, child 3, child 2, and artifact 1; `#4.2` selects numbered
-heading 4.2 inside the resolved artifact. A bare form such as `§2.3.2.1`
-omits the required corpus-root declaration, is invalid address syntax, and is
-unresolvable.
+## Documentation addresses
 
-> [!IMPORTANT]
-> Start here. A task may present several independent concerns; route each one
-> separately. For the current concern, compare only the immediate indexed
-> choices, select the narrowest matching description, and descend one index at
-> a time until the governing artifact is identified. Repeat for every remaining
-> concern, satisfying each resulting document according to its directive.
->
-> Before relying on any governing document selected through this routing
-> process, confirm that its complete source text is identifiable in the active,
-> non-compacted conversation history. If it is not, or if its prior presence is
-> only within compacted history, read the document in full before relying on it.
+A corpus root is contextual to an Organizing job; it is not a permanent
+designation of a directory. An Organizing job accepts an optional
+`corpus_root` path and otherwise selects the Git repository root containing
+Organizing.
 
-## Scope
+A documentation address separately declares its corpus root by directory name
+before `:`, then descends through decimal locations and may select a numbered
+heading after `#`. For example,
+`documentation-system:§2.3.2.1#4.2` declares the directory named
+`documentation-system` as the corpus root, descends through locations
+`2.3.2.1`, and selects heading `4.2`. A bare form such as `§2.3.2.1`
+omits the required corpus-root declaration and is invalid.
 
-A folder `README.md` represents exactly its containing folder. Unless a
-`README.md` states a different boundary in its own `## Scope` section, its
-guidance applies to that folder and recursively to descendant folders that do
-not provide their own `README.md`.
+## Enter the corpus
 
-A descendant `README.md` becomes the nearest folder representation for its
-location. When it omits a Scope section, it inherits this recursive default.
-More-specific folder guidance does not silently cancel still-applicable
-requirements established by an ancestor representation.
+A task may present several independent concerns. Route each concern separately.
 
-For this repository, this Origin applies across the complete controlled
-Documentation System corpus beneath the declared corpus root. Descendant
-`README.md` files specialize their local context while inheriting the default
-scope behavior unless they state a different boundary.
+For the current concern, compare only the immediate choices in the current
+Index and select the narrowest matching `description`. When that choice enters
+a folder, read that folder's literal `README.md` before using its Index.
+Repeat until the concern-specific document or documents are selected, then
+satisfy each according to its directive.
 
 ## Index
 <!--
