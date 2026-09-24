@@ -13,6 +13,18 @@ This repository contains guidance documents and supporting tools for technical
 writing, document control, repository organization, software design, editing,
 and code creation.
 
+## Project glossary
+
+| Term | Meaning |
+|---|---|
+| **Repository Root README** | The literal `README.md` at the Git repository root; it carries project-wide entry context. |
+| **Folder README** | A literal `README.md` in a descendant directory; it represents that folder and its local navigation. |
+| **Origin** | The reader-facing entry role carried by the `README.md` that represents the corpus root for the current use. |
+| **corpus root** | The directory selected for an Organizing job and declared by name at the start of a documentation address. |
+| **description** | The canonical routing statement that says when and how deeply to use a controlled artifact. |
+| **current authority** | Information a user must be able to rely on when acting now. |
+| **Organizing** | The tooling capability that maintains controlled identity, hierarchy, indexes, links, and diagnostics. |
+
 ## Scope
 
 This Repository Root README provides project-wide entry context for the complete
@@ -25,37 +37,6 @@ When Organizing is run without an explicit `corpus_root`, the Git repository
 root is selected as the corpus root, so this Repository Root README also carries
 the Origin role. Selecting a descendant directory as a corpus root gives that
 directory's Folder README the Origin role without changing its subtype.
-
-## Project glossary
-<!--
-element:
-  path:
-    uid: 81D5SK
-    filepath: 2 Technical Writing/3 Document/2 Document Elements/4 Semantic Registry/README.md
-  version: '1.0'
--->
-
-This glossary uses the Semantic Registry Document Element. Editors should follow
-<a href="2%20Technical%20Writing/3%20Document/2%20Document%20Elements/4%20Semantic%20Registry/README.md" uid="81D5SK">documentation-system:§2.3.2.4</a>
-for its source contract and formatter.
-
-```yaml
-# Terms: --------------------- # Definitions
-  "Repository Root README":    # The literal README.md at the Git repository root; it carries project-wide entry context.
-    "Kind":                    "README subtype"
-  "Folder README":             # A literal README.md in a descendant directory; it represents that folder and its local navigation.
-    "Kind":                    "README subtype"
-  "Origin":                    # The reader-facing entry role carried by the README.md that represents the corpus root for the current use.
-    "Kind":                    "Reader role"
-  "corpus root":               # The directory selected for an Organizing job and declared by name at the start of a documentation address.
-    "Kind":                    "Organizing role"
-  "description":               # The canonical routing statement that says when and how deeply to use a controlled artifact.
-    "Kind":                    "Routing metadata"
-  "current authority":         # Information a user must be able to rely on when acting now.
-    "Kind":                    "Information role"
-  "Organizing":                # The tooling capability that maintains controlled identity, hierarchy, indexes, links, and diagnostics.
-    "Kind":                    "Tooling capability"
-```
 
 ## Authority
 
