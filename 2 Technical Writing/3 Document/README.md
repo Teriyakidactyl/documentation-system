@@ -21,7 +21,7 @@ consuming document owns its subject-specific content in either case.
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
 - <a href="1%20Document%20Forms/README.md" uid="TTDJF8">documentation-system:§2.3.1</a> — Document Forms
-  - `Consult when` *a recurring document role may have an adopted reusable authoring package* `to` **select the Document Form whose Reference, assembly procedure, and judgment examples govern that role before inventing a local arrangement**.
+  - `Consult when` *a recurring document role may have an adopted reusable authoring package* `to` **select the Document Form whose Reference and assembly procedure, plus any required judgment examples, govern that role before inventing a local arrangement**.
 - <a href="2%20Document%20Elements/README.md" uid="5NV1K9">documentation-system:§2.3.2</a> — Document Elements
   - `Consult when` *a technical document needs a reusable internal structure whose source pattern should remain recognizable across documents* `to` **select the Document Element that governs the heading-bounded structure before authoring its local content**.
 <!-- END index -->
