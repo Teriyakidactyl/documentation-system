@@ -5,10 +5,9 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import quote
-
 from _capabilities.markdown import Section, heading_comments
 from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
+from .links import relative_display_path, relative_link
 from .model import (
     Artifact,
     Corpus,
@@ -158,17 +157,6 @@ def validate_regions(corpus: Corpus) -> None:
                 f"{corpus_path(corpus.corpus_root, path)}: Index Element exists but the filesystem "
                 "derives no immediate indexed children"
             )
-
-
-def relative_link(from_path: Path, to_path: Path) -> str:
-    relative = os.path.relpath(to_path, start=from_path.parent)
-    return quote(Path(relative).as_posix(), safe="/@")
-
-
-def relative_display_path(from_path: Path, to_path: Path) -> str:
-    """Return a human-readable path relative to the source artifact itself."""
-    relative = os.path.relpath(to_path, start=from_path)
-    return Path(relative).as_posix()
 
 
 def _ordered_children(corpus: Corpus, children: frozenset[Path]) -> list[Path]:
