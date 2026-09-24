@@ -32,7 +32,9 @@ A report carries this minimum run envelope:
 
 ```yaml
 uid: <Organizing-minted>
-form: '<controlled link to the Research Report Form package>'
+form:
+  path: '<controlled link to the Research Report Form package>'
+  version: '<major.minor contract used by this report>'
 description: >-
   <routing statement for this retained run>
 research-prompt: <uid of the investigation Prompt.md>
