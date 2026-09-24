@@ -73,6 +73,8 @@ or proximity to current guidance. The complete information-role and retrieval
 model is owned by
 <a href="1%20Document%20Control/3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>.
 
+## Guidance Context Integrity
+
 Before relying on any selected document, confirm that its complete source text
 is identifiable in the active, non-compacted conversation history. If it is
 not, or if its prior presence is only within compacted history, read the
