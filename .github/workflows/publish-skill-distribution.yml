@@ -3,7 +3,7 @@ name: Publish skill distribution
 on:
   workflow_run:
     workflows:
-      - Compile documentation corpus
+      - Maintain documentation organization
     types:
       - completed
     branches:
@@ -39,15 +39,15 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install compiler dependency
+      - name: Install Organizing dependency
         run: python -m pip install --disable-pip-version-check PyYAML
 
-      - name: Verify canonical source is compiled
+      - name: Verify canonical source is organized
         shell: bash
         run: |
-          python "4 Tooling/1 🛠️ Navigation Crawler.py" .
+          python "4 Tooling/1 🛠️ Navigation Crawler.py" refresh .
           if ! git diff --quiet; then
-            echo "::error::main is not in compiled canonical state; publish aborted."
+            echo "::error::main is not in refreshed canonical state; publish aborted."
             git diff
             exit 1
           fi
