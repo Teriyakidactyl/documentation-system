@@ -28,13 +28,16 @@ Use Organizing for corpus-wide control operations. Folder, Markdown,
 Frontmatter, and YAML remain independently routable peer tools; Organizing
 calls their implementation capabilities when a corpus operation needs them.
 
+The historical `Navigation Crawler.py` filename remains an automation-compatibility
+constraint. **Organizing** is the canonical tool and concept name.
+
 ## 1. Refresh organized state
 
 Run `refresh` after controlled identity, organization, generated navigation,
 or controlled references may have changed:
 
 ```text
-python3 "4 Tooling/1 🛠️ Organizing.py" refresh [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
 ```
 
 For compatibility, omitting the subcommand still means `refresh`.
@@ -49,7 +52,7 @@ same diagnostics.
 Use `inspect` to see organization-scheme facts without mutation:
 
 ```text
-python3 "4 Tooling/1 🛠️ Organizing.py" inspect [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" inspect [corpus_root]
 ```
 
 The current ordinal-hierarchy inspection reports each sibling ordinal sequence,
@@ -61,14 +64,14 @@ references that could make structural renaming unsafe.
 Preview normalization first:
 
 ```text
-python3 "4 Tooling/1 🛠️ Organizing.py" normalize [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" normalize [corpus_root]
 ```
 
 The command is dry-run by default. Add `--apply` only after the reported plan
 is acceptable:
 
 ```text
-python3 "4 Tooling/1 🛠️ Organizing.py" normalize --apply [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" normalize --apply [corpus_root]
 ```
 
 Organizing refuses the apply operation when it finds literal repository-path
@@ -81,7 +84,7 @@ controlled links, and diagnostics against the new corpus state.
 Resolve a current Documentation System locator without refreshing state:
 
 ```text
-python3 "4 Tooling/1 🛠️ Organizing.py" resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "4 Tooling/1 🛠️ Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 The historical `--resolve ADDRESS` form remains accepted for compatibility.
