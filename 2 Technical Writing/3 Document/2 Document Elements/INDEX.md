@@ -14,6 +14,13 @@ This location collects reusable, heading-bounded document structures. Each
 element owns source arrangement and provenance conventions; the consuming
 document owns its subject-specific content.
 
+An element may occupy a numbered directory when deterministic support code is
+part of using that element. In that representation, the directory's `INDEX.md`
+is the Document Element authority and unnumbered implementation and test files
+live beside it. Those support files may call common Tooling capabilities for
+generic Markdown, YAML, HTML, or other representation mechanics; they do not
+move the element's semantic rules into those generic capabilities.
+
 <!-- BEGIN index -->
 <!-- This block is owned by Organizing; run Organizing refresh whenever indexed information or organization may have changed. -->
 
