@@ -105,7 +105,7 @@ element:
 When relationships are required for correct interpretation, preserve them
 before the same definition surface:
 
-```markdown
+````markdown
 ## Terms
 <!--
 element:
@@ -126,7 +126,7 @@ request
 | **request** | One unit of work entering the system. |
 | **identity** | The durable identifier carried by the request. |
 | **routing** | The project-defined rule that selects the request's destination. |
-```
+````
 
 ## Constraints
 
