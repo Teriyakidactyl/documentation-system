@@ -70,6 +70,7 @@ corpus root
 | **Folder README** | A literal `README.md` in a descendant directory. It represents that folder and remains a Folder README even when that directory is selected as a corpus root. |
 | **index** | The Document Element declared by an `## Index` section in a `README.md`; its generated body projects that directory's immediate indexed children as controlled link, title, and exact `description`. |
 | **progressive disclosure** | The reader behavior enabled by traversing successive indexes and exposing only the next immediate choices needed. |
+| **Guidance Context Integrity** | The condition required before selected guidance may be relied on: its complete source text is identifiable in active, non-compacted conversation history; when that condition is absent, a full read re-establishes it using a retrieval strategy that preserves completion through EOF. |
 | **Organizing** | The Tooling capability that declares a corpus root for each job, scans supported metadata surfaces beneath it, maintains controlled identity and organization, derives navigation projections, refreshes controlled links, reports diagnostics, resolves locators, and plans deterministic structural normalization. |
 
 ## 1. Declare the corpus root
@@ -319,7 +320,16 @@ literal `README.md` chain that applies to a descendant target to be read
 before relying on that target, and distinguish that chain from the
 concern-specific documents selected afterward.
 
-Add a `## Contributing` section after Authority. Treat a reader navigating the
+Add a `## Guidance Context Integrity` section after Authority. Require the
+complete source text of selected guidance to be identifiable in active,
+non-compacted conversation history before reliance. When that condition is not
+met, require a full read and require the reader to plan around retrieval,
+output, and context limits so the complete source can be delivered through EOF,
+preserving that completion requirement across split or retried retrieval. When
+the Repository Root README also carries the Origin role, this section satisfies
+the corresponding Origin requirement in 4.4; do not duplicate it.
+
+Add a `## Contributing` section after Guidance Context Integrity. Treat a reader navigating the
 repository under a request to modify it as a user before they are a contributor.
 Require that reader, before changing the repository, to follow progressive
 disclosure from the Repository Root README, establish the applicable
@@ -367,11 +377,12 @@ Before its first routing choice, an Origin additionally:
   `description`, read the literal `README.md` of each entered directory,
   and satisfy every selected concern-specific document according to its
   directive;
-- requires the complete source text of a selected document to be identifiable
-  in active, non-compacted conversation history before relying on it; when a
-  full read is required, requires the reader to plan around retrieval, output,
-  and context limits so the complete source can be delivered through EOF and
-  to preserve that completion requirement across split or retried retrieval.
+- includes a `## Guidance Context Integrity` section requiring the complete
+  source text of selected guidance to be identifiable in active, non-compacted
+  conversation history before reliance; when that condition is absent, requires
+  a full read planned around retrieval, output, and context limits so the
+  complete source can be delivered through EOF, preserving that completion
+  requirement across split or retried retrieval.
 
 Do not add a persistent Origin or corpus-root metadata field. The Organizing job
 declares the corpus root by path, the address declares it by directory name,
