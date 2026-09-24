@@ -31,13 +31,16 @@ silently invent them to make a candidate fit.
 
 Before comparing containers, confirm that three inputs are established:
 
-1. the candidate is one structural unit rather than an unresolved compound;
-2. its governing relationship and applicable topology are known;
-3. its semantic owner is known, including any relevant convergence site.
+1. the candidate is one structural unit rather than an unresolved compound,
+   as determined by
+   <a href="1%20%F0%9F%9B%A0%EF%B8%8F%20Determine%20Structural%20Units.md" uid="YF43JX">documentation-system:§5.1</a>;
+2. its governing relationship and applicable topology are known from
+   <a href="2%20%F0%9F%93%96%20Relationships%20and%20Structural%20Topologies.md" uid="P6V2HN">documentation-system:§5.2</a>;
+3. its semantic owner is known, including any relevant convergence site, under
+   <a href="3%20%F0%9F%92%A1%20Ownership%2C%20Containment%2C%20and%20Convergence.md" uid="W9D5TG">documentation-system:§5.3</a>.
 
-If one of these is load-bearing and unresolved, return to the corresponding
-Organizing Concepts procedure instead of inferring the answer from the
-available containers.
+If one of these is load-bearing and unresolved, return to that procedure
+instead of inferring the answer from the available containers.
 
 ## 2. Test the receiving relation and axis
 
@@ -105,5 +108,5 @@ unit or relationship.
 
 When the contradiction exposes a reusable taxonomy, schema boundary, or other
 consequential structure that must be constructed or formally validated, follow
-the structural decomposition and validation procedure rather than creating
-precedent from a one-off exception.
+<a href="5%20%F0%9F%9B%A0%EF%B8%8F%20Decompose%20And%20Validate%20A%20Structure.md" uid="K8T4ZM">documentation-system:§5.5</a>
+rather than creating precedent from a one-off exception.
