@@ -38,6 +38,7 @@ element:
 | **Index** | The immediate routing choices exposed by the current `README.md`. |
 | **description** | The project-defined routing statement used to decide whether a choice applies and how it must be used. |
 | **directive** | The part of a `description` that specifies the required interaction depth with the selected document. |
+| **quadrant glyph** | The filename glyph indicating document posture: 🧭 Tutorial, 🛠️ HowTo, 💡 Explanation, or 📖 Reference. |
 | **current authority** | Information that may be relied on when acting now. |
 
 ## Scope
