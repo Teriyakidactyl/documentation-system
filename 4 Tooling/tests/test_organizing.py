@@ -194,7 +194,7 @@ class CorpusRootTests(unittest.TestCase):
         write(root / "1 Section" / "2 Second.md", page(uid="MNP345"))
         write(root / "1 Section" / "1 First.md", page(uid="JKM234"))
         write(
-            root / "1 Section" / "Unindexed.md",
+            root / "1 Section" / ".research" / "Unindexed.md",
             """---
 uid: QRS456
 description: >-
