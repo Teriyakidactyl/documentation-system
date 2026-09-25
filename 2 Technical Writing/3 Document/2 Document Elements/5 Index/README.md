@@ -46,7 +46,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+    filepath: 4 Tooling/1 Navigation Crawler.py
 -->
 ````
 
