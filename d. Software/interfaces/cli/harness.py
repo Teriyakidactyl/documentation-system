@@ -167,7 +167,10 @@ def main(script: Path | None=None, argv: list[str] | None=None) -> None:
     try:
         source_root=find_repository_root(script)
     except HarnessError as exc:
-        raise _outer_failure(exc,{"script":str(script)})
+        failure=_outer_failure(exc,{"script":str(script)}).failure.with_provenance("harness.project")
+        from core.projection import json_text
+        print(json_text(Result.failure([failure])),file=sys.stderr)
+        raise SystemExit(1)
     host_root=Path(positional[0]).resolve() if positional else Path.cwd().resolve()
     result=invoke(HARNESS_PROJECT,{
         "source_root":str(source_root),"host_root":str(host_root),"mode":mode,"targets":targets,
