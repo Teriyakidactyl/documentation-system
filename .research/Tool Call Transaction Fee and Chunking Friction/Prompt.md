@@ -1,4 +1,5 @@
 ---
+uid: G9H9K7
 form:
   path: '<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/10%20Research/1%20Research%20Prompt/README.md" uid="BSJY2D">documentation-system:§2.3.1.10.1</a>'
   version: '1.0'
