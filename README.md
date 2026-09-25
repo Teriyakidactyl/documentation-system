@@ -188,9 +188,9 @@ element:
 - `HTML.py`
 - `Markdown.py`
 - `Navigation Crawler.py`
-- `📐 Architecture/README.md`
 - `YAML.py`
 - `🛠️ Prepare Software Environment.md`
+- `📐 Architecture/README.md`
 
 ### Software Design
 

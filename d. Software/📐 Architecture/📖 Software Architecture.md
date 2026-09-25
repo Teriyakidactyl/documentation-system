@@ -38,15 +38,14 @@ Documentation System semantics.
 
 The public Software surfaces currently include Organizing, Harness Installer,
 Folder, Markdown, Frontmatter, YAML, HTML, and Software environment preparation.
-The Python implementation beneath those surfaces is primarily split between
-`_capabilities`, which owns reusable representation mechanics, and
-`_organizing`, which owns corpus-wide organization semantics and orchestration.
-A migration foundation now also exists in `core`, which owns common operation,
-result, failure, source-address, execution, and projection contracts, and in
-`verification`, which discovers declared operations and assembles baseline
-contract verification from their runtime declarations.
+The Python implementation is migrating to explicit role packages. `capabilities`
+owns reusable representation mechanics; `_organizing` still owns the existing
+corpus-wide organization implementation during migration; `core` owns shared
+operation/result/failure contracts; `interfaces` owns consumer adapters; and
+`verification` owns self-assembling verification machinery. The historical
+`_capabilities` package is compatibility-only.
 
-<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.f.1</a>
+<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.i.1</a>
 is the narrower architecture governing Organizing and its use of peer
 capabilities. It specializes this Software architecture for corpus identity,
 organization schemes, projections, controlled references, diagnostics, and
@@ -100,29 +99,16 @@ levels. They exist to give independently changing responsibilities stable code
 boundaries without requiring an agent to discover internal modules before it can
 choose a tool.
 
-The current transition shape is:
+The current shape is:
 
 ~~~text
 public Software artifact
     ↓ adapts one work encounter
-runtime operation declaration, where migrated
-    ↓
 shared implementation capability
     ↓ owns reusable mechanics
 optional semantic orchestrator
     ↓ composes capabilities for a broader system operation
-
-core
-    → common operation/result/failure contracts
-
-verification
-    → discovers declared operations and exercises their real callable boundary
 ~~~
-
-YAML and Frontmatter currently provide the first discoverable runtime operation
-declarations. Other public Software surfaces remain on the historical command
-boundary until migrated; their absence from the operation registry is therefore
-a migration gap, not evidence that they are non-public.
 
 A public tool may be thin when its value is independent routability rather than
 new domain logic. A thin public adapter must not cause the underlying capability
@@ -315,19 +301,14 @@ than silently selecting one as truth.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/g.%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§e.g</a>
-guidance, but the current implementation does **not yet** select the reusable
-Agent-Facing Error Architecture in full.
+guidance. The migration has introduced canonical `Source`, `Failure`,
+`Result`, completion, provenance, and operation-boundary conversion contracts
+in `core`, and YAML, Frontmatter, and HTML now project expected failures
+through them. The current implementation still does **not** select the reusable
+Agent-Facing Error Architecture because the remaining public Software surfaces
+have not yet been migrated to that contract.
 
-`core/source.py`, `core/failure.py`, and `core/result.py` now establish the
-canonical source-addressable failure and result vocabulary required for that
-migration. Migrated operation boundaries can preserve local failure identity,
-structured subject/details/recovery, provenance, and completion state without
-making CLI prose the canonical error representation. Existing capabilities and
-commands still use their historical exception boundaries, so Software does not
-claim full adoption until those boundaries are migrated and the blueprint's
-verification obligations are satisfied.
-
-The remaining implemented error design is:
+The implemented error design is:
 
 - each capability owns a domain-specific exception for failures it can recognize
   semantically, such as `FolderError`, `FrontmatterError`,
@@ -355,20 +336,15 @@ be reported with a completed deterministic refresh.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/l.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.l</a>
-guidance. Software has begun implementing the reusable Self-Assembling
-Verification Architecture but does **not yet** select it as fully realized
-architecture.
+guidance. `verification` now discovers migrated public operations from runtime
+declarations, assembles declared fixtures and schema-derived invalid cases,
+executes the real operation boundary, applies independent common contracts, and
+ratchets the remaining unmigrated public adapters. The current implementation
+still does **not** select the reusable Self-Assembling Verification Architecture
+because the accepted gap set is non-empty.
 
-`core/operation.py` and `core/registry.py` provide runtime operation
-declarations and a discoverable registry. `verification` mechanically imports
-capability modules, discovers registered operations, derives safe baseline cases
-from runtime examples and input schemas, executes the real operation boundary,
-and evaluates common result/error contracts. YAML and Frontmatter are the first
-migrated operations. Coverage is not yet complete across the public Software
-surface and no accepted-gap ratchet has been established, so full blueprint
-adoption is not yet claimed.
-
-The authored testing design remains layered by owned contract:
+The implemented testing design is manually authored and layered by owned
+contract:
 
 - capability tests exercise representation mechanics at their narrow owned
   boundary;
@@ -398,21 +374,23 @@ Documentation System representation.
 
 The principal shared implementation boundaries are:
 
-- `_capabilities/folder.py` for collision-safe filesystem mutation;
-- `_capabilities/markdown.py` and `markdown_lint.py` for Markdown structure
+- `capabilities/folder.py` for collision-safe filesystem mutation;
+- `capabilities/markdown.py` and `markdown_lint.py` for Markdown structure
   and deterministic lint/fix mechanics;
-- `_capabilities/frontmatter.py` for Markdown/Python metadata envelopes and
+- `capabilities/frontmatter.py` for Markdown/Python metadata envelopes and
   safe Python module-docstring extraction/replacement;
-- `_capabilities/yaml.py` for YAML semantics;
-- `_capabilities/html.py` for generic HTML and anchor syntax;
-- `_organizing` for corpus-wide identity, organization, projection,
-  controlled-reference, diagnostic, and refactor semantics;
-- `core` for common operation, source-address, result, failure, execution, and
-  projection contracts;
-- `verification` for mechanically discovered baseline operation verification;
-  and
-- `d. Software/tests` for authored capability, Organizing, and shared-contract
-  verification.
+- `capabilities/yaml.py` for YAML semantics;
+- `capabilities/html.py` for generic HTML and anchor syntax;
+- `_organizing` for the not-yet-migrated corpus-wide identity, organization,
+  projection, controlled-reference, diagnostic, and refactor semantics;
+- `core` for canonical source-addressable results, failures, schemas, and
+  operation execution;
+- `interfaces/cli` for migrated command adapters and their discoverable
+  operation declarations;
+- `verification` for operation discovery, case assembly, common contracts,
+  dependency checks, and the accepted-gap ratchet; and
+- `d. Software/tests` for executable coverage of the shared capability and
+  Organizing boundaries.
 
 Current composition examples include:
 
@@ -444,16 +422,10 @@ structure, HTML anchor parsing, and organization refactor behavior.
 `d. Software/tests/test_organizing.py` exercises corpus semantics and the
 composition of representation capabilities through Organizing.
 
-`d. Software/tests/test_core_verification.py` verifies canonical result
-invariants, source-addressable failure identity, preserved provenance, runtime
-operation discovery, schema-bound failures, and the current self-assembled
-baseline.
-
 The `Maintain documentation organization` GitHub Actions workflow remains the
-repository verification boundary. Its checks are separated by architectural
-responsibility into Software Surface, Generated Contracts, Capability Tests,
-Automation Tests, Architecture Conformance, and Repository Convergence before
-`refresh-main` may mutate canonical derived state.
+repository verification boundary that runs Software tests and the public
+Organizing entry path, establishes refresh idempotence, and checks generated
+state.
 
 Current verification does not yet prove every ownership statement in this
 document mechanically. In particular, the absence of duplicated parser
