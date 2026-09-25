@@ -62,9 +62,9 @@ corpus root
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by Organizing for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
-| **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `README.md`. |
-| **location token** | A local address component derived from the effective folder convention; it may be materialized in a basename or computed implicitly from deterministic sibling order. |\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
+| **location** | A position in the corpus hierarchy defined by the filesystem and the effective folder convention. An addressable directory contributes a location token whether or not it contains `README.md`. |
+| **location token** | A local address component derived from the effective folder convention; it may be materialized in a basename or computed implicitly from deterministic sibling order. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§e.c.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location tokens beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§e.c.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
 | **`README.md`** | The reserved reader-facing representation of a directory. Its subtype follows filesystem position; the README representing the selected corpus root additionally carries the Origin role. |
 | **Repository Root README** | The literal `README.md` at the Git repository root. It carries project-wide entry context whether or not that directory is selected as a corpus root. |
 | **Folder README** | A literal `README.md` in a descendant directory. It represents that folder and remains a Folder README even when that directory is selected as a corpus root. |
@@ -203,7 +203,7 @@ identity with UID.
 ## 4. Represent repository positions with README.md
 
 Use `README.md` for every directory that needs a reader-facing representation.
-The filename is reserved: it carries neither a location ordinal nor a quadrant
+The filename is reserved: it carries neither a location token nor a quadrant
 glyph. When the containing directory is addressable, its `README.md` resolves
 to that directory's location and contributes no additional ordinal.
 
