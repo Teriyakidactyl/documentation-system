@@ -8,9 +8,19 @@ description: >-
 
 # Software Design
 
-This location collects canonical software-design guidance for agent and human
-implementation work. Prefer its documented defaults over reopening equivalent
-architectural alternatives.
+This location collects reusable software-design guidance for agent and human
+implementation work.
+
+Software Design is organized primarily around recurring design concerns whose
+decisions arise independently across systems and architectures. Software Design
+Principles supplies defaults inherited across those concerns. Architecture
+guidance explains when several resolved decisions warrant durable implemented
+architecture and how that authority is kept with the code it governs.
+
+Prefer documented defaults and established concern architectures over reopening
+equivalent alternatives. Add another Software Design concern when recurring use
+establishes an independently routable decision domain; do not pre-create a
+maximal taxonomy from a framework or book.
 
 ## Index
 <!--
@@ -30,11 +40,14 @@ element:
 
 <a href="1%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY" data-ds-link="relative-path">../1 📖 Software Design Principles.md</a>
 
-### 📖 Organizing Architecture
+### Architecture
 
-`Consult when` *the Organizing tool, an organization scheme, a peer representation capability, a validation rule, a projection, or a structural refactor is being introduced or materially changed* `to` **place responsibility with the owning capability while preserving one normalized corpus and one deterministic organization workflow**.
+`Consult when` *implemented code needs durable architecture authority or an existing architecture must be located, reviewed, or changed* `to` **route between the Implemented Architecture reference and the procedure for designing, recording, colocating, and maintaining that authority**.
 
-<a href="2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB" data-ds-link="relative-path">../2 📖 Organizing Architecture.md</a>
+<a href="2%20Architecture/README.md" uid="20KRDM" data-ds-link="relative-path">../2 Architecture/README.md</a>
+
+- `1 📖 Implemented Architecture.md`
+- `2 🛠️ Design And Record An Implemented Architecture.md`
 
 ### Error Management
 
