@@ -4,8 +4,8 @@ import os,re
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import quote
-from _capabilities.folder import FolderError,Rename,apply as apply_renames
-from _capabilities.html import anchors
+from capabilities.folder import FolderError,Rename,apply as apply_renames
+from capabilities.html import anchors
 from .model import OrganizingError,corpus_path
 from .schemes.folder import FolderSchemeError,as_dict as folder_as_dict,plan_normalization as folder_plan_normalization
 from .schemes.ordinal import OrdinalSchemeError,as_dict as ordinal_as_dict,plan_normalization as ordinal_plan_normalization
