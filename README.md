@@ -186,9 +186,9 @@ element:
 - `Frontmatter.py`
 - `Harness Installer.py`
 - `HTML.py`
-- `📐 Architecture/README.md`
 - `Markdown.py`
 - `Navigation Crawler.py`
+- `📐 Architecture/README.md`
 - `YAML.py`
 - `🛠️ Prepare Software Environment.md`
 

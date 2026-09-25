@@ -58,15 +58,6 @@ element:
 
 <a href="HTML.py" uid="PPVYWD" data-ds-link="relative-path">../HTML.py</a>
 
-### 📐 Architecture
-
-`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
-
-<a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
-
-- `📖 Organizing Architecture.md`
-- `📖 Software Architecture.md`
-
 ### 🛠️ Markdown
 
 `Read in full and follow when` *Markdown structure must be inspected, linted, mechanically corrected, or locally renumbered* `to` **give an agent bounded section access, deterministic diagnostics, safe formatting fixes, and stable document-local coordinates around authored edits**.
@@ -78,6 +69,15 @@ element:
 `Read in full and follow when` *a controlled corpus must be refreshed, inspected, resolved, or structurally normalized* `to` **maintain stable identities, organization-scheme invariants, navigation projections, and controlled references through deterministic corpus operations**.
 
 <a href="Navigation%20Crawler.py" uid="45E225" data-ds-link="relative-path">../Navigation Crawler.py</a>
+
+### 📐 Architecture
+
+`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
+
+<a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
+
+- `📖 Organizing Architecture.md`
+- `📖 Software Architecture.md`
 
 ### 🛠️ YAML
 

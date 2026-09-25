@@ -46,7 +46,7 @@ result, failure, source-address, execution, and projection contracts, and in
 `verification`, which discovers declared operations and assembles baseline
 contract verification from their runtime declarations.
 
-<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.d.1</a>
+<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.f.1</a>
 is the narrower architecture governing Organizing and its use of peer
 capabilities. It specializes this Software architecture for corpus identity,
 organization schemes, projections, controlled references, diagnostics, and
