@@ -106,7 +106,7 @@ def _namespace_plan(
     entries: list[Path],
     convention: NamespaceConvention,
 ) -> list[Rename]:
-    if convention.scheme == "none" or not entries:
+    if not convention.managed or convention.scheme == "none" or not entries:
         return []
 
     if convention.scheme == "":
