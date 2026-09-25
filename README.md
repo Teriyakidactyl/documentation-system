@@ -35,7 +35,7 @@ and code creation.
 element:
   path:
     uid: BJS5BZ
-    filepath: e. Technical Writing/a. Document/a. Document Elements/3. 📖 Glossary.md
+    filepath: f. Technical Writing/a. Document/a. Document Elements/3. 📖 Glossary.md
   version: '2.0'
 -->
 
@@ -134,11 +134,11 @@ omits the required corpus-root declaration and is invalid.
 element:
   path:
     uid: BZJASV
-    filepath: e. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
+    filepath: f. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: f. Tooling/Navigation Crawler.py
+    filepath: d. Software/Navigation Crawler.py
 -->
 
 ### Document Control
@@ -175,11 +175,27 @@ element:
 - `4. 🛠️ Determine Structural Units.md`
 - `5. 🛠️ Test A Placement.md`
 
+### Software
+
+`Consult when` *the Documentation System needs Software runtime preparation, corpus organization, representation-level tooling, harness projection, or current Software architecture* `to` **prepare the required execution environment, select the narrowest capability that owns the mechanical operation, or locate the Architecture Document governing a Software implementation**.
+
+<a href="d.%20Software/README.md" uid="YT5Y7F" data-ds-link="relative-path">../d. Software/README.md</a>
+
+- `Folder.py`
+- `Frontmatter.py`
+- `Harness Installer.py`
+- `HTML.py`
+- `📐 Architecture/README.md`
+- `Markdown.py`
+- `Navigation Crawler.py`
+- `YAML.py`
+- `🛠️ Prepare Software Environment.md`
+
 ### Software Design
 
 `Consult when` *software design must be specified, a recurring design concern must be resolved, a reusable design must be selected, or the relationship between reusable specification and a live implementation must be understood* `to` **apply the canonical Software Design authority, preserve established decisions, and route implementation-specific design to the code-local architecture that governs it**.
 
-<a href="d.%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../d. Software Design/README.md</a>
+<a href="e.%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../e. Software Design/README.md</a>
 
 - `1. 📖 Implemented Architecture.md`
 - `a. Comments/README.md`
@@ -200,24 +216,8 @@ element:
 
 `Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
 
-<a href="e.%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../e. Technical Writing/README.md</a>
+<a href="f.%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../f. Technical Writing/README.md</a>
 
 - `1. 🛠️ Write A Technical Document.md`
 - `a. Document/README.md`
 - `2. 🧭 Routable Descriptions Recognized.md`
-
-### Tooling
-
-`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, harness projection, or current Tooling architecture* `to` **prepare the required execution environment, select the narrowest capability that owns the mechanical operation, or locate the Architecture Document governing a Tooling implementation**.
-
-<a href="f.%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../f. Tooling/README.md</a>
-
-- `Folder.py`
-- `Frontmatter.py`
-- `Harness Installer.py`
-- `HTML.py`
-- `📐 Architecture/README.md`
-- `Markdown.py`
-- `Navigation Crawler.py`
-- `YAML.py`
-- `🛠️ Prepare Tooling Environment.md`

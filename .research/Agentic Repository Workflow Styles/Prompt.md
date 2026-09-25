@@ -1,7 +1,7 @@
 ---
 uid: HJ78QV
 form:
-  path: '<a href="../../e.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/d.%20Research/a.%20Research%20Prompt/README.md" uid="BSJY2D">documentation-system:§e.a.b.d.a</a>'
+  path: '<a href="../../f.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/d.%20Research/a.%20Research%20Prompt/README.md" uid="BSJY2D">documentation-system:§f.a.b.d.a</a>'
   version: '1.0'
 description: >-
   `Read in full and follow when` *the agentic repository-workflow

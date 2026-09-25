@@ -1,7 +1,7 @@
 ---
 uid: 0QZE9Q
 form:
-  path: '<a href="../e.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/c.%20Fault%20Record/README.md" uid="CD4R6P">documentation-system:§e.a.b.c</a>'
+  path: '<a href="../f.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/c.%20Fault%20Record/README.md" uid="CD4R6P">documentation-system:§f.a.b.c</a>'
   version: '1.0'
 description: >-
   `Read in full when` *the failure in which a required full-document load
@@ -188,7 +188,7 @@ active, non-compacted history before reliance.
 
 Technical Writing also already states that targeted retrieval is not compliance
 for a full-context directive in
-<a href="../e.%20Technical%20Writing/1.%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#21-compose-the-routing-statement" uid="5CFFZW">documentation-system:§e.1#2.1</a>.
+<a href="../f.%20Technical%20Writing/1.%20%F0%9F%9B%A0%EF%B8%8F%20Write%20A%20Technical%20Document.md#21-compose-the-routing-statement" uid="5CFFZW">documentation-system:§f.1#2.1</a>.
 
 No new current-authority rule for truncation recovery is claimed by this Fault
 Record. The open corrective action is to place the EOF-preserving recovery rule
