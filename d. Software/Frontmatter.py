@@ -34,7 +34,7 @@ the YAML capability.
 '''
 
 import sys
-from documentation_system.interfaces.cli.frontmatter import main
+from repo_manager.interfaces.cli.frontmatter import main
 
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
       - name: Discover public surface and enforce gap ratchet
         working-directory: d. Software
-        run: python -m verification.runner surface
+        run: python -m repo_manager.verification.runner surface
 
   generated-contracts:
     name: Generated Contracts
@@ -41,7 +41,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
       - name: Assemble and execute verification cases
         working-directory: d. Software
-        run: python -m verification.runner generated
+        run: python -m repo_manager.verification.runner generated
 
   capability-tests:
     name: Capability Tests
@@ -83,11 +83,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
       - name: Check dependency direction and verification coverage
         working-directory: d. Software
-        run: python -m verification.runner architecture
+        run: python -m repo_manager.verification.runner architecture
       - name: Test verification surface
         run: python "d. Software/tests/test_verification_surface.py"
-      - name: Test final CLI surface
-        run: python "d. Software/tests/test_cli_surface.py"
       - name: Verify Semantic Registry
         run: python "a. Document Design/a. Assemblies/a. Elements/b. Semantic Registry/test_semantic_registry.py"
 

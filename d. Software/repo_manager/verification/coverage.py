@@ -8,8 +8,8 @@ def coverage_findings(surface: Surface) -> list[str]:
     for operation in surface.operations:
         if not operation.commands:
             findings.append(f"{operation.id}: no public CLI route declared")
-        if not operation.owner.module.startswith("documentation_system.operations."):
-            findings.append(f"{operation.id}: operation owner is not interface-neutral: {operation.owner.module}")
+        if not (operation.owner.module.startswith("repo_manager.capabilities.") or operation.owner.module.startswith("repo_manager.automation.")):
+            findings.append(f"{operation.id}: operation owner is not a semantic owner: {operation.owner.module}")
     counts=Counter(surface.commands)
     for command,count in sorted(counts.items()):
         if count>1:

@@ -35,7 +35,7 @@ Requires PyYAML.
 '''
 
 import sys
-from documentation_system.interfaces.cli.harness import main
+from repo_manager.interfaces.cli.harness import main
 
 
 if __name__ == "__main__":

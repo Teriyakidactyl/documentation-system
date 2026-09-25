@@ -33,7 +33,7 @@ validation remains with the capability that owns those semantics.
 '''
 
 import sys
-from documentation_system.interfaces.cli.yaml import main
+from repo_manager.interfaces.cli.yaml import main
 
 
 if __name__ == "__main__":
