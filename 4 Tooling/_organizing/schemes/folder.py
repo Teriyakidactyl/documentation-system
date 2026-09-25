@@ -42,7 +42,7 @@ class NamingSequence:
 def _candidate_files(parent: Path, files: list[str]) -> list[Path]:
     result: list[Path] = []
     for name in files:
-        if name in {"README.md", CONFIG_NAME} or name.startswith("."):
+        if name in {"README.md", "SKILL.md", CONFIG_NAME} or name.startswith("."):
             continue
         path = parent / name
         if path.is_symlink() or path.suffix.lower() not in SUPPORTED_SUFFIXES:
