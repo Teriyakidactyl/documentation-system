@@ -111,12 +111,13 @@ organization changes.
 An **organization scheme** defines how controlled artifacts participate in an
 organized structure. A scheme may define membership rules, naming constraints,
 relationships, ordering, and a locator notation. Do not require every future
-scheme to produce decimal locations merely because the current scheme does.
+scheme to use the same token vocabulary or projection rules as the current
+folder-convention scheme.
 
 A **locator** is a current coordinate projected by a scheme. It is not durable
-identity. The current ordinal-hierarchy scheme projects filesystem ordinals as
-`§` locations and can extend an addressed document with a Markdown-local
-numbered section after `#`.
+identity. The current folder-convention scheme derives `§` location tokens from
+the effective child naming policy and can extend an addressed document with a
+Markdown-local numbered section after `#`.
 
 A controlled reference binds durable UID identity to the current physical and
 locator projections required by its representation. The UID selects the target;
