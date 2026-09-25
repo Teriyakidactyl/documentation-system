@@ -28,22 +28,31 @@ jobs:
           python-version: "3.x"
 
       - name: Install Tooling dependencies
-        run: python -m pip install --disable-pip-version-check -r "4 Tooling/requirements.txt"
+        shell: bash
+        run: |
+          tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"
+          python -m pip install --disable-pip-version-check -r "$tooling_dir/requirements.txt"
 
       - name: Run Tooling tests
         shell: bash
         run: |
-          python -m unittest discover -s "4 Tooling/tests" -p "test_*.py"
-          python -m unittest discover -s "2 Technical Writing/3 Document/2 Document Elements/4 Semantic Registry" -p "test_*.py"
+          tooling_tests="$(dirname "$(find . -type f -path '*/tests/test_organizing.py' -print -quit)")"
+          registry_tests="$(dirname "$(find . -type f -name 'test_semantic_registry.py' -print -quit)")"
+          python -m unittest discover -s "$tooling_tests" -p "test_*.py"
+          python -m unittest discover -s "$registry_tests" -p "test_*.py"
 
       - name: Refresh organization
-        run: python "4 Tooling/Navigation Crawler.py" refresh .
+        shell: bash
+        run: |
+          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
+          python "$crawler" refresh .
 
       - name: Verify idempotence
         shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
-          python "4 Tooling/Navigation Crawler.py" refresh .
+          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
+          python "$crawler" refresh .
           git diff > /tmp/organizing-second.diff
           cmp /tmp/organizing-first.diff /tmp/organizing-second.diff
           git diff --check
@@ -65,10 +74,16 @@ jobs:
           python-version: "3.x"
 
       - name: Install Tooling dependencies
-        run: python -m pip install --disable-pip-version-check -r "4 Tooling/requirements.txt"
+        shell: bash
+        run: |
+          tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"
+          python -m pip install --disable-pip-version-check -r "$tooling_dir/requirements.txt"
 
       - name: Refresh organization
-        run: python "4 Tooling/Navigation Crawler.py" refresh .
+        shell: bash
+        run: |
+          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
+          python "$crawler" refresh .
 
       - name: Verify idempotence
         shell: bash
