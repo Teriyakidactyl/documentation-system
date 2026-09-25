@@ -152,7 +152,7 @@ class FolderConventionTests(unittest.TestCase):
         self.assertEqual(before, sorted(path.name for path in self.root.iterdir()))
 
     def test_undeclared_corpus_preserves_legacy_unnumbered_controlled_files(self) -> None:
-        write(self.root / "Tool.py", "r'''---\\nuid: T00K01\\ndescription: test\\n---\\n# Tool\\n'''\\n")
+        write(self.root / "Tool.py", "r'''---\nuid: T00K01\ndescription: test\n---\n# Tool\n'''\n")
         payload = normalize_conventions(self.root, apply=True)
         self.assertFalse(payload["applied"])
         self.assertTrue((self.root / "Tool.py").is_file())
