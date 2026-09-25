@@ -10,7 +10,7 @@ from pathlib import Path
 from .diagnostics import annotate, emit, write_json
 from .engine import refresh_corpus, resolve_address
 from .model import OrganizingError, find_repository_root
-from .refactor import inspect_organization, normalize_ordinals
+from .refactor import inspect_organization, normalize_conventions
 
 COMMANDS = {"refresh", "inspect", "resolve", "normalize"}
 
@@ -43,7 +43,7 @@ def parser(script: Path) -> argparse.ArgumentParser:
     resolve.add_argument("address")
     resolve.add_argument("corpus_root", nargs="?")
 
-    normalize = sub.add_parser("normalize", help="plan or apply ordinal normalization")
+    normalize = sub.add_parser("normalize", help="plan or apply folder convention normalization")
     normalize.add_argument("--apply", action="store_true")
     normalize.add_argument("corpus_root", nargs="?")
 
@@ -87,7 +87,7 @@ def run(script: Path, argv: list[str]) -> int:
         return 0
 
     if args.command == "normalize":
-        payload = normalize_ordinals(corpus_root, apply=args.apply)
+        payload = normalize_conventions(corpus_root, apply=args.apply)
         print(json.dumps(payload, indent=2, ensure_ascii=False))
         if args.apply and payload["applied"]:
             refresh_args = argparse.Namespace(annotate=False, diagnostics_json=None)
