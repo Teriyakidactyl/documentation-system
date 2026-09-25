@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: N5986D
+architecture: '<a href="9%20%F0%9F%93%90%20Architecture/2%20%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§4.9.2</a>'
 description: >-
   `Read in full and follow when` *a repository has installed the Documentation
   System but an agent harness cannot discover it under the skill name declared
