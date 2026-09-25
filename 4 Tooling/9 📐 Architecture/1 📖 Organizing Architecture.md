@@ -33,6 +33,12 @@ This architecture governs the public Organizing tool and the `_organizing`
 implementation that maintains stable controlled identities, organization, and
 derived representations for a Documentation System corpus.
 
+It specializes the enclosing
+<a href="2%20%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§4.9.2</a>
+for corpus-wide organization semantics. The Tooling architecture governs the
+shared public-tool, representation-capability, source-documentation, and
+composition boundaries that Organizing inherits.
+
 Its governed implementation is rooted in `4 Tooling` and entered through
 `1 🛠️ Navigation Crawler.py`. Folder, Markdown, Frontmatter, YAML, and HTML
 remain independently routable peer capabilities. This architecture governs how
