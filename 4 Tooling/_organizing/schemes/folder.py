@@ -23,8 +23,8 @@ def _parsed(path,conv):
     _,value,remainder=split_recognized_prefix(path.name,conv)
     if value is not None and not remainder: raise FolderSchemeError(f"{path}: prefix consumes complete basename")
     if value is None:
-        if re.match(r"^[0-9]+(?:[.)_-])\s+",path.name): raise FolderSchemeError(f"{path}: unrecognized numeric prefix-like form")
-        if re.match(r"^[A-Za-z]{1,3}(?:[)_-])\s+",path.name): raise FolderSchemeError(f"{path}: unrecognized alpha prefix-like form")
+        if re.match(r"^[0-9]+(?:[)_-]|\\.(?=\\S))",path.name): raise FolderSchemeError(f"{path}: unrecognized numeric prefix-like form")
+        if re.match(r"^[A-Za-z]{1,3}(?:[)_-])",path.name): raise FolderSchemeError(f"{path}: unrecognized alpha prefix-like form")
     return value,remainder
 def _ordered(entries,conv):
     parsed=[(p,*_parsed(p,conv)[::-1]) for p in entries]
