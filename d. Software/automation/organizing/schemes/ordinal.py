@@ -6,7 +6,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-from _capabilities.folder import Rename
+from capabilities.folder import Rename
 
 from ..model import (
     SUPPORTED_SUFFIXES,
