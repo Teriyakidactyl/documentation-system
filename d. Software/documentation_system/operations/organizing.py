@@ -17,7 +17,7 @@ MODEL=Source("automation.organizing.model","d. Software/automation/organizing/mo
 DIAGNOSTICS=Source("automation.organizing.diagnostics","d. Software/automation/organizing/diagnostics.py","validate")
 
 def _corpus_root(inputs: Mapping[str,Any]) -> Path:
-    root=_corpus_root(inputs)
+    root=Path(str(inputs["corpus_root"])).resolve()
     if not root.is_dir():
         raise ExpectedFailure(Failure(
             origin=OWNER,
