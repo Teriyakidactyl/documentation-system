@@ -247,29 +247,86 @@ element:
 
 <a href="1%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY" data-ds-link="relative-path">../1 📖 Software Design Principles.md</a>
 
-### Architecture
+### Comments
 
-`Consult when` *implemented code needs durable architecture authority or an existing architecture must be located, reviewed, or changed* `to` **route between the Implemented Architecture reference and the procedure for designing, recording, colocating, and maintaining that authority**.
+`Consult when` *comments or docstrings must carry software-design information that code alone cannot reliably communicate* `to` **route recurring decisions about what explanatory context belongs with source and what should remain in clearer code or governing specification**.
 
-<a href="2%20Architecture/README.md" uid="20KRDM" data-ds-link="relative-path">../2 Architecture/README.md</a>
+<a href="2%20Comments/README.md" uid="206929" data-ds-link="relative-path">../2 Comments/README.md</a>
 
-- `1 📖 Implemented Architecture.md`
-- `2 🛠️ Design And Record An Implemented Architecture.md`
+### Concurrency
+
+`Consult when` *work may execute concurrently or asynchronously and independence, ordering, shared state, or coordination must be designed* `to` **route recurring concurrency decisions into canonical Software Design guidance**.
+
+<a href="3%20Concurrency/README.md" uid="MPCB6Y" data-ds-link="relative-path">../3 Concurrency/README.md</a>
+
+### Configuration
+
+`Consult when` *software behavior depends on selectable runtime or deployment values and their ownership, defaults, precedence, or validation must be designed* `to` **route recurring configuration decisions into canonical Software Design guidance**.
+
+<a href="4%20Configuration/README.md" uid="NB7QP1" data-ds-link="relative-path">../4 Configuration/README.md</a>
+
+### Data Flow
+
+`Consult when` *software must move, transform, retain, or mutate data across responsibilities and the authoritative flow must be designed* `to` **route recurring data-flow decisions about state ownership, transformation, and movement into canonical Software Design guidance**.
+
+<a href="5%20Data%20Flow/README.md" uid="Y8VWBX" data-ds-link="relative-path">../5 Data Flow/README.md</a>
+
+### Decomposition
+
+`Consult when` *software responsibilities must be divided among components, modules, classes, functions, or other implementation boundaries* `to` **route recurring decomposition decisions about responsibility, cohesion, and reusable boundaries into canonical Software Design guidance**.
+
+<a href="6%20Decomposition/README.md" uid="NGMGK7" data-ds-link="relative-path">../6 Decomposition/README.md</a>
 
 ### Error Management
 
 `Consult when` *software failure behavior must be designed or an established error architecture must be selected* `to` **route between general error management concepts and formal architectures that apply those concepts under recurring consumer constraints**.
 
-<a href="3%20Error%20Management/README.md" uid="TJBYJ1" data-ds-link="relative-path">../3 Error Management/README.md</a>
+<a href="7%20Error%20Management/README.md" uid="TJBYJ1" data-ds-link="relative-path">../7 Error Management/README.md</a>
 
 - `1 📖 Error Management.md`
 - `2 Architectures/README.md`
+
+### Extension
+
+`Consult when` *software must admit future variants or capabilities without destabilizing established responsibilities and contracts* `to` **route recurring extension decisions about variation points, compatibility, and change boundaries into canonical Software Design guidance**.
+
+<a href="8%20Extension/README.md" uid="YDA5G5" data-ds-link="relative-path">../8 Extension/README.md</a>
+
+### Interfaces
+
+`Consult when` *software responsibilities communicate across a boundary and the contract between them must be designed* `to` **route recurring interface decisions about exchanged meaning, compatibility, ownership, and boundary behavior into canonical Software Design guidance**.
+
+<a href="9%20Interfaces/README.md" uid="XF3XK9" data-ds-link="relative-path">../9 Interfaces/README.md</a>
+
+### Naming
+
+`Consult when` *software concepts require stable identifiers whose names must communicate role and meaning across implementation surfaces* `to` **route recurring naming decisions into canonical Software Design guidance**.
+
+<a href="10%20Naming/README.md" uid="MK3ZHA" data-ds-link="relative-path">../10 Naming/README.md</a>
+
+### Performance
+
+`Consult when` *latency, throughput, resource use, scale, or optimization materially constrains software design* `to` **route recurring performance decisions and their evidence requirements into canonical Software Design guidance**.
+
+<a href="11%20Performance/README.md" uid="91PTM0" data-ds-link="relative-path">../11 Performance/README.md</a>
 
 ### Testing
 
 `Consult when` *software behavior or architecture requires executable verification, or an established verification architecture must be selected* `to` **route between general testing principles and formal architectures that implement those principles for recurring verification surfaces**.
 
-<a href="4%20Testing/README.md" uid="R0J5KF" data-ds-link="relative-path">../4 Testing/README.md</a>
+<a href="12%20Testing/README.md" uid="R0J5KF" data-ds-link="relative-path">../12 Testing/README.md</a>
 
 - `1 📖 Testing.md`
 - `2 Architectures/README.md`
+
+### 📖 Implemented Architecture
+
+`Consult when` *a project, package, service, subsystem, or other implemented scope has architectural decisions that future maintainers must recover without reverse engineering the code* `to` **establish current architecture authority, code-local discovery, scope inheritance, reusable-architecture selection, realization evidence, verification obligations, and maintenance rules**.
+
+<a href="13%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ" data-ds-link="relative-path">../13 📖 Implemented Architecture.md</a>
+
+### 🛠️ Design And Record An Implemented Architecture
+
+`Read in full and follow when` *an implemented scope warrants durable architecture authority or its existing architecture is being materially changed* `to` **derive the architecture from relevant design concerns, place its Architecture Document beside the governed code, connect it to reusable guidance and implementation evidence, and keep the document synchronized with the design it governs**.
+
+<a href="14%20%F0%9F%9B%A0%EF%B8%8F%20Design%20And%20Record%20An%20Implemented%20Architecture.md" uid="0F8SKM" data-ds-link="relative-path">../14 🛠️ Design And Record An Implemented Architecture.md</a>

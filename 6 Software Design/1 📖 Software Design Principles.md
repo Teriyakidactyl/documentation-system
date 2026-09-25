@@ -223,7 +223,7 @@ Record durable implemented architecture when several interacting design
 decisions constrain future work beyond one local contract.
 
 **Default.** Follow
-<a href="2%20Architecture/1%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ">documentation-system:§6.2.1</a>
+<a href="13%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ">documentation-system:§6.13</a>
 for selecting conditions, locality, scope, authority, realization, and
 verification.
 

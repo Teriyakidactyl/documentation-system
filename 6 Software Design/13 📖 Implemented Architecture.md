@@ -124,7 +124,7 @@ implementation and current architecture authority can move together.
 ### 3.2 Software Design guidance
 
 Implemented architectures inherit
-<a href="../1%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY">documentation-system:§6.1</a>
+<a href="1%20%F0%9F%93%96%20Software%20Design%20Principles.md" uid="M8MDHY">documentation-system:§6.1</a>
 and use concern References such as Error Management and Testing to resolve
 recurring design problems.
 
@@ -201,7 +201,7 @@ variation and states selecting conditions for known extension points or
 replacement boundaries.
 
 The Architecture Document Form is:
-<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/13%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§2.3.1.13</a>.
+<a href="../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/13%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§2.3.1.13</a>.
 
 ## 5. Completeness without template worship
 
