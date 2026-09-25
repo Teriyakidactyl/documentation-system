@@ -22,6 +22,27 @@ equivalent alternatives. Add another Software Design concern when recurring use
 establishes an independently routable decision domain; do not pre-create a
 maximal taxonomy from a framework or book.
 
+## Glossary
+
+| Term | Meaning |
+|---|---|
+| **Design Guidance** | Reusable authority that helps an implementation resolve design choices without claiming that any particular code realizes those choices. Software Design Principles, concern References, and reusable architectures are Design Guidance. |
+| **Design Concern** | A recurring, independently resolvable design domain such as Error Management or Testing. A concern organizes guidance; it does not describe one implementation. |
+| **Reusable Architecture** | Design Guidance that fixes a reusable arrangement for a recurring selecting condition. It defines obligations an implementation may select; it is not evidence that those obligations are implemented. |
+| **Implemented Design** | The concrete design choices currently realized by a particular implementation. Implemented Design includes both local choices and architecture-scale choices. |
+| **Implemented Architecture** | The portion of Implemented Design whose interacting, load-bearing decisions extend beyond one local contract and therefore require durable current authority. |
+| **Architecture Document** | The controlled, code-local current authority that records an Implemented Architecture in the nearest `📐 Architecture/` store. It states what the implementation is designed to do now. |
+| **Local Contract** | The code-local current authority for an Implemented Design choice that does not warrant an Architecture Document, expressed through types, signatures, schemas, docstrings, tests, or another owned implementation surface. |
+| **Code-local design authority** | A relationship, not a separate artifact type: the current design authority kept with the implementation it governs. It is an Architecture Document for Implemented Architecture and a Local Contract for narrower Implemented Design. |
+| **Architecture Decision Record (ADR)** | Historical provenance explaining why a consequential choice was made. An ADR does not replace current Design Guidance, an Architecture Document, or a Local Contract. |
+| **Implementation evidence** | Code, tests, configuration, schemas, dependency structure, or other mechanically recognizable facts showing how an Implemented Design claim is realized. |
+
+Use **Design Guidance** when discussing reusable material in Software Design. Use
+**Implemented Design** when discussing choices made by a concrete codebase. Use
+**Implemented Architecture** only for the architecture-scale subset of those
+choices, and use **Architecture Document** for the code-local record of that
+current architecture.
+
 ## Index
 <!--
 element:
