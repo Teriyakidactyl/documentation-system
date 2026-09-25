@@ -34,8 +34,6 @@ Usage:
 Requires PyYAML.
 '''
 
-from pathlib import Path
-
 import sys
 from documentation_system.interfaces.cli.harness import main
 
@@ -47,4 +45,4 @@ if __name__ == "__main__":
         argv.remove("--check"); mode="check"
     if "--remove" in argv:
         argv.remove("--remove"); mode="remove"
-    main([mode,*argv],script=Path(__file__).resolve())
+    main([mode,*argv])
