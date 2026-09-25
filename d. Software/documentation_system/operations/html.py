@@ -1,7 +1,5 @@
-"""HTML command interfaces and discoverable operation declarations."""
+"""Interface-neutral HTML operation declarations."""
 from __future__ import annotations
-import argparse
-import json
 from pathlib import Path
 from typing import Any, Mapping
 from capabilities.html import HtmlError, anchors, inspect
