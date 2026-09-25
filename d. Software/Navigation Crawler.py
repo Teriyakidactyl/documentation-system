@@ -96,7 +96,7 @@ The historical `--resolve ADDRESS` form remains accepted for compatibility.
 
 Treat the controlled `architecture` link in this module as direct provenance
 to the code-local current Architecture Document. `_organizing` owns corpus
-semantics and orchestration. `_capabilities` owns reusable representation
+semantics and orchestration. `capabilities` owns reusable representation
 mechanics.
 
 Requires PyYAML.

@@ -85,7 +85,7 @@ assembler, or filesystem refactorer that reconstructs organization semantics
 separately.
 
 Treat `_organizing` as an address-transparent implementation package beneath
-the controlled Organizing entry point. Treat `_capabilities` as reusable
+the controlled Organizing entry point. Treat `capabilities` as reusable
 representation-level behavior used by Organizing and independently routable peer
 tools.
 
@@ -344,7 +344,7 @@ The principal implementation responsibilities are:
 - `_organizing/diagnostics.py` owns diagnostic representation and projections;
 - `_organizing/refactor.py` and `_organizing/schemes/ordinal.py` own
   organization inspection and deterministic normalization; and
-- `_capabilities` owns reusable Folder, Markdown, Frontmatter, YAML, and HTML
+- `capabilities` owns reusable Folder, Markdown, Frontmatter, YAML, and HTML
   mechanics.
 
 Keep semantic ownership and implementation dependency distinct:

@@ -38,9 +38,12 @@ Documentation System semantics.
 
 The public Software surfaces currently include Organizing, Harness Installer,
 Folder, Markdown, Frontmatter, YAML, HTML, and Software environment preparation.
-The Python implementation beneath those surfaces is primarily split between
-`_capabilities`, which owns reusable representation mechanics, and
-`_organizing`, which owns corpus-wide organization semantics and orchestration.
+The Python implementation is migrating to explicit role packages. `capabilities`
+owns reusable representation mechanics; `_organizing` still owns the existing
+corpus-wide organization implementation during migration; `core` owns shared
+operation/result/failure contracts; `interfaces` owns consumer adapters; and
+`verification` owns self-assembling verification machinery. The historical
+`_capabilities` package is compatibility-only.
 
 <a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.d.1</a>
 is the narrower architecture governing Organizing and its use of peer
@@ -298,8 +301,12 @@ than silently selecting one as truth.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/g.%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§e.g</a>
-guidance, but the current implementation does **not** select the reusable
-Agent-Facing Error Architecture.
+guidance. The migration has introduced canonical `Source`, `Failure`,
+`Result`, completion, provenance, and operation-boundary conversion contracts
+in `core`, and YAML, Frontmatter, and HTML now project expected failures
+through them. The current implementation still does **not** select the reusable
+Agent-Facing Error Architecture because the remaining public Software surfaces
+have not yet been migrated to that contract.
 
 The implemented error design is:
 
@@ -329,8 +336,12 @@ be reported with a completed deterministic refresh.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/l.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.l</a>
-guidance, but the current implementation does **not** select the reusable
-Self-Assembling Verification Architecture.
+guidance. `verification` now discovers migrated public operations from runtime
+declarations, assembles declared fixtures and schema-derived invalid cases,
+executes the real operation boundary, applies independent common contracts, and
+ratchets the remaining unmigrated public adapters. The current implementation
+still does **not** select the reusable Self-Assembling Verification Architecture
+because the accepted gap set is non-empty.
 
 The implemented testing design is manually authored and layered by owned
 contract:
@@ -363,15 +374,21 @@ Documentation System representation.
 
 The principal shared implementation boundaries are:
 
-- `_capabilities/folder.py` for collision-safe filesystem mutation;
-- `_capabilities/markdown.py` and `markdown_lint.py` for Markdown structure
+- `capabilities/folder.py` for collision-safe filesystem mutation;
+- `capabilities/markdown.py` and `markdown_lint.py` for Markdown structure
   and deterministic lint/fix mechanics;
-- `_capabilities/frontmatter.py` for Markdown/Python metadata envelopes and
+- `capabilities/frontmatter.py` for Markdown/Python metadata envelopes and
   safe Python module-docstring extraction/replacement;
-- `_capabilities/yaml.py` for YAML semantics;
-- `_capabilities/html.py` for generic HTML and anchor syntax;
-- `_organizing` for corpus-wide identity, organization, projection,
-  controlled-reference, diagnostic, and refactor semantics; and
+- `capabilities/yaml.py` for YAML semantics;
+- `capabilities/html.py` for generic HTML and anchor syntax;
+- `_organizing` for the not-yet-migrated corpus-wide identity, organization,
+  projection, controlled-reference, diagnostic, and refactor semantics;
+- `core` for canonical source-addressable results, failures, schemas, and
+  operation execution;
+- `interfaces/cli` for migrated command adapters and their discoverable
+  operation declarations;
+- `verification` for operation discovery, case assembly, common contracts,
+  dependency checks, and the accepted-gap ratchet; and
 - `d. Software/tests` for executable coverage of the shared capability and
   Organizing boundaries.
 
