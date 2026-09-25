@@ -1,7 +1,7 @@
 ---
 uid: HXHQ9T
 form:
-  path: '<a href="../f.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/a.%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§f.a.b.a</a>'
+  path: '<a href="../a.%20Document%20Design/a.%20Document/b.%20Document%20Forms/a.%20Architecture%20Decision%20Record/README.md" uid="A1FANY">documentation-system:§a.a.b.a</a>'
   version: '1.0'
 description: >-
   `Read in full when` *the rationale for separating domain-independent

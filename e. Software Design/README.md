@@ -40,7 +40,7 @@ available when future architecture work begins.
 element:
   path:
     uid: BJS5BZ
-    filepath: f. Technical Writing/a. Document/a. Document Elements/3. 📖 Glossary.md
+    filepath: a. Document Design/a. Document/a. Document Elements/3. 📖 Glossary.md
   version: '2.0'
 -->
 
@@ -234,7 +234,7 @@ implementation is required to satisfy.
 element:
   path:
     uid: BZJASV
-    filepath: f. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
+    filepath: a. Document Design/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225

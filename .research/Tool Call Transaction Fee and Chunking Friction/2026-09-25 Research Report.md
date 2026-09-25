@@ -1,7 +1,7 @@
 ---
 uid: RAXX41
 form:
-  path: '<a href="../../f.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/d.%20Research/b.%20Research%20Report/README.md" uid="AKNN1G">documentation-system:§f.a.b.d.b</a>'
+  path: '<a href="../../a.%20Document%20Design/a.%20Document/b.%20Document%20Forms/d.%20Research/b.%20Research%20Report/README.md" uid="AKNN1G">documentation-system:§a.a.b.d.b</a>'
   version: '1.0'
 description: >-
   `Consult when` *the 2026-09-25 discussion of tool-call transaction cost

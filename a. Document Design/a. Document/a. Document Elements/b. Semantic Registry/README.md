@@ -36,7 +36,7 @@ those attributes beneath their entry.
 Use a Semantic Registry when named entries need repeated attributes in one
 dense source surface. When the entries are project-specific terms or concepts
 selected to orient a reader at a document boundary, apply the
-<a href="../3.%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§f.a.a.3</a>
+<a href="../3.%20%F0%9F%93%96%20Glossary.md" uid="BJS5BZ">documentation-system:§a.a.a.3</a>
 selection contract first. Use the Glossary Element itself when definitions are
 the primary lookup task and a table or relationship tree with definitions is
 sufficient.
