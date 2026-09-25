@@ -42,7 +42,7 @@ def _handler(inputs: Mapping[str, Any]) -> Result[Any]:
 
 OPERATION=register(Operation(
     id=OPERATION_ID,
-    adapter="Frontmatter.py",
+    commands=(("frontmatter","inspect"),),
     owner=OWNER,
     input_schema=InputSchema((Field("path","path",example="fixture.md"),)),
     handler=_handler,
