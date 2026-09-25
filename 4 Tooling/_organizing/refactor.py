@@ -11,7 +11,8 @@ from urllib.parse import quote
 from _capabilities.folder import FolderError, Rename, apply as apply_renames
 from _capabilities.html import anchors
 from .model import OrganizingError, corpus_path
-from .schemes.folder import FolderSchemeError, as_dict, plan_normalization
+from .schemes.folder import FolderSchemeError, as_dict as folder_as_dict, plan_normalization as folder_plan_normalization
+from .schemes.ordinal import OrdinalSchemeError, as_dict as ordinal_as_dict, plan_normalization as ordinal_plan_normalization
 
 
 @dataclass(frozen=True)
@@ -74,12 +75,22 @@ def unmanaged_references(corpus_root: Path, plan: list[Rename]) -> list[Unmanage
     return findings
 
 
-def inspect_organization(corpus_root: Path) -> dict:
+def _uses_folder_conventions(corpus_root: Path) -> bool:
+    root = corpus_root.resolve()
+    return any(path.name == ".folder.json" for path in root.rglob(".folder.json"))
+
+
+def _organization_payload_and_plan(corpus_root: Path) -> tuple[dict, list[Rename]]:
     try:
-        payload = as_dict(corpus_root)
-    except FolderSchemeError as exc:
+        if _uses_folder_conventions(corpus_root):
+            return folder_as_dict(corpus_root), folder_plan_normalization(corpus_root)
+        return ordinal_as_dict(corpus_root), ordinal_plan_normalization(corpus_root)
+    except (FolderSchemeError, OrdinalSchemeError) as exc:
         raise OrganizingError(str(exc)) from exc
-    plan = plan_normalization(corpus_root)
+
+
+def inspect_organization(corpus_root: Path) -> dict:
+    payload, plan = _organization_payload_and_plan(corpus_root)
     refs = unmanaged_references(corpus_root, plan)
     payload["unmanaged_references"] = [
         {
@@ -95,7 +106,7 @@ def inspect_organization(corpus_root: Path) -> dict:
 def normalize_conventions(corpus_root: Path, *, apply: bool = False) -> dict:
     root = corpus_root.resolve()
     payload = inspect_organization(root)
-    plan = plan_normalization(root)
+    _, plan = _organization_payload_and_plan(root)
     refs = unmanaged_references(root, plan)
     payload["applied"] = False
     if not apply or not plan:
@@ -113,6 +124,30 @@ def normalize_conventions(corpus_root: Path, *, apply: bool = False) -> dict:
     return payload
 
 
-# Compatibility name for callers using the pre-convention command surface.
+# Explicit legacy ordinal operation retained for existing callers and tests.
 def normalize_ordinals(corpus_root: Path, *, apply: bool = False) -> dict:
-    return normalize_conventions(corpus_root, apply=apply)
+    root = corpus_root.resolve()
+    try:
+        payload = ordinal_as_dict(root)
+        plan = ordinal_plan_normalization(root)
+    except OrdinalSchemeError as exc:
+        raise OrganizingError(str(exc)) from exc
+    refs = unmanaged_references(root, plan)
+    payload["unmanaged_references"] = [
+        {"path": corpus_path(root, item.path), "line": item.line, "value": item.value}
+        for item in refs
+    ]
+    payload["applied"] = False
+    if not apply or not plan:
+        return payload
+    if refs:
+        raise OrganizingError(
+            "ordinal normalization is blocked by unmanaged literal path references; "
+            "inspect the dry-run report and migrate those references first"
+        )
+    try:
+        apply_renames(plan)
+    except FolderError as exc:
+        raise OrganizingError(str(exc)) from exc
+    payload["applied"] = True
+    return payload
