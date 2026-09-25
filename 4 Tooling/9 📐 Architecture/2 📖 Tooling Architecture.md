@@ -377,7 +377,7 @@ Python structure and signature
 → compact agent-facing help
 ~~~
 
-The renderer should preserve the ownership rule in §3.6: it assembles existing
+The renderer should preserve the ownership rule in section 3.6: it assembles existing
 contracts; it does not invent them or require architecture traversal for routine
 callable help.
 
