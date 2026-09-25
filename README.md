@@ -35,7 +35,7 @@ and code creation.
 element:
   path:
     uid: BJS5BZ
-    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Glossary.md
+    filepath: e. Technical Writing/a. Document/a. Document Elements/3. 📖 Glossary.md
   version: '2.0'
 -->
 
@@ -71,7 +71,7 @@ now. Working information, evidence and provenance, and historical or cold
 information do not become current authority because of their storage mechanism
 or proximity to current guidance. The complete information-role and retrieval
 model is owned by
-<a href="1%20Document%20Control/3%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§1.3</a>.
+<a href="a.%20Document%20Control/2.%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§a.2</a>.
 
 ## Guidance Context Integrity
 
@@ -134,83 +134,90 @@ omits the required corpus-root declaration and is invalid.
 element:
   path:
     uid: BZJASV
-    filepath: 2 Technical Writing/3 Document/2 Document Elements/5 Index/README.md
+    filepath: e. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: 4 Tooling/Navigation Crawler.py
+    filepath: f. Tooling/Navigation Crawler.py
 -->
 
 ### Document Control
 
 `Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
 
-<a href="1%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../1 Document Control/README.md</a>
+<a href="a.%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../a. Document Control/README.md</a>
 
-- `1 🛠️ Control Documented Information.md`
-- `2 📖 Folder Conventions.md`
-- `3 📖 Repository Information Storage.md`
-
-### Technical Writing
-
-`Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
-
-<a href="2%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../2 Technical Writing/README.md</a>
-
-- `1 🛠️ Write A Technical Document.md`
-- `2 🧭 Routable Descriptions Recognized.md`
-- `3 Document/README.md`
-
-### Tooling
-
-`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, harness projection, or current Tooling architecture* `to` **prepare the required execution environment, select the narrowest capability that owns the mechanical operation, or locate the Architecture Document governing a Tooling implementation**.
-
-<a href="4%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../4 Tooling/README.md</a>
-
-- `8 🛠️ Prepare Tooling Environment.md`
-- `9 📐 Architecture/README.md`
-
-### Organizing Concepts
-
-`Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
-
-<a href="5%20Organizing%20Concepts/README.md" uid="A7K3QF" data-ds-link="relative-path">../5 Organizing Concepts/README.md</a>
-
-- `1 🛠️ Determine Structural Units.md`
-- `2 📖 Relationships and Structural Topologies.md`
-- `3 💡 Ownership, Containment, and Convergence.md`
-- `4 🛠️ Test A Placement.md`
-- `5 🛠️ Decompose And Validate A Structure.md`
-
-### Software Design
-
-`Consult when` *software design must be specified, a recurring design concern must be resolved, a reusable design must be selected, or the relationship between reusable specification and a live implementation must be understood* `to` **apply the canonical Software Design authority, preserve established decisions, and route implementation-specific design to the code-local architecture that governs it**.
-
-<a href="6%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../6 Software Design/README.md</a>
-
-- `1 📖 Software Design Principles.md`
-- `2 Comments/README.md`
-- `3 Concurrency/README.md`
-- `4 Configuration/README.md`
-- `5 Data Flow/README.md`
-- `6 Decomposition/README.md`
-- `7 Error Management/README.md`
-- `8 Extension/README.md`
-- `9 Interfaces/README.md`
-- `10 Naming/README.md`
-- `11 Performance/README.md`
-- `12 Testing/README.md`
-- `13 📖 Implemented Architecture.md`
-- `14 🛠️ Design And Record An Implemented Architecture.md`
+- `1. 📖 Folder Conventions.md`
+- `2. 📖 Repository Information Storage.md`
+- `3. 🛠️ Control Documented Information.md`
 
 ### Editing
 
 `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
 
-<a href="7%20Editing/README.md" uid="X74GZ1" data-ds-link="relative-path">../7 Editing/README.md</a>
+<a href="b.%20Editing/README.md" uid="X74GZ1" data-ds-link="relative-path">../b. Editing/README.md</a>
 
-- `1 🛠️ Revise an Artifact.md`
-- `2 🛠️ Validate an Artifact.md`
-- `3 💡 Editing Under Conceptual Shift.md`
-- `4 📖 Editorial Terms.md`
-- `5 📖 Validation Evidence.md`
+- `1. 💡 Editing Under Conceptual Shift.md`
+- `2. 📖 Editorial Terms.md`
+- `3. 📖 Validation Evidence.md`
+- `4. 🛠️ Revise an Artifact.md`
+- `5. 🛠️ Validate an Artifact.md`
+
+### Organizing Concepts
+
+`Consult when` *a structural decision is shared across documents, code, schemas, or other repository artifacts* `to` **enter the earliest unresolved organizing question and resolve conceptual structure before domain-specific representation rules are applied**.
+
+<a href="c.%20Organizing%20Concepts/README.md" uid="A7K3QF" data-ds-link="relative-path">../c. Organizing Concepts/README.md</a>
+
+- `1. 💡 Ownership, Containment, and Convergence.md`
+- `2. 📖 Relationships and Structural Topologies.md`
+- `3. 🛠️ Decompose And Validate A Structure.md`
+- `4. 🛠️ Determine Structural Units.md`
+- `5. 🛠️ Test A Placement.md`
+
+### Software Design
+
+`Consult when` *software design must be specified, a recurring design concern must be resolved, a reusable design must be selected, or the relationship between reusable specification and a live implementation must be understood* `to` **apply the canonical Software Design authority, preserve established decisions, and route implementation-specific design to the code-local architecture that governs it**.
+
+<a href="d.%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../d. Software Design/README.md</a>
+
+- `1. 📖 Implemented Architecture.md`
+- `a. Comments/README.md`
+- `2. 📖 Software Design Principles.md`
+- `b. Concurrency/README.md`
+- `3. 🛠️ Design And Record An Implemented Architecture.md`
+- `c. Configuration/README.md`
+- `d. Data Flow/README.md`
+- `e. Decomposition/README.md`
+- `f. Error Management/README.md`
+- `g. Extension/README.md`
+- `h. Interfaces/README.md`
+- `i. Naming/README.md`
+- `j. Performance/README.md`
+- `k. Testing/README.md`
+
+### Technical Writing
+
+`Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
+
+<a href="e.%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../e. Technical Writing/README.md</a>
+
+- `1. 🛠️ Write A Technical Document.md`
+- `a. Document/README.md`
+- `2. 🧭 Routable Descriptions Recognized.md`
+
+### Tooling
+
+`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, harness projection, or current Tooling architecture* `to` **prepare the required execution environment, select the narrowest capability that owns the mechanical operation, or locate the Architecture Document governing a Tooling implementation**.
+
+<a href="f.%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../f. Tooling/README.md</a>
+
+- `Folder.py`
+- `Frontmatter.py`
+- `Harness Installer.py`
+- `HTML.py`
+- `📐 Architecture/README.md`
+- `Markdown.py`
+- `Navigation Crawler.py`
+- `YAML.py`
+- `🛠️ Prepare Tooling Environment.md`
