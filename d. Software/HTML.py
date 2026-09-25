@@ -38,38 +38,7 @@ constrained because it is also used by Organizing for controlled-reference
 rewriting.
 '''
 
-from __future__ import annotations
-
-import argparse
-import json
-from pathlib import Path
-
-from _capabilities.html import anchors, inspect
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    sub = parser.add_subparsers(dest="command", required=True)
-    show = sub.add_parser("inspect")
-    show.add_argument("path", type=Path)
-    show_anchors = sub.add_parser("anchors")
-    show_anchors.add_argument("path", type=Path)
-    args = parser.parse_args()
-
-    text = args.path.read_text(encoding="utf-8")
-    if args.command == "inspect":
-        payload = [item.__dict__ for item in inspect(text)]
-    else:
-        payload = [
-            {
-                "start": item.start,
-                "end": item.end,
-                "attributes": dict(item.attributes),
-                "text": item.text,
-            }
-            for item in anchors(text)
-        ]
-    print(json.dumps(payload, indent=2, ensure_ascii=False))
+from interfaces.cli.html import main
 
 
 if __name__ == "__main__":

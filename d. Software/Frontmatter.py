@@ -33,26 +33,7 @@ start of the module docstring. Frontmatter delegates YAML payload semantics to
 the YAML capability.
 '''
 
-from __future__ import annotations
-
-import json
-from pathlib import Path
-import sys
-
-from _capabilities.frontmatter import FrontmatterError, load
-
-
-def main() -> None:
-    if len(sys.argv) != 2:
-        raise SystemExit(f"Usage: {Path(sys.argv[0]).name} PATH")
-    path = Path(sys.argv[1])
-    try:
-        value = load(path)
-    except FrontmatterError as exc:
-        raise SystemExit(f"frontmatter: {exc}") from exc
-    if value is None:
-        raise SystemExit("frontmatter: no supported frontmatter surface found")
-    print(json.dumps({"kind": value.kind, "start_line": value.start_line, "data": value.data}, indent=2, ensure_ascii=False))
+from interfaces.cli.frontmatter import main
 
 
 if __name__ == "__main__":

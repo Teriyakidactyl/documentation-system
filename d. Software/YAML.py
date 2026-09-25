@@ -32,24 +32,7 @@ A successful exit confirms YAML syntax. Higher-level frontmatter or corpus
 validation remains with the capability that owns those semantics.
 '''
 
-from __future__ import annotations
-
-import json
-from pathlib import Path
-import sys
-
-from _capabilities.yaml import YamlError, load
-
-
-def main() -> None:
-    if len(sys.argv) != 2:
-        raise SystemExit(f"Usage: {Path(sys.argv[0]).name} PATH")
-    path = Path(sys.argv[1])
-    try:
-        value = load(path)
-    except YamlError as exc:
-        raise SystemExit(f"yaml: {exc}") from exc
-    print(json.dumps(value, indent=2, ensure_ascii=False))
+from interfaces.cli.yaml import main
 
 
 if __name__ == "__main__":
