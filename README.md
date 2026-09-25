@@ -35,7 +35,7 @@ and code creation.
 element:
   path:
     uid: BJS5BZ
-    filepath: f. Technical Writing/a. Document/a. Document Elements/3. 📖 Glossary.md
+    filepath: a. Document Design/a. Document/a. Document Elements/3. 📖 Glossary.md
   version: '2.0'
 -->
 
@@ -71,7 +71,7 @@ now. Working information, evidence and provenance, and historical or cold
 information do not become current authority because of their storage mechanism
 or proximity to current guidance. The complete information-role and retrieval
 model is owned by
-<a href="a.%20Document%20Control/2.%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§a.2</a>.
+<a href="a.%20Document%20Design/b.%20Document%20Control/2.%20%F0%9F%93%96%20Repository%20Information%20Storage.md" uid="S9HVWB">documentation-system:§a.b.2</a>.
 
 ## Guidance Context Integrity
 
@@ -134,22 +134,22 @@ omits the required corpus-root declaration and is invalid.
 element:
   path:
     uid: BZJASV
-    filepath: f. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
+    filepath: a. Document Design/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
     filepath: d. Software/Navigation Crawler.py
 -->
 
-### Document Control
+### Document Design
 
-`Consult when` *documented information needs a controlled repository location, retrieval policy, storage representation, address, index presence, progressive-disclosure exposure, or Organizing validation* `to` **select the Document Control rule or procedure that governs how users encounter and rely on the information**.
+`Consult when` *documented information must be decomposed, represented, authored, controlled, or given reusable document structure* `to` **apply document-specific design forces and route to reusable Document structures, Document Control, or Technical Writing without treating document representation as domain-independent structure**.
 
-<a href="a.%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../a. Document Control/README.md</a>
+<a href="a.%20Document%20Design/README.md" uid="DDES01" data-ds-link="relative-path">../a. Document Design/README.md</a>
 
-- `1. 📖 Folder Conventions.md`
-- `2. 📖 Repository Information Storage.md`
-- `3. 🛠️ Control Documented Information.md`
+- `a. Document/README.md`
+- `b. Document Control/README.md`
+- `c. Technical Writing/README.md`
 
 ### Editing Concepts
 
@@ -211,13 +211,3 @@ element:
 - `i. Naming/README.md`
 - `j. Performance/README.md`
 - `k. Testing/README.md`
-
-### Technical Writing
-
-`Consult when` *technical documented information must be authored* `to` **select the Technical Writing procedure before drafting the document body**.
-
-<a href="f.%20Technical%20Writing/README.md" uid="6J52FM" data-ds-link="relative-path">../f. Technical Writing/README.md</a>
-
-- `1. 🛠️ Write A Technical Document.md`
-- `a. Document/README.md`
-- `2. 🧭 Routable Descriptions Recognized.md`

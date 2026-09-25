@@ -21,7 +21,7 @@ decisions may accumulate beside it when they have a continuing role.
 element:
   path:
     uid: BZJASV
-    filepath: f. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
+    filepath: a. Document Design/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
