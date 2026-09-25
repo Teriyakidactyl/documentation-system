@@ -32,8 +32,9 @@ A successful exit confirms YAML syntax. Higher-level frontmatter or corpus
 validation remains with the capability that owns those semantics.
 '''
 
-import sys\nfrom documentation_system.interfaces.cli.yaml import main
+import sys
+from documentation_system.interfaces.cli.yaml import main
 
 
 if __name__ == "__main__":
-    main()
+    main(["parse",*sys.argv[1:]])
