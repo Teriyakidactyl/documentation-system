@@ -28,7 +28,7 @@ def _handler(inputs: Mapping[str, Any]) -> Result[Any]:
 
 OPERATION=register(Operation(
     id=OPERATION_ID,
-    adapter="YAML.py",
+    commands=(("yaml","parse"),),
     owner=OWNER,
     input_schema=InputSchema((Field("path","path",example="fixture.yaml"),)),
     handler=_handler,
