@@ -13,20 +13,20 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from _capabilities.frontmatter import (
+from capabilities.frontmatter import (
     FrontmatterError,
     add_missing_key,
     module_docstring,
     split as split_frontmatter_text,
 )
-from _capabilities.markdown import (
+from capabilities.markdown import (
     HeadingTarget,
     MarkdownError,
     heading_target as markdown_heading_target,
     numbered_headings as markdown_numbered_headings,
     title_from_body as markdown_title_from_body,
 )
-from _capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
+from capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
 from .convention import ConventionError, convention_for_children, encoded_token, split_recognized_prefix, token_from_name
 
 

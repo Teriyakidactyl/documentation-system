@@ -5,8 +5,8 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from _capabilities.markdown import Section, heading_comments
-from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
+from capabilities.markdown import Section, heading_comments
+from capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
 from .convention import token_sort_value
 from .links import relative_display_path, relative_link
 from .model import (

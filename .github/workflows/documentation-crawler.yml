@@ -87,10 +87,7 @@ jobs:
       - name: Test verification surface
         run: python "d. Software/tests/test_verification_surface.py"
       - name: Verify Semantic Registry
-        shell: bash
-        run: |
-          registry_tests="$(dirname "$(find . -type f -name 'test_semantic_registry.py' -print -quit)")"
-          python -m unittest discover -s "$registry_tests" -p "test_semantic_registry.py"
+        run: python "a. Document Design/a. Assemblies/a. Elements/b. Semantic Registry/test_semantic_registry.py"
 
   repository-convergence:
     name: Repository Convergence
