@@ -95,16 +95,16 @@ The historical `--resolve ADDRESS` form remains accepted for compatibility.
 ## 5. Preserve capability boundaries
 
 Treat the controlled `architecture` link in this module as direct provenance
-to the code-local current Architecture Document. `_organizing` owns corpus
-semantics and orchestration. `capabilities` owns reusable representation
-mechanics.
+to the code-local current Architecture Document. `automation/organizing`
+owns corpus semantics and orchestration. `capabilities` owns reusable
+representation mechanics.
 
 Requires PyYAML.
 '''
 
 from pathlib import Path
 
-from _organizing.cli import main
+from interfaces.cli.organizing import main
 
 
 if __name__ == "__main__":
