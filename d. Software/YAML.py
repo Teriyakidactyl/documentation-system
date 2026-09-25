@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 4N9G7E
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.f.2</a>'
 description: >-
   `Read in full and follow when` *a YAML file or YAML value must be parsed
   or validated independently of frontmatter and corpus semantics* `to`
