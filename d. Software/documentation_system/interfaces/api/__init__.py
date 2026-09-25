@@ -1,1 +1,1 @@
-"""Reserved API adapter namespace over public operations."""\n
+"""Reserved API adapter namespace over public operations."""
