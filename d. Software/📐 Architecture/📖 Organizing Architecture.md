@@ -34,7 +34,7 @@ implementation that maintains stable controlled identities, organization, and
 derived representations for a Documentation System corpus.
 
 It specializes the enclosing
-<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.i.2</a>
+<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.g.2</a>
 for corpus-wide organization semantics. The Software architecture governs the
 shared public-tool, representation-capability, source-documentation, and
 composition boundaries that Organizing inherits.
