@@ -1,1 +1,1 @@
-"""Consumer interfaces over Documentation System operations."""\n
+"""Consumer interfaces over Documentation System operations."""
