@@ -1,9 +1,7 @@
-"""Harness projection CLI and discoverable operation declaration."""
+"""Interface-neutral Harness operation declaration."""
 from __future__ import annotations
 
-import argparse
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 
 from capabilities.frontmatter import FrontmatterError
