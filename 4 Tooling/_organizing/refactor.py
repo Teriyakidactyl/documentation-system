@@ -75,14 +75,14 @@ def unmanaged_references(corpus_root: Path, plan: list[Rename]) -> list[Unmanage
     return findings
 
 
-def _uses_folder_conventions(corpus_root: Path) -> bool:
+def uses_folder_conventions(corpus_root: Path) -> bool:
     root = corpus_root.resolve()
     return any(path.name == ".folder.json" for path in root.rglob(".folder.json"))
 
 
 def _organization_payload_and_plan(corpus_root: Path) -> tuple[dict, list[Rename]]:
     try:
-        if _uses_folder_conventions(corpus_root):
+        if uses_folder_conventions(corpus_root):
             return folder_as_dict(corpus_root), folder_plan_normalization(corpus_root)
         return ordinal_as_dict(corpus_root), ordinal_plan_normalization(corpus_root)
     except (FolderSchemeError, OrdinalSchemeError) as exc:
