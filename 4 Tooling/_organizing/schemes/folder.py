@@ -18,6 +18,7 @@ from ..convention import (
     split_prefix,
 )
 from ..model import (
+    CONTROLLED_SIDEBAND_DIRS,
     SUPPORTED_SUFFIXES,
     corpus_path,
     extract_metadata,
@@ -139,7 +140,9 @@ def inspect(corpus_root: Path) -> tuple[list[NamingSequence], list[Rename]]:
             dirs[:] = [
                 name
                 for name in dirs
-                if not ignored_directory_name(name) and not (parent / name).is_symlink()
+                if name not in CONTROLLED_SIDEBAND_DIRS
+                and not ignored_directory_name(name)
+                and not (parent / name).is_symlink()
             ]
             convention = convention_for_children(root, parent)
 
