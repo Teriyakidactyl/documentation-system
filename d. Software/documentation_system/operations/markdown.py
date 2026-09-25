@@ -14,7 +14,6 @@ from core import (
     Diagnostic, Effects, ExpectedFailure, Failure, Field, InputSchema, Operation,
     Probe, Result, Severity, Source, Verification, invoke, register,
 )
-from ._common import require_success
 
 OWNER=Source("documentation_system.operations.markdown","d. Software/documentation_system/operations/markdown.py")
 MARKDOWN=Source("documentation_system.capabilities.markdown","d. Software/capabilities/markdown.py")
