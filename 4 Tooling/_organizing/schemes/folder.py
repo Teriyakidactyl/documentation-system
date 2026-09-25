@@ -59,7 +59,9 @@ def _remainder(path: Path, convention: NamespaceConvention) -> tuple[int | None,
         raise FolderSchemeError(f"{path}: prefix consumes the complete basename")
     # Refuse prefix-like punctuation that is not one of the recognized canonical
     # or legacy forms.  Normalization must not guess whether it is semantic text.
-    if value is None and re.match(r"^(?:[0-9]+|[A-Za-z]+)[.)_-]", path.name):
+    malformed_numeric = re.match(r"^[0-9]+[.)_-]", path.name)
+    malformed_alpha = re.match(r"^[a-z]{1,2}[)_-](?=\\s)", path.name)
+    if value is None and (malformed_numeric or malformed_alpha):
         raise FolderSchemeError(
             f"{path}: basename begins with an unrecognized prefix-like form"
         )
