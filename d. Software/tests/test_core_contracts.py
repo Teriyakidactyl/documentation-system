@@ -14,7 +14,7 @@ class CoreContractTests(unittest.TestCase):
     def test_schema_failure_is_canonical_and_source_addressable(self) -> None:
         owner=Source("test.operation","test.py","handler")
         operation=Operation(
-            id="test.required",adapter="Test.py",owner=owner,
+            id="test.required",commands=(("test","required"),),owner=owner,
             input_schema=InputSchema((Field("name","string"),)),
             handler=lambda inputs: Result.success(inputs),
         )
@@ -34,7 +34,7 @@ class CoreContractTests(unittest.TestCase):
                 provenance=("capability.parse",),
             ))
         operation=Operation(
-            id="test.propagate",adapter="Test.py",owner=owner,
+            id="test.propagate",commands=(("test","required"),),owner=owner,
             input_schema=InputSchema((Field("value","string"),)),handler=handler,
         )
         result=invoke(operation,{"value":"x"})
@@ -46,7 +46,7 @@ class CoreContractTests(unittest.TestCase):
         def handler(inputs):
             raise RuntimeError("boom")
         operation=Operation(
-            id="test.internal",adapter="Test.py",owner=owner,
+            id="test.internal",commands=(("test","required"),),owner=owner,
             input_schema=InputSchema(),handler=handler,
         )
         result=invoke(operation,{})

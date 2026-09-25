@@ -104,7 +104,7 @@ Requires PyYAML.
 
 from pathlib import Path
 
-from interfaces.cli.organizing import main
+import sys\nfrom documentation_system.interfaces.cli.organizing import main
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ Requires PyYAML.
 
 from pathlib import Path
 
-from interfaces.cli.harness import main
+import sys\nfrom documentation_system.interfaces.cli.harness import main
 
 
 if __name__ == "__main__":

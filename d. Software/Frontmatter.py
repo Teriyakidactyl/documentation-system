@@ -33,7 +33,7 @@ start of the module docstring. Frontmatter delegates YAML payload semantics to
 the YAML capability.
 '''
 
-from interfaces.cli.frontmatter import main
+import sys\nfrom documentation_system.interfaces.cli.frontmatter import main
 
 
 if __name__ == "__main__":

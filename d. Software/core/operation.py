@@ -33,7 +33,7 @@ class Verification:
 @dataclass(frozen=True)
 class Operation:
     id: str
-    adapter: str
+    commands: tuple[tuple[str, ...], ...]
     owner: Source
     input_schema: InputSchema
     handler: Handler

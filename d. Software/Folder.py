@@ -123,7 +123,7 @@ Documentation System corpus, Organizing owns controlled-link, index, and other
 derived path projections.
 '''
 
-from interfaces.cli.folder import main
+import sys\nfrom documentation_system.interfaces.cli.folder import main
 
 
 if __name__ == "__main__":

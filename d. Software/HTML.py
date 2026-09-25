@@ -38,7 +38,7 @@ constrained because it is also used by Organizing for controlled-reference
 rewriting.
 '''
 
-from interfaces.cli.html import main
+from documentation_system.interfaces.cli.html import main
 
 
 if __name__ == "__main__":
