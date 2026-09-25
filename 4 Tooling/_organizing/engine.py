@@ -9,7 +9,7 @@ from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validat
 from .elements import refresh_element_filepaths
 from .indexes import preflight_indexes, refresh_indexes
 from .links import rewrite_control_links
-from .refactor import normalize_conventions
+from .refactor import normalize_conventions, uses_folder_conventions
 from .model import (
     OrganizingError,
     artifact_by_location,
@@ -39,7 +39,8 @@ def refresh_corpus(corpus_root: Path) -> RefreshResult:
     # Naming policy is canonical source state. Reconcile it before building the
     # corpus, but only after the complete rename plan and unmanaged references
     # have been preflighted by the refactor layer.
-    normalize_conventions(corpus_root, apply=True)
+    if uses_folder_conventions(corpus_root):
+        normalize_conventions(corpus_root, apply=True)
     corpus = build_corpus(corpus_root)
     preflight_indexes(corpus)
     clear_inline_annotations(corpus_root)
