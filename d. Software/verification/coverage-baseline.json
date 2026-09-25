@@ -1,6 +1,5 @@
 {
   "unmigrated_adapters": [
-    "Harness Installer.py",
     "Navigation Crawler.py"
   ]
 }

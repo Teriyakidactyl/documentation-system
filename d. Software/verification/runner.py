@@ -65,14 +65,14 @@ def run(mode:str) -> int:
     findings=ratchet_findings(surface)
     executed=0
     if mode in {"generated","all"}:
-        with tempfile.TemporaryDirectory(prefix="software-verification-") as temp:
-            directory=Path(temp)
-            for operation in surface.operations:
-                cases=assemble(operation)
-                if not cases:
-                    findings.append(f"{operation.id}: no generated or declared verification case")
-                    continue
-                for case in cases:
+        for operation in surface.operations:
+            cases=assemble(operation)
+            if not cases:
+                findings.append(f"{operation.id}: no generated or declared verification case")
+                continue
+            for case in cases:
+                with tempfile.TemporaryDirectory(prefix="software-verification-") as temp:
+                    directory=Path(temp)
                     result=invoke(operation,_materialize(case,directory))
                     executed+=1
                     findings.extend(evaluate(operation,case,result))
