@@ -81,15 +81,31 @@ repository's intellectual history.
 > rather than first translating that problem into an architecture framework,
 > viewpoint, or named school of design.
 
-Error Management and Testing are first-class concerns for this reason. Either
-can become consequential without first deciding the rest of a system's
-architecture, and each has enough stable vocabulary and reasoning to prevent a
-future maintainer from having to rediscover the design space.
+The recognized recurring decision domains are established as first-class routing
+locations even when their canonical guidance is not yet mature. An otherwise
+empty domain README deliberately terminates routing while naming the class of
+decisions that belongs there.
 
-A new concern earns an independently routable location when recurring work
-shows that its decisions are consequential, non-obvious, and stable enough to
-benefit from reusable specification. Do not pre-create a maximal taxonomy in
-anticipation of possible future needs.
+~~~text
+Software Design
+├── Principles
+├── Comments
+├── Concurrency
+├── Configuration
+├── Data Flow
+├── Decomposition
+├── Error Management
+├── Extension
+├── Interfaces
+├── Naming
+├── Performance
+└── Testing
+~~~
+
+Architecting is cross-domain work rather than another decision domain. Guidance
+for composing resolved domain decisions into a Software Architecture
+Specification belongs at this root alongside Principles instead of behind a
+collector folder.
 
 Architecture viewpoints and perspectives serve a different purpose. Use them as
 completeness lenses that expose omissions in an architecture; do not turn them
@@ -183,9 +199,10 @@ other established lenses can then be used to ask what the author has missed.
 Use those lenses aggressively for review. Do not assume every lens deserves a
 folder, a mandatory document section, or a permanent place in the taxonomy.
 
-The Software Design hierarchy is therefore intentionally incomplete. Its shape
-should follow demonstrated recurring decisions rather than a predetermined
-model of everything software architecture might contain.
+The recognized domain surface is intentionally explicit rather than maximal.
+It can still evolve when a genuinely new recurring independent decision domain
+is established, but a recognized domain remains visible even before detailed
+canonical guidance has been authored for it.
 
 ## Architectural commitment
 
