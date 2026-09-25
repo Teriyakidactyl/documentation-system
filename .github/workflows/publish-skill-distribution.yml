@@ -40,16 +40,12 @@ jobs:
           python-version: "3.x"
 
       - name: Install Software dependencies
-        shell: bash
-        run: |
-          tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"
-          python -m pip install --disable-pip-version-check -r "$tooling_dir/requirements.txt"
+        run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
 
       - name: Verify canonical source is organized
         shell: bash
         run: |
-          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
-          python "$crawler" refresh .
+          python "d. Software/Navigation Crawler.py" refresh .
           if ! git diff --quiet; then
             echo "::error::main is not in refreshed canonical state; publish aborted."
             git diff
