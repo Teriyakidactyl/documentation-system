@@ -3,17 +3,17 @@ uid: G5NHDT
 description: >-
   `Consult when` *a recurring verification surface calls for an established
   arrangement rather than ad-hoc test design* `to` **select the Testing
-  architecture whose discovery, fixture, execution, assertion, and coverage
+  Blueprint whose discovery, fixture, execution, assertion, and coverage
   model matches the software being verified**.
 ---
 
-# Architectures
+# Testing Blueprints
 
-This location collects formal architectures owned by Testing.
+This location collects Software Specification Blueprints owned by Testing.
 
-Each package contains a current architecture Reference and may retain supporting
+Each package specifies one reusable Blueprint and contains its current Reference and may retain supporting
 research or decision provenance under repository sideband conventions. The
-supporting material explains or evidences the architecture without becoming its
+supporting material explains or evidences the Blueprint without becoming its
 current authority.
 
 ## Index

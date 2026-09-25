@@ -41,6 +41,7 @@ element:
 
 | Term | Meaning |
 |---|---|
+| **Assembly** | A reusable representation, or reusable part of a representation, intended to be selected and composed rather than designed anew for each instance. Each design domain defines the Assembly types appropriate to its artifacts. |
 | **Folder README** | The literal `README.md` representing a descendant folder. Read it when entering that folder; it supplies applicable local guidance and the next routing choices. |
 | **Index** | The immediate routing choices exposed by the current `README.md`. |
 | **description** | The project-defined routing statement used to decide whether a choice applies and how it must be used. |

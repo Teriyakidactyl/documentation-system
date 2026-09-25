@@ -2,21 +2,20 @@
 uid: R0J5KF
 description: >-
   `Consult when` *software behavior or architecture requires executable
-  verification, or an established verification architecture must be selected*
-  `to` **route between general testing principles and formal architectures
+  verification, or an established verification Blueprint must be selected*
+  `to` **route between general testing principles and reusable Blueprints
   that implement those principles for recurring verification surfaces**.
 ---
 
 # Testing
 
 Testing owns the principles used to design executable verification and the
-formal architectures that arrange those principles for recurring verification
+reusable Blueprints that arrange those principles for recurring verification
 problems.
 
 Use the Testing Reference when choosing what a test must prove, where it should
-run, what it may depend on, or what evidence makes it trustworthy. Enter
-Architectures when the verification surface calls for an established reusable
-arrangement.
+run, what it may depend on, or what evidence makes it trustworthy. When the verification surface calls for an established reusable
+arrangement, route through Software Design **Assemblies → Blueprints → Testing**.
 
 ## Index
 <!--
