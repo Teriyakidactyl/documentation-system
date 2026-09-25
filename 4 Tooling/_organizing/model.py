@@ -27,6 +27,7 @@ from _capabilities.markdown import (
     title_from_body as markdown_title_from_body,
 )
 from _capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
+from .convention import ConventionError, convention_for_children, token_from_name
 
 
 IGNORED_DIRS = {"__pycache__"}
@@ -185,23 +186,38 @@ def ordinal_from_name(name: str) -> str | None:
 
 
 def location_components(corpus_root: Path, path: Path) -> list[str]:
-    rel = path.resolve().relative_to(corpus_root.resolve())
+    root = corpus_root.resolve()
+    resolved = path.resolve()
+    rel = resolved.relative_to(root)
     if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
         return []
     components: list[str] = []
-    for part in rel.parts[:-1]:
-        ordinal = ordinal_from_name(part)
-        if ordinal is not None:
-            components.append(ordinal)
-    ordinal = ordinal_from_name(path.name)
-    if ordinal is not None:
-        components.append(ordinal)
+    current = root
+    try:
+        for part in rel.parts[:-1]:
+            convention = convention_for_children(root, current).folders
+            token = token_from_name(part, convention)
+            if token is not None:
+                components.append(token)
+            current = current / part
+        if resolved.name != "README.md":
+            convention = convention_for_children(root, resolved.parent).files
+            token = token_from_name(resolved.name, convention)
+            if token is not None:
+                components.append(token)
+    except ConventionError as exc:
+        raise OrganizingError(str(exc)) from exc
     return components
 
 
 def location_for(corpus_root: Path, path: Path) -> str | None:
-    if path.name != "README.md" and ordinal_from_name(path.name) is None:
-        return None
+    if path.name != "README.md":
+        try:
+            convention = convention_for_children(corpus_root, path.parent).files
+            if token_from_name(path.name, convention) is None:
+                return None
+        except ConventionError as exc:
+            raise OrganizingError(str(exc)) from exc
     components = location_components(corpus_root, path)
     return "§" + ".".join(components) if components else None
 
@@ -279,7 +295,7 @@ def load_artifacts(corpus_root: Path) -> dict[Path, Artifact]:
             continue
         metadata, body, title = extracted
         location = location_for(corpus_root, path)
-        ordinal = ordinal_from_name(path.name)
+        ordinal = (location.split(".")[-1] if location is not None and path.name != "README.md" else None)
         uid = metadata.get("uid")
         if uid is not None:
             if not isinstance(uid, str) or not UID_RE.fullmatch(uid):
@@ -345,29 +361,29 @@ def ensure_uids(corpus_root: Path) -> int:
 
 
 def location_addresses(corpus_root: Path) -> dict[str, Path]:
+    root = corpus_root.resolve()
     result: dict[str, Path] = {}
-    for current, dirs, _ in os.walk(corpus_root, followlinks=False):
+    for current, dirs, _ in os.walk(root, followlinks=False):
         current_path = Path(current).resolve()
         dirs[:] = [
             name
             for name in dirs
             if not ignored_directory_name(name) and not (current_path / name).is_symlink()
         ]
-        if current_path == corpus_root.resolve() or ordinal_from_name(current_path.name) is None:
+        if current_path == root:
             continue
-        rel = current_path.relative_to(corpus_root.resolve())
+        rel = current_path.relative_to(root)
         if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts):
             continue
-        ordinals = [ordinal_from_name(part) for part in rel.parts]
-        ordinals = [part for part in ordinals if part is not None]
-        if not ordinals:
+        components = location_components(root, current_path / "README.md")
+        if not components:
             continue
-        location = "§" + ".".join(ordinals)
+        location = "§" + ".".join(components)
         previous = result.get(location)
         if previous is not None and previous != current_path:
             raise OrganizingError(
                 f"Two locations derive {location}: "
-                f"{corpus_path(corpus_root, previous)} and {corpus_path(corpus_root, current_path)}"
+                f"{corpus_path(root, previous)} and {corpus_path(root, current_path)}"
             )
         result[location] = current_path
     return result
