@@ -1,0 +1,113 @@
+"""Orchestrate deterministic Organizing passes over the normalized corpus model."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+import shutil
+import tempfile
+
+from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validate
+from .elements import refresh_element_filepaths
+from .indexes import preflight_indexes, refresh_indexes
+from .links import rewrite_control_links
+from .refactor import normalize_conventions, uses_folder_conventions
+from .model import (
+    OrganizingError,
+    artifact_by_location,
+    build_corpus,
+    corpus_path,
+    ensure_uids,
+    heading_target,
+    parse_address,
+)
+
+
+@dataclass(frozen=True)
+class RefreshResult:
+    artifacts: int
+    locations: int
+    links_refreshed: int
+    uids_minted: int
+    diagnostics: tuple[Diagnostic, ...]
+
+    @property
+    def errors(self) -> int:
+        return sum(d.severity is Severity.ERROR for d in self.diagnostics)
+
+
+def _refresh_once(corpus_root: Path, *, normalize: bool) -> RefreshResult:
+    corpus_root = corpus_root.resolve()
+    if normalize:
+        normalize_conventions(corpus_root, apply=True)
+    corpus = build_corpus(corpus_root)
+    preflight_indexes(corpus)
+    clear_inline_annotations(corpus_root)
+    minted = ensure_uids(corpus_root)
+    corpus = build_corpus(corpus_root)
+    refresh_element_filepaths(corpus)
+    corpus = build_corpus(corpus_root)
+    refresh_indexes(corpus)
+    corpus = build_corpus(corpus_root)
+    links = rewrite_control_links(corpus)
+    corpus = build_corpus(corpus_root)
+    diagnostics = tuple(validate(corpus))
+    return RefreshResult(artifacts=len(corpus.artifacts), locations=len(corpus.locations), links_refreshed=links, uids_minted=minted, diagnostics=diagnostics)
+
+
+def refresh_corpus(corpus_root: Path) -> RefreshResult:
+    corpus_root = corpus_root.resolve()
+    if not uses_folder_conventions(corpus_root):
+        return _refresh_once(corpus_root, normalize=False)
+
+    with tempfile.TemporaryDirectory(prefix="documentation-system-preflight-") as temp:
+        staged_root = Path(temp) / corpus_root.name
+        shutil.copytree(corpus_root, staged_root, symlinks=True, ignore=shutil.ignore_patterns(".git"))
+        staged = _refresh_once(staged_root, normalize=True)
+        if staged.errors:
+            first = next(item for item in staged.diagnostics if item.severity is Severity.ERROR)
+            raise OrganizingError(f"staged refresh validation failed: {first.code}: {first.message}")
+    return _refresh_once(corpus_root, normalize=True)
+
+
+def resolve_address(corpus_root: Path, address: str) -> dict:
+    corpus = build_corpus(corpus_root)
+    location, section = parse_address(address, corpus.corpus_root)
+    artifact = artifact_by_location(corpus).get(location)
+    if artifact is not None:
+        parent = corpus.parents.get(artifact.path)
+        result = {
+            "address": address,
+            "corpus_root": str(corpus.corpus_root),
+            "type": "document" if artifact.path.name != "README.md" else "location-representation",
+            "path": corpus_path(corpus_root, artifact.path),
+            "parent_representation": corpus_path(corpus_root, parent) if parent else None,
+            "location_ordinal": artifact.ordinal,
+            "uid": artifact.uid,
+            "title": artifact.title,
+            "description": artifact.description,
+            "body": artifact.body,
+        }
+        if section is not None:
+            heading = heading_target(artifact.body, section, artifact.path)
+            result.update(
+                {
+                    "section": section,
+                    "heading": heading.heading,
+                    "body": artifact.body[heading.start : heading.end].rstrip() + "\n",
+                }
+            )
+        return result
+    location_path = corpus.locations.get(location)
+    if location_path is not None and section is None:
+        return {
+            "address": address,
+            "corpus_root": str(corpus.corpus_root),
+            "type": "location",
+            "path": corpus_path(corpus_root, location_path) + "/",
+            "representation": None,
+            "body": None,
+        }
+    if location_path is not None:
+        raise OrganizingError(f"{address}: location has no reader-facing representation to resolve #{section}")
+    raise OrganizingError(f"No indexed document or location resolves from {address}")
