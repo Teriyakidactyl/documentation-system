@@ -6,9 +6,9 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 
-from _capabilities.frontmatter import FrontmatterError, module_docstring, replace_module_docstring
-from _capabilities.html import HtmlAnchor, rewrite_anchors
-from _capabilities.markdown import transform_prose
+from capabilities.frontmatter import FrontmatterError, module_docstring, replace_module_docstring
+from capabilities.html import HtmlAnchor, rewrite_anchors
+from capabilities.markdown import transform_prose
 
 from .model import (
     ADDRESS_RE,

@@ -21,8 +21,8 @@ SOFTWARE = SOFTWARE_ROOTS[0]
 if str(SOFTWARE) not in sys.path:
     sys.path.insert(0, str(SOFTWARE))
 
-from _capabilities.markdown import MarkdownError, fenced_blocks, resolve_section
-from _capabilities.yaml import YamlError, parse_mapping
+from capabilities.markdown import MarkdownError, fenced_blocks, resolve_section
+from capabilities.yaml import YamlError, parse_mapping
 
 KEY_RE = re.compile(
     r'^(?P<indent> *)(?P<key>"(?:[^"\\]|\\.)*"):(?P<rest>.*?)(?P<ending>\r?\n)?$'

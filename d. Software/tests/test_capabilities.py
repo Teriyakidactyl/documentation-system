@@ -9,15 +9,15 @@ TOOLING = Path(__file__).resolve().parents[1]
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from _capabilities.frontmatter import add_missing_key, load as load_frontmatter
-from _capabilities.folder import FolderError, apply as apply_folder_renames, plan_strip_prefix
-from _capabilities.html import anchors, inspect as inspect_html
-from _capabilities.markdown import fenced_blocks, get_section, renumber, sections
-from _capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
-from _capabilities.yaml import parse_mapping
-from _organizing.engine import refresh_corpus
-from _organizing.model import OrganizingError
-from _organizing.refactor import inspect_organization, normalize_ordinals
+from capabilities.frontmatter import add_missing_key, load as load_frontmatter
+from capabilities.folder import FolderError, apply as apply_folder_renames, plan_strip_prefix
+from capabilities.html import anchors, inspect as inspect_html
+from capabilities.markdown import fenced_blocks, get_section, renumber, sections
+from capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
+from capabilities.yaml import parse_mapping
+from automation.organizing.engine import refresh_corpus
+from automation.organizing.model import OrganizingError
+from automation.organizing.refactor import inspect_organization, normalize_ordinals
 
 
 def write(path: Path, text: str) -> None:

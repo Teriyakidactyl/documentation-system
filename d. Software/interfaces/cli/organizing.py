@@ -7,10 +7,10 @@ import json
 import sys
 from pathlib import Path
 
-from .diagnostics import annotate, emit, write_json
-from .engine import refresh_corpus, resolve_address
-from .model import OrganizingError, find_repository_root
-from .refactor import inspect_organization, normalize_conventions
+from automation.organizing.diagnostics import annotate, emit, write_json
+from automation.organizing.engine import refresh_corpus, resolve_address
+from automation.organizing.model import OrganizingError, find_repository_root
+from automation.organizing.refactor import inspect_organization, normalize_conventions
 
 COMMANDS = {"refresh", "inspect", "resolve", "normalize"}
 

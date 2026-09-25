@@ -3,7 +3,7 @@ from __future__ import annotations
 import os,re
 from dataclasses import dataclass
 from pathlib import Path
-from _capabilities.folder import FolderError,Rename,validate as validate_renames
+from capabilities.folder import FolderError,Rename,validate as validate_renames
 from ..convention import CONFIG_NAME,ConventionError,NamespaceConvention,canonical_prefix,convention_for_children,split_recognized_prefix
 from ..model import CONTROLLED_SIDEBAND_DIRS,SUPPORTED_SUFFIXES,corpus_path,extract_metadata,ignored_directory_name
 class FolderSchemeError(ValueError): pass

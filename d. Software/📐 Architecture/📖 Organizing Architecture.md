@@ -29,12 +29,12 @@ writing-style:
 
 ## 1. Scope
 
-This architecture governs the public Organizing tool and the `_organizing`
+This architecture governs the public Organizing tool and the `automation/organizing`
 implementation that maintains stable controlled identities, organization, and
 derived representations for a Documentation System corpus.
 
 It specializes the enclosing
-<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.i.2</a>
+<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.g.2</a>
 for corpus-wide organization semantics. The Software architecture governs the
 shared public-tool, representation-capability, source-documentation, and
 composition boundaries that Organizing inherits.
@@ -84,8 +84,9 @@ Do not create a second corpus model, parallel link authority, independent index
 assembler, or filesystem refactorer that reconstructs organization semantics
 separately.
 
-Treat `_organizing` as an address-transparent implementation package beneath
-the controlled Organizing entry point. Treat `capabilities` as reusable
+Treat `automation/organizing` as the address-transparent semantic implementation
+beneath the controlled Organizing entry point. Treat `interfaces/cli/organizing.py`
+as the command adapter, and treat `capabilities` as reusable
 representation-level behavior used by Organizing and independently routable peer
 tools.
 
@@ -328,21 +329,21 @@ The public implementation boundary is:
 
 ~~~text
 d. Software/Navigation Crawler.py
-    → _organizing.cli
-        → _organizing.engine
+    → interfaces/cli/organizing.py
+        → automation/organizing/engine.py
             → normalized corpus and organization passes
 ~~~
 
 The principal implementation responsibilities are:
 
-- `_organizing/model.py` owns normalized corpus facts, UID identity, locator
+- `automation/organizing/model.py` owns normalized corpus facts, UID identity, locator
   derivation, controlled sideband traversal, and corpus construction;
-- `_organizing/engine.py` owns corpus-wide operation sequencing;
-- `_organizing/cli.py` owns public command parsing and presentation;
-- `_organizing/indexes.py` owns navigation projection;
-- `_organizing/links.py` owns controlled-reference refresh;
-- `_organizing/diagnostics.py` owns diagnostic representation and projections;
-- `_organizing/refactor.py` and `_organizing/schemes/ordinal.py` own
+- `automation/organizing/engine.py` owns corpus-wide operation sequencing;
+- `interfaces/cli/organizing.py` owns public command parsing and presentation;
+- `automation/organizing/indexes.py` owns navigation projection;
+- `automation/organizing/links.py` owns controlled-reference refresh;
+- `automation/organizing/diagnostics.py` owns diagnostic representation and projections;
+- `automation/organizing/refactor.py` and `automation/organizing/schemes/ordinal.py` own
   organization inspection and deterministic normalization; and
 - `capabilities` owns reusable Folder, Markdown, Frontmatter, YAML, and HTML
   mechanics.
