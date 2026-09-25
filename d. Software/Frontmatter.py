@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 4M3G0Z
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.g.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.c.2</a>'
 description: >-
   `Read in full and follow when` *a Markdown or Python artifact's metadata
   envelope must be inspected independently of corpus semantics* `to`
@@ -34,7 +34,7 @@ the YAML capability.
 '''
 
 import sys
-from documentation_system.interfaces.cli.frontmatter import main
+from repo_manager.interfaces.cli.frontmatter import main
 
 
 if __name__ == "__main__":

@@ -185,11 +185,11 @@ element:
 - `Folder.py`
 - `Frontmatter.py`
 - `Harness Installer.py`
+- `📐 Architecture/README.md`
 - `HTML.py`
 - `Markdown.py`
 - `Navigation Crawler.py`
 - `YAML.py`
-- `📐 Architecture/README.md`
 - `🛠️ Prepare Software Environment.md`
 
 ### Software Design

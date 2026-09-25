@@ -75,6 +75,15 @@ element:
 
 <a href="Harness%20Installer.py" uid="N5986D" data-ds-link="relative-path">../Harness Installer.py</a>
 
+### 📐 Architecture
+
+`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
+
+<a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
+
+- `📖 Organizing Architecture.md`
+- `📖 Software Architecture.md`
+
 ### 🛠️ HTML
 
 `Read in full and follow when` *HTML elements, attributes, comments, or inline anchors must be inspected independently of Markdown or corpus semantics* `to` **parse HTML syntax into structured tokens and expose constrained anchor facts without assigning higher-level meaning to them**.
@@ -98,15 +107,6 @@ element:
 `Read in full and follow when` *a YAML file or YAML value must be parsed or validated independently of frontmatter and corpus semantics* `to` **confirm its generic YAML structure through the shared YAML capability without importing higher-level document rules**.
 
 <a href="YAML.py" uid="4N9G7E" data-ds-link="relative-path">../YAML.py</a>
-
-### 📐 Architecture
-
-`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
-
-<a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
-
-- `📖 Organizing Architecture.md`
-- `📖 Software Architecture.md`
 
 ### 🛠️ Prepare Software Environment
 

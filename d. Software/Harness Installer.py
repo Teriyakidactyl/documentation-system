@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: N5986D
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.g.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.c.2</a>'
 description: >-
   `Read in full and follow when` *a repository has installed the Documentation
   System but an agent harness cannot discover it under the skill name declared
@@ -35,7 +35,7 @@ Requires PyYAML.
 '''
 
 import sys
-from documentation_system.interfaces.cli.harness import main
+from repo_manager.interfaces.cli.harness import main
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 4N9G7E
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.g.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.c.2</a>'
 description: >-
   `Read in full and follow when` *a YAML file or YAML value must be parsed
   or validated independently of frontmatter and corpus semantics* `to`
@@ -33,7 +33,7 @@ validation remains with the capability that owns those semantics.
 '''
 
 import sys
-from documentation_system.interfaces.cli.yaml import main
+from repo_manager.interfaces.cli.yaml import main
 
 
 if __name__ == "__main__":
