@@ -1,8 +1,6 @@
-"""Markdown command interfaces and discoverable operation declarations."""
+"""Interface-neutral Markdown operation declarations."""
 from __future__ import annotations
 
-import argparse
-import json
 from pathlib import Path
 from typing import Any, Mapping
 
