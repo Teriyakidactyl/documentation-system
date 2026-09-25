@@ -95,10 +95,6 @@ throughout the contribution. Do not begin from the intended edit location and
 work backward; establish the applicable guidance before modifying the
 repository.
 
-### Contributors
-
-- ChatGPT (OpenAI)
-
 ## Source and distribution
 
 This repository's `main` branch is the canonical maintainer/source corpus.
