@@ -41,6 +41,12 @@ jobs:
           python -m unittest discover -s "$tooling_tests" -p "test_*.py"
           python -m unittest discover -s "$registry_tests" -p "test_*.py"
 
+      - name: Inspect organization
+        shell: bash
+        run: |
+          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
+          python "$crawler" inspect .
+
       - name: Refresh organization
         shell: bash
         run: |
