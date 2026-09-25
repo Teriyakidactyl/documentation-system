@@ -1,10 +1,7 @@
-"""Folder command interfaces and discoverable operation declarations."""
+"""Interface-neutral Folder operation declarations."""
 from __future__ import annotations
 
-import argparse
-import json
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 
 from capabilities.folder import FolderError, Rename, apply, plan_strip_prefix, validate
