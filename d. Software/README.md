@@ -28,10 +28,11 @@ core/          shared operation, result, failure, diagnostic, schema, and source
 verification/  self-assembling verification and architecture checks
 ~~~
 
-Root Python artifacts remain the controlled public work encounters during the
-compatibility migration. Migrated root artifacts delegate their executable
-boundary to `interfaces/cli`; legacy underscore implementation packages remain
-only where compatibility still requires them.
+Root Python artifacts are the controlled public work encounters. Their
+executable bodies delegate to `interfaces/cli`; reusable behavior lives in the
+canonical role packages above rather than in parallel implementation trees.
+Those internal packages are address-transparent implementation structure, not
+additional reader-facing tool surfaces.
 
 When a Python tool cannot import a dependency, `pip` is unavailable, or the
 host Python is externally managed, select **Prepare Software Environment** below
