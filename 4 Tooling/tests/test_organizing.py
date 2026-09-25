@@ -221,7 +221,7 @@ description: >-
         write(
             tool,
             """r'''---
-uid: T00L01
+uid: T00K01
 description: >-
   `Consult when` *a test tool is needed* `to` **exercise unnumbered Python control**.
 ---
