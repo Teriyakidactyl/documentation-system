@@ -24,11 +24,11 @@ artifact may be prose, structured data, code, or a mixture.
 element:
   path:
     uid: BZJASV
-    filepath: e. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
+    filepath: f. Technical Writing/a. Document/a. Document Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: f. Tooling/Navigation Crawler.py
+    filepath: d. Software/Navigation Crawler.py
 -->
 
 ### 💡 Editing Under Conceptual Shift
