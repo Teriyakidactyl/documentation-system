@@ -105,7 +105,7 @@ Requires PyYAML.
 from pathlib import Path
 
 import sys
-from documentation_system.interfaces.cli.organizing import main
+from repo_manager.interfaces.cli.organizing import main
 
 
 if __name__ == "__main__":

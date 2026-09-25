@@ -12,10 +12,10 @@ TOOLING = Path(__file__).resolve().parents[1]
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from automation.organizing.engine import refresh_corpus, resolve_address
-from automation.organizing.convention import convention_for_children
-from automation.organizing.model import OrganizingError, build_corpus, find_repository_root
-from automation.organizing.refactor import normalize_conventions
+from repo_manager.automation.organizing.engine import refresh_corpus, resolve_address
+from repo_manager.automation.organizing.convention import convention_for_children
+from repo_manager.automation.organizing.model import OrganizingError, build_corpus, find_repository_root
+from repo_manager.automation.organizing.refactor import normalize_conventions
 
 
 def write(path: Path, text: str) -> None:

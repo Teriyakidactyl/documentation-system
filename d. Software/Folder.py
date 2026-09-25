@@ -124,7 +124,7 @@ derived path projections.
 '''
 
 import sys
-from documentation_system.interfaces.cli.folder import main
+from repo_manager.interfaces.cli.folder import main
 
 
 if __name__ == "__main__":

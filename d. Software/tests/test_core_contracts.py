@@ -8,7 +8,7 @@ SOFTWARE=Path(__file__).resolve().parents[1]
 if str(SOFTWARE) not in sys.path:
     sys.path.insert(0,str(SOFTWARE))
 
-from core import ExpectedFailure, Failure, Field, InputSchema, Operation, Result, Source, invoke
+from repo_manager.core import ExpectedFailure, Failure, Field, InputSchema, Operation, Result, Source, invoke
 
 class CoreContractTests(unittest.TestCase):
     def test_schema_failure_is_canonical_and_source_addressable(self) -> None:
