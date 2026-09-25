@@ -2,19 +2,19 @@
 uid: TJBYJ1
 description: >-
   `Consult when` *software failure behavior must be designed or an established
-  error architecture must be selected* `to` **route between general error
-  management concepts and formal architectures that apply those concepts under
+  error Blueprint must be selected* `to` **route between general error
+  management concepts and reusable Blueprints that apply those concepts under
   recurring consumer constraints**.
 ---
 
 # Error Management
 
 Error Management owns the concepts used to reason about software failures and
-the formal architectures that arrange those concepts for recurring conditions.
+the reusable Blueprints that arrange those concepts for recurring conditions.
 
 Use the Error Management Reference when the design is not yet fixed or when an
-existing architecture must be understood. Enter Architectures when a recurring
-constraint already selects a formal arrangement.
+existing architecture must be understood. When a recurring constraint already selects a formal arrangement, route through
+Software Design **Assemblies → Blueprints → Error Management**.
 
 ## Index
 <!--

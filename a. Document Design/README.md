@@ -3,7 +3,7 @@ uid: DDES01
 description: >-
   `Consult when` *documented information must be decomposed, represented,
   authored, controlled, or given reusable document structure* `to` **apply
-  document-specific design forces and route to reusable Document structures,
+  document-specific design forces and route to reusable Assemblies,
   Document Control, or Technical Writing without treating document
   representation as domain-independent structure**.
 ---
@@ -23,7 +23,7 @@ Index interaction.
 
 The immediate subdomains separate three responsibilities:
 
-- **Document** owns reusable Document Forms and Document Elements.
+- **Assemblies** owns reusable Document Forms and Document Elements as document-specific Assembly types.
 - **Document Control** owns durable identity, addresses, controlled links,
   indexing mechanics, storage and control state, and maintenance of the chosen
   representation.

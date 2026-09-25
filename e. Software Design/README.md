@@ -46,6 +46,7 @@ element:
 
 | Term | Meaning |
 |---|---|
+| **Assembly** | A reusable software representation or reusable part selected and composed into an implementation rather than designed anew for each instance. Software Specification Blueprints are whole-design Assemblies; smaller reusable fragments may be represented as Snippets. |
 | **Software Specification Guidance** | Canonical reusable guidance that defines how a recurring class of software decisions should be understood and resolved. |
 | **Software Specification Blueprint** | Canonical reusable specification that fixes a durable design for a recurring selecting condition. |
 | **Software Architecture Specification** | Current codebase-specific specification of the architecture governing a live software implementation. |
@@ -88,6 +89,7 @@ decisions that belongs there.
 
 ~~~text
 Software Design
+├── Assemblies
 ├── Principles
 ├── Comments
 ├── Concurrency
@@ -156,8 +158,11 @@ the pattern name does not explain the decision by itself.
 ## Reuse without confusing reuse with authority
 
 Software Specification Guidance preserves reasoning that should apply across
-many implementations. A Software Specification Blueprint goes further by
-resolving several related decisions into one reusable durable arrangement.
+many implementations. Assemblies preserve reusable representations selected
+from that guidance. A Software Specification Blueprint is an Assembly that goes
+further by resolving several related decisions into one reusable durable
+arrangement. Snippets are the smaller-fragment Assembly type when a reusable
+source-level representation does not itself select a whole architecture.
 
 Neither governs a live codebase merely by existing.
 
