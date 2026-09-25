@@ -1,1 +1,1 @@
-"""Documentation System Software package."""\n
+"""Documentation System Software package."""
