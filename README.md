@@ -137,7 +137,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+    filepath: 4 Tooling/1 Navigation Crawler.py
 -->
 
 ### Document Control
@@ -166,13 +166,13 @@ element:
 
 <a href="4%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../4 Tooling/README.md</a>
 
-- `1 🛠️ Navigation Crawler.py`
-- `2 🛠️ Harness Installer.py`
-- `3 🛠️ Folder.py`
-- `4 🛠️ Markdown.py`
-- `5 🛠️ Frontmatter.py`
-- `6 🛠️ YAML.py`
-- `7 🛠️ HTML.py`
+- `1 Navigation Crawler.py`
+- `2 Harness Installer.py`
+- `3 Folder.py`
+- `4 Markdown.py`
+- `5 Frontmatter.py`
+- `6 YAML.py`
+- `7 HTML.py`
 - `8 🛠️ Prepare Tooling Environment.md`
 - `9 📐 Architecture/README.md`
 

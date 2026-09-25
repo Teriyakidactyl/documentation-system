@@ -439,7 +439,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: 4 Tooling/1 🛠️ Navigation Crawler.py
+    filepath: 4 Tooling/1 Navigation Crawler.py
 -->
 ```
 
@@ -463,7 +463,7 @@ headings, generated-index membership, or controlled-link targets may have
 changed:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" refresh [corpus_root]
+python3 "4 Tooling/1 Navigation Crawler.py" refresh [corpus_root]
 ```
 
 Organizing validates the corpus-root declaration, duplicate sibling ordinals,
@@ -474,7 +474,7 @@ sideband relationships before it writes indexes.
 Resolve an address without writing anything:
 
 ```text
-python3 "4 Tooling/1 🛠️ Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "4 Tooling/1 Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 Resolution requires an address whose corpus-root declaration matches the

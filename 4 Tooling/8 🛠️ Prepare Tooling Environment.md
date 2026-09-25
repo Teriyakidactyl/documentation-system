@@ -89,7 +89,7 @@ the Tooling directory on `PYTHONPATH` when the installation is nested:
 ```bash
 PYTHONPATH="$TOOLING" \
 .venv-docs/bin/python \
-"$TOOLING/4 🛠️ Markdown.py" \
+"$TOOLING/4 Markdown.py" \
 lint \
 "path/to/document.md"
 ```
