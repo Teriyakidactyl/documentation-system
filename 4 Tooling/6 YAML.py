@@ -25,7 +25,7 @@ writing-style:
 Parse a YAML file and emit its normalized data as JSON:
 
 ```text
-python3 "4 Tooling/6 🛠️ YAML.py" PATH
+python3 "4 Tooling/6 YAML.py" PATH
 ```
 
 A successful exit confirms YAML syntax. Higher-level frontmatter or corpus

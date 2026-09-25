@@ -31,18 +31,18 @@ writing-style:
 
 ## 1. Problem
 
-The repository currently places Documentation System quadrant glyphs on some
-Python filenames:
+The public Tooling Python files carry Technical Writing quadrant glyphs in the
+controlled documentation embedded in their module docstrings, while their
+source filenames are glyphless:
 
 ~~~text
-1 🛠️ Navigation Crawler.py
-4 🛠️ Markdown.py
-5 🛠️ Frontmatter.py
+1 Navigation Crawler.py
+4 Markdown.py
+5 Frontmatter.py
 ~~~
 
-Those glyphs classify the posture of the documentation embedded in the Python
-artifact. They do not tell a programmer what implementation responsibility the
-module owns.
+The quadrant glyph still classifies the posture of the embedded documentation.
+It does not classify the implementation responsibility of the Python module.
 
 For source navigation, a glyph is useful only when it helps answer a code
 placement or ownership question. A source-facing glyph should therefore

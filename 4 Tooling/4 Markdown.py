@@ -35,13 +35,13 @@ upgrade cannot silently add a house opinion. Documentation-System-specific
 rules consume the shared structural model when Markdown semantics matter.
 
 ```text
-python3 "4 Tooling/4 🛠️ Markdown.py" headings PATH
-python3 "4 Tooling/4 🛠️ Markdown.py" sections PATH
-python3 "4 Tooling/4 🛠️ Markdown.py" get-section PATH SELECTOR
-python3 "4 Tooling/4 🛠️ Markdown.py" lint PATH
-python3 "4 Tooling/4 🛠️ Markdown.py" fix PATH
-python3 "4 Tooling/4 🛠️ Markdown.py" rules
-python3 "4 Tooling/4 🛠️ Markdown.py" renumber [--write] PATH
+python3 "4 Tooling/4 Markdown.py" headings PATH
+python3 "4 Tooling/4 Markdown.py" sections PATH
+python3 "4 Tooling/4 Markdown.py" get-section PATH SELECTOR
+python3 "4 Tooling/4 Markdown.py" lint PATH
+python3 "4 Tooling/4 Markdown.py" fix PATH
+python3 "4 Tooling/4 Markdown.py" rules
+python3 "4 Tooling/4 Markdown.py" renumber [--write] PATH
 ```
 
 `lint` is read-only. `fix` applies only deterministic PyMarkdown autofixes; coordinate renumbering
