@@ -1,1 +1,1 @@
-"""Command-line adapters over public operations."""\n
+"""Command-line adapters over public operations."""
