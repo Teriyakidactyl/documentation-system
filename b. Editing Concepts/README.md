@@ -7,7 +7,7 @@ description: >-
   Validation, and the editorial scope that governs prose-bearing work**.
 ---
 
-# Editing
+# Editing Concepts
 
 This location governs work on existing artifacts. Revision is authorized to
 change an artifact against an external frame. Validation reasoning assesses a
