@@ -9,6 +9,12 @@ import tokenize
 from dataclasses import dataclass
 from pathlib import Path
 
+from core.failure import Failure
+from core.operation import Operation
+from core.registry import register
+from core.result import Result
+from core.source import SourceAddress
+
 from .yaml import YamlError, parse_mapping, serialize as serialize_yaml
 
 
@@ -181,3 +187,62 @@ def replace_module_docstring(source: str, new_docstring: str, owner: str = "<pyt
     start = _source_offset(lines, token.start)
     end = _source_offset(lines, token.end)
     return source[:start] + new_literal + source[end:]
+
+
+_PARSE_ORIGIN = SourceAddress(
+    module="_capabilities.frontmatter",
+    file="d. Software/_capabilities/frontmatter.py",
+    symbol="parse_text",
+)
+
+
+def _parse_operation(*, text: str, kind: str, owner: str = "<text>") -> Result[dict | None]:
+    try:
+        value = parse_text(text, kind=kind, owner=owner)
+    except FrontmatterError as exc:
+        return Result.failure(
+            Failure(
+                origin=_PARSE_ORIGIN,
+                name="INVALID_FRONTMATTER",
+                classification="malformed",
+                subject={"owner": owner, "kind": kind},
+                message=str(exc),
+            )
+        )
+    if value is None:
+        return Result.success(None)
+    return Result.success(
+        {
+            "data": value.data,
+            "body": value.body,
+            "kind": value.kind,
+            "start_line": value.start_line,
+        }
+    )
+
+
+PARSE_OPERATION = register(
+    Operation(
+        id="frontmatter.parse",
+        owner=_PARSE_ORIGIN,
+        handler=_parse_operation,
+        input_schema={
+            "type": "object",
+            "required": ["text", "kind"],
+            "properties": {
+                "text": {"type": "string"},
+                "kind": {"type": "string", "enum": ["md", "py"]},
+                "owner": {"type": "string", "default": "<text>"},
+            },
+            "additionalProperties": False,
+        },
+        examples=(
+            {
+                "text": "---\nuid: ABC123\n---\n# Example\n",
+                "kind": "md",
+                "owner": "example.md",
+            },
+        ),
+        verification={"generated": True},
+    )
+)
