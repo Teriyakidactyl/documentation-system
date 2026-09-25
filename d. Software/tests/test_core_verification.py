@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+import sys
+
+SOFTWARE = Path(__file__).resolve().parents[1]
+if str(SOFTWARE) not in sys.path:
+    sys.path.insert(0, str(SOFTWARE))
 
 from core.execution import execute
 from core.failure import Failure
