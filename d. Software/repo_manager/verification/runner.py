@@ -55,7 +55,7 @@ def _emit_summary(value:str) -> None:
 
 def run(mode:str) -> int:
     root=Path(__file__).resolve().parents[1]
-    surface=discover(root)
+    surface=discover()
     findings=coverage_findings(surface)
     executed=0
     if mode in {"generated","all"}:
