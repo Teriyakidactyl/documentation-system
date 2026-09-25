@@ -1,1 +1,1 @@
-"""Interface-neutral public operation declarations."""\n
+"""Interface-neutral public operation declarations."""
