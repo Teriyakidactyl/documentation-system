@@ -6,7 +6,6 @@ import sys
 from typing import Any, Mapping
 from capabilities.yaml import YamlError, load
 from core import Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Source, Verification, invoke, register
-from ._common import require_success
 
 OPERATION_ID="yaml.parse"
 OWNER=Source("documentation_system.operations.yaml","d. Software/documentation_system/operations/yaml.py","parse")
