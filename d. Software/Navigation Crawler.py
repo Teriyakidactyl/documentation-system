@@ -116,4 +116,4 @@ if __name__ == "__main__":
         argv=["resolve",*argv[1:]]
     elif argv[0] not in {"refresh","inspect","resolve","normalize","-h","--help"}:
         argv=["refresh",*argv]
-    main(argv)
+    main(argv, script=Path(__file__).resolve())
