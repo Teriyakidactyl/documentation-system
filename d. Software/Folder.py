@@ -123,8 +123,10 @@ Documentation System corpus, Organizing owns controlled-link, index, and other
 derived path projections.
 '''
 
-from interfaces.cli.folder import main
+import sys
+from documentation_system.interfaces.cli.folder import main
 
 
 if __name__ == "__main__":
-    main()
+    argv=list(sys.argv[1:])
+    main(argv if argv and argv[0]=="strip-prefix" else ["rename",*argv])

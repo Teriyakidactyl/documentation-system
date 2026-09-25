@@ -9,22 +9,24 @@ if str(SOFTWARE) not in sys.path:
     sys.path.insert(0,str(SOFTWARE))
 
 from verification.cases import assemble
-from verification.coverage import ratchet_findings
+from verification.coverage import coverage_findings
 from verification.discovery import discover
 
 class VerificationSurfaceTests(unittest.TestCase):
-    def test_migrated_cli_adapters_are_discovered(self) -> None:
+    def test_public_operations_are_discovered_without_cli_ownership(self) -> None:
         surface=discover(SOFTWARE)
-        declared={operation.adapter for operation in surface.operations}
-        self.assertTrue({"YAML.py","Frontmatter.py","HTML.py"}<=declared)
-        self.assertNotIn("YAML.py",surface.unmigrated_adapters)
-        self.assertNotIn("Frontmatter.py",surface.unmigrated_adapters)
-        self.assertNotIn("HTML.py",surface.unmigrated_adapters)
+        ids={operation.id for operation in surface.operations}
+        self.assertTrue({
+            "yaml.parse","frontmatter.inspect","html.inspect",
+            "organizing.refresh","organizing.inspect","organizing.resolve","organizing.normalize",
+        }<=ids)
+        self.assertEqual([],coverage_findings(surface))
 
-    def test_current_unmigrated_surface_is_accepted_by_ratchet(self) -> None:
-        self.assertEqual([],ratchet_findings(discover(SOFTWARE)))
+    def test_cli_routes_are_unique(self) -> None:
+        surface=discover(SOFTWARE)
+        self.assertEqual(len(surface.commands),len(set(surface.commands)))
 
-    def test_every_migrated_operation_has_self_assembled_cases(self) -> None:
+    def test_every_public_operation_has_self_assembled_cases(self) -> None:
         for operation in discover(SOFTWARE).operations:
             with self.subTest(operation=operation.id):
                 self.assertTrue(assemble(operation))

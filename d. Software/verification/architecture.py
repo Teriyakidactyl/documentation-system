@@ -1,4 +1,4 @@
-"""Mechanically decidable dependency checks for the Software role split."""
+"""Mechanically decidable dependency checks for durable Software roles."""
 from __future__ import annotations
 import ast
 from pathlib import Path
@@ -14,7 +14,12 @@ def _imports(path: Path) -> set[str]:
     return result
 
 def dependency_findings(software_root: Path) -> list[str]:
-    rules={"core":("capabilities","interfaces","automation","verification"),"capabilities":("interfaces","automation","verification")}
+    rules={
+        "core":("capabilities","interfaces","automation","verification","documentation_system"),
+        "capabilities":("interfaces","automation","verification","documentation_system.interfaces","documentation_system.operations"),
+        "documentation_system/operations":("interfaces","verification","documentation_system.interfaces"),
+        "documentation_system/interfaces":("capabilities","automation","verification"),
+    }
     findings=[]
     for package,forbidden in rules.items():
         root=software_root/package

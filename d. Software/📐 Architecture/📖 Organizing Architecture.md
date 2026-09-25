@@ -84,11 +84,12 @@ Do not create a second corpus model, parallel link authority, independent index
 assembler, or filesystem refactorer that reconstructs organization semantics
 separately.
 
-Treat `automation/organizing` as the address-transparent semantic implementation
-beneath the controlled Organizing entry point. Treat `interfaces/cli/organizing.py`
-as the command adapter, and treat `capabilities` as reusable
-representation-level behavior used by Organizing and independently routable peer
-tools.
+Treat `automation/organizing` as the address-transparent semantic
+implementation. `documentation_system/operations/organizing.py` owns the
+interface-neutral public operation contracts over that implementation.
+`documentation_system/interfaces/cli/organizing.py` owns command parsing and
+result projection only. Treat `capabilities` as reusable representation-level
+behavior used by Organizing and independently routable peer tools.
 
 A peer capability owns its representation semantics. Organizing owns how those
 representations participate in one controlled corpus.
@@ -328,10 +329,11 @@ selected scheme or an explicit caller decision.
 The public implementation boundary is:
 
 ~~~text
-d. Software/Navigation Crawler.py
-    → interfaces/cli/organizing.py
-        → automation/organizing/engine.py
-            → normalized corpus and organization passes
+d. Software/Navigation Crawler.py        temporary wrapper
+    → documentation_system/interfaces/cli/organizing.py
+        → documentation_system/operations/organizing.py
+            → automation/organizing/
+                → normalized corpus and organization passes
 ~~~
 
 The principal implementation responsibilities are:
@@ -339,7 +341,10 @@ The principal implementation responsibilities are:
 - `automation/organizing/model.py` owns normalized corpus facts, UID identity, locator
   derivation, controlled sideband traversal, and corpus construction;
 - `automation/organizing/engine.py` owns corpus-wide operation sequencing;
-- `interfaces/cli/organizing.py` owns public command parsing and presentation;
+- `documentation_system/operations/organizing.py` owns the public Organizing
+  operation contracts and canonical result/failure boundary;
+- `documentation_system/interfaces/cli/organizing.py` owns command parsing,
+  result projection, and exit behavior;
 - `automation/organizing/indexes.py` owns navigation projection;
 - `automation/organizing/links.py` owns controlled-reference refresh;
 - `automation/organizing/diagnostics.py` owns diagnostic representation and projections;

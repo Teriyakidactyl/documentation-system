@@ -1,19 +1,17 @@
-"""Visible public-surface coverage and accepted-gap ratchet."""
+"""Public-operation and interface-route coverage checks."""
 from __future__ import annotations
-import json
-from pathlib import Path
+from collections import Counter
 from .discovery import Surface
 
-def baseline_path() -> Path:
-    return Path(__file__).with_name("coverage-baseline.json")
-
-def accepted_gaps(path: Path | None=None) -> set[str]:
-    payload=json.loads((path or baseline_path()).read_text(encoding="utf-8"))
-    return set(payload.get("unmigrated_adapters",[]))
-
-def ratchet_findings(surface: Surface, path: Path | None=None) -> list[str]:
-    new=sorted(set(surface.unmigrated_adapters)-accepted_gaps(path))
-    return [f"new unverified public adapter: {name}" for name in new]
-
-def stale_baseline(surface: Surface, path: Path | None=None) -> tuple[str,...]:
-    return tuple(sorted(accepted_gaps(path)-set(surface.unmigrated_adapters)))
+def coverage_findings(surface: Surface) -> list[str]:
+    findings=[]
+    for operation in surface.operations:
+        if not operation.commands:
+            findings.append(f"{operation.id}: no public CLI route declared")
+        if not operation.owner.module.startswith("documentation_system.operations."):
+            findings.append(f"{operation.id}: operation owner is not interface-neutral: {operation.owner.module}")
+    counts=Counter(surface.commands)
+    for command,count in sorted(counts.items()):
+        if count>1:
+            findings.append(f"duplicate CLI route {' '.join(command)} declared by {count} operations")
+    return findings

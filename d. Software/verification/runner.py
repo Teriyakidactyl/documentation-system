@@ -8,7 +8,7 @@ from core.execution import invoke
 from .architecture import dependency_findings
 from .cases import assemble
 from .contracts import evaluate
-from .coverage import ratchet_findings, stale_baseline
+from .coverage import coverage_findings
 from .discovery import discover
 
 def _replace_tmp(value,directory: Path):
@@ -37,17 +37,11 @@ def _materialize(case,directory: Path) -> dict:
 def _summary(surface,findings:list[str],executed:int=0) -> str:
     lines=[
         "## Software verification","",
-        f"- public adapters: {len(surface.public_adapters)}",
-        f"- declared operations: {len(surface.operations)}",
-        f"- unmigrated adapters: {len(surface.unmigrated_adapters)}",
+        f"- public operations: {len(surface.operations)}",
+        f"- public CLI routes: {len(surface.commands)}",
         f"- assembled cases executed: {executed}",
         f"- findings: {len(findings)}",
     ]
-    if surface.unmigrated_adapters:
-        lines.append(f"- accepted migration gaps: {', '.join(surface.unmigrated_adapters)}")
-    stale=stale_baseline(surface)
-    if stale:
-        lines.append(f"- stale baseline entries: {', '.join(stale)}")
     if findings:
         lines.extend(["","### Findings",*[f"- {item}" for item in findings]])
     return "\n".join(lines)+"\n"
@@ -62,7 +56,7 @@ def _emit_summary(value:str) -> None:
 def run(mode:str) -> int:
     root=Path(__file__).resolve().parents[1]
     surface=discover(root)
-    findings=ratchet_findings(surface)
+    findings=coverage_findings(surface)
     executed=0
     if mode in {"generated","all"}:
         for operation in surface.operations:

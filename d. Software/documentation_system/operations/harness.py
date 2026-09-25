@@ -1,9 +1,7 @@
-"""Harness projection CLI and discoverable operation declaration."""
+"""Interface-neutral Harness operation declaration."""
 from __future__ import annotations
 
-import argparse
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 
 from capabilities.frontmatter import FrontmatterError
@@ -14,7 +12,7 @@ from core import (
     Probe, Recovery, Result, Source, Verification, invoke, register,
 )
 
-OWNER=Source("documentation_system.interfaces.cli.harness","d. Software/interfaces/cli/harness.py","project")
+OWNER=Source("documentation_system.operations.harness","d. Software/documentation_system/operations/harness.py","project")
 HARNESS=Source("documentation_system.capabilities.harness","d. Software/capabilities/harness.py")
 FRONTMATTER=Source("documentation_system.capabilities.frontmatter","d. Software/capabilities/frontmatter.py","load")
 YAML=Source("documentation_system.capabilities.yaml","d. Software/capabilities/yaml.py","parse_mapping")
@@ -108,7 +106,7 @@ def _handler(inputs: Mapping[str,Any]) -> Result[Any]:
 
 HARNESS_PROJECT=register(Operation(
     id="harness.project",
-    adapter="Harness Installer.py",
+    commands=(("harness","install"),("harness","check"),("harness","remove")),
     owner=OWNER,
     input_schema=InputSchema((
         Field("source_root","path",example="source"),
@@ -135,53 +133,3 @@ HARNESS_PROJECT=register(Operation(
         ),
     )),
 ))
-
-def main(script: Path | None=None, argv: list[str] | None=None) -> None:
-    script=script or Path(sys.argv[0]).resolve()
-    argv=list(sys.argv[1:] if argv is None else argv)
-    mode="install"
-    targets=[]
-    positional=[]
-    i=0
-    while i<len(argv):
-        arg=argv[i]
-        if arg=="--check":
-            mode="check"; i+=1
-        elif arg=="--remove":
-            mode="remove"; i+=1
-        elif arg=="--target":
-            if i+1>=len(argv):
-                raise SystemExit("--target requires a path")
-            targets.append(argv[i+1]); i+=2
-        elif arg in {"-h","--help"}:
-            parser=argparse.ArgumentParser(prog=script.name)
-            parser.add_argument("--check",action="store_true")
-            parser.add_argument("--remove",action="store_true")
-            parser.add_argument("--target",action="append")
-            parser.add_argument("host_root",nargs="?")
-            parser.print_help(); return
-        else:
-            positional.append(arg); i+=1
-    if len(positional)>1:
-        raise SystemExit("Expected at most one host_root argument")
-    try:
-        source_root=find_repository_root(script)
-    except HarnessError as exc:
-        failure=_outer_failure(exc,{"script":str(script)}).failure.with_provenance("harness.project")
-        from core.projection import json_text
-        print(json_text(Result.failure([failure])),file=sys.stderr)
-        raise SystemExit(1)
-    host_root=Path(positional[0]).resolve() if positional else Path.cwd().resolve()
-    result=invoke(HARNESS_PROJECT,{
-        "source_root":str(source_root),"host_root":str(host_root),"mode":mode,"targets":targets,
-    })
-    if result.value:
-        for row in result.value["results"]:
-            print(f"{row['state']:12} {row['link']}")
-    if not result.ok:
-        from core.projection import json_text
-        print(json_text(result),file=sys.stderr)
-        raise SystemExit(1)
-
-if __name__=="__main__":
-    main()

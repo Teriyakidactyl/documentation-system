@@ -1,10 +1,7 @@
-"""Folder command interfaces and discoverable operation declarations."""
+"""Interface-neutral Folder operation declarations."""
 from __future__ import annotations
 
-import argparse
-import json
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 
 from capabilities.folder import FolderError, Rename, apply, plan_strip_prefix, validate
@@ -12,9 +9,8 @@ from core import (
     Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe,
     Result, Source, Verification, invoke, register,
 )
-from ._common import require_success
 
-OWNER=Source("documentation_system.interfaces.cli.folder","d. Software/interfaces/cli/folder.py")
+OWNER=Source("documentation_system.operations.folder","d. Software/documentation_system/operations/folder.py")
 CAPABILITY=Source("documentation_system.capabilities.folder","d. Software/capabilities/folder.py")
 
 def _failure(exc: FolderError, subject: Mapping[str, Any], symbol: str) -> ExpectedFailure:
@@ -89,7 +85,7 @@ def _strip_prefix(inputs: Mapping[str, Any]) -> Result[Any]:
 
 FOLDER_RENAME=register(Operation(
     id="folder.rename",
-    adapter="Folder.py",
+    commands=(("folder","rename"),),
     owner=Source(OWNER.module,OWNER.file,"rename"),
     input_schema=InputSchema((
         Field("source","path",example="source.txt"),
@@ -109,7 +105,7 @@ FOLDER_RENAME=register(Operation(
 
 FOLDER_STRIP_PREFIX=register(Operation(
     id="folder.strip-prefix",
-    adapter="Folder.py",
+    commands=(("folder","strip-prefix"),),
     owner=Source(OWNER.module,OWNER.file,"strip_prefix"),
     input_schema=InputSchema((
         Field("root","path",example="root"),
@@ -132,46 +128,3 @@ FOLDER_STRIP_PREFIX=register(Operation(
         ),
     )),
 ))
-
-def _single_rename(argv: list[str]) -> None:
-    parser=argparse.ArgumentParser(
-        prog=Path(sys.argv[0]).name,
-        description="Preview or apply one collision-safe sibling rename.",
-    )
-    parser.add_argument("--apply",action="store_true")
-    parser.add_argument("source",type=Path)
-    parser.add_argument("destination",type=Path)
-    args=parser.parse_args(argv)
-    value=require_success(invoke(FOLDER_RENAME,{
-        "source":str(args.source),"destination":str(args.destination),"apply":args.apply,
-    }))
-    print(json.dumps(value,indent=2,ensure_ascii=False))
-
-def _strip(argv: list[str]) -> None:
-    parser=argparse.ArgumentParser(
-        prog=f"{Path(sys.argv[0]).name} strip-prefix",
-        description="Recursively strip exactly the basename prefix consumed by a successful regular-expression match.",
-    )
-    parser.add_argument("root",type=Path)
-    parser.add_argument("--match",required=True)
-    parser.add_argument("--include",dest="name_glob")
-    kind=parser.add_mutually_exclusive_group()
-    kind.add_argument("--files-only",action="store_true")
-    kind.add_argument("--folders-only",action="store_true")
-    parser.add_argument("--apply",action="store_true")
-    args=parser.parse_args(argv)
-    value=require_success(invoke(FOLDER_STRIP_PREFIX,{
-        "root":str(args.root),"match":args.match,"include":args.name_glob or "",
-        "files_only":args.files_only,"folders_only":args.folders_only,"apply":args.apply,
-    }))
-    print(json.dumps(value,indent=2,ensure_ascii=False))
-
-def main(argv: list[str] | None=None) -> None:
-    argv=list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0]=="strip-prefix":
-        _strip(argv[1:])
-    else:
-        _single_rename(argv)
-
-if __name__=="__main__":
-    main()

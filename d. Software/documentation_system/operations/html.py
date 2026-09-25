@@ -1,14 +1,11 @@
-"""HTML command interfaces and discoverable operation declarations."""
+"""Interface-neutral HTML operation declarations."""
 from __future__ import annotations
-import argparse
-import json
 from pathlib import Path
 from typing import Any, Mapping
 from capabilities.html import HtmlError, anchors, inspect
 from core import Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Source, Verification, invoke, register
-from ._common import require_success
 
-OWNER=Source("documentation_system.interfaces.cli.html","d. Software/interfaces/cli/html.py")
+OWNER=Source("documentation_system.operations.html","d. Software/documentation_system/operations/html.py")
 CAPABILITY=Source("documentation_system.capabilities.html","d. Software/capabilities/html.py")
 
 def _read(path: Path) -> str:
@@ -45,27 +42,14 @@ def _anchors(inputs: Mapping[str, Any]) -> Result[Any]:
         )) from exc
 
 HTML_INSPECT=register(Operation(
-    id="html.inspect",adapter="HTML.py",owner=Source(OWNER.module,OWNER.file,"inspect"),
+    id="html.inspect",commands=(("html","inspect"),),owner=Source(OWNER.module,OWNER.file,"inspect"),
     input_schema=InputSchema((Field("path","path",example="fixture.html"),)),
     handler=_inspect,effects=Effects(filesystem="read"),
     verification=Verification(probes=(Probe(name="inspect-html",fixture_input="path",fixture_content="<p>Hello</p>\n",fixture_suffix=".html"),)),
 ))
 HTML_ANCHORS=register(Operation(
-    id="html.anchors",adapter="HTML.py",owner=Source(OWNER.module,OWNER.file,"anchors"),
+    id="html.anchors",commands=(("html","anchors"),),owner=Source(OWNER.module,OWNER.file,"anchors"),
     input_schema=InputSchema((Field("path","path",example="fixture.html"),)),
     handler=_anchors,effects=Effects(filesystem="read"),
     verification=Verification(probes=(Probe(name="inspect-anchor",fixture_input="path",fixture_content="<a uid='ABC123' href='x'>Label</a>\n",fixture_suffix=".html"),)),
 ))
-
-def main(argv: list[str] | None=None) -> None:
-    parser=argparse.ArgumentParser()
-    sub=parser.add_subparsers(dest="command",required=True)
-    show=sub.add_parser("inspect"); show.add_argument("path",type=Path)
-    show_anchors=sub.add_parser("anchors"); show_anchors.add_argument("path",type=Path)
-    args=parser.parse_args(argv)
-    operation=HTML_INSPECT if args.command=="inspect" else HTML_ANCHORS
-    value=require_success(invoke(operation,{"path":str(args.path)}))
-    print(json.dumps(value,indent=2,ensure_ascii=False))
-
-if __name__=="__main__":
-    main()

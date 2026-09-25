@@ -64,7 +64,7 @@ before retrying; do not install the dependency into the operating system's
 Python installation.
 '''
 
-from interfaces.cli.markdown import main
+from documentation_system.interfaces.cli.markdown import main
 
 
 if __name__ == "__main__":
