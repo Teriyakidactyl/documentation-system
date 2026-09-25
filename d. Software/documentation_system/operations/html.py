@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Any, Mapping
 from capabilities.html import HtmlError, anchors, inspect
 from core import Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Source, Verification, invoke, register
-from ._common import require_success
 
 OWNER=Source("documentation_system.operations.html","d. Software/documentation_system/operations/html.py")
 CAPABILITY=Source("documentation_system.capabilities.html","d. Software/capabilities/html.py")
