@@ -12,7 +12,6 @@ from core import (
     Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe,
     Result, Source, Verification, invoke, register,
 )
-from ._common import require_success
 
 OWNER=Source("documentation_system.operations.folder","d. Software/documentation_system/operations/folder.py")
 CAPABILITY=Source("documentation_system.capabilities.folder","d. Software/capabilities/folder.py")
