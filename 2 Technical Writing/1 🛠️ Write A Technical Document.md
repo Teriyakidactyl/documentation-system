@@ -51,7 +51,7 @@ description
 | *exigence* | The pressure that exists before the document does, and would exist without it. |
 | **acceptance criterion** | The observable thing successful use enables the reader to do, decide, or understand in order to act. |
 | **quadrant** | Exactly one of Tutorial, HowTo, Explanation, Reference. |
-| **quadrant glyph** | The emoji standing for a quadrant: 🧭 🛠️ 💡 📖. |
+| **quadrant glyph** | The Technical Writing glyph standing for a documented-information quadrant: 🧭 Tutorial, 🛠️ HowTo, 💡 Explanation, or 📖 Reference. It does not classify the implementation role of source code; no canonical code-role glyph vocabulary currently exists. |
 | **heading structure** | How a quadrant requires its headings to arrange. Each quadrant's entry states one. |
 | **heading axis** | The single question every heading at one level answers. Held in `outline.axis`. |
 | **heading topology** | The shape the headings form. A HowTo picks linear, branching, or fan-in. A Reference picks tree, matrix, graph, or list. Held in `outline.topology`. |
@@ -779,9 +779,13 @@ format:                  # shared by all four quadrants
         step 4.4 carries more, and each of its H1s is a separate document
     h2-h6: sentence case
     syntax: ATX, no skipped levels, no emphasis, siblings uniquely named
-  filenames: title case, matching h1. An applicable Document Form may add a
-             deterministic provenance or ordering prefix; after that prefix,
-             the title-bearing portion still matches the h1
+  filenames: title case, matching h1, for document files whose filename is a
+             Technical Writing representation. An applicable Document Form may
+             add a deterministic provenance or ordering prefix; after that
+             prefix, the title-bearing portion still matches the h1. When
+             documented information is embedded in another artifact such as a
+             source-code file, this rule does not classify or rename the host
+             artifact; the host follows its own naming rules.
 
   comments:
     structured:
