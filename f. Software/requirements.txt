@@ -1,0 +1,3 @@
+PyYAML
+pymarkdownlnt==0.9.40
+markdown-it-py==4.2.0
