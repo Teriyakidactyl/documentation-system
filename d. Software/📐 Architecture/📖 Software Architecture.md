@@ -38,12 +38,11 @@ Documentation System semantics.
 
 The public Software surfaces currently include Organizing, Harness Installer,
 Folder, Markdown, Frontmatter, YAML, HTML, and Software environment preparation.
-The Python implementation is migrating to explicit role packages. `capabilities`
-owns reusable representation mechanics; `_organizing` still owns the existing
-corpus-wide organization implementation during migration; `core` owns shared
-operation/result/failure contracts; `interfaces` owns consumer adapters; and
-`verification` owns self-assembling verification machinery. The historical
-`_capabilities` package is compatibility-only.
+The Python implementation is organized by explicit role packages. `capabilities`
+owns reusable representation mechanics; `automation` owns repository workflows
+and corpus-wide orchestration; `core` owns shared operation/result/failure
+contracts; `interfaces` owns consumer adapters; and `verification` owns
+self-assembling verification machinery.
 
 <a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.i.1</a>
 is the narrower architecture governing Organizing and its use of peer
@@ -361,10 +360,11 @@ contract:
 - `git diff --check` verifies the resulting generated state is mechanically
   clean.
 
-The authored test inventory is current verification evidence. It does not grow
-automatically from callable declarations, so Software must not claim
-Self-Assembling Verification until that reusable architecture's selecting
-conditions and obligations are actually satisfied.
+The verification inventory combines authored semantic tests with the
+runtime-discovered operation surface. Remaining public-adapter gaps stay explicit
+through the coverage baseline; Software must not claim Self-Assembling
+Verification until that gap set is empty and the reusable architecture's other
+obligations are satisfied.
 
 ## 4. Realization
 
@@ -381,8 +381,8 @@ The principal shared implementation boundaries are:
   safe Python module-docstring extraction/replacement;
 - `capabilities/yaml.py` for YAML semantics;
 - `capabilities/html.py` for generic HTML and anchor syntax;
-- `_organizing` for the not-yet-migrated corpus-wide identity, organization,
-  projection, controlled-reference, diagnostic, and refactor semantics;
+- `automation/organizing` for corpus-wide identity, organization, projection,
+  controlled-reference, diagnostic, and refactor semantics;
 - `core` for canonical source-addressable results, failures, schemas, and
   operation execution;
 - `interfaces/cli` for migrated command adapters and their discoverable
@@ -406,7 +406,7 @@ Frontmatter tool
 
 Organizing
     → Frontmatter / Markdown / HTML / Folder / YAML mechanics
-    → corpus semantics in _organizing
+    → corpus semantics in automation/organizing
 ~~~
 
 `requirements.txt` is the shared dependency declaration for Software execution.
