@@ -39,7 +39,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Tooling dependencies
+      - name: Install Software dependencies
         shell: bash
         run: |
           tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"

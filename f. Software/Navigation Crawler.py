@@ -37,7 +37,7 @@ Run `refresh` after controlled identity, organization, generated navigation,
 or controlled references may have changed:
 
 ```text
-python3 "f. Tooling/Navigation Crawler.py" refresh [corpus_root]
+python3 "f. Software/Navigation Crawler.py" refresh [corpus_root]
 ```
 
 For compatibility, omitting the subcommand still means `refresh`.
@@ -54,7 +54,7 @@ same diagnostics.
 Use `inspect` to see organization-scheme facts without mutation:
 
 ```text
-python3 "f. Tooling/Navigation Crawler.py" inspect [corpus_root]
+python3 "f. Software/Navigation Crawler.py" inspect [corpus_root]
 ```
 
 Inspection reports each effective inherited `.folder.json` namespace, the
@@ -66,14 +66,14 @@ ambiguous references that would block safe mutation.
 Preview normalization first:
 
 ```text
-python3 "f. Tooling/Navigation Crawler.py" normalize [corpus_root]
+python3 "f. Software/Navigation Crawler.py" normalize [corpus_root]
 ```
 
 The command is dry-run by default. Add `--apply` only after the reported plan
 is acceptable:
 
 ```text
-python3 "f. Tooling/Navigation Crawler.py" normalize --apply [corpus_root]
+python3 "f. Software/Navigation Crawler.py" normalize --apply [corpus_root]
 ```
 
 For convention-managed corpora, Refresh first executes the complete mutation and
@@ -87,7 +87,7 @@ guessed through.
 Resolve a current Documentation System locator without refreshing state:
 
 ```text
-python3 "f. Tooling/Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "f. Software/Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 The historical `--resolve ADDRESS` form remains accepted for compatibility.

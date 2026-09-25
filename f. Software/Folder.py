@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 6JTNRT
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
 description: >-
   `Read in full and follow when` *one filesystem path must be renamed or a
   declared basename prefix must be removed from matching descendant files or
@@ -35,8 +35,8 @@ Every operation is a dry run unless `--apply` is supplied.
 Supply one source and one destination:
 
 ```text
-python3 "f. Tooling/Folder.py" SOURCE DESTINATION
-python3 "f. Tooling/Folder.py" --apply SOURCE DESTINATION
+python3 "f. Software/Folder.py" SOURCE DESTINATION
+python3 "f. Software/Folder.py" --apply SOURCE DESTINATION
 ```
 
 The source and destination must be siblings. Folder refuses to overwrite an
@@ -48,8 +48,8 @@ Use `strip-prefix` when the text to remove is itself the evidence selecting a
 path for mutation:
 
 ```text
-python3 "f. Tooling/Folder.py" strip-prefix ROOT --match REGEX
-python3 "f. Tooling/Folder.py" strip-prefix ROOT --match REGEX --apply
+python3 "f. Software/Folder.py" strip-prefix ROOT --match REGEX
+python3 "f. Software/Folder.py" strip-prefix ROOT --match REGEX --apply
 ```
 
 Folder recursively examines descendant basenames under `ROOT`. Files and
@@ -76,7 +76,7 @@ Narrow the candidate set independently of the removed prefix with
 `--include GLOB`:
 
 ```text
-python3 "f. Tooling/Folder.py" strip-prefix "f. Tooling" \
+python3 "f. Software/Folder.py" strip-prefix "f. Software" \
   --files-only \
   --include "*.py" \
   --match '^[0-9]+ '
@@ -84,7 +84,7 @@ python3 "f. Tooling/Folder.py" strip-prefix "f. Tooling" \
 
 Here `*.py` decides which basenames may be considered; it contributes no
 characters to the removed span. A matching `1 Tool.py` becomes `Tool.py`,
-while `8 🛠️ Prepare Tooling Environment.md` is not a candidate and remains
+while `8 🛠️ Prepare Software Environment.md` is not a candidate and remains
 unchanged.
 
 Use `--files-only` or `--folders-only` when one path kind alone should be

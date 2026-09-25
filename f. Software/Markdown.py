@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: XS6515
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
 description: >-
   `Read in full and follow when` *Markdown structure must be inspected, linted,
   mechanically corrected, or locally renumbered* `to` **give an agent bounded
@@ -35,13 +35,13 @@ upgrade cannot silently add a house opinion. Documentation-System-specific
 rules consume the shared structural model when Markdown semantics matter.
 
 ```text
-python3 "f. Tooling/Markdown.py" headings PATH
-python3 "f. Tooling/Markdown.py" sections PATH
-python3 "f. Tooling/Markdown.py" get-section PATH SELECTOR
-python3 "f. Tooling/Markdown.py" lint PATH
-python3 "f. Tooling/Markdown.py" fix PATH
-python3 "f. Tooling/Markdown.py" rules
-python3 "f. Tooling/Markdown.py" renumber [--write] PATH
+python3 "f. Software/Markdown.py" headings PATH
+python3 "f. Software/Markdown.py" sections PATH
+python3 "f. Software/Markdown.py" get-section PATH SELECTOR
+python3 "f. Software/Markdown.py" lint PATH
+python3 "f. Software/Markdown.py" fix PATH
+python3 "f. Software/Markdown.py" rules
+python3 "f. Software/Markdown.py" renumber [--write] PATH
 ```
 
 `lint` is read-only. `fix` applies only deterministic PyMarkdown autofixes; coordinate renumbering
@@ -58,8 +58,8 @@ Markdown owns document-local structure and coordinates. Organizing owns how
 those coordinates participate in controlled corpus references.
 
 Structural inspection, lint, and fix require the dependencies declared by
-Tooling `requirements.txt`. When an import is unavailable, prepare the
-repository-local Tooling environment
+Software `requirements.txt`. When an import is unavailable, prepare the
+repository-local Software environment
 before retrying; do not install the dependency into the operating system's
 Python installation.
 '''

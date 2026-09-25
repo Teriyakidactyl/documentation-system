@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: N5986D
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
 description: >-
   `Read in full and follow when` *a repository has installed the Documentation
   System but an agent harness cannot discover it under the skill name declared
@@ -26,10 +26,10 @@ directories. Pass `--target PATH` one or more times to select other skill
 directories explicitly.
 
 Usage:
-    python3 "f. Tooling/Harness Installer.py" [host_root]
-    python3 "f. Tooling/Harness Installer.py" --check [host_root]
-    python3 "f. Tooling/Harness Installer.py" --remove [host_root]
-    python3 "f. Tooling/Harness Installer.py" --target .agents/skills [host_root]
+    python3 "f. Software/Harness Installer.py" [host_root]
+    python3 "f. Software/Harness Installer.py" --check [host_root]
+    python3 "f. Software/Harness Installer.py" --remove [host_root]
+    python3 "f. Software/Harness Installer.py" --target .agents/skills [host_root]
 
 Requires PyYAML.
 '''

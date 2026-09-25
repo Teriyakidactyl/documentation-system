@@ -1,25 +1,25 @@
 ---
 uid: YT5Y7F
 description: >-
-  `Consult when` *the Documentation System needs Tooling runtime preparation,
+  `Consult when` *the Documentation System needs Software runtime preparation,
   corpus organization, representation-level tooling, harness projection, or
-  current Tooling architecture* `to` **prepare the required execution
+  current Software architecture* `to` **prepare the required execution
   environment, select the narrowest capability that owns the mechanical
-  operation, or locate the Architecture Document governing a Tooling
+  operation, or locate the Architecture Document governing a Software
   implementation**.
 ---
 
-# Tooling
+# Software
 
 This location contains executable tools whose module docstrings carry
 controlled documentation, the runtime procedure required to execute them, and
-the code-local `📐 Architecture` store for current Tooling architecture authority.
+the code-local `📐 Architecture` store for current Software architecture authority.
 The unnumbered Python source files do not participate in generated Index
 navigation; use their filesystem names when invoking them.
 
 When a Python tool cannot import a dependency, `pip` is unavailable, or the
-host Python is externally managed, select **Prepare Tooling Environment** below
-before retrying the tool. Do not install Documentation System Tooling libraries
+host Python is externally managed, select **Prepare Software Environment** below
+before retrying the tool. Do not install Documentation System Software libraries
 into the operating system's Python installation.
 
 ## Index
@@ -31,7 +31,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: f. Tooling/Navigation Crawler.py
+    filepath: f. Software/Navigation Crawler.py
 -->
 
 ### 🛠️ Folder
@@ -60,12 +60,12 @@ element:
 
 ### 📐 Architecture
 
-`Consult when` *the current architecture of an implementation rooted in Tooling must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
+`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
 
 <a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
 
 - `📖 Organizing Architecture.md`
-- `📖 Tooling Architecture.md`
+- `📖 Software Architecture.md`
 
 ### 🛠️ Markdown
 
@@ -85,8 +85,8 @@ element:
 
 <a href="YAML.py" uid="4N9G7E" data-ds-link="relative-path">../YAML.py</a>
 
-### 🛠️ Prepare Tooling Environment
+### 🛠️ Prepare Software Environment
 
-`Read in full and follow when` *Documentation System Python tooling cannot import a required package, pip is unavailable, or the host Python is externally managed* `to` **create a repository-local virtual environment, install the declared Tooling dependencies, and run Documentation System tools without modifying system Python**.
+`Read in full and follow when` *Documentation System Python tooling cannot import a required package, pip is unavailable, or the host Python is externally managed* `to` **create a repository-local virtual environment, install the declared Software dependencies, and run Documentation System tools without modifying system Python**.
 
-<a href="%F0%9F%9B%A0%EF%B8%8F%20Prepare%20Tooling%20Environment.md" uid="THAV5S" data-ds-link="relative-path">../🛠️ Prepare Tooling Environment.md</a>
+<a href="%F0%9F%9B%A0%EF%B8%8F%20Prepare%20Software%20Environment.md" uid="THAV5S" data-ds-link="relative-path">../🛠️ Prepare Software Environment.md</a>

@@ -12,9 +12,14 @@ import sys
 from typing import Iterable
 
 CORPUS_ROOT = Path(__file__).resolve().parents[4]
-TOOLING = CORPUS_ROOT / "f. Tooling"
-if str(TOOLING) not in sys.path:
-    sys.path.insert(0, str(TOOLING))
+SOFTWARE_ROOTS = sorted(CORPUS_ROOT.glob("*. Software"))
+if len(SOFTWARE_ROOTS) != 1:
+    raise RuntimeError(
+        f"Expected exactly one prefixed Software root under {CORPUS_ROOT}; found {len(SOFTWARE_ROOTS)}."
+    )
+SOFTWARE = SOFTWARE_ROOTS[0]
+if str(SOFTWARE) not in sys.path:
+    sys.path.insert(0, str(SOFTWARE))
 
 from _capabilities.markdown import MarkdownError, fenced_blocks, resolve_section
 from _capabilities.yaml import YamlError, parse_mapping

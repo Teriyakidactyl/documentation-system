@@ -4,9 +4,9 @@ form:
   path: '<a href="../../e.%20Technical%20Writing/a.%20Document/b.%20Document%20Forms/b.%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§e.a.b.b</a>'
   version: '1.0'
 description: >-
-  `Consult when` *a Tooling entry point, shared capability, representation
+  `Consult when` *a Software entry point, shared capability, representation
   boundary, code-facing documentation surface, or cross-tool composition is
-  being introduced or materially changed* `to` **preserve Tooling's public
+  being introduced or materially changed* `to` **preserve Software's public
   work-encounter surfaces, nearest-expertise ownership, composition boundaries,
   source-local documentation model, and deterministic handoff between semantic
   and representation responsibilities**.
@@ -26,25 +26,25 @@ writing-style:
   register: technical
 ---
 
-# 📖 Tooling Architecture
+# 📖 Software Architecture
 
 ## 1. Scope
 
-This architecture governs the shared design of Documentation System Tooling
-rooted at `f. Tooling`: the public executable and procedural entry surfaces, the
+This architecture governs the shared design of Documentation System Software
+rooted at `f. Software`: the public executable and procedural entry surfaces, the
 address-transparent implementation capabilities beneath them, and the
 composition rules that keep representation expertise separate from higher-level
 Documentation System semantics.
 
-The public Tooling surfaces currently include Organizing, Harness Installer,
-Folder, Markdown, Frontmatter, YAML, HTML, and Tooling environment preparation.
+The public Software surfaces currently include Organizing, Harness Installer,
+Folder, Markdown, Frontmatter, YAML, HTML, and Software environment preparation.
 The Python implementation beneath those surfaces is primarily split between
 `_capabilities`, which owns reusable representation mechanics, and
 `_organizing`, which owns corpus-wide organization semantics and orchestration.
 
 <a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§f.d.1</a>
 is the narrower architecture governing Organizing and its use of peer
-capabilities. It specializes this Tooling architecture for corpus identity,
+capabilities. It specializes this Software architecture for corpus identity,
 organization schemes, projections, controlled references, diagnostics, and
 structural refactoring.
 
@@ -54,7 +54,7 @@ encounters. It governs their shared boundaries and composition model.
 
 ## 2. Drivers
 
-Tooling must preserve these design forces:
+Software must preserve these design forces:
 
 - an agent must be able to enter through the narrowest tool that owns the
   mechanical operation it needs rather than loading an unrelated orchestration
@@ -74,7 +74,7 @@ Tooling must preserve these design forces:
   authored at the layer that owns them;
 - deterministic operations may be automated and refreshed; ambiguous semantic
   choices must stop or remain authored rather than be guessed;
-- Tooling must remain locally executable and compatible with the repository's
+- Software must remain locally executable and compatible with the repository's
   current GitHub Actions entry paths and dependency declaration; and
 - architecture guidance must remain discoverable without requiring an agent to
   reconstruct design intent from imports, filenames, or historical discussion.
@@ -87,7 +87,7 @@ System concept.
 
 ### 3.1 Public work encounters and internal capabilities
 
-A numbered Tooling artifact is a public work encounter. Its documentation tells
+A numbered Software artifact is a public work encounter. Its documentation tells
 an agent when the tool is the appropriate entry point and its executable surface
 adapts that work encounter to implementation capabilities.
 
@@ -99,7 +99,7 @@ choose a tool.
 The current shape is:
 
 ~~~text
-public Tooling artifact
+public Software artifact
     ↓ adapts one work encounter
 shared implementation capability
     ↓ owns reusable mechanics
@@ -177,9 +177,9 @@ not decide organization ordinals.
 When a format-specific capability can return normalized repository-owned values,
 higher layers consume those values instead of parser-library token objects.
 
-### 3.4 Source-local documentation as a Tooling surface
+### 3.4 Source-local documentation as a Software surface
 
-Python Tooling module docstrings are both source-local documentation and, where
+Python Software module docstrings are both source-local documentation and, where
 frontmatter is present, controlled Documentation System artifacts.
 
 The module docstring is the natural file-level orientation surface because an
@@ -189,7 +189,7 @@ navigation.
 
 Module-level documentation may therefore carry:
 
-- the public purpose of an executable Tooling artifact;
+- the public purpose of an executable Software artifact;
 - controlled metadata needed for indexing and governance;
 - compact routing links to governing authority; and
 - file-level context that cannot be recovered safely from syntax alone.
@@ -214,7 +214,7 @@ Architecture Document
 
 ### 3.5 Controlled source mutation
 
-Tooling that mutates source documentation must use a host-aware boundary rather
+Software that mutates source documentation must use a host-aware boundary rather
 than unrestricted text replacement.
 
 The current Frontmatter capability parses Python with the AST to identify the
@@ -229,7 +229,7 @@ This establishes the current mutation rule:
 > surface, delegate embedded-format semantics to the corresponding capability,
 > and write back only the owned surface.
 
-Do not generalize the current module-docstring support into a claim that Tooling
+Do not generalize the current module-docstring support into a claim that Software
 already provides arbitrary function/class docstring refactoring.
 
 ### 3.6 Help and generated projections
@@ -237,7 +237,7 @@ already provides arbitrary function/class docstring refactoring.
 Generated help is a projection of authored and mechanically discoverable facts,
 not a second authority.
 
-When a Tooling surface exposes help, prefer facts already present in:
+When a Software surface exposes help, prefer facts already present in:
 
 - callable names and signatures;
 - type declarations;
@@ -256,7 +256,7 @@ agent.
 ### 3.7 Derivation before duplication
 
 Do not maintain a parallel handwritten inventory of files, functions, classes,
-imports, or other facts that Tooling can reliably derive from source.
+imports, or other facts that Software can reliably derive from source.
 
 Machine-readable authored declarations are justified when they express semantic
 facts that implementation structure cannot establish reliably, such as an
@@ -296,7 +296,7 @@ than silently selecting one as truth.
 
 ### 3.9 Implemented error design
 
-Tooling follows the general
+Software follows the general
 <a href="../../d.%20Software%20Design/f.%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§d.f</a>
 guidance, but the current implementation does **not** select the reusable
 Agent-Facing Error Architecture.
@@ -327,7 +327,7 @@ be reported with a completed deterministic refresh.
 
 ### 3.10 Implemented testing design
 
-Tooling follows the general
+Software follows the general
 <a href="../../d.%20Software%20Design/k.%20Testing/README.md" uid="R0J5KF">documentation-system:§d.k</a>
 guidance, but the current implementation does **not** select the reusable
 Self-Assembling Verification Architecture.
@@ -351,14 +351,14 @@ contract:
   clean.
 
 The authored test inventory is current verification evidence. It does not grow
-automatically from callable declarations, so Tooling must not claim
+automatically from callable declarations, so Software must not claim
 Self-Assembling Verification until that reusable architecture's selecting
 conditions and obligations are actually satisfied.
 
 ## 4. Realization
 
-The current public Tooling boundary is the numbered set of artifacts under
-`f. Tooling`. Python tools use source-local module docstrings as their indexed
+The current public Software boundary is the numbered set of artifacts under
+`f. Software`. Python tools use source-local module docstrings as their indexed
 Documentation System representation.
 
 The principal shared implementation boundaries are:
@@ -372,7 +372,7 @@ The principal shared implementation boundaries are:
 - `_capabilities/html.py` for generic HTML and anchor syntax;
 - `_organizing` for corpus-wide identity, organization, projection,
   controlled-reference, diagnostic, and refactor semantics; and
-- `f. Tooling/tests` for executable coverage of the shared capability and
+- `f. Software/tests` for executable coverage of the shared capability and
   Organizing boundaries.
 
 Current composition examples include:
@@ -392,21 +392,21 @@ Organizing
     → corpus semantics in _organizing
 ~~~
 
-`requirements.txt` is the shared dependency declaration for Tooling execution.
-`Prepare Tooling Environment` defines the current repository-local execution
+`requirements.txt` is the shared dependency declaration for Software execution.
+`Prepare Software Environment` defines the current repository-local execution
 environment procedure.
 
 ## 5. Verification
 
-`f. Tooling/tests/test_capabilities.py` exercises representation-capability
+`f. Software/tests/test_capabilities.py` exercises representation-capability
 boundaries including Python docstring frontmatter extraction, Markdown
 structure, HTML anchor parsing, and organization refactor behavior.
 
-`f. Tooling/tests/test_organizing.py` exercises corpus semantics and the
+`f. Software/tests/test_organizing.py` exercises corpus semantics and the
 composition of representation capabilities through Organizing.
 
 The `Maintain documentation organization` GitHub Actions workflow remains the
-repository verification boundary that runs Tooling tests and the public
+repository verification boundary that runs Software tests and the public
 Organizing entry path, establishes refresh idempotence, and checks generated
 state.
 
@@ -509,7 +509,7 @@ completeness achievement.
 
 ### 6.5 Representation-aware handoff
 
-If Tooling adds support for another host language or embedded documentation
+If Software adds support for another host language or embedded documentation
 format, preserve nearest-expertise delegation.
 
 A host-language capability should identify and safely extract the relevant
@@ -522,7 +522,7 @@ governance simultaneously.
 
 ### 6.6 Architecture conformance
 
-If architecture verification becomes a first-class Tooling capability, derive
+If architecture verification becomes a first-class Software capability, derive
 file lists, imports, declarations, call surfaces, and similar structural facts
 from implementation wherever possible.
 

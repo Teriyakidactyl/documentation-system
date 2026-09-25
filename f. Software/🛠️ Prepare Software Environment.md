@@ -4,7 +4,7 @@ description: >-
   `Read in full and follow when` *Documentation System Python tooling cannot
   import a required package, pip is unavailable, or the host Python is
   externally managed* `to` **create a repository-local virtual environment,
-  install the declared Tooling dependencies, and run Documentation System tools
+  install the declared Software dependencies, and run Documentation System tools
   without modifying system Python**.
 quadrant: HowTo
 outline:
@@ -21,10 +21,10 @@ writing-style:
   register: technical
 ---
 
-# 🛠️ Prepare Tooling Environment
+# 🛠️ Prepare Software Environment
 
-Use one repository-local Python environment for Documentation System Tooling.
-Do not install Tooling libraries into the operating system's Python
+Use one repository-local Python environment for Documentation System Software.
+Do not install Software libraries into the operating system's Python
 installation.
 
 ## 1. Confirm host prerequisites
@@ -59,32 +59,32 @@ python3 -m venv .venv-docs
 Reuse an existing `.venv-docs` when its interpreter is healthy. The
 environment is repository working state, not controlled documentation.
 
-## 3. Install Tooling dependencies
+## 3. Install Software dependencies
 
-Set `TOOLING` to the installed Documentation System Tooling directory. For a
+Set `TOOLING` to the installed Documentation System Software directory. For a
 consumer repository whose Documentation System is installed beneath
 `docs/1 Documentation System`:
 
 ```bash
-TOOLING="docs/1 Documentation System/f. Tooling"
+TOOLING="docs/1 Documentation System/f. Software"
 .venv-docs/bin/python -m pip install -r "$TOOLING/requirements.txt"
 ```
 
-In this repository, use `TOOLING="f. Tooling"`.
+In this repository, use `TOOLING="f. Software"`.
 
 Install from `requirements.txt` rather than copying package names into local
 setup instructions. The file is the shared dependency declaration used by
-Documentation System automation and local Tooling environments.
+Documentation System automation and local Software environments.
 
 Do not use `pip install --user` or `--break-system-packages` to work around
-an externally managed system Python. Tooling imports these libraries inside its
+an externally managed system Python. Software imports these libraries inside its
 own Python process, so a `pipx` application environment is not a substitute
-for the interpreter that runs the Tooling modules.
+for the interpreter that runs the Software modules.
 
-## 4. Run Tooling through the environment
+## 4. Run Software through the environment
 
 Use the environment interpreter for Documentation System Python tools and keep
-the Tooling directory on `PYTHONPATH` when the installation is nested:
+the Software directory on `PYTHONPATH` when the installation is nested:
 
 ```bash
 PYTHONPATH="$TOOLING" \
@@ -95,7 +95,7 @@ lint \
 ```
 
 Use the same interpreter for Organizing, Frontmatter, YAML, HTML, and other
-Python Tooling commands that share the environment.
+Python Software commands that share the environment.
 
 ## 5. Keep the environment local
 

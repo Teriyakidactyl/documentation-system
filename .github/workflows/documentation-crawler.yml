@@ -27,13 +27,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Tooling dependencies
+      - name: Install Software dependencies
         shell: bash
         run: |
           tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"
           python -m pip install --disable-pip-version-check -r "$tooling_dir/requirements.txt"
 
-      - name: Run Tooling tests
+      - name: Run Software tests
         shell: bash
         run: |
           tooling_tests="$(dirname "$(find . -type f -path '*/tests/test_organizing.py' -print -quit)")"
@@ -73,7 +73,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install Tooling dependencies
+      - name: Install Software dependencies
         shell: bash
         run: |
           tooling_dir="$(dirname "$(find . -type f -name 'Navigation Crawler.py' -print -quit)")"

@@ -107,8 +107,8 @@ class FolderConventionTests(unittest.TestCase):
                 "files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"},
             },
         )
-        tooling = self.root / "f. Tooling"
-        write(tooling / "README.md", location_readme("Tooling"))
+        tooling = self.root / "f. Software"
+        write(tooling / "README.md", location_readme("Software"))
         self.write_config(tooling, {"folders": {"scheme": ""}, "files": {"scheme": ""}})
         write(tooling / "8 Guide.md", page(uid="JKM234"))
         write(tooling / "Reference.md", page(uid="QRS456"))
@@ -116,7 +116,7 @@ class FolderConventionTests(unittest.TestCase):
 
         payload = normalize_conventions(self.root, apply=True)
         self.assertTrue(payload["applied"])
-        renamed = self.root / "a. Tooling"
+        renamed = self.root / "a. Software"
         self.assertTrue(renamed.is_dir())
         self.assertTrue((renamed / "Guide.md").is_file())
         self.assertTrue((renamed / "Reference.md").is_file())

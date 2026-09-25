@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 4M3G0Z
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
 description: >-
   `Read in full and follow when` *a Markdown or Python artifact's metadata
   envelope must be inspected independently of corpus semantics* `to`
@@ -25,7 +25,7 @@ writing-style:
 Inspect a supported metadata surface:
 
 ```text
-python3 "f. Tooling/Frontmatter.py" PATH
+python3 "f. Software/Frontmatter.py" PATH
 ```
 
 Markdown frontmatter begins at the file start. Python frontmatter begins at the

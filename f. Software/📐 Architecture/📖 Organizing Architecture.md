@@ -34,12 +34,12 @@ implementation that maintains stable controlled identities, organization, and
 derived representations for a Documentation System corpus.
 
 It specializes the enclosing
-<a href="%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>
-for corpus-wide organization semantics. The Tooling architecture governs the
+<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>
+for corpus-wide organization semantics. The Software architecture governs the
 shared public-tool, representation-capability, source-documentation, and
 composition boundaries that Organizing inherits.
 
-Its governed implementation is rooted in `f. Tooling` and entered through
+Its governed implementation is rooted in `f. Software` and entered through
 `Navigation Crawler.py`. Folder, Markdown, Frontmatter, YAML, and HTML
 remain independently routable peer capabilities. This architecture governs how
 Organizing composes them for corpus-wide work; it does not make their generic
@@ -65,7 +65,7 @@ Organizing must preserve these design forces:
 - structural mutation stops rather than guesses when unmanaged dependencies make
   a refactor unsafe;
 - current architecture is discoverable from the public Organizing entry point
-  and from the Tooling Architecture store;
+  and from the Software Architecture store;
 - the historical `Navigation Crawler.py` executable basename remains an
   automation-compatibility boundary while external workflows depend on it.
 
@@ -162,7 +162,7 @@ Frontmatter owns the metadata envelope carried by a host artifact: locating,
 extracting, updating, and preserving the boundary between metadata and body.
 
 Frontmatter consumes YAML for YAML payload semantics. That implementation
-dependency does not make YAML subordinate in Tooling navigation.
+dependency does not make YAML subordinate in Software navigation.
 
 #### 3.3.4 YAML
 
@@ -327,7 +327,7 @@ selected scheme or an explicit caller decision.
 The public implementation boundary is:
 
 ~~~text
-f. Tooling/Navigation Crawler.py
+f. Software/Navigation Crawler.py
     → _organizing.cli
         → _organizing.engine
             → normalized corpus and organization passes
@@ -372,18 +372,18 @@ Folder      <- independently routable
 ~~~
 
 Share normalized facts through explicit values rather than hidden mutable state.
-Do not infer a Tooling navigation hierarchy from the import graph.
+Do not infer a Software navigation hierarchy from the import graph.
 
 ## 5. Verification
 
-The authored Tooling test suite under `f. Tooling/tests` is the current
+The authored Software test suite under `f. Software/tests` is the current
 executable verification surface for Organizing. It must continue to cover
 corpus-root behavior, index boundaries, controlled sidebands, UIDs and
 locators, controlled references, ordinal inspection and normalization,
 representation capabilities, and deterministic refresh behavior.
 
 The `Maintain documentation organization` GitHub Actions workflow executes the
-Tooling tests, runs Organizing through the historical public entry path, runs a
+Software tests, runs Organizing through the historical public entry path, runs a
 second refresh to establish idempotence, and checks the resulting diff for
 formatting errors.
 
@@ -405,7 +405,7 @@ several meanings remain plausible.
 Add an internal module when a responsibility has an independent reason to change
 and a stable boundary. Do not split one function per file for symmetry.
 
-Add another public Tooling artifact when the work encounter is independently
+Add another public Software artifact when the work encounter is independently
 routable and useful without entering Organizing. Do not require an independent
 package or release lifecycle merely because a capability deserves a separate
 routing surface.

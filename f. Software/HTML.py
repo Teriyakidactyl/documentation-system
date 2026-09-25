@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: PPVYWD
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§f.d.2</a>'
 description: >-
   `Read in full and follow when` *HTML elements, attributes, comments, or
   inline anchors must be inspected independently of Markdown or corpus
@@ -28,8 +28,8 @@ entities, and constrained anchor parsing. It does not decide that an attribute
 such as `uid` represents a controlled identity; Organizing owns that meaning.
 
 ```text
-python3 "f. Tooling/HTML.py" inspect PATH
-python3 "f. Tooling/HTML.py" anchors PATH
+python3 "f. Software/HTML.py" inspect PATH
+python3 "f. Software/HTML.py" anchors PATH
 ```
 
 `inspect` emits structural HTML tokens. `anchors` emits simple inline

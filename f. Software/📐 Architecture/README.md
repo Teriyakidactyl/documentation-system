@@ -2,7 +2,7 @@
 uid: A6C7KC
 description: >-
   `Consult when` *the current architecture of an implementation rooted in
-  Tooling must be located before changing its boundaries, responsibilities, or
+  Software must be located before changing its boundaries, responsibilities, or
   cross-component behavior* `to` **select the code-local Architecture Document
   that governs that implementation without reconstructing design intent from
   source structure or ADR history**.
@@ -11,7 +11,7 @@ description: >-
 # 📐 Architecture
 
 This store contains current Architecture Documents for implementations rooted in
-Tooling.
+Software.
 
 Architecture Documents are current design authority. Decision records,
 research, fault evidence, and Git history may explain or evidence the design but
@@ -27,7 +27,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: f. Tooling/Navigation Crawler.py
+    filepath: f. Software/Navigation Crawler.py
 -->
 
 ### 📖 Organizing Architecture
@@ -36,8 +36,8 @@ element:
 
 <a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB" data-ds-link="relative-path">../📖 Organizing Architecture.md</a>
 
-### 📖 Tooling Architecture
+### 📖 Software Architecture
 
-`Consult when` *a Tooling entry point, shared capability, representation boundary, code-facing documentation surface, or cross-tool composition is being introduced or materially changed* `to` **preserve Tooling's public work-encounter surfaces, nearest-expertise ownership, composition boundaries, source-local documentation model, and deterministic handoff between semantic and representation responsibilities**.
+`Consult when` *a Software entry point, shared capability, representation boundary, code-facing documentation surface, or cross-tool composition is being introduced or materially changed* `to` **preserve Software's public work-encounter surfaces, nearest-expertise ownership, composition boundaries, source-local documentation model, and deterministic handoff between semantic and representation responsibilities**.
 
-<a href="%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9" data-ds-link="relative-path">../📖 Tooling Architecture.md</a>
+<a href="%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9" data-ds-link="relative-path">../📖 Software Architecture.md</a>
