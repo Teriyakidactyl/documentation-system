@@ -35,3 +35,9 @@ element:
 `Consult when` *the Organizing tool, an organization scheme, a peer representation capability, a validation rule, a projection, or a structural refactor is being introduced or materially changed* `to` **place responsibility with the owning capability while preserving one normalized corpus and one deterministic organization workflow**.
 
 <a href="1%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB" data-ds-link="relative-path">../1 📖 Organizing Architecture.md</a>
+
+### 📖 Tooling Architecture
+
+`Consult when` *a Tooling entry point, shared capability, representation boundary, code-facing documentation surface, or cross-tool composition is being introduced or materially changed* `to` **preserve Tooling's public work-encounter surfaces, nearest-expertise ownership, composition boundaries, source-local documentation model, and deterministic handoff between semantic and representation responsibilities**.
+
+<a href="2%20%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9" data-ds-link="relative-path">../2 📖 Tooling Architecture.md</a>

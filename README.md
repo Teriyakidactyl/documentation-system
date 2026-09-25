@@ -190,7 +190,7 @@ element:
 
 ### Software Design
 
-`Consult when` *a software design concern must be resolved before its implementation pattern or boundary is chosen* `to` **select the canonical Software Design guidance that fixes the repository's default decision**.
+`Consult when` *software design must be specified, a recurring design concern must be resolved, a reusable design must be selected, or the relationship between reusable specification and a live implementation must be understood* `to` **apply the canonical Software Design authority, preserve established decisions, and route implementation-specific design to the code-local architecture that governs it**.
 
 <a href="6%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../6 Software Design/README.md</a>
 
