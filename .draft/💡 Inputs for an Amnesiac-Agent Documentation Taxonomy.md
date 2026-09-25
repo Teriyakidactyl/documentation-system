@@ -604,3 +604,213 @@ The investigation has not yet established:
 The investigation should resist naming permanent glyphs until these questions
 have been attacked with enough heterogeneous encounters to expose collisions,
 gaps, and false axes.
+
+## 20. Open questions for external discussion
+
+This section turns the working model above into a common investigation contract
+for independent agents. The goal is not to obtain agreement with the current
+hypotheses. The goal is to expose which observations survive independent
+reasoning, which candidate axes collapse, and whether any stable taxonomy of
+incompatible agent needs actually emerges.
+
+### 20.1 Research assignment
+
+Investigate whether amnesiac agents exhibit a small set of universal
+documentation needs analogous in derivation to Diátaxis.
+
+Treat the supplied matrices, labels, and candidate fractures as hypotheses to
+challenge, not as a taxonomy to complete. Begin from the agent's relationship
+to information at the moment of use. Look for needs whose optimal document
+shapes are incompatible enough that serving them in one bounded document unit
+predictably makes at least one need worse.
+
+A useful result may be:
+
+- a small closed taxonomy;
+- a set of independent dimensions whose combinations matter more than named
+  types;
+- a state-transition or interaction grammar;
+- a demonstration that some proposed axes are derived from others;
+- or evidence that no universal taxonomy comparable to Diátaxis exists for
+  amnesiac agents.
+
+Do not preserve a four-cell structure merely because Diátaxis has four
+quadrants or because the present-state and target-state hypothesis happens to
+form a two-by-two matrix.
+
+### 20.2 Falsification targets
+
+Actively look for evidence against the current model.
+
+Test whether:
+
+- present-state certainty and target-state certainty are actually independent;
+- supposedly different need states can be served well by one homogeneous
+  document unit without structural tension;
+- apparently independent axes are strongly correlated and therefore describe
+  one underlying distinction;
+- some combinations are impossible, incoherent, or only artifacts of the
+  vocabulary used to name them;
+- retrieve versus resolve explains the present-state and target-state matrix,
+  or vice versa;
+- diagnose versus remediate is a genuine content fracture rather than an
+  ordinary sequence within one interaction;
+- decide, design, investigate, and frame are distinct needs or merely
+  variations in unresolved state;
+- action versus cognition still predicts incompatible content obligations once
+  other agent-specific dimensions are controlled;
+- establish-context versus operate-from-context can be distinguished without an
+  arbitrary threshold;
+- reliance status or audience role has been mistaken for content type;
+- routing/control information has been mistaken for payload content;
+- a missing need produces a stronger and more general incompatibility than any
+  current candidate.
+
+When a counterexample appears, prefer revising or rejecting the candidate model
+over redefining the example until it fits.
+
+### 20.3 Required return shape
+
+For comparison across independent discussions, return findings under the
+following headings:
+
+1. **Accepted observations** — claims in this draft that survive scrutiny.
+2. **Disputed observations** — claims that are unsupported, overgeneralized, or
+   framed incorrectly.
+3. **Candidate fundamental dimensions** — proposed independent axes, including
+   the relation each axis classifies.
+4. **Strongest incompatible-needs fractures** — pairs or sets of needs where
+   optimizing for one predictably damages another.
+5. **Counterexamples** — concrete encounters that break or blur the proposed
+   distinctions.
+6. **Derived relationships** — candidate needs or axes that appear to be
+   specializations, workflow phases, or consequences of something more
+   fundamental.
+7. **Proposed model** — a taxonomy, matrix, graph, interaction grammar, or other
+   structure only if the evidence supports one.
+8. **No-taxonomy case** — if no stable universal taxonomy is found, state what
+   model better explains the evidence.
+9. **Unresolved tests** — the smallest additional experiments or encounter sets
+   that would discriminate between remaining hypotheses.
+
+Prefer concrete agent-document encounters over abstract agreement with labels.
+
+### 20.4 Minimal vocabulary
+
+Use these terms consistently during the investigation.
+
+**Amnesia agent.** An agent whose repository-specific knowledge available in
+one encounter cannot be presumed to persist into another. The relevant
+competence is what is present in active context now.
+
+**Exigence.** The pressure or condition that exists before a document
+interaction and makes that interaction applicable.
+
+**Acceptance criterion.** The minimum observable action, decision,
+understanding-in-order-to-act, or state change that dissolves the exigence.
+
+**Progressive disclosure.** Navigation in which only the context and immediate
+choices needed for the current decision are exposed, with deeper information
+loaded only when routing requires it.
+
+**Current authority.** Information that may be relied on when acting now.
+
+**Working information.** Mutable planning, investigation, or design material
+used to produce another result and not automatically current authority.
+
+**Content-type fracture.** A boundary between needs where optimizing a bounded
+document unit for one need predictably degrades its ability to serve the other.
+
+**Workflow state.** A condition of the work or agent-task relationship at some
+point in a larger process. A workflow state is not automatically a document
+type.
+
+**Document unit.** A bounded body of information that can be reasoned about as
+one interaction contract even when several such units must share one physical
+file.
+
+### 20.5 Primary Diátaxis material
+
+Do not rely only on this draft's characterization of Diátaxis. Read the
+framework's own account of its derivation and user-needs model before comparing
+it with amnesiac-agent needs:
+
+- Foundations: <https://diataxis.fr/foundations/>
+- Map: <https://diataxis.fr/map/>
+- Compass: <https://diataxis.fr/compass/>
+
+Use those sources to distinguish Diátaxis's underlying dimensions and user
+relationships from the familiar four document labels. The purpose of the
+comparison is to imitate the quality of the derivation, not to preserve its
+surface structure.
+
+### 20.6 Workflow state versus document type
+
+This is the most important open question in the present model.
+
+The labels Execute, Diagnose, Decide, and Investigate may describe work states
+accurately without implying four universal kinds of documents. A useful
+workflow decomposition is not sufficient evidence for a content taxonomy.
+
+For every candidate need state, prove the additional step:
+
+> Does this need impose a distinctive enough set of content obligations that
+> combining it with another need in one bounded document unit predictably
+> damages at least one interaction?
+
+Test this through observable representation consequences such as:
+
+- required entry information;
+- whether alternatives must be preserved or suppressed;
+- whether mutation is permitted;
+- whether evidence must be preserved;
+- random access versus ordered dependency;
+- heading topology;
+- branching shape;
+- information density;
+- examples and counterexamples;
+- stopping conditions;
+- acceptance criteria;
+- and predictable failures when the wrong shape is supplied.
+
+If two workflow states require materially the same document shape, they should
+not become separate content types merely because they occur at different points
+in a process.
+
+If one workflow state can require several incompatible document shapes
+depending on another independent dimension, the workflow state is likewise
+insufficient as the taxonomy axis.
+
+### 20.7 Universality standard
+
+A candidate taxonomy should survive changes in subject, repository, agent
+instance, and audience role.
+
+Pressure-test it against at least:
+
+- software implementation and architecture;
+- document design and editing;
+- troubleshooting and recovery;
+- research and evidence evaluation;
+- configuration and operations;
+- planning and design decisions;
+- lookup-heavy technical reference;
+- and domains unrelated to repositories or software.
+
+A distinction that exists only because of one repository's control model may
+still be valuable locally, but it is not the sought universal analogue.
+
+### 20.8 External-agent independence
+
+Independent agents should be encouraged to introduce alternative axes and
+models before reconciling with the candidates in this draft.
+
+Agreement among agents is weak evidence when they all inherit the same framing.
+Stronger evidence comes from independently derived models converging on the
+same fracture, or from a candidate surviving attempts to replace it with a
+simpler explanation.
+
+When synthesizing several external discussions, preserve minority
+counterexamples and incompatible models long enough to determine what
+observation causes the disagreement. Do not reduce the outputs to a vote.
+
