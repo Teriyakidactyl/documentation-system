@@ -1,5 +1,5 @@
 ---
-uid: SNIP01
+uid: SNP401
 description: >-
   `Consult when` *a bounded reusable software fragment is sought and adopting
   a whole Software Specification Blueprint would be broader than the work*
