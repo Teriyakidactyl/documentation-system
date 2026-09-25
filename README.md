@@ -195,9 +195,19 @@ element:
 <a href="6%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../6 Software Design/README.md</a>
 
 - `1 📖 Software Design Principles.md`
-- `2 Architecture/README.md`
-- `3 Error Management/README.md`
-- `4 Testing/README.md`
+- `2 Comments/README.md`
+- `3 Concurrency/README.md`
+- `4 Configuration/README.md`
+- `5 Data Flow/README.md`
+- `6 Decomposition/README.md`
+- `7 Error Management/README.md`
+- `8 Extension/README.md`
+- `9 Interfaces/README.md`
+- `10 Naming/README.md`
+- `11 Performance/README.md`
+- `12 Testing/README.md`
+- `13 📖 Implemented Architecture.md`
+- `14 🛠️ Design And Record An Implemented Architecture.md`
 
 ### Editing
 

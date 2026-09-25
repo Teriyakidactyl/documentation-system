@@ -179,7 +179,7 @@ A currently binding architectural constraint belongs in the controlled
 architecture information whose readers need it to implement the system
 correctly. When several interacting decisions form durable implemented
 architecture, place that current authority with the governed code according to
-<a href="../6%20Software%20Design/2%20Architecture/1%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ">documentation-system:§6.2.1</a>.
+<a href="../6%20Software%20Design/13%20%F0%9F%93%96%20Implemented%20Architecture.md" uid="6Q70VZ">documentation-system:§6.13</a>.
 
 A retained decision record can additionally preserve the original problem,
 alternatives, tradeoffs, rejected approaches, and decision provenance when

@@ -297,7 +297,7 @@ than silently selecting one as truth.
 ### 3.9 Implemented error design
 
 Tooling follows the general
-<a href="../../6%20Software%20Design/3%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§6.3</a>
+<a href="../../6%20Software%20Design/7%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§6.7</a>
 guidance, but the current implementation does **not** select the reusable
 Agent-Facing Error Architecture.
 
@@ -328,7 +328,7 @@ be reported with a completed deterministic refresh.
 ### 3.10 Implemented testing design
 
 Tooling follows the general
-<a href="../../6%20Software%20Design/4%20Testing/README.md" uid="R0J5KF">documentation-system:§6.4</a>
+<a href="../../6%20Software%20Design/12%20Testing/README.md" uid="R0J5KF">documentation-system:§6.12</a>
 guidance, but the current implementation does **not** select the reusable
 Self-Assembling Verification Architecture.
 
