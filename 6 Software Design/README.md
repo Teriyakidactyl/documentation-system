@@ -11,17 +11,24 @@ description: >-
 
 # Software Design
 
-Software Design is the canonical specification authority for how software is
-designed in the Documentation System.
+Software Design exists to guide the authoring and maintenance of **Software
+Architecture Specifications** for live software implementations.
 
-Its documents are normative working authority, not a survey of software
-engineering possibilities. They establish the vocabulary, decision order,
-defaults, selecting conditions, reusable designs, and constraints that an agent
-or maintainer is expected to apply when designing software.
+Its documents may also be consulted independently for explanation, design
+reasoning, or a local implementation decision. That local usefulness is
+secondary to their collective purpose: supplying the canonical vocabulary,
+decision models, defaults, selecting conditions, reusable designs, completeness
+lenses, and verification expectations needed to specify a durable software
+architecture without reconstructing those decisions from scratch.
 
-The purpose is not to eliminate engineering judgment. It is to prevent each
-implementation task from reopening design questions that the repository has
-already resolved.
+The documents in this section are normative working authority, not a survey of
+software-engineering possibilities. They constrain how a Software Architecture
+Specification is developed while leaving implementation-specific decisions in
+the specification owned by the live codebase.
+
+The purpose is not to eliminate engineering judgment. It is to preserve resolved
+design knowledge so the author of a Software Architecture Specification spends
+judgment on the decisions that are actually specific to the implementation.
 
 ## Working doctrine
 
@@ -51,25 +58,29 @@ Named methodologies, patterns, and schools of design are sources of useful
 reasoning. They do not become repository authority merely because they are
 recognized in the literature.
 
-### Separate reusable specification from live implementation authority
+### Guide the specification; do not replace it
 
-Software Design specifies decisions intended for reuse across implementations.
+Software Design supplies reusable specification authority used to write a
+Software Architecture Specification.
 
 General specification guidance defines how a recurring design problem is
 reasoned about and resolved. A reusable blueprint may go further and fix a
-durable arrangement for a recurring selecting condition.
+durable arrangement for a recurring selecting condition. Neither artifact is the
+architecture specification of a live implementation.
 
-The design actually governing a live implementation belongs with that
-implementation. When several interacting decisions form durable architecture,
-record that current authority in the implementation's code-local
-`📐 Architecture` store.
+The Software Architecture Specification records the design actually governing
+that implementation. It resolves the applicable Software Design concerns,
+selects reusable blueprints where their conditions apply, adds
+implementation-specific decisions, identifies realization evidence, and states
+how the resulting architectural obligations are verified.
 
-A reusable design is not selected merely because code resembles it. The live
-architecture must explicitly accept the relevant obligations, realize them in
-recognizable implementation structure, and carry the corresponding verification.
+A reusable design is not selected merely because code resembles it. The Software
+Architecture Specification must explicitly accept the relevant obligations and
+state how the implementation realizes and verifies them.
 
-Do not use reusable Software Design documents as substitutes for the current
-architecture of a particular codebase.
+Keep the Software Architecture Specification with the implementation it governs
+in the code-local `📐 Architecture` store. Do not use reusable Software Design
+documents as substitutes for that live authority.
 
 ### Organize around recurring independent decisions
 
@@ -125,15 +136,17 @@ implementation resemblance, commit archaeology, or inference from tests.
 The repository should answer two different questions directly:
 
 ~~~text
-What rules and reusable designs should govern this kind of decision?
+What specification guidance and reusable designs should I use
+to resolve this architectural decision?
     → Software Design
 
-What design is this implementation actually required to satisfy?
-    → its code-local architecture authority
+What architecture is this implementation actually required to satisfy?
+    → its Software Architecture Specification
 ~~~
 
-When either answer requires reverse engineering, the documentation system has
-lost design information.
+Software Design exists to make the second answer possible without forcing its
+author to reinvent the first. When either answer requires reverse engineering,
+the documentation system has lost design information.
 
 ### Keep current authority separate from decision history
 
@@ -166,22 +179,30 @@ Keep semantic judgment explicit where faithful automation is not possible.
 
 ## Working method
 
-When designing or changing software:
+Use Software Design to build or revise a Software Architecture Specification:
 
-1. identify the recurring design concern or concerns involved;
-2. consult the canonical specification before inventing a local convention;
-3. apply the documented default unless a concrete selecting condition requires
-   another supported design;
-4. select a reusable blueprint only when its obligations actually apply;
-5. record implementation-specific durable decisions with the code they govern;
-6. make the implementation expose recognizable evidence of those decisions;
-7. verify mechanically decidable obligations at the faithful boundary; and
-8. preserve historical rationale separately when the reason for a consequential
-   choice must survive.
+1. establish the live implementation scope that the specification will govern;
+2. identify the recurring design concerns that materially affect that scope;
+3. consult the canonical specification for each concern before inventing a local
+   convention;
+4. apply documented defaults and decision sequences, recording only the resolved
+   result that matters to this implementation;
+5. select a reusable blueprint only when its selecting conditions and obligations
+   actually apply;
+6. use architecture viewpoints, perspectives, and other completeness lenses to
+   search for consequential concerns that have not yet been resolved;
+7. state the implementation-specific responsibilities, boundaries, invariants,
+   interactions, and allowed variation that remain after reusable decisions are
+   applied;
+8. map those architectural claims to recognizable implementation evidence;
+9. state how mechanically decidable and semantic obligations will be verified;
+   and
+10. preserve historical rationale separately when the reason for a consequential
+    choice must survive.
 
-Do not copy general Software Design specification into a codebase-specific
-architecture document. Record the selected or specialized result and link back
-to the reusable authority when that relationship matters.
+A Software Architecture Specification is therefore not a copy of Software Design.
+It is the implementation-specific resolution produced by applying Software Design
+to one live scope.
 
 ## Index
 <!--
