@@ -1,5 +1,5 @@
 ---
-uid: ASM8LY
+uid: ASM8QY
 description: >-
   `Consult when` *software design should reuse an established representation
   rather than derive every implementation arrangement or fragment anew* `to`
