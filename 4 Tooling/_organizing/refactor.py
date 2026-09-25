@@ -108,14 +108,11 @@ def normalize_ordinals(corpus_root,*,apply=False):
     root=corpus_root.resolve()
     try:payload=ordinal_as_dict(root);plan=ordinal_plan_normalization(root)
     except OrdinalSchemeError as exc:raise OrganizingError(str(exc)) from exc
-    rewrites,refs=plan_text_rewrites(root,plan);payload['unmanaged_references']=[{'path':corpus_path(root,x.path),'line':x.line,'value':x.value} for x in refs];payload['applied']=False
+    rewrites,refs=plan_text_rewrites(root,plan)
+    legacy_refs=[UnmanagedReference(x.path,0,corpus_path(root,x.path)) for x in rewrites]+refs
+    payload['unmanaged_references']=[{'path':corpus_path(root,x.path),'line':x.line,'value':x.value} for x in legacy_refs];payload['applied']=False
     if not apply or not plan:return payload
-    if refs:raise OrganizingError('ordinal normalization has ambiguous literal path references')
-    written=_apply_text_rewrites(rewrites)
+    if legacy_refs:raise OrganizingError('ordinal normalization is blocked by unmanaged literal path references')
     try:apply_renames(plan)
-    except FolderError as exc:
-        for x in reversed(written):
-            try:x.path.write_text(x.before,encoding='utf-8')
-            except OSError:pass
-        raise OrganizingError(str(exc)) from exc
+    except FolderError as exc:raise OrganizingError(str(exc)) from exc
     payload['applied']=True;return payload
