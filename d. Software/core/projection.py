@@ -1,23 +1,11 @@
-"""Consumer projections of canonical Software results."""
-
+"""Projection helpers over the canonical Result."""
 from __future__ import annotations
-
+import json
 from typing import Any
-
 from .result import Result
 
+def json_text(result: Result[Any]) -> str:
+    return json.dumps(result.to_dict(), indent=2, ensure_ascii=False, default=str)
 
-def result_dict(result: Result[Any]) -> dict[str, Any]:
-    payload: dict[str, Any] = {
-        "status": result.status.value,
-        "completion": result.completion.value,
-        "value": result.value,
-        "diagnostics": [
-            item.to_dict() if hasattr(item, "to_dict") else item
-            for item in result.diagnostics
-        ],
-        "failures": [failure.to_dict() for failure in result.failures],
-    }
-    if result.stopped_at is not None:
-        payload["stopped_at"] = result.stopped_at
-    return payload
+def first_failure_message(result: Result[Any]) -> str:
+    return result.failures[0].message if result.failures else "operation failed"

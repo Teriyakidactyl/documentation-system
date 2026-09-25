@@ -1,61 +1,26 @@
-"""Independent common contracts evaluated by self-assembled verification."""
-
+"""Independent common contracts applied to observed operation results."""
 from __future__ import annotations
-
-from dataclasses import dataclass
-
 from core.operation import Operation
-from core.result import Completion, Result, Status
+from core.result import Result
+from .cases import Case
 
-
-@dataclass(frozen=True)
-class Finding:
-    operation: str
-    case: str
-    contract: str
-    message: str
-
-
-def result_contract(operation: Operation, case_name: str, result: Result[object]) -> tuple[Finding, ...]:
-    findings: list[Finding] = []
-    if not isinstance(result, Result):
-        return (
-            Finding(
-                operation.id,
-                case_name,
-                "canonical-result",
-                f"Observed {type(result).__name__}, expected core.result.Result.",
-            ),
-        )
-
-    if result.status is Status.FAILURE:
+def evaluate(operation: Operation, case: Case, result: Result) -> list[str]:
+    findings=[]
+    if result.status.value!=case.expected_status:
+        findings.append(f"{operation.id}/{case.name}: expected status {case.expected_status}, observed {result.status.value}")
+    if result.failures:
+        expected=tuple(sorted(result.failures,key=lambda item:item.canonical_key()))
+        if result.failures!=expected:
+            findings.append(f"{operation.id}/{case.name}: failures are not deterministic")
         for failure in result.failures:
-            if not failure.origin.module or not failure.origin.file or not failure.origin.symbol:
-                findings.append(
-                    Finding(
-                        operation.id,
-                        case_name,
-                        "source-addressable-origin",
-                        "Failure origin must include module, file, and symbol.",
-                    )
-                )
-            if not failure.name:
-                findings.append(
-                    Finding(
-                        operation.id,
-                        case_name,
-                        "local-error-identity",
-                        "Failure must carry a local semantic name.",
-                    )
-                )
-
-    if result.completion is Completion.PARTIAL and result.stopped_at is None:
-        findings.append(
-            Finding(
-                operation.id,
-                case_name,
-                "partial-completion",
-                "Partial completion must identify stopped_at.",
-            )
-        )
-    return tuple(findings)
+            if not failure.origin.module or not failure.origin.file:
+                findings.append(f"{operation.id}/{case.name}: failure lacks source-addressable origin")
+            if not failure.name or not failure.classification or not failure.message:
+                findings.append(f"{operation.id}/{case.name}: failure identity is incomplete")
+            if not failure.provenance or failure.provenance[-1]!=operation.id:
+                findings.append(f"{operation.id}/{case.name}: operation provenance was not preserved")
+    if case.expected_failure_origin is not None:
+        observed=result.failures[0].origin.file if result.failures else None
+        if observed!=case.expected_failure_origin:
+            findings.append(f"{operation.id}/{case.name}: expected failure origin {case.expected_failure_origin}, observed {observed}")
+    return findings

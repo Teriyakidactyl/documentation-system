@@ -1,68 +1,51 @@
-"""Canonical Software operation result."""
-
+"""One canonical operation result with projection-neutral completion semantics."""
 from __future__ import annotations
-
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Generic, TypeVar
-
+from typing import Any, Generic, Iterable, TypeVar
+from .diagnostic import Diagnostic
 from .failure import Failure
 
 T = TypeVar("T")
-
 
 class Status(str, Enum):
     SUCCESS = "success"
     FAILURE = "failure"
 
-
 class Completion(str, Enum):
     COMPLETE = "complete"
     PARTIAL = "partial"
 
-
 @dataclass(frozen=True)
 class Result(Generic[T]):
-    """One canonical result from which consumer projections can be derived."""
-
     status: Status
     completion: Completion
     value: T | None = None
-    diagnostics: tuple[Any, ...] = ()
+    diagnostics: tuple[Diagnostic, ...] = ()
     failures: tuple[Failure, ...] = ()
     stopped_at: str | None = None
 
-    def __post_init__(self) -> None:
-        if self.status is Status.SUCCESS and self.failures:
-            raise ValueError("successful Result cannot contain failures")
-        if self.status is Status.FAILURE and not self.failures:
-            raise ValueError("failed Result requires at least one failure")
-        if self.completion is Completion.PARTIAL and not self.stopped_at:
-            raise ValueError("partial Result requires stopped_at")
+    @classmethod
+    def success(cls, value: T | None = None, *, diagnostics: Iterable[Diagnostic] = ()) -> "Result[T]":
+        return cls(Status.SUCCESS, Completion.COMPLETE, value, tuple(diagnostics))
 
     @classmethod
-    def success(
-        cls,
-        value: T | None = None,
-        *,
-        diagnostics: tuple[Any, ...] = (),
-    ) -> "Result[T]":
-        return cls(Status.SUCCESS, Completion.COMPLETE, value=value, diagnostics=diagnostics)
+    def failure(cls, failures: Iterable[Failure], *, completion: Completion = Completion.COMPLETE,
+                value: T | None = None, diagnostics: Iterable[Diagnostic] = (),
+                stopped_at: str | None = None) -> "Result[T]":
+        ordered = tuple(sorted(failures, key=lambda item: item.canonical_key()))
+        return cls(Status.FAILURE, completion, value, tuple(diagnostics), ordered, stopped_at)
 
-    @classmethod
-    def failure(
-        cls,
-        *failures: Failure,
-        completion: Completion = Completion.COMPLETE,
-        stopped_at: str | None = None,
-        value: T | None = None,
-        diagnostics: tuple[Any, ...] = (),
-    ) -> "Result[T]":
-        return cls(
-            Status.FAILURE,
-            completion,
-            value=value,
-            diagnostics=diagnostics,
-            failures=tuple(failures),
-            stopped_at=stopped_at,
-        )
+    @property
+    def ok(self) -> bool:
+        return self.status is Status.SUCCESS
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "status": self.status.value,
+            "completion": self.completion.value,
+            "value": self.value,
+            "diagnostics": [item.to_dict() for item in self.diagnostics],
+            "failures": [item.to_dict() for item in self.failures],
+            "stopped_at": self.stopped_at,
+        }

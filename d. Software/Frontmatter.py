@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 4M3G0Z
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.f.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.d.2</a>'
 description: >-
   `Read in full and follow when` *a Markdown or Python artifact's metadata
   envelope must be inspected independently of corpus semantics* `to`
@@ -33,26 +33,7 @@ start of the module docstring. Frontmatter delegates YAML payload semantics to
 the YAML capability.
 '''
 
-from __future__ import annotations
-
-import json
-from pathlib import Path
-import sys
-
-from _capabilities.frontmatter import FrontmatterError, load
-
-
-def main() -> None:
-    if len(sys.argv) != 2:
-        raise SystemExit(f"Usage: {Path(sys.argv[0]).name} PATH")
-    path = Path(sys.argv[1])
-    try:
-        value = load(path)
-    except FrontmatterError as exc:
-        raise SystemExit(f"frontmatter: {exc}") from exc
-    if value is None:
-        raise SystemExit("frontmatter: no supported frontmatter surface found")
-    print(json.dumps({"kind": value.kind, "start_line": value.start_line, "data": value.data}, indent=2, ensure_ascii=False))
+from interfaces.cli.frontmatter import main
 
 
 if __name__ == "__main__":

@@ -25,17 +25,9 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
-      - name: Discover declared operations
+      - name: Discover public surface and enforce gap ratchet
         working-directory: d. Software
-        run: |
-          python - <<'PY'
-          from verification.discovery import discover
-          operations = discover()
-          if not operations:
-              raise SystemExit("No Software operations were discovered.")
-          for operation in operations:
-              print(f"{operation.id}: {operation.owner.file}::{operation.owner.symbol}")
-          PY
+        run: python -m verification.runner surface
 
   generated-contracts:
     name: Generated Contracts
@@ -47,9 +39,9 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
-      - name: Run self-assembling verification
+      - name: Assemble and execute verification cases
         working-directory: d. Software
-        run: python -m verification
+        run: python -m verification.runner generated
 
   capability-tests:
     name: Capability Tests
@@ -61,10 +53,10 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
-      - name: Run capability and shared-contract tests
+      - name: Run capability contract tests
         run: |
-          python -m unittest discover -s "d. Software/tests" -p "test_capabilities.py"
-          python -m unittest discover -s "d. Software/tests" -p "test_core_verification.py"
+          python "d. Software/tests/test_capabilities.py"
+          python "d. Software/tests/test_core_contracts.py"
 
   automation-tests:
     name: Automation Tests
@@ -76,8 +68,8 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
-      - name: Run Organizing automation tests
-        run: python -m unittest discover -s "d. Software/tests" -p "test_organizing.py"
+      - name: Run Organizing semantic tests
+        run: python "d. Software/tests/test_organizing.py"
 
   architecture-conformance:
     name: Architecture Conformance
@@ -89,15 +81,16 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
-      - name: Run repository structural conformance tests
+      - name: Check dependency direction and verification coverage
+        working-directory: d. Software
+        run: python -m verification.runner architecture
+      - name: Test verification surface
+        run: python "d. Software/tests/test_verification_surface.py"
+      - name: Verify Semantic Registry
         shell: bash
         run: |
           registry_tests="$(dirname "$(find . -type f -name 'test_semantic_registry.py' -print -quit)")"
-          if [ -n "$registry_tests" ] && [ -d "$registry_tests" ]; then
-            python -m unittest discover -s "$registry_tests" -p "test_semantic_registry.py"
-          else
-            echo "No semantic registry tests found."
-          fi
+          python -m unittest discover -s "$registry_tests" -p "test_semantic_registry.py"
 
   repository-convergence:
     name: Repository Convergence
@@ -112,6 +105,7 @@ jobs:
       - name: Refresh organization
         run: python "d. Software/Navigation Crawler.py" refresh .
       - name: Verify idempotence
+        shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
           python "d. Software/Navigation Crawler.py" refresh .
@@ -120,7 +114,6 @@ jobs:
           git diff --check
 
   refresh-main:
-    name: Refresh Main
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
     needs:
       - software-surface
@@ -133,10 +126,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: Check out canonical source
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
       - name: Install Software dependencies
@@ -144,6 +135,7 @@ jobs:
       - name: Refresh organization
         run: python "d. Software/Navigation Crawler.py" refresh .
       - name: Verify idempotence
+        shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
           python "d. Software/Navigation Crawler.py" refresh .
@@ -151,12 +143,12 @@ jobs:
           cmp /tmp/organizing-first.diff /tmp/organizing-second.diff
           git diff --check
       - name: Commit derived changes
+        shell: bash
         run: |
           if git diff --quiet; then
             echo "Organizing produced no changes."
             exit 0
           fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add --all
