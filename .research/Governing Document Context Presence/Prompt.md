@@ -1,7 +1,7 @@
 ---
 uid: RMRAE6
 form:
-  path: '<a href="../../a.%20Document%20Design/a.%20Document/b.%20Document%20Forms/d.%20Research/a.%20Research%20Prompt/README.md" uid="BSJY2D">documentation-system:§a.a.b.d.a</a>'
+  path: '<a href="../../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/d.%20Research/a.%20Research%20Prompt/README.md" uid="BSJY2D">documentation-system:§a.a.b.d.a</a>'
   version: '1.0'
 description: >-
   `Read in full and follow when` *the governing-document context-presence

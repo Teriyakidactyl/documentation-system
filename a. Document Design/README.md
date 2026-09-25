@@ -37,21 +37,21 @@ becoming authorities for domain-independent conceptual structure.
 element:
   path:
     uid: BZJASV
-    filepath: a. Document Design/a. Document/a. Document Elements/a. Index/README.md
+    filepath: a. Document Design/a. Assemblies/a. Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
     filepath: d. Software/Navigation Crawler.py
 -->
 
-### Document
+### Assemblies
 
-`Consult when` *a technical document needs reusable structure and the applicable structural scope is not yet known* `to` **choose Document Forms for whole-document structure or Document Elements for heading-bounded structure before authoring the local content**.
+`Consult when` *a technical document needs an established reusable representation or reusable part and the applicable structural scope is not yet known* `to` **choose Document Forms for whole-document assemblies or Document Elements for heading-bounded assemblies before authoring the local content**.
 
-<a href="a.%20Document/README.md" uid="7Z7MY0" data-ds-link="relative-path">../a. Document/README.md</a>
+<a href="a.%20Assemblies/README.md" uid="7Z7MY0" data-ds-link="relative-path">../a. Assemblies/README.md</a>
 
-- `a. Document Elements/README.md`
-- `b. Document Forms/README.md`
+- `a. Elements/README.md`
+- `b. Forms/README.md`
 
 ### Document Control
 
