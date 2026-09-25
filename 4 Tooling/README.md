@@ -87,3 +87,4 @@ element:
 <a href="9%20%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../9 📐 Architecture/README.md</a>
 
 - `1 📖 Organizing Architecture.md`
+- `2 📖 Tooling Architecture.md`
