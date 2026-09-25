@@ -1,10 +1,10 @@
 ---
 uid: TRJS8V
 description: >-
-  `Consult when` *a directory name begins with a reserved prefix and its corpus
-  membership, Organizing traversal, or access condition is unknown* `to` **confirm
-  what the prefix reserves, whether the Organizing enters it, and whether reading
-  it requires a specific instruction**.
+  `Consult when` *a directory naming convention, child prefix/sort policy,
+  reserved prefix, corpus membership, Organizing traversal, or access condition
+  is unknown* `to` **resolve the effective .folder.json child convention or
+  reserved-prefix behavior before naming, traversing, or normalizing paths**.
 quadrant: Reference
 outline:
   topology: list
@@ -80,6 +80,9 @@ filesystem mutation. Canonical and recognized historical prefix forms may be
 reconciled in one plan. Malformed or ambiguous prefix-like names, duplicate
 positions, destination collisions, invalid declarations, and unmanaged literal
 path dependencies stop the operation rather than being guessed through.
+
+Literal `README.md`, `SKILL.md`, and `.folder.json` entry/control filenames are
+exempt from child prefix normalization even when their host namespace is managed.
 
 `.folder.json` is machine-facing repository control state. It does not enter
 the controlled document namespace, does not receive a Documentation System
