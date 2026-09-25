@@ -25,7 +25,7 @@ from .model import (
 )
 
 BARE_CORPUS_ROOT_ADDRESS_RE = re.compile(
-    r"(?<!:)§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?"
+    r"(?<!:)§(?:[0-9]+|[a-z]+)(?:\.(?:[0-9]+|[a-z]+))*(?:#[0-9]+(?:\.[0-9]+)*)?"
 )
 ANNOTATION_LINE_RE = re.compile(
     r"^[ \t]*<!-- (?:ERROR|WARNING|INFO) DS[0-9]{3}: .* -->[ \t]*(?:\r?\n)?$",
@@ -98,7 +98,7 @@ def _scan_markdown(
     diagnostics: list[Diagnostic] = []
     address_re = re.compile(
         rf"(?P<prefix>^|[^A-Za-z0-9_-])"
-        rf"(?P<address>{re.escape(corpus_root)}:§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?)"
+        rf"(?P<address>{re.escape(corpus_root)}:§(?:[0-9]+|[a-z]+)(?:\.(?:[0-9]+|[a-z]+))*(?:#[0-9]+(?:\.[0-9]+)*)?)"
     )
     in_fence = False
     fence_token: str | None = None
