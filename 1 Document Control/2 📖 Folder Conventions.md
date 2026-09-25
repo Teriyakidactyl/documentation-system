@@ -33,3 +33,55 @@ corpus. The remainder of the name is descriptive only.
 | `.fault` | Controlled fault-evidence sideband for retained records of observed failures and their causal analysis. | Descend and control metadata-bearing fault records, including UID minting and controlled Form links; descendants have no Documentation System address and do not enter generated indexes. | Read only when the user explicitly requests fault material, names the directory or fault, or current work requires diagnosing or preventing recurrence of a recorded fault. |
 | `.<name>` | Any other dot-prefixed directory is outside the controlled corpus; repository/tool state or local working material. | Do not descend. | Read only when the user explicitly names the directory. |
 | `_<name>` | Operational grouping, not classification; address-transparent. | No special treatment; descendants participate normally. | Normal access unless an enclosing rule excludes it. |
+
+
+## Folder organization control
+
+A literal `.folder.json` declares the naming convention for the immediate
+contents of its containing directory. It does not govern the basename of the
+directory that contains it; that basename is governed by the effective
+convention of its parent directory. Missing properties inherit recursively from
+the nearest ancestor declaration. When no declaration exists in an ancestry,
+Organizing retains the legacy numeric-prefix interpretation without making that
+legacy interpretation an active rename policy.
+
+The supported shape is:
+
+```json
+{
+  "folders": {
+    "scheme": "alpha",
+    "separator": ". ",
+    "sort": "alphabetical"
+  },
+  "files": {
+    "scheme": "decimal",
+    "separator": ". ",
+    "sort": "alphabetical"
+  }
+}
+```
+
+`scheme` selects the visible prefix representation. `decimal` emits
+`1, 2, 3`; `alpha` emits `a, b, c` and continues through `aa, ab`;
+an empty string removes a recognized Documentation System prefix; and `none`
+makes that namespace unmanaged. Empty-string stripping and `none` are
+therefore distinct operations.
+
+`separator` is literal text between the emitted prefix and the remaining
+basename. It is meaningful only for an emitting scheme. `sort` selects the
+ordering input used before prefixes are assigned: `alphabetical`,
+`numerical`, `date`, `size`, or `none`. `none` is sticky ordering:
+existing recognized prefix positions remain authoritative and Organizing does
+not derive a new semantic order.
+
+Organizing validates the complete convention-derived rename plan before
+filesystem mutation. Canonical and recognized historical prefix forms may be
+reconciled in one plan. Malformed or ambiguous prefix-like names, duplicate
+positions, destination collisions, invalid declarations, and unmanaged literal
+path dependencies stop the operation rather than being guessed through.
+
+`.folder.json` is machine-facing repository control state. It does not enter
+the controlled document namespace, does not receive a Documentation System
+address, and is omitted by this repository's dot-prefixed Skill Distribution
+projection.
