@@ -1,8 +1,6 @@
-"""Frontmatter command interface and discoverable operation declaration."""
+"""Interface-neutral Frontmatter operation declaration."""
 from __future__ import annotations
-import json
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 from capabilities.frontmatter import FrontmatterError, load
 from capabilities.yaml import YamlError
