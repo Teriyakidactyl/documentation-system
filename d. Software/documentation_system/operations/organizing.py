@@ -16,6 +16,18 @@ REFACTOR=Source("automation.organizing.refactor","d. Software/automation/organiz
 MODEL=Source("automation.organizing.model","d. Software/automation/organizing/model.py")
 DIAGNOSTICS=Source("automation.organizing.diagnostics","d. Software/automation/organizing/diagnostics.py","validate")
 
+def _corpus_root(inputs: Mapping[str,Any]) -> Path:
+    root=_corpus_root(inputs)
+    if not root.is_dir():
+        raise ExpectedFailure(Failure(
+            origin=OWNER,
+            name="INVALID_CORPUS_ROOT",
+            classification="invalid-input",
+            subject={"corpus_root":str(root)},
+            message=f"Corpus root is not a directory: {root}",
+        ))
+    return root
+
 def _failure(exc: OrganizingError, root: Path, symbol: str, origin: Source) -> ExpectedFailure:
     return ExpectedFailure(Failure(
         origin=Source(origin.module,origin.file,symbol),
@@ -70,7 +82,7 @@ def _refresh_payload(observed) -> dict[str,Any]:
     }
 
 def _refresh(inputs: Mapping[str,Any]) -> Result[Any]:
-    root=Path(str(inputs["corpus_root"])).resolve()
+    root=_corpus_root(inputs)
     try:
         observed=refresh_corpus(root)
         diagnostics=tuple(_canonical_diagnostic(item,root) for item in observed.diagnostics)
@@ -85,21 +97,21 @@ def _refresh(inputs: Mapping[str,Any]) -> Result[Any]:
     return Result.success(payload,diagnostics=diagnostics)
 
 def _inspect(inputs: Mapping[str,Any]) -> Result[Any]:
-    root=Path(str(inputs["corpus_root"])).resolve()
+    root=_corpus_root(inputs)
     try:
         return Result.success(inspect_organization(root))
     except OrganizingError as exc:
         raise _failure(exc,root,"inspect_organization",REFACTOR) from exc
 
 def _resolve(inputs: Mapping[str,Any]) -> Result[Any]:
-    root=Path(str(inputs["corpus_root"])).resolve()
+    root=_corpus_root(inputs)
     try:
         return Result.success(resolve_address(root,str(inputs["address"])))
     except OrganizingError as exc:
         raise _failure(exc,root,"resolve_address",ENGINE) from exc
 
 def _normalize(inputs: Mapping[str,Any]) -> Result[Any]:
-    root=Path(str(inputs["corpus_root"])).resolve()
+    root=_corpus_root(inputs)
     apply=bool(inputs["apply"])
     try:
         payload=normalize_conventions(root,apply=apply)
@@ -127,7 +139,7 @@ REFRESH=register(Operation(
     handler=_refresh,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
-        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","annotate":False},expected_status="failure",expected_failure_origin=ENGINE.file),
+        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","annotate":False},expected_status="failure",expected_failure_origin=OWNER.file),
     )),
 ))
 
@@ -139,7 +151,7 @@ INSPECT=register(Operation(
     handler=_inspect,
     effects=Effects(filesystem="read"),
     verification=Verification(probes=(
-        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing"},expected_status="failure",expected_failure_origin=REFACTOR.file),
+        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing"},expected_status="failure",expected_failure_origin=OWNER.file),
     )),
 ))
 
@@ -154,7 +166,7 @@ RESOLVE=register(Operation(
     handler=_resolve,
     effects=Effects(filesystem="read"),
     verification=Verification(probes=(
-        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","address":"documentation-system:§1"},expected_status="failure",expected_failure_origin=ENGINE.file),
+        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","address":"documentation-system:§1"},expected_status="failure",expected_failure_origin=OWNER.file),
     )),
 ))
 
@@ -169,6 +181,6 @@ NORMALIZE=register(Operation(
     handler=_normalize,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
-        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","apply":False},expected_status="failure",expected_failure_origin=REFACTOR.file),
+        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","apply":False},expected_status="failure",expected_failure_origin=OWNER.file),
     )),
 ))
