@@ -27,8 +27,8 @@ Preview a sibling rename by supplying the source and destination paths. Add
 decide corpus meaning, ordinals, addresses, or reference repair.
 
 ```text
-python3 "4 Tooling/3 Folder.py" SOURCE DESTINATION
-python3 "4 Tooling/3 Folder.py" --apply SOURCE DESTINATION
+python3 "4 Tooling/Folder.py" SOURCE DESTINATION
+python3 "4 Tooling/Folder.py" --apply SOURCE DESTINATION
 ```
 '''
 

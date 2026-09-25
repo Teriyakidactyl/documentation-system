@@ -73,7 +73,7 @@ Use implementation vocabulary that leads directly to the owning code:
 ~~~yaml
 origin:
   module: documentation_system.markdown
-  file: 4 Tooling/4 Markdown.py
+  file: 4 Tooling/Markdown.py
   symbol: Markdown.resolve_section
 ~~~
 

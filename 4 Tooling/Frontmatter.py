@@ -25,7 +25,7 @@ writing-style:
 Inspect a supported metadata surface:
 
 ```text
-python3 "4 Tooling/5 Frontmatter.py" PATH
+python3 "4 Tooling/Frontmatter.py" PATH
 ```
 
 Markdown frontmatter begins at the file start. Python frontmatter begins at the

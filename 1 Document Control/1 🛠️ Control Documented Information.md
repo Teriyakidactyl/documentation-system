@@ -131,8 +131,11 @@ replaced by a newly minted UID before the corpus can refresh.
 
 Use the existing repository hierarchy before creating another one. Numbered
 directories define classification locations. Numbered artifacts occupy
-terminal positions within those locations. Unnumbered directories may organize
-files physically but contribute no location component.
+terminal positions within those locations. An unnumbered non-`README.md`
+controlled artifact has no addressable location even when it is physically
+inside a numbered directory; it remains controlled but does not enter generated
+index navigation. Unnumbered directories may organize files physically but
+contribute no location component.
 
 When a reserved controlled sideband is selected by Folder Conventions, place
 the artifact there instead of the address hierarchy. A controlled sideband is
@@ -439,7 +442,7 @@ element:
   version: '2.0'
   renderer:
     uid: 45E225
-    filepath: 4 Tooling/1 Navigation Crawler.py
+    filepath: 4 Tooling/Navigation Crawler.py
 -->
 ```
 
@@ -463,7 +466,7 @@ headings, generated-index membership, or controlled-link targets may have
 changed:
 
 ```text
-python3 "4 Tooling/1 Navigation Crawler.py" refresh [corpus_root]
+python3 "4 Tooling/Navigation Crawler.py" refresh [corpus_root]
 ```
 
 Organizing validates the corpus-root declaration, duplicate sibling ordinals,
@@ -474,7 +477,7 @@ sideband relationships before it writes indexes.
 Resolve an address without writing anything:
 
 ```text
-python3 "4 Tooling/1 Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
+python3 "4 Tooling/Navigation Crawler.py" resolve documentation-system:§2.1#4.2 [corpus_root]
 ```
 
 Resolution requires an address whose corpus-root declaration matches the

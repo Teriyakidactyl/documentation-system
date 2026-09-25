@@ -26,10 +26,10 @@ directories. Pass `--target PATH` one or more times to select other skill
 directories explicitly.
 
 Usage:
-    python3 "4 Tooling/2 Harness Installer.py" [host_root]
-    python3 "4 Tooling/2 Harness Installer.py" --check [host_root]
-    python3 "4 Tooling/2 Harness Installer.py" --remove [host_root]
-    python3 "4 Tooling/2 Harness Installer.py" --target .agents/skills [host_root]
+    python3 "4 Tooling/Harness Installer.py" [host_root]
+    python3 "4 Tooling/Harness Installer.py" --check [host_root]
+    python3 "4 Tooling/Harness Installer.py" --remove [host_root]
+    python3 "4 Tooling/Harness Installer.py" --target .agents/skills [host_root]
 
 Requires PyYAML.
 '''
