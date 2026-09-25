@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 6JTNRT
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.d.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.i.2</a>'
 description: >-
   `Read in full and follow when` *one filesystem path must be renamed or a
   declared basename prefix must be removed from matching descendant files or

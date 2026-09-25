@@ -45,7 +45,7 @@ operation/result/failure contracts; `interfaces` owns consumer adapters; and
 `verification` owns self-assembling verification machinery. The historical
 `_capabilities` package is compatibility-only.
 
-<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.d.1</a>
+<a href="%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.i.1</a>
 is the narrower architecture governing Organizing and its use of peer
 capabilities. It specializes this Software architecture for corpus identity,
 organization schemes, projections, controlled references, diagnostics, and
