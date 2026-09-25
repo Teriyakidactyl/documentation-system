@@ -36,8 +36,15 @@ Requires PyYAML.
 
 from pathlib import Path
 
-import sys\nfrom documentation_system.interfaces.cli.harness import main
+import sys
+from documentation_system.interfaces.cli.harness import main
 
 
 if __name__ == "__main__":
-    main(Path(__file__).resolve())
+    argv=list(sys.argv[1:])
+    mode="install"
+    if "--check" in argv:
+        argv.remove("--check"); mode="check"
+    if "--remove" in argv:
+        argv.remove("--remove"); mode="remove"
+    main([mode,*argv],script=Path(__file__).resolve())
