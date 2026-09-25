@@ -50,6 +50,15 @@ element:
     filepath: d. Software/Navigation Crawler.py
 -->
 
+### 📐 Architecture
+
+`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
+
+<a href="docs/README.md" uid="A6C7KC" data-ds-link="relative-path">../docs/README.md</a>
+
+- `📖 Organizing Architecture.md`
+- `📖 Software Architecture.md`
+
 ### 🛠️ Folder
 
 `Read in full and follow when` *one filesystem path must be renamed or a declared basename prefix must be removed from matching descendant files or folders* `to` **preview or execute one collision-safe rename plan without stripping non-matching names or removing text outside the proven prefix match**.
@@ -67,15 +76,6 @@ element:
 `Read in full and follow when` *a repository has installed the Documentation System but an agent harness cannot discover it under the skill name declared by SKILL.md* `to` **project the canonical Documentation System directory into each selected harness skill directory with an idempotent symlink**.
 
 <a href="Harness%20Installer.py" uid="N5986D" data-ds-link="relative-path">../Harness Installer.py</a>
-
-### Architecture documentation
-
-`Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
-
-<a href="docs/README.md" uid="A6C7KC" data-ds-link="relative-path">../docs/README.md</a>
-
-- `📖 Organizing Architecture.md`
-- `📖 Software Architecture.md`
 
 ### 🛠️ HTML
 

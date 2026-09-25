@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: XS6515
-architecture: '<a href="docs/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.c.2</a>'
+architecture: '<a href="docs/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.a.2</a>'
 description: >-
   `Read in full and follow when` *Markdown structure must be inspected, linted,
   mechanically corrected, or locally renumbered* `to` **give an agent bounded
