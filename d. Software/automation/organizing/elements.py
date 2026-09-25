@@ -6,8 +6,8 @@ from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 
-from _capabilities.markdown import HeadingComment, MarkdownError, heading_comments
-from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
+from capabilities.markdown import HeadingComment, MarkdownError, heading_comments
+from capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
 from .model import Artifact, Corpus, OrganizingError, artifact_by_uid, corpus_path, read_text
 
 
