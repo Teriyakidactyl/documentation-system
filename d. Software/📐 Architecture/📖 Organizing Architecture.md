@@ -1,7 +1,7 @@
 ---
 uid: 55NHDB
 form:
-  path: '<a href="../../a.%20Document%20Design/a.%20Document/b.%20Document%20Forms/b.%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§a.a.b.b</a>'
+  path: '<a href="../../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/b.%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§a.a.b.b</a>'
   version: '1.0'
 description: >-
   `Consult when` *the Organizing tool, an organization scheme, a peer

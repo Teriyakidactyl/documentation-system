@@ -1,7 +1,7 @@
 ---
 uid: K7W3P9
 form:
-  path: '<a href="../../a.%20Document%20Design/a.%20Document/b.%20Document%20Forms/b.%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§a.a.b.b</a>'
+  path: '<a href="../../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/b.%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§a.a.b.b</a>'
   version: '1.0'
 description: >-
   `Consult when` *a Software entry point, shared capability, representation
@@ -297,7 +297,7 @@ than silently selecting one as truth.
 ### 3.9 Implemented error design
 
 Software follows the general
-<a href="../../e.%20Software%20Design/f.%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§e.f</a>
+<a href="../../e.%20Software%20Design/g.%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§e.g</a>
 guidance, but the current implementation does **not** select the reusable
 Agent-Facing Error Architecture.
 
@@ -328,7 +328,7 @@ be reported with a completed deterministic refresh.
 ### 3.10 Implemented testing design
 
 Software follows the general
-<a href="../../e.%20Software%20Design/k.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.k</a>
+<a href="../../e.%20Software%20Design/l.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.l</a>
 guidance, but the current implementation does **not** select the reusable
 Self-Assembling Verification Architecture.
 

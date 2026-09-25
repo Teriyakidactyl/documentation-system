@@ -35,12 +35,13 @@ and code creation.
 element:
   path:
     uid: BJS5BZ
-    filepath: a. Document Design/a. Document/a. Document Elements/3. 📖 Glossary.md
+    filepath: a. Document Design/a. Assemblies/a. Elements/3. 📖 Glossary.md
   version: '2.0'
 -->
 
 | Term | Meaning |
 |---|---|
+| **Assembly** | A reusable representation, or reusable part of a representation, intended to be selected and composed rather than designed anew for each instance. Each design domain defines the Assembly types appropriate to its artifacts. |
 | **Folder README** | The literal `README.md` representing a descendant folder. Read it when entering that folder; it supplies applicable local guidance and the next routing choices. |
 | **Index** | The immediate routing choices exposed by the current `README.md`. |
 | **description** | The project-defined routing statement used to decide whether a choice applies and how it must be used. |
@@ -134,7 +135,7 @@ omits the required corpus-root declaration and is invalid.
 element:
   path:
     uid: BZJASV
-    filepath: a. Document Design/a. Document/a. Document Elements/a. Index/README.md
+    filepath: a. Document Design/a. Assemblies/a. Elements/a. Index/README.md
   version: '2.0'
   renderer:
     uid: 45E225
@@ -143,11 +144,11 @@ element:
 
 ### Document Design
 
-`Consult when` *documented information must be decomposed, represented, authored, controlled, or given reusable document structure* `to` **apply document-specific design forces and route to reusable Document structures, Document Control, or Technical Writing without treating document representation as domain-independent structure**.
+`Consult when` *documented information must be decomposed, represented, authored, controlled, or given reusable document structure* `to` **apply document-specific design forces and route to reusable Assemblies, Document Control, or Technical Writing without treating document representation as domain-independent structure**.
 
 <a href="a.%20Document%20Design/README.md" uid="DDES01" data-ds-link="relative-path">../a. Document Design/README.md</a>
 
-- `a. Document/README.md`
+- `a. Assemblies/README.md`
 - `b. Document Control/README.md`
 - `c. Technical Writing/README.md`
 
@@ -198,16 +199,17 @@ element:
 <a href="e.%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../e. Software Design/README.md</a>
 
 - `1. 📖 Implemented Architecture.md`
-- `a. Comments/README.md`
+- `a. Assemblies/README.md`
 - `2. 📖 Software Design Principles.md`
-- `b. Concurrency/README.md`
+- `b. Comments/README.md`
 - `3. 🛠️ Design And Record An Implemented Architecture.md`
-- `c. Configuration/README.md`
-- `d. Data Flow/README.md`
-- `e. Decomposition/README.md`
-- `f. Error Management/README.md`
-- `g. Extension/README.md`
-- `h. Interfaces/README.md`
-- `i. Naming/README.md`
-- `j. Performance/README.md`
-- `k. Testing/README.md`
+- `c. Concurrency/README.md`
+- `d. Configuration/README.md`
+- `e. Data Flow/README.md`
+- `f. Decomposition/README.md`
+- `g. Error Management/README.md`
+- `h. Extension/README.md`
+- `i. Interfaces/README.md`
+- `j. Naming/README.md`
+- `k. Performance/README.md`
+- `l. Testing/README.md`
