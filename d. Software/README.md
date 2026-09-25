@@ -13,32 +13,25 @@ description: >-
 
 This location contains executable tools whose module docstrings carry
 controlled documentation, the runtime procedure required to execute them, and
-the code-local `📐 Architecture` store for current Software architecture authority.
+the code-local `docs/` store for current Software architecture authority.
 The unnumbered Python source files do not participate in generated Index
 navigation; use their filesystem names when invoking them.
 
-Implementation is being converged on the durable `documentation_system`
-namespace without adding address-transparent implementation packages to reader
-navigation:
+Production Python code is owned by one runtime package:
 
 ~~~text
-documentation_system/
-    operations/   interface-neutral public operation declarations
-    interfaces/   consumer adapters such as CLI, and future API transports
-core/             shared operation, result, failure, diagnostic, schema, and source contracts
-capabilities/     reusable representation and filesystem mechanics
-automation/       repository-owned workflows and semantic orchestration
-verification/     reusable self-assembling verification machinery
+repo_manager/
+    core/           shared operation, result, failure, diagnostic, schema, and source contracts
+    capabilities/   reusable representation and filesystem mechanics
+    automation/     repository-owned workflows and semantic orchestration
+    interfaces/     consumer adapters such as the CLI
+    verification/   reusable self-assembling verification machinery
 ~~~
 
-The remaining top-level role packages are current migration state and will move
-beneath `documentation_system`; they are not a second intended architecture.
-
 Root Python artifacts remain temporary controlled work encounters while callers
-are migrated. Their executable bodies delegate to
-`documentation_system/interfaces/cli`, which invokes
-`documentation_system/operations`. Reusable behavior remains below the
-operation boundary.
+are migrated to the stable `repo <subject> <action>` command grammar. Their
+executable bodies delegate to `repo_manager.interfaces.cli`; reusable behavior
+and public operation ownership remain with the semantic package that owns them.
 
 When a Python tool cannot import a dependency, `pip` is unavailable, or the
 host Python is externally managed, select **Prepare Software Environment** below
@@ -75,11 +68,11 @@ element:
 
 <a href="Harness%20Installer.py" uid="N5986D" data-ds-link="relative-path">../Harness Installer.py</a>
 
-### 📐 Architecture
+### Architecture documentation
 
 `Consult when` *the current architecture of an implementation rooted in Software must be located before changing its boundaries, responsibilities, or cross-component behavior* `to` **select the code-local Architecture Document that governs that implementation without reconstructing design intent from source structure or ADR history**.
 
-<a href="%F0%9F%93%90%20Architecture/README.md" uid="A6C7KC" data-ds-link="relative-path">../📐 Architecture/README.md</a>
+<a href="docs/README.md" uid="A6C7KC" data-ds-link="relative-path">../docs/README.md</a>
 
 - `📖 Organizing Architecture.md`
 - `📖 Software Architecture.md`

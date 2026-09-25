@@ -185,7 +185,7 @@ element:
 - `Folder.py`
 - `Frontmatter.py`
 - `Harness Installer.py`
-- `📐 Architecture/README.md`
+- `docs/README.md`
 - `HTML.py`
 - `Markdown.py`
 - `Navigation Crawler.py`
