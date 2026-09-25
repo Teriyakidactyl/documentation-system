@@ -11,7 +11,7 @@ from urllib.parse import quote
 from _capabilities.folder import FolderError, Rename, apply as apply_renames
 from _capabilities.html import anchors
 from .model import OrganizingError, corpus_path
-from .schemes.ordinal import OrdinalSchemeError, as_dict, plan_normalization
+from .schemes.folder import FolderSchemeError, as_dict, plan_normalization
 
 
 @dataclass(frozen=True)
@@ -77,7 +77,7 @@ def unmanaged_references(corpus_root: Path, plan: list[Rename]) -> list[Unmanage
 def inspect_organization(corpus_root: Path) -> dict:
     try:
         payload = as_dict(corpus_root)
-    except OrdinalSchemeError as exc:
+    except FolderSchemeError as exc:
         raise OrganizingError(str(exc)) from exc
     plan = plan_normalization(corpus_root)
     refs = unmanaged_references(corpus_root, plan)
@@ -92,7 +92,7 @@ def inspect_organization(corpus_root: Path) -> dict:
     return payload
 
 
-def normalize_ordinals(corpus_root: Path, *, apply: bool = False) -> dict:
+def normalize_conventions(corpus_root: Path, *, apply: bool = False) -> dict:
     root = corpus_root.resolve()
     payload = inspect_organization(root)
     plan = plan_normalization(root)
@@ -102,7 +102,7 @@ def normalize_ordinals(corpus_root: Path, *, apply: bool = False) -> dict:
         return payload
     if refs:
         raise OrganizingError(
-            "ordinal normalization is blocked by unmanaged literal path references; "
+            "folder convention normalization is blocked by unmanaged literal path references; "
             "inspect the dry-run report and migrate those references first"
         )
     try:
@@ -111,3 +111,8 @@ def normalize_ordinals(corpus_root: Path, *, apply: bool = False) -> dict:
         raise OrganizingError(str(exc)) from exc
     payload["applied"] = True
     return payload
+
+
+# Compatibility name for callers using the pre-convention command surface.
+def normalize_ordinals(corpus_root: Path, *, apply: bool = False) -> dict:
+    return normalize_conventions(corpus_root, apply=apply)
