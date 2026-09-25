@@ -27,20 +27,21 @@ from _capabilities.markdown import (
     title_from_body as markdown_title_from_body,
 )
 from _capabilities.yaml import YamlError, parse_mapping as yaml_parse_mapping
-from .convention import ConventionError, convention_for_children, token_from_name
+from .convention import ConventionError, convention_for_children, encoded_token, split_recognized_prefix, token_from_name
 
 
 IGNORED_DIRS = {"__pycache__"}
 CONTROLLED_SIDEBAND_DIRS = {".research", ".decisions", ".fault"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
+LOCATION_TOKEN = r"(?:[0-9]+|[a-z]+)"
 ADDRESS_RE = re.compile(
-    r"^(?P<corpus_root>[^:\r\n]+):"
-    r"(?P<location>§[0-9]+(?:\.[0-9]+)*)"
+    rf"^(?P<corpus_root>[^:\r\n]+):"
+    rf"(?P<location>§{LOCATION_TOKEN}(?:\.{LOCATION_TOKEN})*)"
     r"(?:#(?P<section>[0-9]+(?:\.[0-9]+)*))?$"
 )
 BARE_CORPUS_ROOT_ADDRESS_RE = re.compile(
-    r"^§[0-9]+(?:\.[0-9]+)*(?:#[0-9]+(?:\.[0-9]+)*)?$"
+    rf"^§{LOCATION_TOKEN}(?:\.{LOCATION_TOKEN})*(?:#[0-9]+(?:\.[0-9]+)*)?$"
 )
 UID_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 UID_RE = re.compile(r"^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{6}$")
@@ -185,41 +186,88 @@ def ordinal_from_name(name: str) -> str | None:
     return match.group(1) if match else None
 
 
+def _implicit_order_key(path: Path, namespace) -> tuple:
+    name = path.name
+    if namespace.sort == "alphabetical": return (name.casefold(),)
+    if namespace.sort == "date": return (path.stat().st_mtime_ns, name.casefold())
+    if namespace.sort == "size": return (path.stat().st_size, name.casefold())
+    if namespace.sort == "numerical":
+        match = re.match(r"^([0-9]+)", name)
+        if match is None: raise OrganizingError(f"{path}: numerical sort requires basename to begin with a number")
+        return (int(match.group(1)), name.casefold())
+    raise OrganizingError(f"{path.parent}: blank scheme cannot derive implicit position with sort {namespace.sort!r}")
+
+
+def _folder_token(corpus_root: Path, parent: Path, name: str, namespace) -> str | None:
+    if namespace.scheme in {"decimal", "alpha"}: return token_from_name(name, namespace)
+    if namespace.scheme == "none":
+        if namespace.coordinate_scheme is None: return None
+        scheme, value, _ = split_recognized_prefix(name, namespace)
+        if scheme == namespace.coordinate_scheme and value is not None: return encoded_token(value, namespace.coordinate_scheme)
+        return None
+    if namespace.coordinate_scheme is None: return None
+    siblings = [child.resolve() for child in parent.iterdir() if child.is_dir() and not child.is_symlink() and not ignored_directory_name(child.name) and child.name not in CONTROLLED_SIDEBAND_DIRS]
+    ordered = sorted(siblings, key=lambda item: _implicit_order_key(item, namespace))
+    target = (parent / name).resolve()
+    try: position = ordered.index(target) + 1
+    except ValueError: return None
+    return encoded_token(position, namespace.coordinate_scheme)
+
+
+def _file_token(corpus_root: Path, path: Path, namespace) -> str | None:
+    if namespace.scheme in {"decimal", "alpha"}: return token_from_name(path.name, namespace)
+    if namespace.scheme == "none":
+        if namespace.coordinate_scheme is None: return None
+        scheme, value, _ = split_recognized_prefix(path.name, namespace)
+        if scheme == namespace.coordinate_scheme and value is not None: return encoded_token(value, namespace.coordinate_scheme)
+        return None
+    if namespace.coordinate_scheme is None: return None
+    siblings=[]
+    for child in path.parent.iterdir():
+        if child.name in {"README.md", "SKILL.md", ".folder.json"}: continue
+        if child.is_symlink() or not child.is_file() or child.suffix.lower() not in SUPPORTED_SUFFIXES: continue
+        if extract_metadata(child.resolve()) is not None: siblings.append(child.resolve())
+    ordered=sorted(siblings,key=lambda item:_implicit_order_key(item,namespace))
+    try: position=ordered.index(path.resolve())+1
+    except ValueError: return None
+    return encoded_token(position,namespace.coordinate_scheme)
+
+
 def location_components(corpus_root: Path, path: Path) -> list[str]:
-    root = corpus_root.resolve()
-    resolved = path.resolve()
-    rel = resolved.relative_to(root)
-    if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]):
-        return []
-    components: list[str] = []
-    current = root
+    root=corpus_root.resolve(); resolved=path.resolve(); rel=resolved.relative_to(root)
+    if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts[:-1]): return []
+    components=[]; current=root
     try:
         for part in rel.parts[:-1]:
-            convention = convention_for_children(root, current).folders
-            token = token_from_name(part, convention)
-            if token is not None:
-                components.append(token)
-            current = current / part
-        if resolved.name != "README.md":
-            convention = convention_for_children(root, resolved.parent).files
-            token = token_from_name(resolved.name, convention)
-            if token is not None:
-                components.append(token)
-    except ConventionError as exc:
-        raise OrganizingError(str(exc)) from exc
+            namespace=convention_for_children(root,current).folders
+            token=_folder_token(root,current,part,namespace)
+            if token is not None: components.append(token)
+            current=current/part
+        if resolved.name!="README.md":
+            namespace=convention_for_children(root,resolved.parent).files
+            token=_file_token(root,resolved,namespace)
+            if token is not None: components.append(token)
+    except ConventionError as exc: raise OrganizingError(str(exc)) from exc
     return components
 
 
 def location_for(corpus_root: Path, path: Path) -> str | None:
-    if path.name != "README.md":
+    root=corpus_root.resolve()
+    if path.name=="README.md":
+        if path.resolve()==(root/"README.md").resolve(): return None
+        parent=path.parent.resolve(); grand=parent.parent.resolve()
         try:
-            convention = convention_for_children(corpus_root, path.parent).files
-            if token_from_name(path.name, convention) is None:
-                return None
-        except ConventionError as exc:
-            raise OrganizingError(str(exc)) from exc
-    components = location_components(corpus_root, path)
-    return "§" + ".".join(components) if components else None
+            namespace=convention_for_children(root,grand).folders
+            own=_folder_token(root,grand,parent.name,namespace)
+        except (ConventionError, ValueError) as exc: raise OrganizingError(str(exc)) from exc
+        if own is None: return None
+    else:
+        try:
+            namespace=convention_for_children(root,path.parent).files
+            if _file_token(root,path,namespace) is None: return None
+        except ConventionError as exc: raise OrganizingError(str(exc)) from exc
+    components=location_components(root,path)
+    return "§"+".".join(components) if components else None
 
 
 def numbered_headings(body: str) -> list[HeadingTarget]:
@@ -361,31 +409,18 @@ def ensure_uids(corpus_root: Path) -> int:
 
 
 def location_addresses(corpus_root: Path) -> dict[str, Path]:
-    root = corpus_root.resolve()
-    result: dict[str, Path] = {}
-    for current, dirs, _ in os.walk(root, followlinks=False):
-        current_path = Path(current).resolve()
-        dirs[:] = [
-            name
-            for name in dirs
-            if not ignored_directory_name(name) and not (current_path / name).is_symlink()
-        ]
-        if current_path == root:
-            continue
-        rel = current_path.relative_to(root)
-        if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts):
-            continue
-        components = location_components(root, current_path / "README.md")
-        if not components:
-            continue
-        location = "§" + ".".join(components)
-        previous = result.get(location)
-        if previous is not None and previous != current_path:
-            raise OrganizingError(
-                f"Two locations derive {location}: "
-                f"{corpus_path(root, previous)} and {corpus_path(root, current_path)}"
-            )
-        result[location] = current_path
+    root=corpus_root.resolve(); result={}
+    for current,dirs,_ in os.walk(root,followlinks=False):
+        current_path=Path(current).resolve()
+        dirs[:]=[n for n in dirs if not ignored_directory_name(n) and not (current_path/n).is_symlink()]
+        if current_path==root: continue
+        rel=current_path.relative_to(root)
+        if any(part in CONTROLLED_SIDEBAND_DIRS for part in rel.parts): continue
+        components=location_components(root,current_path/"README.md")
+        if not components: continue
+        location="§"+".".join(components); previous=result.get(location)
+        if previous is not None and previous!=current_path: raise OrganizingError(f"Two locations derive {location}: {corpus_path(root,previous)} and {corpus_path(root,current_path)}")
+        result[location]=current_path
     return result
 
 
@@ -462,7 +497,8 @@ def build_corpus(corpus_root: Path) -> Corpus:
     if not corpus_root.is_dir():
         raise OrganizingError(f"Corpus root is not a directory: {corpus_root}")
     corpus_root_name(corpus_root)
-    validate_sibling_ordinals(corpus_root)
+    if not any(corpus_root.rglob(".folder.json")):
+        validate_sibling_ordinals(corpus_root)
     artifacts = load_artifacts(corpus_root)
     if not artifacts:
         raise OrganizingError(f"No recognized metadata-bearing artifacts beneath {corpus_root}")

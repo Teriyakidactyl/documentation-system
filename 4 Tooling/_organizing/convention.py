@@ -1,176 +1,80 @@
-"""Own inherited .folder.json child naming conventions.
-
-A .folder.json applies to the immediate contents of its containing directory.
-Descendant directories inherit unspecified values until their own .folder.json
-overrides them.  It never governs the basename of the directory that contains
-it; that basename is governed by the convention of its parent directory.
-"""
-
+"""Own inherited .folder.json conventions for the contents of directories."""
 from __future__ import annotations
-
-import json
-import re
-from dataclasses import dataclass, replace
+import json, re
+from dataclasses import dataclass
 from pathlib import Path
-
-
 CONFIG_NAME = ".folder.json"
 SCHEMES = {"decimal", "alpha", "none", ""}
 SORTS = {"alphabetical", "numerical", "date", "size", "none"}
-KNOWN_SEPARATORS = (" ", ". ")
-
-
-class ConventionError(ValueError):
-    """Raised when folder organization policy is invalid or ambiguous."""
-
-
+LEGACY_SEPARATORS = (" ", ". ")
+class ConventionError(ValueError): pass
 @dataclass(frozen=True)
 class NamespaceConvention:
-    scheme: str = "decimal"
-    separator: str = " "
-    sort: str = "none"
-    managed: bool = False
-
-
+    scheme: str = "decimal"; separator: str = " "; sort: str = "none"; managed: bool = False; coordinate_scheme: str | None = "decimal"
 @dataclass(frozen=True)
 class FolderConvention:
-    folders: NamespaceConvention = NamespaceConvention()
-    files: NamespaceConvention = NamespaceConvention()
-
-
+    folders: NamespaceConvention = NamespaceConvention(); files: NamespaceConvention = NamespaceConvention()
 LEGACY_DEFAULT = FolderConvention()
-
-
-def _namespace(value: object, inherited: NamespaceConvention, owner: Path, key: str) -> NamespaceConvention:
-    if value is None:
-        return inherited
-    if not isinstance(value, dict):
-        raise ConventionError(f"{owner}: {key} must be an object")
-    unknown = set(value) - {"scheme", "separator", "sort"}
-    if unknown:
-        raise ConventionError(f"{owner}: unknown {key} keys: {sorted(unknown)}")
-
-    scheme = value.get("scheme", inherited.scheme)
-    separator = value.get("separator", inherited.separator)
-    sort = value.get("sort", inherited.sort)
-
-    if not isinstance(scheme, str) or scheme not in SCHEMES:
-        raise ConventionError(
-            f"{owner}: {key}.scheme must be 'decimal', 'alpha', 'none', or an empty string"
-        )
-    if not isinstance(separator, str):
-        raise ConventionError(f"{owner}: {key}.separator must be a string")
-    if not isinstance(sort, str) or sort not in SORTS:
-        raise ConventionError(
-            f"{owner}: {key}.sort must be alphabetical, numerical, date, size, or none"
-        )
-    if scheme == "none" and ("separator" in value or "sort" in value):
-        raise ConventionError(
-            f"{owner}: {key}.scheme 'none' is unmanaged and cannot declare separator or sort"
-        )
-    return NamespaceConvention(scheme=scheme, separator=separator, sort=sort, managed=True)
-
-
-def read_override(path: Path, inherited: FolderConvention) -> FolderConvention:
-    if not path.exists():
-        return inherited
-    try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ConventionError(f"{path}: invalid folder convention: {exc}") from exc
-    if not isinstance(value, dict):
-        raise ConventionError(f"{path}: root value must be an object")
-    unknown = set(value) - {"folders", "files"}
-    if unknown:
-        raise ConventionError(f"{path}: unknown keys: {sorted(unknown)}")
-    return FolderConvention(
-        folders=_namespace(value.get("folders"), inherited.folders, path, "folders"),
-        files=_namespace(value.get("files"), inherited.files, path, "files"),
-    )
-
-
-def convention_for_children(corpus_root: Path, directory: Path) -> FolderConvention:
-    """Return policy governing the immediate children of directory."""
-    root = corpus_root.resolve()
-    target = directory.resolve()
-    try:
-        rel = target.relative_to(root)
-    except ValueError as exc:
-        raise ConventionError(f"{target} is outside corpus root {root}") from exc
-
-    convention = LEGACY_DEFAULT
-    convention = read_override(root / CONFIG_NAME, convention)
-    current = root
+def _namespace(value, inherited, owner, key):
+    if value is None: return inherited
+    if not isinstance(value, dict): raise ConventionError(f"{owner}: {key} must be an object")
+    unknown=set(value)-{"scheme","separator","sort"}
+    if unknown: raise ConventionError(f"{owner}: unknown {key} keys: {sorted(unknown)}")
+    scheme=value.get("scheme",inherited.scheme); separator=value.get("separator",inherited.separator); sort=value.get("sort",inherited.sort)
+    if not isinstance(scheme,str) or scheme not in SCHEMES: raise ConventionError(f"{owner}: {key}.scheme must be decimal, alpha, none, or empty")
+    if not isinstance(separator,str): raise ConventionError(f"{owner}: {key}.separator must be a string")
+    if not isinstance(sort,str) or sort not in SORTS: raise ConventionError(f"{owner}: {key}.sort must be alphabetical, numerical, date, size, or none")
+    if scheme=="none" and any(k in value for k in ("separator","sort")): raise ConventionError(f"{owner}: {key}.scheme 'none' cannot also declare separator or sort")
+    if scheme in {"decimal","alpha"} and separator=="": raise ConventionError(f"{owner}: {key}.separator cannot be empty for an emitting scheme")
+    if scheme=="" and sort=="none": raise ConventionError(f"{owner}: {key}.scheme empty requires a deterministic sort")
+    coordinate_scheme = scheme if scheme in {"decimal","alpha"} else inherited.coordinate_scheme
+    return NamespaceConvention(scheme,separator,sort,True,coordinate_scheme)
+def read_override(path, inherited):
+    if not path.exists(): return inherited
+    try: value=json.loads(path.read_text(encoding="utf-8"))
+    except (OSError,json.JSONDecodeError) as exc: raise ConventionError(f"{path}: invalid folder convention: {exc}") from exc
+    if not isinstance(value,dict): raise ConventionError(f"{path}: root value must be an object")
+    unknown=set(value)-{"folders","files"}
+    if unknown: raise ConventionError(f"{path}: unknown keys: {sorted(unknown)}")
+    return FolderConvention(_namespace(value.get("folders"),inherited.folders,path,"folders"),_namespace(value.get("files"),inherited.files,path,"files"))
+def convention_for_children(corpus_root, directory):
+    root=corpus_root.resolve(); target=directory.resolve()
+    try: rel=target.relative_to(root)
+    except ValueError as exc: raise ConventionError(f"{target} is outside corpus root {root}") from exc
+    conv=read_override(root/CONFIG_NAME,LEGACY_DEFAULT); current=root
     for part in rel.parts:
-        current = current / part
-        convention = read_override(current / CONFIG_NAME, convention)
-    return convention
-
-
-def alpha_value(token: str) -> int:
-    value = 0
-    for char in token.casefold():
-        if not ("a" <= char <= "z"):
-            raise ConventionError(f"invalid alpha token {token!r}")
-        value = value * 26 + (ord(char) - ord("a") + 1)
+        current=current/part; conv=read_override(current/CONFIG_NAME,conv)
+    return conv
+def alpha_value(token):
+    if not re.fullmatch(r"[A-Za-z]+",token): raise ConventionError(f"invalid alpha token {token!r}")
+    value=0
+    for c in token.casefold(): value=value*26+(ord(c)-ord('a')+1)
     return value
-
-
-def alpha_token(value: int) -> str:
-    if value < 1:
-        raise ConventionError("alpha sequence values start at 1")
-    chars: list[str] = []
+def alpha_token(value):
+    if value<1: raise ConventionError("alpha sequence values start at 1")
+    chars=[]
     while value:
-        value, remainder = divmod(value - 1, 26)
-        chars.append(chr(ord("a") + remainder))
-    return "".join(reversed(chars))
-
-
-def encoded_token(value: int, scheme: str) -> str:
-    if scheme == "decimal":
-        return str(value)
-    if scheme == "alpha":
-        return alpha_token(value)
-    raise ConventionError(f"scheme {scheme!r} does not encode a visible token")
-
-
-def canonical_prefix(value: int, convention: NamespaceConvention) -> str:
-    return encoded_token(value, convention.scheme) + convention.separator
-
-
-def _candidate_separators(convention: NamespaceConvention) -> tuple[str, ...]:
-    values = [convention.separator, *KNOWN_SEPARATORS]
-    return tuple(dict.fromkeys(item for item in values if item))
-
-
-def split_prefix(name: str, convention: NamespaceConvention) -> tuple[str | None, int | None, str]:
-    """Split a recognized managed prefix from name.
-
-    Canonical and known historical decimal/alpha forms are recognized.  A
-    prefix-looking malformed name is rejected by normalization rather than
-    guessed through.
-    """
-    separators = sorted(_candidate_separators(convention), key=len, reverse=True)
-    for separator in separators:
-        escaped = re.escape(separator)
-        decimal = re.match(rf"^([0-9]+){escaped}", name)
-        if decimal is not None:
-            return "decimal", int(decimal.group(1)), name[decimal.end():]
-        alpha = re.match(rf"^([A-Za-z]+){escaped}", name)
-        if alpha is not None:
-            token = alpha.group(1)
-            return "alpha", alpha_value(token), name[alpha.end():]
-    return None, None, name
-
-
-def token_from_name(name: str, convention: NamespaceConvention) -> str | None:
-    if convention.scheme in {"", "none"}:
-        return None
-    scheme, value, _ = split_prefix(name, convention)
-    if scheme != convention.scheme or value is None:
-        return None
-    return encoded_token(value, convention.scheme)
-
-
-def token_sort_value(token: str) -> int:
-    return int(token) if token.isdigit() else alpha_value(token)
+        value,r=divmod(value-1,26); chars.append(chr(ord('a')+r))
+    return ''.join(reversed(chars))
+def encoded_token(value,scheme):
+    if scheme=="decimal": return str(value)
+    if scheme=="alpha": return alpha_token(value)
+    raise ConventionError(f"scheme {scheme!r} has no visible token")
+def candidate_separators(conv): return tuple(dict.fromkeys(v for v in (conv.separator,*LEGACY_SEPARATORS) if v))
+def split_recognized_prefix(name,conv):
+    # Decimal prefixes have two historical Documentation System renderings.
+    # Alpha is new: recognize only its declared separator so ordinary names
+    # such as "Navigation Crawler.py" are never mistaken for prefixes.
+    for sep in sorted(candidate_separators(conv),key=len,reverse=True):
+        esc=re.escape(sep); m=re.match(rf"^([0-9]+){esc}",name)
+        if m: return "decimal",int(m.group(1)),name[m.end():]
+    if conv.separator:
+        esc=re.escape(conv.separator); m=re.match(rf"^([A-Za-z]+){esc}",name)
+        if m: return "alpha",alpha_value(m.group(1)),name[m.end():]
+    return None,None,name
+def canonical_prefix(value,conv): return encoded_token(value,conv.scheme)+conv.separator
+def token_from_name(name,conv):
+    if conv.scheme in {"","none"}: return None
+    scheme,value,_=split_recognized_prefix(name,conv)
+    return encoded_token(value,conv.scheme) if scheme==conv.scheme and value is not None else None
+def token_sort_value(token): return int(token) if token.isdigit() else alpha_value(token)

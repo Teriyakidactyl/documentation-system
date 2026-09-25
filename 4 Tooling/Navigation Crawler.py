@@ -57,10 +57,9 @@ Use `inspect` to see organization-scheme facts without mutation:
 python3 "4 Tooling/Navigation Crawler.py" inspect [corpus_root]
 ```
 
-Inspection reports each effective inherited `.folder.json` convention, the
-complete convention-derived rename plan, and unmanaged literal path references
-that could make structural renaming unsafe. A declaration governs the children
-of its containing folder, never that folder's own basename.
+Inspection reports each effective inherited `.folder.json` namespace, the
+complete normalization plan, deterministic literal-path migrations, and any
+ambiguous references that would block safe mutation.
 
 ## 3. Normalize folder conventions
 
@@ -77,12 +76,11 @@ is acceptable:
 python3 "4 Tooling/Navigation Crawler.py" normalize --apply [corpus_root]
 ```
 
-Organizing reconciles canonical, legacy, and partially applied managed prefixes
-only when the result is deterministic. It refuses the apply operation when a
-prefix is ambiguous or malformed, a destination is unsafe, or it finds literal
-repository-path references outside UID-controlled links that it cannot prove
-safe to migrate. When the filesystem transaction succeeds, Organizing refreshes
-indexes, controlled links, and diagnostics against the new corpus state.
+For convention-managed corpora, Refresh first executes the complete mutation and
+refresh against a temporary copy. The real tree is changed only when staged
+normalization, path migration, corpus construction, indexes, controlled links,
+and diagnostics are valid. Ambiguous path references fail rather than being
+guessed through.
 
 ## 4. Resolve a locator
 

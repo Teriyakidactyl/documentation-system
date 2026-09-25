@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import shutil
+import tempfile
 
 from .diagnostics import Diagnostic, Severity, clear_inline_annotations, validate
 from .elements import refresh_element_filepaths
@@ -34,12 +36,9 @@ class RefreshResult:
         return sum(d.severity is Severity.ERROR for d in self.diagnostics)
 
 
-def refresh_corpus(corpus_root: Path) -> RefreshResult:
+def _refresh_once(corpus_root: Path, *, normalize: bool) -> RefreshResult:
     corpus_root = corpus_root.resolve()
-    # Naming policy is canonical source state. Reconcile it before building the
-    # corpus, but only after the complete rename plan and unmanaged references
-    # have been preflighted by the refactor layer.
-    if uses_folder_conventions(corpus_root):
+    if normalize:
         normalize_conventions(corpus_root, apply=True)
     corpus = build_corpus(corpus_root)
     preflight_indexes(corpus)
@@ -53,13 +52,22 @@ def refresh_corpus(corpus_root: Path) -> RefreshResult:
     links = rewrite_control_links(corpus)
     corpus = build_corpus(corpus_root)
     diagnostics = tuple(validate(corpus))
-    return RefreshResult(
-        artifacts=len(corpus.artifacts),
-        locations=len(corpus.locations),
-        links_refreshed=links,
-        uids_minted=minted,
-        diagnostics=diagnostics,
-    )
+    return RefreshResult(artifacts=len(corpus.artifacts), locations=len(corpus.locations), links_refreshed=links, uids_minted=minted, diagnostics=diagnostics)
+
+
+def refresh_corpus(corpus_root: Path) -> RefreshResult:
+    corpus_root = corpus_root.resolve()
+    if not uses_folder_conventions(corpus_root):
+        return _refresh_once(corpus_root, normalize=False)
+
+    with tempfile.TemporaryDirectory(prefix="documentation-system-preflight-") as temp:
+        staged_root = Path(temp) / corpus_root.name
+        shutil.copytree(corpus_root, staged_root, symlinks=True, ignore=shutil.ignore_patterns(".git"))
+        staged = _refresh_once(staged_root, normalize=True)
+        if staged.errors:
+            first = next(item for item in staged.diagnostics if item.severity is Severity.ERROR)
+            raise OrganizingError(f"staged refresh validation failed: {first.code}: {first.message}")
+    return _refresh_once(corpus_root, normalize=True)
 
 
 def resolve_address(corpus_root: Path, address: str) -> dict:

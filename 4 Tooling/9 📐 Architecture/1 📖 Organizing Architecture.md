@@ -202,8 +202,9 @@ declare:
   sticky `none`.
 
 An empty scheme and `none` are not synonyms. Empty is an active canonical
-state: Organizing removes recognized managed prefixes. `none` leaves that
-namespace unmanaged. A corpus with no `.folder.json` retains the historical
+state: Organizing removes recognized managed prefixes while retaining an
+implicit location token derived from the inherited coordinate scheme and the
+declared deterministic sort. `none` leaves that namespace unmanaged. A corpus with no `.folder.json` retains the historical
 decimal-prefix interpretation without silently turning that compatibility
 behavior into an active rename policy.
 
@@ -220,9 +221,11 @@ The scheme owns:
 
 Normalization is reconciliation, not blind renaming. A partially applied
 conversion may be completed when every source and destination is provable.
-Malformed prefix-like names, duplicate positions, destination collisions,
-invalid declarations, or unmanaged literal path dependencies stop the complete
-operation before Folder mutates the filesystem.
+Exact current path literals are migrated only when their replacement is
+unambiguous. Before a convention-managed refresh mutates the real corpus, the
+complete normalization and refresh pipeline runs against a temporary copy;
+structural, indexing, link, or diagnostic failure there aborts the real
+mutation.
 
 Folder remains the transaction owner. Organizing supplies the already-decided
 rename plan; Folder validates and applies sibling renames collision-safely.

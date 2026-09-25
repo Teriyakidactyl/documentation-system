@@ -41,12 +41,6 @@ jobs:
           python -m unittest discover -s "$tooling_tests" -p "test_*.py"
           python -m unittest discover -s "$registry_tests" -p "test_*.py"
 
-      - name: Inspect organization
-        shell: bash
-        run: |
-          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
-          python "$crawler" inspect .
-
       - name: Refresh organization
         shell: bash
         run: |
@@ -95,7 +89,8 @@ jobs:
         shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
-          python "4 Tooling/Navigation Crawler.py" refresh .
+          crawler="$(find . -type f -name 'Navigation Crawler.py' -print -quit)"
+          python "$crawler" refresh .
           git diff > /tmp/organizing-second.diff
           cmp /tmp/organizing-first.diff /tmp/organizing-second.diff
           git diff --check

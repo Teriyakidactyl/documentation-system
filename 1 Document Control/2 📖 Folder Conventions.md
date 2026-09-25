@@ -64,12 +64,16 @@ The supported shape is:
 
 `scheme` selects the visible prefix representation. `decimal` emits
 `1, 2, 3`; `alpha` emits `a, b, c` and continues through `aa, ab`;
-an empty string removes a recognized Documentation System prefix; and `none`
-makes that namespace unmanaged. Empty-string stripping and `none` are
-therefore distinct operations.
+an empty string removes a recognized Documentation System prefix while retaining
+a deterministic implicit location token derived from the inherited coordinate
+scheme and local sort; and `none` makes that namespace unmanaged.
+Empty-string stripping and `none` are therefore distinct operations. A blank
+scheme requires a deterministic sort and is not address-transparent.
 
 `separator` is literal text between the emitted prefix and the remaining
-basename. It is meaningful only for an emitting scheme. `sort` selects the
+basename. Decimal migration recognizes the historical `1 item` and
+`1. item` forms; alphabetic prefixes are recognized only with their declared
+separator so ordinary names are not mistaken for prefixes. `sort` selects the
 ordering input used before prefixes are assigned: `alphabetical`,
 `numerical`, `date`, `size`, or `none`. `none` is sticky ordering:
 existing recognized prefix positions remain authoritative and Organizing does
@@ -82,9 +86,12 @@ and validate their metadata.
 
 Organizing validates the complete convention-derived rename plan before
 filesystem mutation. Canonical and recognized historical prefix forms may be
-reconciled in one plan. Malformed or ambiguous prefix-like names, duplicate
-positions, destination collisions, invalid declarations, and unmanaged literal
-path dependencies stop the operation rather than being guessed through.
+reconciled in one plan. Exact current repository-relative path literals may be
+migrated when the complete plan proves one deterministic old-to-new
+substitution; ambiguous occurrences stop the operation. For convention-managed
+refresh, Organizing first applies normalization and all derived refresh passes
+to a temporary copy of the corpus. The real tree is mutated only when that
+staged refresh completes without error diagnostics.
 
 Literal `README.md`, `SKILL.md`, and `.folder.json` entry/control filenames are
 exempt from child prefix normalization even when their host namespace is managed.

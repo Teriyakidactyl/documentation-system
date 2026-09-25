@@ -121,11 +121,12 @@ designation of a directory. An Organizing job accepts an optional
 Organizing.
 
 A documentation address separately declares its corpus root by directory name
-before `:`, then descends through decimal locations and may select a numbered
-heading after `#`. For example,
-`documentation-system:§2.3.2.1#4.2` declares the directory named
+before `:`, then descends through convention-derived location tokens and may
+select a numbered heading after `#`. Tokens may therefore be alphabetic or
+decimal according to the effective folder policy. For example,
+`documentation-system:§e.c.b.1#4.2` declares the directory named
 `documentation-system` as the corpus root, descends through locations
-`2.3.2.1`, and selects heading `4.2`. A bare form such as `§2.3.2.1`
+`e.c.b.1`, and selects heading `4.2`. A bare form such as `§e.c.b.1`
 omits the required corpus-root declaration and is invalid.
 
 ## Index
