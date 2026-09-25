@@ -57,11 +57,11 @@ Use `inspect` to see organization-scheme facts without mutation:
 python3 "4 Tooling/Navigation Crawler.py" inspect [corpus_root]
 ```
 
-The current ordinal-hierarchy inspection reports each sibling ordinal sequence,
-gaps, the complete compact normalization plan, and unmanaged literal path
-references that could make structural renaming unsafe.
+Inspection reports each effective inherited `.folder.json` namespace, the
+complete normalization plan, deterministic literal-path migrations, and any
+ambiguous references that would block safe mutation.
 
-## 3. Normalize ordinal structure
+## 3. Normalize folder conventions
 
 Preview normalization first:
 
@@ -76,10 +76,11 @@ is acceptable:
 python3 "4 Tooling/Navigation Crawler.py" normalize --apply [corpus_root]
 ```
 
-Organizing refuses the apply operation when it finds literal repository-path
-references outside UID-controlled links that it cannot prove safe to migrate.
-When the filesystem transaction succeeds, Organizing refreshes indexes,
-controlled links, and diagnostics against the new corpus state.
+For convention-managed corpora, Refresh first executes the complete mutation and
+refresh against a temporary copy. The real tree is changed only when staged
+normalization, path migration, corpus construction, indexes, controlled links,
+and diagnostics are valid. Ambiguous path references fail rather than being
+guessed through.
 
 ## 4. Resolve a locator
 

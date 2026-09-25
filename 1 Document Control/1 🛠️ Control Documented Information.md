@@ -62,9 +62,9 @@ corpus root
 | **controlled sideband artifact** | A controlled artifact stored in a reserved sideband whose retrieval policy excludes it from normal index navigation. It keeps a UID and validation participation but has no Documentation System address. |
 | **uid** | A permanent six-character Crockford Base32 identifier minted by Organizing for one controlled artifact. It survives moves and renames; duplicate UIDs are invalid. |
 | **description** | The canonical Markdown routing statement for a controlled artifact. Indexed projections reuse it where the artifact participates in routing. |
-| **location** | A position in the corpus hierarchy defined by the filesystem. A numbered directory defines an addressable location whether or not it contains `README.md`. |
-| **location ordinal** | A local numeric position read from the start of a numbered directory or numbered artifact name. The accepted prefix is `^([0-9]+)(?:\.\s+|\s+)`, so both `9 Name` and `9. Name` carry ordinal `9`. |
-| **address** | A machine-resolvable identifier such as `documentation-system:§2.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location ordinals beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§2.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
+| **location** | A position in the corpus hierarchy defined by the filesystem and the effective folder convention. An addressable directory contributes a location token whether or not it contains `README.md`. |
+| **location token** | A local address component derived from the effective folder convention; it may be materialized in a basename or computed implicitly from deterministic sibling order. |
+| **address** | A machine-resolvable identifier such as `documentation-system:§e.c.1#4.2`. The required prefix before `:` declares the corpus root by directory name; the `§` path is derived from location tokens beneath that declared root; optional `#` extends into a numbered heading. A bare form such as `§e.c.1` omits the required corpus-root declaration, is invalid address syntax, and is unresolvable. |
 | **`README.md`** | The reserved reader-facing representation of a directory. Its subtype follows filesystem position; the README representing the selected corpus root additionally carries the Origin role. |
 | **Repository Root README** | The literal `README.md` at the Git repository root. It carries project-wide entry context whether or not that directory is selected as a corpus root. |
 | **Folder README** | A literal `README.md` in a descendant directory. It represents that folder and remains a Folder README even when that directory is selected as a corpus root. |
@@ -129,87 +129,55 @@ replaced by a newly minted UID before the corpus can refresh.
 
 ## 2. Place information in the location hierarchy
 
-Use the existing repository hierarchy before creating another one. Numbered
-directories define classification locations. Numbered artifacts occupy
-terminal positions within those locations. An unnumbered non-`README.md`
-controlled artifact has no addressable location even when it is physically
-inside a numbered directory; it remains controlled but does not enter generated
-index navigation. Unnumbered directories may organize files physically but
-contribute no location component.
+Use the existing repository hierarchy before creating another one. For each
+parent directory, read the effective `.folder.json` convention defined by
+Folder Conventions. The parent policy separately governs folder children and
+controlled file children. An emitting scheme materializes the current location
+token in the basename; an empty scheme keeps the basename unprefixed and derives
+the same kind of coordinate implicitly from the inherited coordinate scheme and
+declared sort. `scheme: none` leaves the namespace unmanaged.
+
+A `.folder.json` governs only the contents of its containing directory. The
+containing directory's own basename and coordinate are always governed from one
+level above. Missing declarations inherit recursively.
 
 When a reserved controlled sideband is selected by Folder Conventions, place
 the artifact there instead of the address hierarchy. A controlled sideband is
 address-opaque: its descendants receive no Documentation System address and do
 not enter generated indexes. After sideband placement, continue at step 5.
 
-For example:
-
-```text
-2 Conventions/
-├── README.md
-└── 11 Technical Writing/
-    ├── README.md
-    └── 9 Write A Technical Document.md
-```
-
-contains these ordinal paths relative to the corpus root declared for the
-Organizing job:
-
-```text
-2       2 Conventions/
-2       2 Conventions/README.md
-2.11    2 Conventions/11 Technical Writing/
-2.11    2 Conventions/11 Technical Writing/README.md
-2.11.9  2 Conventions/11 Technical Writing/9 Write A Technical Document.md
-```
-
-Use one ordinal once among physical siblings in the current corpus state. A
-numbered directory and a numbered artifact with the same ordinal under one
-parent collide even when their names differ.
-
-An ordinal is a current structural coordinate, not durable identity. After an
-item moves or is removed, its former ordinal may be reused. Preserve durable
-identity with the artifact's UID rather than reserving historical coordinates.
+Treat visible prefixes as current coordinates rather than durable identity.
+When a sort policy or scheme change deterministically repositions an item,
+Organizing may change its basename and address while preserving its UID.
 
 ## 3. Derive and use addresses
 
-Treat the selected corpus structure as the source of truth. Derive the target's
-**location** by walking from the corpus root, taking each location ordinal, and
-appending a terminal artifact ordinal when the target is not `README.md`. Join
-those ordinals with `.`. Form the address by declaring the corpus root's
-directory name before `:`, then prefixing the ordinal path with `§`:
+Treat the selected corpus structure and effective folder conventions as the
+source of truth. Derive a target's **location** by walking from the corpus root
+and obtaining one location token for each addressable directory plus the
+terminal artifact when the target is not `README.md`. Join those tokens with
+`.` and prefix the result with `§` after the corpus-root declaration.
+
+For an emitting namespace, the token is read from the canonical visible prefix.
+For an empty namespace, Organizing computes the token from sibling order using
+the inherited coordinate scheme. Therefore a physical path may remain friendly
+to Python, Ansible, or another ecosystem while still participating in the
+Documentation System address hierarchy.
 
 ```text
-2 Technical Writing/
-└── 1 🛠️ Write A Technical Document.md
-
-documentation-system:§2.1
-```
-
-A numbered heading extends the complete address into the resolved file after
-`#`:
-
-```text
-address        = corpus-root ":" "§" location-ordinal ("." location-ordinal)* ["#" heading-number]
+address        = corpus-root ":" "§" location-token ("." location-token)* ["#" heading-number]
+location-token = decimal-token | alpha-token
 corpus-root    = directory name declared as corpus root by the address
 heading-number = integer ("." integer)*
 
-documentation-system:§2.1
-documentation-system:§2.1#4.2
+documentation-system:§e.c.b.1
+documentation-system:§e.c.b.1#4.2
 ```
 
-`§2.1` and `§2.1#4.2` are bare corpus-root addresses: each omits the
-required corpus-root declaration, is syntactically invalid, and cannot resolve.
-The periods express hierarchical descent on either side of `#`; `#` marks
-the boundary between filesystem location and the file's internal outline.
-
-An address is a current coordinate. Moving an addressed item within the corpus
-changes its location portion, and a former coordinate may later identify
-different information. Moving a directory that an address declares as its
-corpus root to another parent without renaming it leaves that address unchanged
-because the declaration uses the directory's name, not its ancestor path.
-Renaming that directory changes the corpus-root declaration in addresses that
-use it. The UID does not change when an artifact moves.
+The periods express hierarchical descent on either side of `#`; `#` marks the
+boundary between filesystem location and the file's internal outline. An
+address is a current coordinate. Moving or re-sorting addressed information may
+change that coordinate; durable identity remains the artifact UID.
 
 Use a controlled HTML anchor when the reference must survive a move or rename.
 The `uid` is the durable identity; the link type selects which current
@@ -221,45 +189,21 @@ without changing target identity.
 | **address** | omit `data-ds-link` | Current Documentation System address; an optional displayed `#` section selects a numbered heading. | Default for durable reader-visible prose. |
 | **relative-path** | `data-ds-link="relative-path"` | Human-readable filesystem path from the source artifact itself to the target; `href` remains the browser-resolvable path from the source artifact's containing directory. | Use only when the owning representation explicitly calls for physical-path navigation. The Index Element selects this type. |
 
-Address type:
+On every refresh Organizing finds controlled targets by UID and rewrites the
+physical `href` plus the display projection selected by the link type. Exact
+current repository-relative path literals that are not UID-controlled may be
+migrated only when the complete convention-derived rename plan proves an
+unambiguous old-to-new substitution. Ambiguous occurrences fail the staged
+refresh rather than being guessed through.
 
-```html
-<a href="*" uid="5CFFZW">documentation-system:§2.1#4.2</a>
-```
-
-Relative-path type, when rendered in the repository-root `README.md`:
-
-```html
-<a href="1%20Document%20Control/README.md" uid="YVXKT9" data-ds-link="relative-path">../1 Document Control/README.md</a>
-```
-
-On every refresh Organizing finds the current target by UID and rewrites the
-physical `href` plus the display projection selected by the link type.
-Address links additionally validate and refresh the displayed locator and any
-numbered section. Relative-path links currently target whole artifacts. An
-unknown link type, missing or duplicate UID, invalid address projection, or
-unresolved selected section fails rather than guessing. Ordinary Markdown
-links are not touched.
-
-Use the default address type for durable references in ordinary reader-visible
-prose unless the governing representation selects another catalogued type. An
-address written as plain reader-visible prose is a current coordinate rather
-than durable identity, so Organizing reports it as `ERROR DS001`. A bare
-corpus-root address such as `§2.1` is invalid and unresolvable because it
-omits the required corpus-root declaration; Organizing reports that violation
-as `ERROR DS004`.
-
-Do not store the corpus-root declaration or derived location components in
-artifact metadata, and do not reconstruct location ancestry from generated
-projections. An unnumbered artifact outside a numbered location has no
-addressable location. A numbered location remains addressable without a
-`README.md`, but a controlled link can target it only when a reader-facing body
-represents that location.
+Do not store derived location tokens in artifact metadata. They are current
+coordinates produced from filesystem state and folder policy. Preserve durable
+identity with UID.
 
 ## 4. Represent repository positions with README.md
 
 Use `README.md` for every directory that needs a reader-facing representation.
-The filename is reserved: it carries neither a location ordinal nor a quadrant
+The filename is reserved: it carries neither a location token nor a quadrant
 glyph. When the containing directory is addressable, its `README.md` resolves
 to that directory's location and contributes no additional ordinal.
 
@@ -371,7 +315,7 @@ Before its first routing choice, an Origin additionally:
 
 - explains compactly that corpus-root status is contextual to the Organizing
   job, while each documentation address declares the root by directory name,
-  then descends through decimal locations and may select a numbered heading
+  then descends through convention-derived locations and may select a numbered heading
   after `#`;
 - states that a bare `§...` locator is invalid because it omits the required
   corpus-root declaration;
@@ -469,7 +413,7 @@ changed:
 python3 "4 Tooling/Navigation Crawler.py" refresh [corpus_root]
 ```
 
-Organizing validates the corpus-root declaration, duplicate sibling ordinals,
+Organizing validates the corpus-root declaration, conflicting sibling positions,
 duplicate artifact locations and UIDs, missing descriptions, malformed generated
 regions, Index heading depth, controlled-link types and projections, and supported
 sideband relationships before it writes indexes.

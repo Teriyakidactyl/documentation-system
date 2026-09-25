@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from _capabilities.markdown import Section, heading_comments
 from _capabilities.yaml import YamlError, parse_mapping, serialize as serialize_yaml
+from .convention import token_sort_value
 from .links import relative_display_path, relative_link
 from .model import (
     Artifact,
@@ -49,7 +50,6 @@ def _element_sections(text: str, uid: str) -> list[ElementSection]:
             if isinstance(path, dict) and path.get("uid") == uid:
                 found.append(ElementSection(comment.section, metadata))
         elif isinstance(element, str) and f'uid="{uid}"' in element:
-            # Migration compatibility for the pre-versioned controlled-link declaration.
             found.append(ElementSection(comment.section, metadata))
     return found
 
@@ -163,7 +163,7 @@ def _ordered_children(corpus: Corpus, children: frozenset[Path]) -> list[Path]:
     return sorted(
         children,
         key=lambda path: (
-            tuple(int(part) for part in corpus.artifacts[path].location[1:].split("."))
+            tuple(token_sort_value(part) for part in corpus.artifacts[path].location[1:].split("."))
             if corpus.artifacts[path].location
             else (10**9,),
             corpus_path(corpus.corpus_root, path).casefold(),

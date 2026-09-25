@@ -1,10 +1,10 @@
 ---
 uid: TRJS8V
 description: >-
-  `Consult when` *a directory name begins with a reserved prefix and its corpus
-  membership, Organizing traversal, or access condition is unknown* `to` **confirm
-  what the prefix reserves, whether the Organizing enters it, and whether reading
-  it requires a specific instruction**.
+  `Consult when` *a directory naming convention, child prefix/sort policy,
+  reserved prefix, corpus membership, Organizing traversal, or access condition
+  is unknown* `to` **resolve the effective .folder.json child convention or
+  reserved-prefix behavior before naming, traversing, or normalizing paths**.
 quadrant: Reference
 outline:
   topology: list
@@ -33,3 +33,70 @@ corpus. The remainder of the name is descriptive only.
 | `.fault` | Controlled fault-evidence sideband for retained records of observed failures and their causal analysis. | Descend and control metadata-bearing fault records, including UID minting and controlled Form links; descendants have no Documentation System address and do not enter generated indexes. | Read only when the user explicitly requests fault material, names the directory or fault, or current work requires diagnosing or preventing recurrence of a recorded fault. |
 | `.<name>` | Any other dot-prefixed directory is outside the controlled corpus; repository/tool state or local working material. | Do not descend. | Read only when the user explicitly names the directory. |
 | `_<name>` | Operational grouping, not classification; address-transparent. | No special treatment; descendants participate normally. | Normal access unless an enclosing rule excludes it. |
+
+
+## Folder organization control
+
+A literal `.folder.json` declares the naming convention for the immediate
+contents of its containing directory. It does not govern the basename of the
+directory that contains it; that basename is governed by the effective
+convention of its parent directory. Missing properties inherit recursively from
+the nearest ancestor declaration. When no declaration exists in an ancestry,
+Organizing retains the legacy numeric-prefix interpretation without making that
+legacy interpretation an active rename policy.
+
+The supported shape is:
+
+```json
+{
+  "folders": {
+    "scheme": "alpha",
+    "separator": ". ",
+    "sort": "alphabetical"
+  },
+  "files": {
+    "scheme": "decimal",
+    "separator": ". ",
+    "sort": "alphabetical"
+  }
+}
+```
+
+`scheme` selects the visible prefix representation. `decimal` emits
+`1, 2, 3`; `alpha` emits `a, b, c` and continues through `aa, ab`;
+an empty string removes a recognized Documentation System prefix while retaining
+a deterministic implicit location token derived from the inherited coordinate
+scheme and local sort; and `none` makes that namespace unmanaged.
+Empty-string stripping and `none` are therefore distinct operations. A blank
+scheme requires a deterministic sort and is not address-transparent.
+
+`separator` is literal text between the emitted prefix and the remaining
+basename. Decimal migration recognizes the historical `1 item` and
+`1. item` forms; alphabetic prefixes are recognized only with their declared
+separator so ordinary names are not mistaken for prefixes. `sort` selects the
+ordering input used before prefixes are assigned: `alphabetical`,
+`numerical`, `date`, `size`, or `none`. `none` is sticky ordering:
+existing recognized prefix positions remain authoritative and Organizing does
+not derive a new semantic order.
+
+Reserved controlled sidebands (`.research`, `.decisions`, and `.fault`) are
+outside folder naming normalization. Their names and descendants are preserved
+by this convention layer even though other Organizing passes may still control
+and validate their metadata.
+
+Organizing validates the complete convention-derived rename plan before
+filesystem mutation. Canonical and recognized historical prefix forms may be
+reconciled in one plan. Exact current repository-relative path literals may be
+migrated when the complete plan proves one deterministic old-to-new
+substitution; ambiguous occurrences stop the operation. For convention-managed
+refresh, Organizing first applies normalization and all derived refresh passes
+to a temporary copy of the corpus. The real tree is mutated only when that
+staged refresh completes without error diagnostics.
+
+Literal `README.md`, `SKILL.md`, and `.folder.json` entry/control filenames are
+exempt from child prefix normalization even when their host namespace is managed.
+
+`.folder.json` is machine-facing repository control state. It does not enter
+the controlled document namespace, does not receive a Documentation System
+address, and is omitted by this repository's dot-prefixed Skill Distribution
+projection.

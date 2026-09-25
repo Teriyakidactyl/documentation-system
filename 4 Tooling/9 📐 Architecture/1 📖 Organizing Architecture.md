@@ -111,12 +111,13 @@ organization changes.
 An **organization scheme** defines how controlled artifacts participate in an
 organized structure. A scheme may define membership rules, naming constraints,
 relationships, ordering, and a locator notation. Do not require every future
-scheme to produce decimal locations merely because the current scheme does.
+scheme to use the same token vocabulary or projection rules as the current
+folder-convention scheme.
 
 A **locator** is a current coordinate projected by a scheme. It is not durable
-identity. The current ordinal-hierarchy scheme projects filesystem ordinals as
-`§` locations and can extend an addressed document with a Markdown-local
-numbered section after `#`.
+identity. The current folder-convention scheme derives `§` location tokens from
+the effective child naming policy and can extend an addressed document with a
+Markdown-local numbered section after `#`.
 
 A controlled reference binds durable UID identity to the current physical and
 locator projections required by its representation. The UID selects the target;
@@ -183,30 +184,52 @@ use HTML when a controlled representation is encoded as HTML. HTML remains
 independently routable because inspecting an HTML fragment or file is a coherent
 work encounter without Markdown or corpus semantics.
 
-### 3.4 Ordinal hierarchy scheme
+### 3.4 Folder convention organization scheme
 
-The currently implemented organization scheme is **ordinal hierarchy**.
+The implemented organization scheme is **folder convention organization**.
+A literal `.folder.json` is semantic input owned by Organizing. It declares
+how the immediate children of its containing directory are named and ordered;
+it never governs the basename of that containing directory. Missing properties
+inherit recursively from the nearest ancestor declaration.
 
-Its filesystem representation reads a local numeric ordinal from each numbered
-directory or numbered artifact name. The ordinal path beneath the selected
-corpus root projects the `§` location.
+The scheme maintains independent folder and file namespaces. Each namespace may
+declare:
+
+- a prefix `scheme`: `decimal`, `alpha`, an empty string for active
+  prefix stripping, or `none` for no naming action;
+- a literal `separator` rendered between an emitted token and the basename;
+  and
+- a `sort` policy: `alphabetical`, `numerical`, `date`, `size`, or
+  sticky `none`.
+
+An empty scheme and `none` are not synonyms. Empty is an active canonical
+state: Organizing removes recognized managed prefixes while retaining an
+implicit location token derived from the inherited coordinate scheme and the
+declared deterministic sort. `none` leaves that namespace unmanaged. A corpus with no `.folder.json` retains the historical
+decimal-prefix interpretation without silently turning that compatibility
+behavior into an active rename policy.
 
 The scheme owns:
 
-- ordinal syntax and extraction;
-- sibling ordinal uniqueness;
-- ordinal-sequence inspection;
-- deterministic compact resequencing;
-- location derivation; and
-- the relationship between physical hierarchy and `§` location.
+- strict declaration parsing and recursive inheritance;
+- canonical and recognized legacy prefix parsing;
+- deterministic ordering and token encoding;
+- classification of canonical, legacy, unprefixed, and unsafe prefix-like
+  states;
+- complete old-to-new path planning before mutation;
+- current locator-token derivation; and
+- rejection of ambiguous or unsafe transitions.
 
-A gap such as `1, 2, 4, 5` is diagnosable without guessing semantic meaning.
-Normalization may plan `4 -> 3` and shift later peers accordingly. The plan
-must be complete before the first rename occurs.
+Normalization is reconciliation, not blind renaming. A partially applied
+conversion may be completed when every source and destination is provable.
+Exact current path literals are migrated only when their replacement is
+unambiguous. Before a convention-managed refresh mutates the real corpus, the
+complete normalization and refresh pipeline runs against a temporary copy;
+structural, indexing, link, or diagnostic failure there aborts the real
+mutation.
 
-Do not generalize ordinal-only invariants into universal controlled-artifact
-rules. A later supported scheme may use names, tags, another notation, or no
-positional locator. Add that scheme only when a concrete requirement selects it.
+Folder remains the transaction owner. Organizing supplies the already-decided
+rename plan; Folder validates and applies sibling renames collision-safely.
 
 ### 3.5 Corpus and projections
 
