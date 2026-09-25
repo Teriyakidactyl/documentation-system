@@ -335,12 +335,15 @@ be reported with a completed deterministic refresh.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/l.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.l</a>
-guidance. `verification` now discovers migrated public operations from runtime
-declarations, assembles declared fixtures and schema-derived invalid cases,
-executes the real operation boundary, applies independent common contracts, and
-ratchets the remaining unmigrated public adapters. The current implementation
-still does **not** select the reusable Self-Assembling Verification Architecture
-because the accepted gap set is non-empty.
+guidance. `verification` now discovers public operations from
+`documentation_system.operations`, assembles declared fixtures and
+schema-derived invalid cases, executes the real operation boundary, applies
+independent common contracts, and verifies that durable CLI routes are unique
+and parser-resolvable. Organizing is no longer an accepted migration gap. The
+current implementation still does **not** select the reusable Self-Assembling
+Verification Architecture because Boundary / Generated / Declared / Dedicated
+coverage accounting and the remaining architecture obligations are not yet
+complete.
 
 The implemented testing design is manually authored and layered by owned
 contract:
@@ -361,10 +364,10 @@ contract:
   clean.
 
 The verification inventory combines authored semantic tests with the
-runtime-discovered operation surface. Remaining public-adapter gaps stay explicit
-through the coverage baseline; Software must not claim Self-Assembling
-Verification until that gap set is empty and the reusable architecture's other
-obligations are satisfied.
+runtime-discovered operation surface. There is no accepted public-adapter gap
+baseline. Software must not claim Self-Assembling Verification until the
+remaining coverage dimensions and reusable architecture obligations are
+satisfied.
 
 ## 4. Realization
 
@@ -385,12 +388,14 @@ The principal shared implementation boundaries are:
   controlled-reference, diagnostic, and refactor semantics;
 - `core` for canonical source-addressable results, failures, schemas, and
   operation execution;
-- `interfaces/cli` for migrated command adapters and their discoverable
-  operation declarations;
+- `documentation_system/operations` for interface-neutral public operation
+  declarations, schemas, expected-failure translation, and verification probes;
+- `documentation_system/interfaces/cli` for command parsing, invocation,
+  projection, and exit behavior only;
 - `verification` for operation discovery, case assembly, common contracts,
-  dependency checks, and the accepted-gap ratchet; and
-- `d. Software/tests` for executable coverage of the shared capability and
-  Organizing boundaries.
+  dependency checks, and current coverage reporting; and
+- `d. Software/tests` for authored capability, automation, core, verification,
+  and CLI-boundary coverage.
 
 Current composition examples include:
 
@@ -404,9 +409,10 @@ Frontmatter tool
     → Frontmatter capability
     → YAML capability
 
-Organizing
-    → Frontmatter / Markdown / HTML / Folder / YAML mechanics
+Organizing CLI
+    → documentation_system.operations.organizing
     → corpus semantics in automation/organizing
+    → Frontmatter / Markdown / HTML / Folder / YAML mechanics
 ~~~
 
 `requirements.txt` is the shared dependency declaration for Software execution.

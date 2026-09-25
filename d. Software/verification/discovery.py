@@ -1,4 +1,4 @@
-"""Discover public operation declarations and unmigrated root adapters."""
+"""Discover interface-neutral public operation declarations."""
 from __future__ import annotations
 import importlib
 import pkgutil
@@ -9,19 +9,17 @@ from core.registry import all_operations
 @dataclass(frozen=True)
 class Surface:
     operations: tuple
-    public_adapters: tuple[str, ...]
-    unmigrated_adapters: tuple[str, ...]
 
-def _import_cli_modules() -> None:
-    package=importlib.import_module("interfaces.cli")
+    @property
+    def commands(self) -> tuple[tuple[str,...], ...]:
+        return tuple(command for operation in self.operations for command in operation.commands)
+
+def _import_operation_modules() -> None:
+    package=importlib.import_module("documentation_system.operations")
     for module in pkgutil.iter_modules(package.__path__):
         if not module.name.startswith("_"):
-            importlib.import_module(f"interfaces.cli.{module.name}")
+            importlib.import_module(f"documentation_system.operations.{module.name}")
 
 def discover(software_root: Path | None=None) -> Surface:
-    _import_cli_modules()
-    operations=all_operations()
-    root=(software_root or Path(__file__).resolve().parents[1]).resolve()
-    adapters=tuple(sorted(path.name for path in root.glob("*.py") if path.is_file()))
-    declared={operation.adapter for operation in operations}
-    return Surface(operations,adapters,tuple(name for name in adapters if name not in declared))
+    _import_operation_modules()
+    return Surface(all_operations())

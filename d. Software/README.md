@@ -17,22 +17,28 @@ the code-local `📐 Architecture` store for current Software architecture autho
 The unnumbered Python source files do not participate in generated Index
 navigation; use their filesystem names when invoking them.
 
-Implementation is being separated by software role without adding those
-address-transparent packages to reader navigation:
+Implementation is being converged on the durable `documentation_system`
+namespace without adding address-transparent implementation packages to reader
+navigation:
 
 ~~~text
-interfaces/    consumer adapters such as CLI, and future API transports
-capabilities/  reusable representation and filesystem mechanics
-automation/    repository-owned workflows and semantic orchestration
-core/          shared operation, result, failure, diagnostic, schema, and source contracts
-verification/  self-assembling verification and architecture checks
+documentation_system/
+    operations/   interface-neutral public operation declarations
+    interfaces/   consumer adapters such as CLI, and future API transports
+core/             shared operation, result, failure, diagnostic, schema, and source contracts
+capabilities/     reusable representation and filesystem mechanics
+automation/       repository-owned workflows and semantic orchestration
+verification/     reusable self-assembling verification machinery
 ~~~
 
-Root Python artifacts are the controlled public work encounters. Their
-executable bodies delegate to `interfaces/cli`; reusable behavior lives in the
-canonical role packages above rather than in parallel implementation trees.
-Those internal packages are address-transparent implementation structure, not
-additional reader-facing tool surfaces.
+The remaining top-level role packages are current migration state and will move
+beneath `documentation_system`; they are not a second intended architecture.
+
+Root Python artifacts remain temporary controlled work encounters while callers
+are migrated. Their executable bodies delegate to
+`documentation_system/interfaces/cli`, which invokes
+`documentation_system/operations`. Reusable behavior remains below the
+operation boundary.
 
 When a Python tool cannot import a dependency, `pip` is unavailable, or the
 host Python is externally managed, select **Prepare Software Environment** below

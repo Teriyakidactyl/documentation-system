@@ -104,8 +104,16 @@ Requires PyYAML.
 
 from pathlib import Path
 
-from interfaces.cli.organizing import main
+import sys
+from documentation_system.interfaces.cli.organizing import main
 
 
 if __name__ == "__main__":
-    main(Path(__file__).resolve())
+    argv=list(sys.argv[1:])
+    if not argv:
+        argv=["refresh"]
+    elif argv[0]=="--resolve":
+        argv=["resolve",*argv[1:]]
+    elif argv[0] not in {"refresh","inspect","resolve","normalize","-h","--help"}:
+        argv=["refresh",*argv]
+    main(argv)
