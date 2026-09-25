@@ -294,6 +294,67 @@ imports, paths, schemas, and other explicit declarations as evidence. It should
 report conflicts between authored claims and discovered implementation rather
 than silently selecting one as truth.
 
+### 3.9 Implemented error design
+
+Tooling follows the general
+<a href="../../6%20Software%20Design/3%20Error%20Management/README.md" uid="TJBYJ1">documentation-system:§6.3</a>
+guidance, but the current implementation does **not** select the reusable
+Agent-Facing Error Architecture.
+
+The implemented error design is:
+
+- each capability owns a domain-specific exception for failures it can recognize
+  semantically, such as `FolderError`, `FrontmatterError`,
+  `MarkdownLintError`, or `OrganizingError`;
+- a higher semantic layer translates a lower-layer exception only at a meaningful
+  ownership boundary and preserves the original exception as the cause when it
+  wraps it;
+- public command boundaries catch expected tool/domain failures and convert them
+  to concise tool-prefixed exit messages;
+- unexpected implementation exceptions are not blanket-converted into ordinary
+  domain failures;
+- deterministic validation findings that can coexist with an otherwise
+  established result are represented as diagnostics rather than exceptions;
+- Organizing diagnostics carry structured code, severity, path, line, and
+  message facts, then project those same facts to console, GitHub Actions, JSON,
+  or optional inline comments; and
+- unsafe structural mutation fails before mutation or rolls back the owned
+  transaction rather than guessing through an unresolved condition.
+
+For Organizing refresh, accumulated diagnostics do not all imply command failure.
+`error` severity produces a non-zero exit; warning and information findings can
+be reported with a completed deterministic refresh.
+
+### 3.10 Implemented testing design
+
+Tooling follows the general
+<a href="../../6%20Software%20Design/4%20Testing/README.md" uid="R0J5KF">documentation-system:§6.4</a>
+guidance, but the current implementation does **not** select the reusable
+Self-Assembling Verification Architecture.
+
+The implemented testing design is manually authored and layered by owned
+contract:
+
+- capability tests exercise representation mechanics at their narrow owned
+  boundary;
+- Organizing tests exercise normalized corpus semantics and composition across
+  capabilities;
+- tests use temporary filesystem state and real deterministic implementations
+  where practical rather than reproducing internal call choreography with mocks;
+- assertions target stable outputs, errors, diagnostics, mutations, and
+  invariants rather than private helper sequences;
+- the repository workflow executes the authored unit/integration-style suites,
+  then runs Organizing through its historical public executable path;
+- a second refresh must produce the same diff as the first, making idempotence a
+  first-class verification property; and
+- `git diff --check` verifies the resulting generated state is mechanically
+  clean.
+
+The authored test inventory is current verification evidence. It does not grow
+automatically from callable declarations, so Tooling must not claim
+Self-Assembling Verification until that reusable architecture's selecting
+conditions and obligations are actually satisfied.
+
 ## 4. Realization
 
 The current public Tooling boundary is the numbered set of artifacts under
