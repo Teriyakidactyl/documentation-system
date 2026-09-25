@@ -75,6 +75,11 @@ ordering input used before prefixes are assigned: `alphabetical`,
 existing recognized prefix positions remain authoritative and Organizing does
 not derive a new semantic order.
 
+Reserved controlled sidebands (`.research`, `.decisions`, and `.fault`) are
+outside folder naming normalization. Their names and descendants are preserved
+by this convention layer even though other Organizing passes may still control
+and validate their metadata.
+
 Organizing validates the complete convention-derived rename plan before
 filesystem mutation. Canonical and recognized historical prefix forms may be
 reconciled in one plan. Malformed or ambiguous prefix-like names, duplicate
