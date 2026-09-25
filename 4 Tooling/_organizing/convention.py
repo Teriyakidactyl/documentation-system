@@ -29,6 +29,7 @@ class NamespaceConvention:
     scheme: str = "decimal"
     separator: str = " "
     sort: str = "none"
+    managed: bool = False
 
 
 @dataclass(frozen=True)
@@ -67,7 +68,7 @@ def _namespace(value: object, inherited: NamespaceConvention, owner: Path, key: 
         raise ConventionError(
             f"{owner}: {key}.scheme 'none' is unmanaged and cannot declare separator or sort"
         )
-    return NamespaceConvention(scheme=scheme, separator=separator, sort=sort)
+    return NamespaceConvention(scheme=scheme, separator=separator, sort=sort, managed=True)
 
 
 def read_override(path: Path, inherited: FolderConvention) -> FolderConvention:
