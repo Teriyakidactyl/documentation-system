@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from pathlib import Path
 
-from _capabilities.html import anchors
+from capabilities.html import anchors
 from .elements import element_instances
 from .schemes.ordinal import OrdinalSchemeError, inspect as inspect_ordinal_sequences
 from .model import (
