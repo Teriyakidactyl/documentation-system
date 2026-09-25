@@ -25,6 +25,10 @@ writing-style:
 > This file is working information in `.draft/`. It is not current Software
 > Design authority and does not establish a filename convention.
 
+> [!WARNING]
+> **A glyph can truthfully denote what a `.py` file is doing only when the file
+> itself is a stable responsibility boundary.**
+
 ## 1. Problem
 
 The repository currently places Documentation System quadrant glyphs on some
