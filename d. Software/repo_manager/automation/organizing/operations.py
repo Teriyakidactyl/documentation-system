@@ -4,13 +4,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
-from repo_manager.repo_manager.automation.organizing.diagnostics import Diagnostic as OrganizingDiagnostic, Severity as OrganizingSeverity, annotate
-from repo_manager.repo_manager.automation.organizing.engine import refresh_corpus, resolve_address
-from repo_manager.repo_manager.automation.organizing.model import OrganizingError
-from repo_manager.repo_manager.automation.organizing.refactor import inspect_organization, normalize_conventions
+from repo_manager.automation.organizing.diagnostics import Diagnostic as OrganizingDiagnostic, Severity as OrganizingSeverity, annotate
+from repo_manager.automation.organizing.engine import refresh_corpus, resolve_address
+from repo_manager.automation.organizing.model import OrganizingError
+from repo_manager.automation.organizing.refactor import inspect_organization, normalize_conventions
 from repo_manager.core import Diagnostic, Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Severity, Source, Verification, register
 
-OWNER=Source("repo_manager.repo_manager.automation.organizing.operations","d. Software/repo_manager/automation/organizing/operations.py")
+OWNER=Source("repo_manager.automation.organizing.operations","d. Software/repo_manager/automation/organizing/operations.py")
 ENGINE=Source("repo_manager.automation.organizing.engine","d. Software/repo_manager/automation/organizing/engine.py","refresh_corpus")
 REFACTOR=Source("repo_manager.automation.organizing.refactor","d. Software/repo_manager/automation/organizing/refactor.py")
 MODEL=Source("repo_manager.automation.organizing.model","d. Software/repo_manager/automation/organizing/model.py")
