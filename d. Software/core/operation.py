@@ -20,6 +20,8 @@ class Probe:
     fixture_input: str | None = None
     fixture_content: str | None = None
     fixture_suffix: str = ""
+    fixture_files: Mapping[str, str] = field(default_factory=dict)
+    fixture_dirs: tuple[str, ...] = ()
     expected_status: str = "success"
     expected_failure_origin: str | None = None
 

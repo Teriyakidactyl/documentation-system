@@ -11,8 +11,23 @@ from .contracts import evaluate
 from .coverage import ratchet_findings, stale_baseline
 from .discovery import discover
 
+def _replace_tmp(value,directory: Path):
+    if isinstance(value,str):
+        return value.replace("{tmp}",str(directory))
+    if isinstance(value,list):
+        return [_replace_tmp(item,directory) for item in value]
+    if isinstance(value,dict):
+        return {key:_replace_tmp(item,directory) for key,item in value.items()}
+    return value
+
 def _materialize(case,directory: Path) -> dict:
-    values=dict(case.inputs)
+    for relative in case.fixture_dirs:
+        (directory/relative).mkdir(parents=True,exist_ok=True)
+    for relative,content in (case.fixture_files or {}).items():
+        path=directory/relative
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(content,encoding="utf-8")
+    values={key:_replace_tmp(value,directory) for key,value in case.inputs.items()}
     if case.fixture_input is not None:
         path=directory/f"fixture{case.fixture_suffix}"
         path.write_text(case.fixture_content or "",encoding="utf-8")
