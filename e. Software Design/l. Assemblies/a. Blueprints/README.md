@@ -1,5 +1,5 @@
 ---
-uid: BLUPR1
+uid: BPR7K2
 description: >-
   `Consult when` *a recurring software constraint calls for an established
   reusable design rather than ad-hoc architecture* `to` **select the Software
