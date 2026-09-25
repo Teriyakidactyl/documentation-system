@@ -216,7 +216,16 @@ description: >-
         root = self.base / "project"
         write(root / "README.md", origin("project"))
         section = root / "1 Section"
-        write(section / "README.md", location_readme("Section"))
+        write(
+            section / "README.md",
+            """---
+uid: GHJ789
+description: >-
+  `Consult when` *a test location is entered* `to` **represent the location**.
+---
+# Section
+""",
+        )
         tool = section / "Tool.py"
         write(
             tool,
