@@ -36,9 +36,9 @@ controlled documentation embedded in their module docstrings, while their
 source filenames are glyphless:
 
 ~~~text
-1 Navigation Crawler.py
-4 Markdown.py
-5 Frontmatter.py
+Navigation Crawler.py
+Markdown.py
+Frontmatter.py
 ~~~
 
 The quadrant glyph still classifies the posture of the embedded documentation.

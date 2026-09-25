@@ -28,8 +28,8 @@ entities, and constrained anchor parsing. It does not decide that an attribute
 such as `uid` represents a controlled identity; Organizing owns that meaning.
 
 ```text
-python3 "4 Tooling/7 HTML.py" inspect PATH
-python3 "4 Tooling/7 HTML.py" anchors PATH
+python3 "4 Tooling/HTML.py" inspect PATH
+python3 "4 Tooling/HTML.py" anchors PATH
 ```
 
 `inspect` emits structural HTML tokens. `anchors` emits simple inline

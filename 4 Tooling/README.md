@@ -11,9 +11,11 @@ description: >-
 
 # Tooling
 
-This location contains executable tools whose module docstrings are themselves
-indexed documentation, the runtime procedure required to execute them, and the
-code-local `📐 Architecture` store for current Tooling architecture authority.
+This location contains executable tools whose module docstrings carry
+controlled documentation, the runtime procedure required to execute them, and
+the code-local `📐 Architecture` store for current Tooling architecture authority.
+The unnumbered Python source files do not participate in generated Index
+navigation; use their filesystem names when invoking them.
 
 When a Python tool cannot import a dependency, `pip` is unavailable, or the
 host Python is externally managed, select **Prepare Tooling Environment** below

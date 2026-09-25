@@ -40,7 +40,7 @@ shared public-tool, representation-capability, source-documentation, and
 composition boundaries that Organizing inherits.
 
 Its governed implementation is rooted in `4 Tooling` and entered through
-`1 Navigation Crawler.py`. Folder, Markdown, Frontmatter, YAML, and HTML
+`Navigation Crawler.py`. Folder, Markdown, Frontmatter, YAML, and HTML
 remain independently routable peer capabilities. This architecture governs how
 Organizing composes them for corpus-wide work; it does not make their generic
 representation semantics subordinate to Organizing.
@@ -304,7 +304,7 @@ selected scheme or an explicit caller decision.
 The public implementation boundary is:
 
 ~~~text
-4 Tooling/1 Navigation Crawler.py
+4 Tooling/Navigation Crawler.py
     → _organizing.cli
         → _organizing.engine
             → normalized corpus and organization passes

@@ -45,7 +45,7 @@ jobs:
       - name: Verify canonical source is organized
         shell: bash
         run: |
-          python "4 Tooling/1 Navigation Crawler.py" refresh .
+          python "4 Tooling/Navigation Crawler.py" refresh .
           if ! git diff --quiet; then
             echo "::error::main is not in refreshed canonical state; publish aborted."
             git diff
