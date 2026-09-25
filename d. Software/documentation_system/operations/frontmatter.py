@@ -7,7 +7,6 @@ from typing import Any, Mapping
 from capabilities.frontmatter import FrontmatterError, load
 from capabilities.yaml import YamlError
 from core import Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Source, Verification, invoke, register
-from ._common import require_success
 
 OPERATION_ID="frontmatter.inspect"
 OWNER=Source("documentation_system.operations.frontmatter","d. Software/documentation_system/operations/frontmatter.py","inspect")
