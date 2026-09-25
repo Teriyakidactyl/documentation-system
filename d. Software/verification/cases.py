@@ -1,79 +1,38 @@
-"""Derive safe baseline cases from canonical operation declarations."""
-
+"""Assemble declared probes and mechanically derivable input-boundary cases."""
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Any, Mapping
-
 from core.operation import Operation
-
 
 @dataclass(frozen=True)
 class Case:
-    operation: Operation
     name: str
     inputs: Mapping[str, Any]
     expected_status: str
-    source: str
-
+    coverage: str
+    fixture_input: str | None=None
+    fixture_content: str | None=None
+    fixture_suffix: str=""
+    fixture_files: Mapping[str, str] | None=None
+    fixture_dirs: tuple[str, ...]=()
+    expected_failure_origin: str | None=None
 
 def assemble(operation: Operation) -> tuple[Case, ...]:
-    cases: list[Case] = []
-    if operation.examples:
-        cases.append(
-            Case(
-                operation=operation,
-                name="example",
-                inputs=dict(operation.examples[0]),
-                expected_status="success",
-                source="operation example",
-            )
-        )
-
-    schema = operation.input_schema
-    properties = schema.get("properties", {})
-    example = dict(operation.examples[0]) if operation.examples else {}
-
-    for required in schema.get("required", ()):
-        if required in example:
-            invalid = dict(example)
-            invalid.pop(required)
-            cases.append(
-                Case(
-                    operation=operation,
-                    name=f"missing:{required}",
-                    inputs=invalid,
-                    expected_status="failure",
-                    source="required input contract",
-                )
-            )
-
-    for name, declaration in properties.items():
-        allowed = declaration.get("enum")
-        if allowed is not None and name in example:
-            invalid = dict(example)
-            invalid[name] = "__self_assembling_invalid_value__"
-            cases.append(
-                Case(
-                    operation=operation,
-                    name=f"invalid-enum:{name}",
-                    inputs=invalid,
-                    expected_status="failure",
-                    source="enum input contract",
-                )
-            )
-
-    if schema.get("additionalProperties") is False and example:
-        invalid = dict(example)
-        invalid["__unknown__"] = True
-        cases.append(
-            Case(
-                operation=operation,
-                name="unknown-input",
-                inputs=invalid,
-                expected_status="failure",
-                source="closed input contract",
-            )
-        )
-
+    cases=[]
+    for probe in operation.verification.probes:
+        cases.append(Case(
+            name=probe.name,inputs=dict(probe.inputs),expected_status=probe.expected_status,
+            coverage="declared",fixture_input=probe.fixture_input,
+            fixture_content=probe.fixture_content,fixture_suffix=probe.fixture_suffix,
+            fixture_files=dict(probe.fixture_files),fixture_dirs=probe.fixture_dirs,
+            expected_failure_origin=probe.expected_failure_origin,
+        ))
+    has_valid=any(case.expected_status=="success" for case in cases)
+    path_fields=any(field.kind=="path" for field in operation.input_schema.fields)
+    if not has_valid and not path_fields and operation.effects.filesystem=="none" and not operation.effects.external:
+        example=operation.input_schema.example()
+        if example is not None:
+            cases.append(Case(name="generated-valid",inputs=example,expected_status="success",coverage="generated"))
+    for name,inputs in operation.input_schema.invalid_examples():
+        cases.append(Case(name=name,inputs=inputs,expected_status="failure",coverage="generated"))
     return tuple(cases)

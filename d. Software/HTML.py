@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: PPVYWD
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.f.2</a>'
+architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Software%20Architecture.md" uid="K7W3P9">documentation-system:§d.d.2</a>'
 description: >-
   `Read in full and follow when` *HTML elements, attributes, comments, or
   inline anchors must be inspected independently of Markdown or corpus
@@ -38,38 +38,7 @@ constrained because it is also used by Organizing for controlled-reference
 rewriting.
 '''
 
-from __future__ import annotations
-
-import argparse
-import json
-from pathlib import Path
-
-from _capabilities.html import anchors, inspect
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    sub = parser.add_subparsers(dest="command", required=True)
-    show = sub.add_parser("inspect")
-    show.add_argument("path", type=Path)
-    show_anchors = sub.add_parser("anchors")
-    show_anchors.add_argument("path", type=Path)
-    args = parser.parse_args()
-
-    text = args.path.read_text(encoding="utf-8")
-    if args.command == "inspect":
-        payload = [item.__dict__ for item in inspect(text)]
-    else:
-        payload = [
-            {
-                "start": item.start,
-                "end": item.end,
-                "attributes": dict(item.attributes),
-                "text": item.text,
-            }
-            for item in anchors(text)
-        ]
-    print(json.dumps(payload, indent=2, ensure_ascii=False))
+from interfaces.cli.html import main
 
 
 if __name__ == "__main__":

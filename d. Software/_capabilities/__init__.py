@@ -1,1 +1,1 @@
-"""Reusable representation capabilities consumed by Software entry points and Organizing."""
+"""Compatibility package; implementation moved to capabilities."""
