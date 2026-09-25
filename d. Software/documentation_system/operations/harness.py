@@ -108,7 +108,7 @@ def _handler(inputs: Mapping[str,Any]) -> Result[Any]:
 
 HARNESS_PROJECT=register(Operation(
     id="harness.project",
-    adapter="Harness Installer.py",
+    commands=(("harness","install"),("harness","check"),("harness","remove")),
     owner=OWNER,
     input_schema=InputSchema((
         Field("source_root","path",example="source"),
