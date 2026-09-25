@@ -136,19 +136,19 @@ alignment.
 Check an instance without changing it:
 
 ```text
-python3 "f. Technical Writing/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" check PATH SELECTOR
+python3 "a. Document Design/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" check PATH SELECTOR
 ```
 
 Preview the canonical YAML block:
 
 ```text
-python3 "f. Technical Writing/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" format PATH SELECTOR
+python3 "a. Document Design/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" format PATH SELECTOR
 ```
 
 Apply the deterministic formatting:
 
 ```text
-python3 "f. Technical Writing/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" format --write PATH SELECTOR
+python3 "a. Document Design/a. Document/a. Document Elements/b. Semantic Registry/semantic_registry.py" format --write PATH SELECTOR
 ```
 
 `SELECTOR` uses the same section selector rules as the shared Markdown
