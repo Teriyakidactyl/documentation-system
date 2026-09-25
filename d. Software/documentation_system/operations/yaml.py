@@ -1,8 +1,6 @@
-"""YAML command interface and discoverable operation declaration."""
+"""Interface-neutral YAML operation declaration."""
 from __future__ import annotations
-import json
 from pathlib import Path
-import sys
 from typing import Any, Mapping
 from capabilities.yaml import YamlError, load
 from core import Effects, ExpectedFailure, Failure, Field, InputSchema, Operation, Probe, Result, Source, Verification, invoke, register
