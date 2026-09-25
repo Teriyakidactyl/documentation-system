@@ -1,26 +1,216 @@
 ---
 uid: 1SGQXT
 description: >-
-  `Consult when` *a software design concern must be resolved before its
-  implementation pattern or boundary is chosen* `to` **select the canonical
-  Software Design guidance that fixes the repository's default decision**.
+  `Consult when` *software design must be specified, a recurring design
+  concern must be resolved, a reusable design must be selected, or the
+  relationship between reusable specification and a live implementation must
+  be understood* `to` **apply the canonical Software Design authority,
+  preserve established decisions, and route implementation-specific design to
+  the code-local architecture that governs it**.
 ---
 
 # Software Design
 
-This location collects reusable software-design guidance for agent and human
-implementation work.
+Software Design exists to guide the writing and maintenance of **Software
+Architecture Specifications** for live software implementations.
 
-Software Design is organized primarily around recurring design concerns whose
-decisions arise independently across systems and architectures. Software Design
-Principles supplies defaults inherited across those concerns. Architecture
-guidance explains when several resolved decisions warrant durable implemented
-architecture and how that authority is kept with the code it governs.
+A document in this section may also be useful by itself. A reader may consult
+one concern to understand a design problem, resolve a local decision, or inspect
+an established reusable design. Collectively, however, these documents have one
+job: preserve reusable design knowledge so an architecture author can specify a
+live implementation without reconstructing established reasoning from code,
+conversation history, or first principles.
 
-Prefer documented defaults and established concern architectures over reopening
-equivalent alternatives. Add another Software Design concern when recurring use
-establishes an independently routable decision domain; do not pre-create a
-maximal taxonomy from a framework or book.
+> [!IMPORTANT]
+> **Software Design informs the specification; the Software Architecture
+> Specification governs the implementation.**
+>
+> Reusable guidance and blueprints do not become the architecture of a codebase
+> merely because they apply or because the code resembles them. The live
+> Software Architecture Specification records what that implementation has
+> actually selected, specialized, and committed to.
+
+The section is normative rather than encyclopedic. Its purpose is not to survey
+all defensible software-design approaches. It preserves the decisions, concepts,
+defaults, reusable arrangements, and completeness lenses that should remain
+available when future architecture work begins.
+
+## Terms
+<!--
+element:
+  path:
+    uid: BJS5BZ
+    filepath: 2 Technical Writing/3 Document/2 Document Elements/1 📖 Glossary.md
+  version: '2.0'
+-->
+
+| Term | Meaning |
+|---|---|
+| **Software Specification Guidance** | Canonical reusable guidance that defines how a recurring class of software decisions should be understood and resolved. |
+| **Software Specification Blueprint** | Canonical reusable specification that fixes a durable design for a recurring selecting condition. |
+| **Software Architecture Specification** | Current codebase-specific specification of the architecture governing a live software implementation. |
+
+## Design stance
+
+> [!IMPORTANT]
+> **Write for the amnesia agent.**
+>
+> Assume the next agent has the repository but none of the conversation that
+> produced its design. If a consequential decision can only be recovered by
+> interpreting implementation shape, reading commit archaeology, inferring from
+> tests, or remembering prior discussion, the repository has lost design
+> information.
+
+This stance changes what counts as sufficient design documentation. Code can
+demonstrate that an architecture is realized, but code should not be forced to
+explain why its boundaries exist, which alternatives were intentionally
+excluded, or which obligations future changes must preserve. Those decisions
+belong in controlled specification.
+
+The same standard applies to reusable guidance. A future architecture author
+should be able to enter Software Design with the problem they are trying to
+solve and recover the established decision model without reconstructing the
+repository's intellectual history.
+
+> [!IMPORTANT]
+> **Organize around recurring independent decisions.**
+>
+> Software Design is organized primarily around recurring design concerns whose
+> decisions can arise independently across different systems and architectures.
+> A maintainer should be able to enter through the problem they know they have,
+> rather than first translating that problem into an architecture framework,
+> viewpoint, or named school of design.
+
+Error Management and Testing are first-class concerns for this reason. Either
+can become consequential without first deciding the rest of a system's
+architecture, and each has enough stable vocabulary and reasoning to prevent a
+future maintainer from having to rediscover the design space.
+
+A new concern earns an independently routable location when recurring work
+shows that its decisions are consequential, non-obvious, and stable enough to
+benefit from reusable specification. Do not pre-create a maximal taxonomy in
+anticipation of possible future needs.
+
+Architecture viewpoints and perspectives serve a different purpose. Use them as
+completeness lenses that expose omissions in an architecture; do not turn them
+into the default navigation hierarchy merely because they describe architecture
+comprehensively.
+
+Named traditions such as Domain-Driven Design, information hiding, GRASP, Ports
+and Adapters, or Viewpoints and Perspectives are sources of tested concepts and
+reasoning. They can inform several Software Design concerns without becoming
+the repository's taxonomy.
+
+## Preserve resolved judgment
+
+Software Design should reduce repeated reasoning, not multiply choices.
+
+When several established approaches are equivalent for the repository's needs,
+preserve a canonical default instead of presenting each future author with the
+same menu. When a different arrangement is valid only under particular
+conditions, state those selecting conditions so the exception can be recognized
+without reopening the entire design problem.
+
+This is not an argument against engineering judgment. It is an argument for
+spending judgment where the implementation actually differs instead of spending
+it again on choices the repository has already resolved.
+
+Historical rationale and current authority have different jobs. Keep the
+current decision in the guidance or specification that owns it. Preserve the
+reasoning behind a consequential historical choice separately when that
+reasoning still has value. Do not make a future maintainer replay decision
+history to discover what governs now.
+
+## Specify meaning before representation
+
+Start with the design facts that must remain true: meaning, identity, ownership,
+invariants, relationships, canonical state, required behavior, and consumer
+obligations.
+
+Choose classes, modules, schemas, transports, frameworks, serializers,
+persistence mechanisms, and other implementation representations after those
+facts are understood.
+
+Representation is evidence of design. It is not a substitute for design.
+
+This keeps Software Design from collapsing into pattern selection. A named
+pattern can be useful when it accurately realizes an established decision, but
+the pattern name does not explain the decision by itself.
+
+## Reuse without confusing reuse with authority
+
+Software Specification Guidance preserves reasoning that should apply across
+many implementations. A Software Specification Blueprint goes further by
+resolving several related decisions into one reusable durable arrangement.
+
+Neither governs a live codebase merely by existing.
+
+The Software Architecture Specification is where reusable authority becomes a
+commitment for one implementation. It records which guidance has been resolved,
+which blueprint has been selected when one applies, how reusable decisions were
+specialized, and which implementation-specific architectural decisions remain.
+
+Do not infer blueprint selection from implementation resemblance. Similarity
+may be evidence worth investigating; it is not authority.
+
+The relationship is:
+
+~~~text
+Software Specification Guidance
+        ↓ informs
+
+Software Specification Blueprint
+        ↓ may be explicitly selected by
+
+Software Architecture Specification
+        ↓ governs
+
+live implementation
+~~~
+
+The first two belong in reusable Software Design. The third belongs with the
+codebase it governs.
+
+## Check completeness without turning completeness into structure
+
+Concern-oriented navigation and architecture completeness solve different
+problems.
+
+The section should help an author find a known design problem directly. During
+architecture work, broader viewpoints, perspectives, quality concerns, and
+other established lenses can then be used to ask what the author has missed.
+
+Use those lenses aggressively for review. Do not assume every lens deserves a
+folder, a mandatory document section, or a permanent place in the taxonomy.
+
+The Software Design hierarchy is therefore intentionally incomplete. Its shape
+should follow demonstrated recurring decisions rather than a predetermined
+model of everything software architecture might contain.
+
+## Architectural commitment
+
+A Software Architecture Specification is useful only when it remains connected
+to the implementation it governs.
+
+Treat durable architecture as a relationship among declared current
+architecture, recognizable implementation evidence, and verification:
+
+~~~text
+declared current architecture
++ recognizable implementation evidence
++ verification
+= architectural commitment
+~~~
+
+The specification should make consequential boundaries and obligations
+recoverable without becoming a file inventory. Mechanical claims should prefer
+mechanically recognizable evidence and verification. Claims that require human
+or agent judgment should remain explicitly semantic rather than being forced
+into brittle mechanical checks.
+
+Software Design supplies the reusable knowledge used to reach that commitment.
+The live Software Architecture Specification remains the authority for what one
+implementation is required to satisfy.
 
 ## Index
 <!--

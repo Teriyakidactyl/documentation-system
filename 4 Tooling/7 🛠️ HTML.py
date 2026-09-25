@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: PPVYWD
-architecture: '<a href="9%20%F0%9F%93%90%20Architecture/1%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§4.9.1</a>'
+architecture: '<a href="9%20%F0%9F%93%90%20Architecture/2%20%F0%9F%93%96%20Tooling%20Architecture.md" uid="K7W3P9">documentation-system:§4.9.2</a>'
 description: >-
   `Read in full and follow when` *HTML elements, attributes, comments, or
   inline anchors must be inspected independently of Markdown or corpus
