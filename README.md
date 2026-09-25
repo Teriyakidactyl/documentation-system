@@ -151,11 +151,11 @@ element:
 - `2. 📖 Repository Information Storage.md`
 - `3. 🛠️ Control Documented Information.md`
 
-### Editing
+### Editing Concepts
 
 `Consult when` *an existing artifact must be changed, checked against governing criteria, or subjected to an explicitly required assurance pass* `to` **separate mutation authority, validation reasoning, bounded Validation, and the editorial scope that governs prose-bearing work**.
 
-<a href="b.%20Editing/README.md" uid="X74GZ1" data-ds-link="relative-path">../b. Editing/README.md</a>
+<a href="b.%20Editing%20Concepts/README.md" uid="X74GZ1" data-ds-link="relative-path">../b. Editing Concepts/README.md</a>
 
 - `1. 💡 Editing Under Conceptual Shift.md`
 - `2. 📖 Editorial Terms.md`
