@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 import subprocess
 import sys
@@ -12,7 +13,9 @@ if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
 from _organizing.engine import refresh_corpus, resolve_address
+from _organizing.convention import convention_for_children
 from _organizing.model import OrganizingError, build_corpus, find_repository_root
+from _organizing.refactor import normalize_conventions
 
 
 def write(path: Path, text: str) -> None:
@@ -82,6 +85,77 @@ description: >-
 
 {body}
 """
+
+
+class FolderConventionTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name) / "corpus"
+        write(self.root / "README.md", origin("corpus"))
+
+    def tearDown(self) -> None:
+        self.temp.cleanup()
+
+    def write_config(self, directory: Path, value: dict) -> None:
+        write(directory / ".folder.json", json.dumps(value, indent=2) + "\n")
+
+    def test_config_governs_children_not_its_own_folder_name(self) -> None:
+        self.write_config(
+            self.root,
+            {
+                "folders": {"scheme": "alpha", "separator": ". ", "sort": "alphabetical"},
+                "files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"},
+            },
+        )
+        tooling = self.root / "4 Tooling"
+        write(tooling / "README.md", location_readme("Tooling"))
+        self.write_config(tooling, {"folders": {"scheme": ""}, "files": {"scheme": ""}})
+        write(tooling / "8 Guide.md", page(uid="JKM234"))
+        write(tooling / "9 Architecture" / "README.md", location_readme("Architecture", uid="MNP345"))
+
+        payload = normalize_conventions(self.root, apply=True)
+        self.assertTrue(payload["applied"])
+        renamed = self.root / "a. Tooling"
+        self.assertTrue(renamed.is_dir())
+        self.assertTrue((renamed / "Guide.md").is_file())
+        self.assertTrue((renamed / "Architecture").is_dir())
+        self.assertFalse((renamed / "8 Guide.md").exists())
+        self.assertFalse((renamed / "9 Architecture").exists())
+
+    def test_partial_legacy_and_canonical_prefixes_reconcile(self) -> None:
+        self.write_config(
+            self.root,
+            {
+                "folders": {"scheme": "alpha", "separator": ". ", "sort": "alphabetical"},
+                "files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"},
+            },
+        )
+        write(self.root / "2 Zebra.md", page(uid="DEF456"))
+        write(self.root / "1. Alpha.md", page(uid="GHJ789"))
+
+        normalize_conventions(self.root, apply=True)
+
+        self.assertTrue((self.root / "1. Alpha.md").is_file())
+        self.assertTrue((self.root / "2. Zebra.md").is_file())
+
+    def test_invalid_prefix_like_form_fails_before_mutation(self) -> None:
+        self.write_config(
+            self.root,
+            {"files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"}},
+        )
+        write(self.root / "1-Bad.md", page(uid="DEF456"))
+        before = sorted(path.name for path in self.root.iterdir())
+
+        with self.assertRaisesRegex(OrganizingError, "unrecognized prefix-like form"):
+            normalize_conventions(self.root, apply=True)
+
+        self.assertEqual(before, sorted(path.name for path in self.root.iterdir()))
+
+    def test_undeclared_corpus_preserves_legacy_unnumbered_controlled_files(self) -> None:
+        write(self.root / "Tool.py", "r'''---\\nuid: T00K01\\ndescription: test\\n---\\n# Tool\\n'''\\n")
+        payload = normalize_conventions(self.root, apply=True)
+        self.assertFalse(payload["applied"])
+        self.assertTrue((self.root / "Tool.py").is_file())
 
 
 class CorpusRootTests(unittest.TestCase):
