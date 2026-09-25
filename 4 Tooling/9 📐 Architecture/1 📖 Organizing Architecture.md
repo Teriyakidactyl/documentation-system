@@ -1,5 +1,8 @@
 ---
 uid: 55NHDB
+form:
+  path: '<a href="../../2%20Technical%20Writing/3%20Document/1%20Document%20Forms/13%20Architecture%20Document/README.md" uid="T6P28F">documentation-system:§2.3.1.13</a>'
+  version: '1.0'
 description: >-
   `Consult when` *the Organizing tool, an organization scheme, a peer
   representation capability, a validation rule, a projection, or a structural
@@ -24,43 +27,77 @@ writing-style:
 
 # 📖 Organizing Architecture
 
-Organizing maintains the correspondence between stable controlled identities,
-their organization, and the derived representations through which readers and
-tools find them.
+## 1. Scope
 
-The public Organizing tool owns corpus-wide orchestration. Folder, Markdown,
-Frontmatter, YAML, and HTML are peer capabilities with independently routable work
-encounters. Organizing may call those capabilities when an organization
-operation requires their representation knowledge. A dependency does not make
-one capability a child of another in Tooling navigation.
+This architecture governs the public Organizing tool and the `_organizing`
+implementation that maintains stable controlled identities, organization, and
+derived representations for a Documentation System corpus.
 
-## 1. Architecture contract
+Its governed implementation is rooted in `4 Tooling` and entered through
+`1 🛠️ Navigation Crawler.py`. Folder, Markdown, Frontmatter, YAML, and HTML
+remain independently routable peer capabilities. This architecture governs how
+Organizing composes them for corpus-wide work; it does not make their generic
+representation semantics subordinate to Organizing.
+
+The architecture inherits Software Design Principles. It does not claim a
+specialized reusable Error Management or Testing architecture merely because
+those architectures exist. Such selection requires explicit conformance and
+verification.
+
+## 2. Drivers
+
+Organizing must preserve these design forces:
+
+- controlled artifact identity remains stable across moves, renames, and
+  organization changes;
+- current organization and locators remain projections rather than durable
+  identity;
+- one normalized corpus supplies organization truth to later passes;
+- each representation capability retains ownership of its own syntax and local
+  invariants;
+- deterministic derived state can be rebuilt from canonical source state;
+- structural mutation stops rather than guesses when unmanaged dependencies make
+  a refactor unsafe;
+- current architecture is discoverable from the public Organizing entry point
+  and from the Tooling Architecture store;
+- the historical `4 Tooling/1 🛠️ Navigation Crawler.py` executable path remains
+  an automation-compatibility boundary while external workflows depend on it.
+
+The architecture favors explicit ownership and deterministic projections over
+parallel models, duplicated parsers, or convention inferred from incidental
+implementation shape.
+
+## 3. Architecture
+
+### 3.1 Core contract
 
 Keep one normalized corpus model and one public Organizing entry point for
-corpus-wide organization operations. Do not create a second corpus model,
-parallel link authority, independent index assembler, or filesystem refactorer
-that reconstructs organization semantics separately.
+corpus-wide organization operations.
+
+Do not create a second corpus model, parallel link authority, independent index
+assembler, or filesystem refactorer that reconstructs organization semantics
+separately.
 
 Treat `_organizing` as an address-transparent implementation package beneath
 the controlled Organizing entry point. Treat `_capabilities` as reusable
-representation-level behavior used by Organizing and by independently routable
-peer tools.
+representation-level behavior used by Organizing and independently routable peer
+tools.
 
 A peer capability owns its representation semantics. Organizing owns how those
 representations participate in one controlled corpus.
 
-## 2. Identity, organization, and locators
+### 3.2 Identity, organization, and locators
 
 Keep durable identity independent from current organization.
 
-```text
+~~~text
 uid
  └── identifies controlled artifact
       └── participates in organization scheme
            ├── membership and topology
            ├── representation constraints
            └── locator projection, when the scheme defines one
-```
+~~~
 
 The UID remains authority for artifact identity across moves, renames, and
 organization changes.
@@ -80,23 +117,23 @@ locator projections required by its representation. The UID selects the target;
 the organization scheme and local representation determine what should be
 displayed and linked now.
 
-## 3. Peer capabilities
+### 3.3 Peer capabilities
 
-### 3.1 Folder
+#### 3.3.1 Folder
 
-Folder owns filesystem path inspection and collision-safe path mutation. It
-does not decide what a path means to a corpus or which ordinal a sibling should
+Folder owns filesystem path inspection and collision-safe path mutation. It does
+not decide what a path means to a corpus or which ordinal a sibling should
 receive.
 
 Organizing supplies an already-decided rename or move plan. Folder verifies the
 transaction can be applied without clobbering unrelated paths and performs the
 filesystem mutation.
 
-### 3.2 Markdown
+#### 3.3.2 Markdown
 
 Markdown owns Markdown structure: headings, heading-scoped comments, sections,
-fenced code blocks, anchors, local heading numbering, and mechanically
-decidable Markdown structural validation.
+fenced code blocks, anchors, local heading numbering, and mechanically decidable
+Markdown structural validation.
 
 markdown-it-py is the structural parser behind that capability. The capability
 translates parser output into repository-owned values with source coordinates;
@@ -112,7 +149,7 @@ express. Enable the generic rule set selectively so upgrading the dependency
 cannot silently create a new house opinion. Frontmatter supplies the
 host-document boundary when linting a controlled Markdown file.
 
-### 3.3 Frontmatter
+#### 3.3.3 Frontmatter
 
 Frontmatter owns the metadata envelope carried by a host artifact: locating,
 extracting, updating, and preserving the boundary between metadata and body.
@@ -120,7 +157,7 @@ extracting, updating, and preserving the boundary between metadata and body.
 Frontmatter consumes YAML for YAML payload semantics. That implementation
 dependency does not make YAML subordinate in Tooling navigation.
 
-### 3.4 YAML
+#### 3.3.4 YAML
 
 YAML owns generic YAML parsing, serialization, and mechanically decidable YAML
 validation. It does not know frontmatter, controlled artifacts, UIDs, or
@@ -129,7 +166,7 @@ organization schemes.
 YAML remains independently routable because pure YAML is a valid work encounter
 even when no frontmatter or Documentation System corpus is involved.
 
-### 3.5 HTML
+#### 3.3.5 HTML
 
 HTML owns generic element, attribute, comment, entity, and constrained anchor
 parsing. It does not know that a `uid` attribute is a controlled identity or
@@ -140,7 +177,7 @@ use HTML when a controlled representation is encoded as HTML. HTML remains
 independently routable because inspecting an HTML fragment or file is a coherent
 work encounter without Markdown or corpus semantics.
 
-## 4. Ordinal hierarchy scheme
+### 3.4 Ordinal hierarchy scheme
 
 The currently implemented organization scheme is **ordinal hierarchy**.
 
@@ -154,7 +191,7 @@ The scheme owns:
 - sibling ordinal uniqueness;
 - ordinal-sequence inspection;
 - deterministic compact resequencing;
-- location derivation;
+- location derivation; and
 - the relationship between physical hierarchy and `§` location.
 
 A gap such as `1, 2, 4, 5` is diagnosable without guessing semantic meaning.
@@ -163,19 +200,14 @@ must be complete before the first rename occurs.
 
 Do not generalize ordinal-only invariants into universal controlled-artifact
 rules. A later supported scheme may use names, tags, another notation, or no
-positional locator. Add that scheme only when a concrete requirement selects
-it.
+positional locator. Add that scheme only when a concrete requirement selects it.
 
-## 5. Corpus components
-
-### 5.1 Model
+### 3.5 Corpus and projections
 
 Model values carry normalized facts such as controlled artifact identity,
 metadata, body, current organization facts, and corpus relationships. They do
 not perform filesystem mutation, rewrite references, render indexes, or emit
 diagnostics.
-
-### 5.2 Corpus construction
 
 Corpus construction discovers supported controlled artifacts, applies the
 selected organization scheme, validates unique identities and coordinates, and
@@ -184,89 +216,65 @@ produces the normalized corpus consumed by later passes.
 Source-format adapters may call Frontmatter, Markdown, YAML, or HTML. Do not copy
 those representation parsers into the corpus model.
 
-### 5.3 Navigation projections
-
 Index projection derives reader navigation from the normalized corpus into the
 Index Document Element declared by a folder `README.md`. The `README.md`
 represents the folder; the Index element is generated navigation inside that
-representation. Its heading-scoped `element` metamatter records the Element
-UID, current contract version, and controlled Python renderer. The heading
-supplies the generated section boundary; marker comments do not define that
-boundary.
-
-Structured Element `path.filepath` and `renderer.filepath` values are
-projections of their durable UIDs when those targets participate in the selected
-corpus. A renderer that changes a dynamic Element representation updates the
-generated body and deployed Element version together. An index is a projection
-of current organization, never a second authored topology.
-
-### 5.4 Controlled references
+representation. Structured Element filepaths are projections of durable UIDs
+when those targets participate in the selected corpus.
 
 Controlled-reference processing owns UID target resolution and mechanical
-refresh of physical links plus the display projection selected by the
-catalogued link type. UID identity is invariant across link types.
-
-The default address type displays the current Documentation System locator and
-may select a numbered local section. The relative-path type displays the
-filesystem path from the source artifact itself while retaining a
-browser-resolvable `href`; the Index Element is the current representation
-that selects this type. HTML owns only the anchor syntax and attributes, not
-their Documentation System meaning.
+refresh of physical links plus the display projection selected by the catalogued
+link type. UID identity is invariant across link types.
 
 A stale location or relative path is repairable when UID identity remains
-valid. A missing or ambiguous UID, unknown link type, invalid locator syntax,
-or unresolved local section is not repairable by guessing.
+valid. A missing or ambiguous UID, unknown link type, invalid locator syntax, or
+unresolved local section is not repairable by guessing.
 
-### 5.5 Diagnostics
+Each capability evaluates invariants it legitimately owns and returns structured
+diagnostics. Organizing collects corpus-wide findings and presents them
+consistently. Console output, GitHub Actions annotations, JSON, and optional
+inline comments are projections of the same diagnostic facts.
 
-Each capability evaluates invariants it legitimately owns and returns
-structured diagnostics. Organizing collects corpus-wide findings and presents
-them consistently.
+### 3.6 Operations
 
-Keep one diagnostic value with stable code, severity, path, line, and concrete
-message. Console output, GitHub Actions annotations, JSON, and optional inline
-comments are projections of that value.
-
-## 6. Organizing operations
-
-### 6.1 Refresh
+#### 3.6.1 Refresh
 
 Refresh reconciles deterministic derived state with current canonical sources:
 
-```text
+~~~text
 select corpus root
--> preflight generated navigation boundaries
--> clear stale inline diagnostics
--> establish controlled identities
--> build normalized corpus
--> refresh structured Element filepath projections
--> rebuild corpus
--> refresh deterministic navigation projections
--> rebuild corpus
--> refresh UID-controlled references
--> rebuild corpus
--> validate organized state
--> emit selected diagnostic projections
-```
+→ preflight generated navigation boundaries
+→ clear stale inline diagnostics
+→ establish controlled identities
+→ build normalized corpus
+→ refresh structured Element filepath projections
+→ rebuild corpus
+→ refresh deterministic navigation projections
+→ rebuild corpus
+→ refresh UID-controlled references
+→ rebuild corpus
+→ validate organized state
+→ emit selected diagnostic projections
+~~~
 
 A pass may write only the representation it owns. Rebuild the corpus after a
 write that changes facts consumed by a later pass.
 
-### 6.2 Inspect
+#### 3.6.2 Inspect
 
 Inspect exposes organization facts and violations without changing the corpus.
 Use it to debug how paths become locations, identify ordinal gaps, and view the
 normalization plan implied by the selected scheme.
 
-### 6.3 Resolve
+#### 3.6.3 Resolve
 
 Resolve maps a supported locator to its current controlled artifact, location,
 or local section without refreshing derived state.
 
-### 6.4 Normalize
+#### 3.6.4 Normalize
 
-Normalize plans a deterministic structural refactor of the selected
-organization scheme. Dry-run is the default.
+Normalize plans a deterministic structural refactor of the selected organization
+scheme. Dry-run is the default.
 
 Before applying a rename plan:
 
@@ -274,7 +282,7 @@ Before applying a rename plan:
 2. reject duplicate sources, duplicate destinations, or unrelated destination
    collisions;
 3. identify unmanaged literal path references that UID-controlled reference
-   repair cannot prove safe;
+   repair cannot prove safe; and
 4. stop rather than mutate when an unmanaged dependency remains.
 
 When the plan is safe to apply, Folder performs the collision-safe filesystem
@@ -285,11 +293,34 @@ Normalization does not decide that two concepts should exchange semantic
 positions. It only applies an organization change already determined by the
 selected scheme or an explicit caller decision.
 
-## 7. Dependency rules
+## 4. Realization
+
+The public implementation boundary is:
+
+~~~text
+4 Tooling/1 🛠️ Navigation Crawler.py
+    → _organizing.cli
+        → _organizing.engine
+            → normalized corpus and organization passes
+~~~
+
+The principal implementation responsibilities are:
+
+- `_organizing/model.py` owns normalized corpus facts, UID identity, locator
+  derivation, controlled sideband traversal, and corpus construction;
+- `_organizing/engine.py` owns corpus-wide operation sequencing;
+- `_organizing/cli.py` owns public command parsing and presentation;
+- `_organizing/indexes.py` owns navigation projection;
+- `_organizing/links.py` owns controlled-reference refresh;
+- `_organizing/diagnostics.py` owns diagnostic representation and projections;
+- `_organizing/refactor.py` and `_organizing/schemes/ordinal.py` own
+  organization inspection and deterministic normalization; and
+- `_capabilities` owns reusable Folder, Markdown, Frontmatter, YAML, and HTML
+  mechanics.
 
 Keep semantic ownership and implementation dependency distinct:
 
-```text
+~~~text
 Organizing CLI -> organizing engine
                -> organization scheme
                -> corpus model
@@ -309,19 +340,41 @@ HTML        <- independently routable
 Frontmatter <- independently routable
 Markdown    <- independently routable
 Folder      <- independently routable
-```
+~~~
 
 Share normalized facts through explicit values rather than hidden mutable state.
-Do not infer a Tooling hierarchy from the import graph.
+Do not infer a Tooling navigation hierarchy from the import graph.
 
-## 8. Evolution
+## 5. Verification
 
-Add a deterministic capability when canonical inputs and declarations select
-one output without contextual interpretation. Keep semantic choices authored
-when several meanings remain plausible.
+The authored Tooling test suite under `4 Tooling/tests` is the current
+executable verification surface for Organizing. It must continue to cover
+corpus-root behavior, index boundaries, controlled sidebands, UIDs and
+locators, controlled references, ordinal inspection and normalization,
+representation capabilities, and deterministic refresh behavior.
 
-Add an internal module when a responsibility has an independent reason to
-change and a stable boundary. Do not split one function per file for symmetry.
+The `Maintain documentation organization` GitHub Actions workflow executes the
+Tooling tests, runs Organizing through the historical public entry path, runs a
+second refresh to establish idempotence, and checks the resulting diff for
+formatting errors.
+
+The same public Organizing boundary must remain usable locally. CI is a
+projection of verification, not the sole semantic owner of it.
+
+This implementation does not yet claim the Self-Assembling Verification
+Architecture. Adopting that reusable architecture requires mechanically
+discoverable callable declarations, visible coverage classification, and the
+other obligations defined by that architecture rather than a metadata-only
+selection.
+
+## 6. Evolution
+
+Add a deterministic capability when canonical inputs and declarations select one
+output without contextual interpretation. Keep semantic choices authored when
+several meanings remain plausible.
+
+Add an internal module when a responsibility has an independent reason to change
+and a stable boundary. Do not split one function per file for symmetry.
 
 Add another public Tooling artifact when the work encounter is independently
 routable and useful without entering Organizing. Do not require an independent
@@ -330,3 +383,7 @@ routing surface.
 
 Add another organization scheme only when a real corpus requires behavior the
 current scheme cannot represent without distorting its meaning.
+
+The public entry filename may change only when its automation compatibility
+constraint is deliberately retired and all dependent workflows or external
+hooks are migrated together.

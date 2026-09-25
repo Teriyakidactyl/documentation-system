@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 45E225
-architecture: '<a href="../6%20Software%20Design/2%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§6.2</a>'
+architecture: '<a href="9%20%F0%9F%93%90%20Architecture/1%20%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§4.9.1</a>'
 description: >-
   `Read in full and follow when` *a controlled corpus must be refreshed,
   inspected, resolved, or structurally normalized* `to` **maintain stable
@@ -93,9 +93,10 @@ The historical `--resolve ADDRESS` form remains accepted for compatibility.
 
 ## 5. Preserve capability boundaries
 
-Treat the controlled `architecture` link in this module as the normative
-software-architecture provenance. `_organizing` owns corpus semantics and
-orchestration. `_capabilities` owns reusable representation mechanics.
+Treat the controlled `architecture` link in this module as direct provenance
+to the code-local current Architecture Document. `_organizing` owns corpus
+semantics and orchestration. `_capabilities` owns reusable representation
+mechanics.
 
 Requires PyYAML.
 '''

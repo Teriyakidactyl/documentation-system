@@ -63,3 +63,12 @@ element:
 
 - `1 📖 Fault Record.md`
 - `2 🛠️ Record A Fault.md`
+
+### Architecture Document
+
+`Consult when` *a durable current Architecture Document is being authored, reviewed, or migrated* `to` **select the canonical artifact specification and assembly procedure for expressing implemented architecture without conflating current authority with ADR provenance**.
+
+<a href="13%20Architecture%20Document/README.md" uid="T6P28F" data-ds-link="relative-path">../13 Architecture Document/README.md</a>
+
+- `1 📖 Architecture Document.md`
+- `2 🛠️ Author An Architecture Document.md`
