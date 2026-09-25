@@ -10,6 +10,7 @@ if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
 from _capabilities.frontmatter import add_missing_key, load as load_frontmatter
+from _capabilities.folder import FolderError, apply as apply_folder_renames, plan_strip_prefix
 from _capabilities.html import anchors, inspect as inspect_html
 from _capabilities.markdown import fenced_blocks, get_section, renumber, sections
 from _capabilities.markdown_lint import fix_file as fix_markdown, lint_file as lint_markdown, rule_policy
@@ -175,6 +176,89 @@ class CapabilityTests(unittest.TestCase):
         self.assertIn("## 2 Bootstrap", rendered)
         self.assertEqual("1", mapping["3.1.2.1"])
         self.assertEqual("1.1", mapping["3.1.2.1.1"])
+
+
+class FolderCapabilityTests(unittest.TestCase):
+    def test_strip_prefix_removes_only_the_matched_span_from_files_and_folders(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "root"
+            write(root / "1 🛠️ Tool.py", "tool")
+            write(root / "2 Other.py", "other")
+            write(root / "3 📖 Reference.md", "reference")
+            write(root / "4 🛠️ Package" / "5 🛠️ Nested.py", "nested")
+
+            plan = plan_strip_prefix(root, r"^[0-9]+ 🛠️ ")
+            self.assertEqual(
+                {
+                    "1 🛠️ Tool.py": "Tool.py",
+                    "4 🛠️ Package": "Package",
+                    "4 🛠️ Package/5 🛠️ Nested.py": "4 🛠️ Package/Nested.py",
+                },
+                {
+                    item.source.relative_to(root).as_posix():
+                    item.destination.relative_to(root).as_posix()
+                    for item in plan
+                },
+            )
+
+            apply_folder_renames(plan)
+
+            self.assertTrue((root / "Tool.py").is_file())
+            self.assertTrue((root / "Package" / "Nested.py").is_file())
+            self.assertTrue((root / "2 Other.py").is_file())
+            self.assertTrue((root / "3 📖 Reference.md").is_file())
+            self.assertFalse((root / "1 🛠️ Tool.py").exists())
+            self.assertFalse((root / "4 🛠️ Package").exists())
+
+    def test_strip_prefix_glob_selects_candidates_without_changing_removed_span(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "root"
+            write(root / "1 Tool.py", "tool")
+            write(root / "2 Guide.md", "guide")
+            write(root / "3 Package" / "4 Nested.py", "nested")
+
+            plan = plan_strip_prefix(
+                root,
+                r"^[0-9]+ ",
+                include_files=True,
+                include_directories=False,
+                name_glob="*.py",
+            )
+            self.assertEqual(
+                {
+                    "1 Tool.py": "Tool.py",
+                    "3 Package/4 Nested.py": "3 Package/Nested.py",
+                },
+                {
+                    item.source.relative_to(root).as_posix():
+                    item.destination.relative_to(root).as_posix()
+                    for item in plan
+                },
+            )
+
+            apply_folder_renames(plan)
+
+            self.assertTrue((root / "Tool.py").is_file())
+            self.assertTrue((root / "2 Guide.md").is_file())
+            self.assertTrue((root / "3 Package" / "Nested.py").is_file())
+            self.assertTrue((root / "3 Package").is_dir())
+
+    def test_strip_prefix_rejects_zero_length_match(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "root"
+            write(root / "Alpha.py", "alpha")
+
+            with self.assertRaisesRegex(FolderError, "matched zero characters"):
+                plan_strip_prefix(root, r"(?=Alpha)")
+
+    def test_strip_prefix_rejects_collision_with_unmatched_sibling(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "root"
+            write(root / "1 Alpha.py", "numbered")
+            write(root / "Alpha.py", "existing")
+
+            with self.assertRaisesRegex(FolderError, "destination already exists"):
+                plan_strip_prefix(root, r"^[0-9]+ ")
 
 
 class OrdinalOrganizationTests(unittest.TestCase):
