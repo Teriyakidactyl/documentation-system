@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
-from automation.organizing.diagnostics import Diagnostic as OrganizingDiagnostic, Severity as OrganizingSeverity, annotate, write_json
+from automation.organizing.diagnostics import Diagnostic as OrganizingDiagnostic, Severity as OrganizingSeverity, annotate
 from automation.organizing.engine import refresh_corpus, resolve_address
 from automation.organizing.model import OrganizingError
 from automation.organizing.refactor import inspect_organization, normalize_conventions
@@ -74,9 +74,6 @@ def _refresh(inputs: Mapping[str,Any]) -> Result[Any]:
     try:
         observed=refresh_corpus(root)
         diagnostics=tuple(_canonical_diagnostic(item,root) for item in observed.diagnostics)
-        diagnostics_path=str(inputs["diagnostics_json"])
-        if diagnostics_path:
-            write_json(Path(diagnostics_path),list(observed.diagnostics),root)
         if bool(inputs["annotate"]):
             annotate(root,list(observed.diagnostics))
     except OrganizingError as exc:
@@ -126,12 +123,11 @@ REFRESH=register(Operation(
     input_schema=InputSchema((
         Field("corpus_root","path",example="."),
         Field("annotate","boolean",required=False,default=False),
-        Field("diagnostics_json","string",required=False,default=""),
     )),
     handler=_refresh,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
-        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","annotate":False,"diagnostics_json":""},expected_status="failure",expected_failure_origin=ENGINE.file),
+        Probe(name="missing-corpus",inputs={"corpus_root":"{tmp}/missing","annotate":False},expected_status="failure",expected_failure_origin=ENGINE.file),
     )),
 ))
 
