@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 r'''---
 uid: 45E225
-architecture: '<a href="%F0%9F%93%90%20Architecture/%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.c.1</a>'
+architecture: '<a href="docs/%F0%9F%93%96%20Organizing%20Architecture.md" uid="55NHDB">documentation-system:§d.a.1</a>'
 description: >-
   `Read in full and follow when` *a controlled corpus must be refreshed,
   inspected, resolved, or structurally normalized* `to` **maintain stable

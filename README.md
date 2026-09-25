@@ -182,10 +182,10 @@ element:
 
 <a href="d.%20Software/README.md" uid="YT5Y7F" data-ds-link="relative-path">../d. Software/README.md</a>
 
+- `docs/README.md`
 - `Folder.py`
 - `Frontmatter.py`
 - `Harness Installer.py`
-- `📐 Architecture/README.md`
 - `HTML.py`
 - `Markdown.py`
 - `Navigation Crawler.py`
