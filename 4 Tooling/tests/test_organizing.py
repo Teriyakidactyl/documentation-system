@@ -122,6 +122,22 @@ class FolderConventionTests(unittest.TestCase):
         self.assertFalse((renamed / "8 Guide.md").exists())
         self.assertFalse((renamed / "9 Architecture").exists())
 
+    def test_controlled_sidebands_are_outside_folder_naming_normalization(self) -> None:
+        self.write_config(
+            self.root,
+            {
+                "folders": {"scheme": "alpha", "separator": ". ", "sort": "alphabetical"},
+                "files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"},
+            },
+        )
+        sideband = self.root / ".research" / "1 Retained.md"
+        write(sideband, page(uid="DEF456"))
+
+        normalize_conventions(self.root, apply=True)
+
+        self.assertTrue(sideband.is_file())
+        self.assertFalse((self.root / ".research" / "1. Retained.md").exists())
+
     def test_partial_legacy_and_canonical_prefixes_reconcile(self) -> None:
         self.write_config(
             self.root,
