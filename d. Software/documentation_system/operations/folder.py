@@ -89,7 +89,7 @@ def _strip_prefix(inputs: Mapping[str, Any]) -> Result[Any]:
 
 FOLDER_RENAME=register(Operation(
     id="folder.rename",
-    adapter="Folder.py",
+    commands=(("folder","rename"),),
     owner=Source(OWNER.module,OWNER.file,"rename"),
     input_schema=InputSchema((
         Field("source","path",example="source.txt"),
@@ -109,7 +109,7 @@ FOLDER_RENAME=register(Operation(
 
 FOLDER_STRIP_PREFIX=register(Operation(
     id="folder.strip-prefix",
-    adapter="Folder.py",
+    commands=(("folder","strip-prefix"),),
     owner=Source(OWNER.module,OWNER.file,"strip_prefix"),
     input_schema=InputSchema((
         Field("root","path",example="root"),
