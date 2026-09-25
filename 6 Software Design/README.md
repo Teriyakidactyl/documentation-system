@@ -1,26 +1,187 @@
 ---
 uid: 1SGQXT
 description: >-
-  `Consult when` *a software design concern must be resolved before its
-  implementation pattern or boundary is chosen* `to` **select the canonical
-  Software Design guidance that fixes the repository's default decision**.
+  `Consult when` *software design must be specified, a recurring design
+  concern must be resolved, a reusable design must be selected, or the
+  relationship between reusable specification and a live implementation must
+  be understood* `to` **apply the canonical Software Design authority,
+  preserve established decisions, and route implementation-specific design to
+  the code-local architecture that governs it**.
 ---
 
 # Software Design
 
-This location collects reusable software-design guidance for agent and human
-implementation work.
+Software Design is the canonical specification authority for how software is
+designed in the Documentation System.
+
+Its documents are normative working authority, not a survey of software
+engineering possibilities. They establish the vocabulary, decision order,
+defaults, selecting conditions, reusable designs, and constraints that an agent
+or maintainer is expected to apply when designing software.
+
+The purpose is not to eliminate engineering judgment. It is to prevent each
+implementation task from reopening design questions that the repository has
+already resolved.
+
+## Working doctrine
+
+### Specify before representing
+
+Resolve the design problem before choosing its implementation representation.
+
+Start with meaning, identity, ownership, invariants, relationships, canonical
+state, and required behavior. Choose classes, modules, schemas, serializers,
+frameworks, transports, and other representations only after the decisions they
+must realize are understood.
+
+Implementation shape is evidence of a design. It is not a reliable substitute
+for an explicit design decision.
+
+### Prefer canonical decisions over menus
+
+When several established approaches satisfy the same constraints, Software
+Design should state one canonical default rather than present equivalent options
+for every implementation to rank again.
+
+A supported alternative needs a concrete selecting condition. The reader should
+be able to determine why the default applies or why a different specified
+arrangement is required.
+
+Named methodologies, patterns, and schools of design are sources of useful
+reasoning. They do not become repository authority merely because they are
+recognized in the literature.
+
+### Separate reusable specification from live implementation authority
+
+Software Design specifies decisions intended for reuse across implementations.
+
+General specification guidance defines how a recurring design problem is
+reasoned about and resolved. A reusable blueprint may go further and fix a
+durable arrangement for a recurring selecting condition.
+
+The design actually governing a live implementation belongs with that
+implementation. When several interacting decisions form durable architecture,
+record that current authority in the implementation's code-local
+`📐 Architecture` store.
+
+A reusable design is not selected merely because code resembles it. The live
+architecture must explicitly accept the relevant obligations, realize them in
+recognizable implementation structure, and carry the corresponding verification.
+
+Do not use reusable Software Design documents as substitutes for the current
+architecture of a particular codebase.
+
+### Organize around recurring independent decisions
 
 Software Design is organized primarily around recurring design concerns whose
-decisions arise independently across systems and architectures. Software Design
-Principles supplies defaults inherited across those concerns. Architecture
-guidance explains when several resolved decisions warrant durable implemented
-architecture and how that authority is kept with the code it governs.
+decisions can arise independently across different systems and architectures.
 
-Prefer documented defaults and established concern architectures over reopening
-equivalent alternatives. Add another Software Design concern when recurring use
-establishes an independently routable decision domain; do not pre-create a
-maximal taxonomy from a framework or book.
+A concern deserves an independently routable location when it:
+
+- recurs across implementations;
+- has a stable vocabulary, decision sequence, or set of design choices;
+- is consequential enough that getting it wrong changes system behavior or
+  maintainability; and
+- is non-obvious enough that an unfamiliar maintainer should not be expected to
+  reconstruct it from first principles or existing code.
+
+This is why Error Management and Testing are first-class concerns. A maintainer
+can encounter either problem without first deciding the rest of a system's
+architecture.
+
+### Let the taxonomy grow from demonstrated need
+
+Do not pre-create a complete Software Design hierarchy from a book, framework,
+or imagined future architecture.
+
+A topic earns a location when recurring work establishes that it is an
+independent decision domain with useful canonical specification. Until then,
+leave the taxonomy incomplete rather than create empty categories.
+
+The final shape of Software Design is intentionally not fixed in advance.
+
+### Use architecture lenses for completeness, not navigation
+
+Architecture viewpoints, perspectives, and established design traditions are
+tools for finding omissions and testing reasoning.
+
+Use them to ask whether a design has overlooked relevant information, runtime,
+development, operational, security, resilience, performance, evolution, or
+other concerns. Do not make those lenses the default folder taxonomy unless a
+concrete recurring work encounter independently justifies that structure.
+
+Navigation should begin from the problem the maintainer knows they have, not
+from prior knowledge of which architectural framework classifies it.
+
+### Design for an amnesiac maintainer
+
+Assume the next agent or maintainer has the repository but none of the
+conversation that produced its design.
+
+Consequential decisions must therefore be recoverable from controlled
+specification and code-local authority rather than from remembered discussion,
+implementation resemblance, commit archaeology, or inference from tests.
+
+The repository should answer two different questions directly:
+
+~~~text
+What rules and reusable designs should govern this kind of decision?
+    → Software Design
+
+What design is this implementation actually required to satisfy?
+    → its code-local architecture authority
+~~~
+
+When either answer requires reverse engineering, the documentation system has
+lost design information.
+
+### Keep current authority separate from decision history
+
+Current specification states what is expected now. Decision records preserve why
+a consequential choice was made at a particular point in repository history.
+
+Do not force a maintainer to replay ADRs to discover the current design, and do
+not turn current specification into a chronology of rejected alternatives.
+
+Historical reasoning belongs in `.decisions` when retaining that reasoning has
+a continuing job. The accepted consequence of a decision belongs in current
+authority.
+
+### Require architecture to meet implementation evidence
+
+A declared architecture is not established by prose alone, and code resemblance
+does not create architecture authority by itself.
+
+Treat durable architecture as a commitment among three things:
+
+~~~text
+declared current architecture
++ recognizable implementation evidence
++ verification
+= architectural commitment
+~~~
+
+Prefer mechanically recognizable evidence for mechanically decidable claims.
+Keep semantic judgment explicit where faithful automation is not possible.
+
+## Working method
+
+When designing or changing software:
+
+1. identify the recurring design concern or concerns involved;
+2. consult the canonical specification before inventing a local convention;
+3. apply the documented default unless a concrete selecting condition requires
+   another supported design;
+4. select a reusable blueprint only when its obligations actually apply;
+5. record implementation-specific durable decisions with the code they govern;
+6. make the implementation expose recognizable evidence of those decisions;
+7. verify mechanically decidable obligations at the faithful boundary; and
+8. preserve historical rationale separately when the reason for a consequential
+   choice must survive.
+
+Do not copy general Software Design specification into a codebase-specific
+architecture document. Record the selected or specialized result and link back
+to the reusable authority when that relationship matters.
 
 ## Index
 <!--
