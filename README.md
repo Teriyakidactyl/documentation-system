@@ -162,7 +162,7 @@ element:
 
 ### Tooling
 
-`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, or harness projection* `to` **prepare the required execution environment or select the narrowest capability that owns the mechanical operation**.
+`Consult when` *the Documentation System needs Tooling runtime preparation, corpus organization, representation-level tooling, harness projection, or current Tooling architecture* `to` **prepare the required execution environment, select the narrowest capability that owns the mechanical operation, or locate the Architecture Document governing a Tooling implementation**.
 
 <a href="4%20Tooling/README.md" uid="YT5Y7F" data-ds-link="relative-path">../4 Tooling/README.md</a>
 
@@ -174,6 +174,7 @@ element:
 - `6 🛠️ YAML.py`
 - `7 🛠️ HTML.py`
 - `8 🛠️ Prepare Tooling Environment.md`
+- `9 📐 Architecture/README.md`
 
 ### Organizing Concepts
 
@@ -194,7 +195,7 @@ element:
 <a href="6%20Software%20Design/README.md" uid="1SGQXT" data-ds-link="relative-path">../6 Software Design/README.md</a>
 
 - `1 📖 Software Design Principles.md`
-- `2 📖 Organizing Architecture.md`
+- `2 Architecture/README.md`
 - `3 Error Management/README.md`
 - `4 Testing/README.md`
 

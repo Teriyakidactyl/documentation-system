@@ -34,18 +34,12 @@ element:
 
 ### 📖 Architecture Document
 
-`Consult when` *an Architecture Document instance is being authored or
-reviewed for conformance* `to` **confirm its current-authority role,
-code-local placement, Form provenance, required semantic sections, and
-separation from historical decision rationale**.
+`Consult when` *an Architecture Document instance is being authored or reviewed for conformance* `to` **confirm its current-authority role, code-local placement, Form provenance, required semantic sections, and separation from historical decision rationale**.
 
 <a href="1%20%F0%9F%93%96%20Architecture%20Document.md" uid="91ZTQW" data-ds-link="relative-path">../1 📖 Architecture Document.md</a>
 
 ### 🛠️ Author An Architecture Document
 
-`Read in full and follow when` *an implemented architecture has been resolved
-and must be expressed as durable current authority* `to` **assemble a concise
-Architecture Document from the resolved scope, drivers, design, realization,
-verification, and evolution contract and bind it to the code it governs**.
+`Read in full and follow when` *an implemented architecture has been resolved and must be expressed as durable current authority* `to` **assemble a concise Architecture Document from the resolved scope, drivers, design, realization, verification, and evolution contract and bind it to the code it governs**.
 
 <a href="2%20%F0%9F%9B%A0%EF%B8%8F%20Author%20An%20Architecture%20Document.md" uid="D6NE0B" data-ds-link="relative-path">../2 🛠️ Author An Architecture Document.md</a>
