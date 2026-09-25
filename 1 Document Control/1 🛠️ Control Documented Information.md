@@ -131,8 +131,11 @@ replaced by a newly minted UID before the corpus can refresh.
 
 Use the existing repository hierarchy before creating another one. Numbered
 directories define classification locations. Numbered artifacts occupy
-terminal positions within those locations. Unnumbered directories may organize
-files physically but contribute no location component.
+terminal positions within those locations. An unnumbered non-`README.md`
+controlled artifact has no addressable location even when it is physically
+inside a numbered directory; it remains controlled but does not enter generated
+index navigation. Unnumbered directories may organize files physically but
+contribute no location component.
 
 When a reserved controlled sideband is selected by Folder Conventions, place
 the artifact there instead of the address hierarchy. A controlled sideband is

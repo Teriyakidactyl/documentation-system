@@ -200,6 +200,8 @@ def location_components(corpus_root: Path, path: Path) -> list[str]:
 
 
 def location_for(corpus_root: Path, path: Path) -> str | None:
+    if path.name != "README.md" and ordinal_from_name(path.name) is None:
+        return None
     components = location_components(corpus_root, path)
     return "§" + ".".join(components) if components else None
 

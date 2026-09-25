@@ -212,6 +212,32 @@ description: >-
         self.assertLess(first, second)
         self.assertNotIn("Unindexed.md", compiled)
 
+    def test_unnumbered_controlled_python_in_numbered_location_is_unaddressed(self) -> None:
+        root = self.base / "project"
+        write(root / "README.md", origin("project"))
+        section = root / "1 Section"
+        write(section / "README.md", location_readme("Section"))
+        tool = section / "Tool.py"
+        write(
+            tool,
+            """r'''---
+uid: T00L01
+description: >-
+  `Consult when` *a test tool is needed* `to` **exercise unnumbered Python control**.
+---
+# Test Tool
+'''
+""",
+        )
+
+        refresh_corpus(root)
+
+        corpus = build_corpus(root)
+        artifact = corpus.artifacts[tool.resolve()]
+        self.assertIsNone(artifact.location)
+        compiled = (section / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("Test Tool", compiled)
+
     def test_decisions_sideband_is_controlled_but_unaddressed(self) -> None:
         root = self.make_corpus("project")
         decision = root / ".decisions" / "Decision.md"
