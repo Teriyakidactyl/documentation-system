@@ -66,7 +66,8 @@ description: >-
 
 This controlled sideband holds mutable Work Management state for this repository.
 
-Planning, Execution, and Archive are the stable responsibility layer.
+Records, Planning, Execution, and Archive are the stable project containment layer.
+Records is a retained-information collector, not a Work Object responsibility.
 Repository automation maintains `metrics.json` for active standalone Work ID
 allocation. Retained Records remain outside Work Management unless executable
 work is deliberately created from them.
