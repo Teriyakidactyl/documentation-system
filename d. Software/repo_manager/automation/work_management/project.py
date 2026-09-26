@@ -44,6 +44,9 @@ KIND_HOME = {
 }
 
 LEAF_DIRS = (
+    "Records/Drafts",
+    "Records/Faults",
+    "Records/Research",
     "Planning/Plans",
     "Planning/Investigations",
     "Planning/Decisions",
