@@ -9,7 +9,7 @@ from typing import Any, Mapping
 
 from repo_manager.core.failure import Failure
 from repo_manager.core.result import Result
-from repo_manager.interfaces.cli.surface import CliRoute
+from repo_manager.interfaces.cli.surface import CliRoute, discover_routes
 
 from .discovery import Surface
 
