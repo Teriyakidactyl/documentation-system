@@ -131,8 +131,8 @@ jobs:
             "f. Work Management/3. 📖 Work Lifecycle.md"
             "f. Work Management/4. 🛠️ Manage Work.md"
             "f. Work Management/5. 🛠️ Set Up Work Management.md"
-            "f. Work Management/e. Planning/1. 📖 Plan Model.md"
-            "f. Work Management/e. Planning/2. 🛠️ Plan Work.md"
+            "f. Work Management/a. Planning/1. 📖 Plan Model.md"
+            "f. Work Management/a. Planning/2. 🛠️ Plan Work.md"
           )
           for path in "${files[@]}"; do
             python "d. Software/Markdown.py" lint "$path"
