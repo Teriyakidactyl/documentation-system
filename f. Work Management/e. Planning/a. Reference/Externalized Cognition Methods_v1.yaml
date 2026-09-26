@@ -1,0 +1,226 @@
+taxonomy: Structured External Cognition
+version: 1.1
+description: >
+  A taxonomy of methods that externalize, expand, reduce, simulate, or
+  orchestrate cognition through structured procedure. Organized by the
+  cognitive operation each method's primary output performs, rather than by
+  theoretical lineage, domain of origin, or surface artifact type. Composite
+  workflows (which sequence primitive operations) are separated from the
+  primitives themselves to prevent axis tilt between mechanism and
+  meta-mechanism.
+parallel_question: >
+  What cognitive operation does the method's primary output perform?
+  Every depth-1 child names one operation type: externalization (produce
+  inspectable representation), generative_expansion (produce more candidates),
+  reductive_filtering (narrow candidate set), simulation (produce emergent
+  behavior via enacted dynamics), execution_governance (externalize working
+  memory to regulate live execution), delegated_computation (outsource the
+  cognitive operation itself to an active external agent), or
+  composite_orchestration (sequence the above).
+structural_notes:
+  horizon: >
+    Depth-1 children are is-a children of the root (scope-exempt per
+    IA-ACN § 3.5, Step 1). Depth-2 sub-categories are is-a children of
+    their parent operation. Leaves are the named methods. Leaf-Term MECE
+    applies across all is-a levels; Full-Address MECE would apply if
+    schema-style has-a properties were added below the leaves (none
+    currently present).
+  unit_of_analysis: >
+    A single named method (e.g., "wargaming", "kanban_boards"). When a
+    method has multiple distinguishable variants whose primary output differs
+    (e.g., a workshop version that produces an artifact vs. a solo version
+    that produces only cognitive expansion), each variant is a separate
+    unit and receives its own classification.
+  scope: >
+    In scope: methods whose primary locus of cognitive work is external to
+    the individual mind — artifacts produced, dynamics enacted, or procedures
+    followed. Out of scope: purely internal regulation methods (meditation,
+    focused attention, calibration training), normative belief-revision rules
+    (Bayesian updating as pure formalism), cognitive training regimes
+    (dual n-back), and unstructured verbalization techniques (standard
+    brainstorming). Agent executability constraint: A method is in scope
+    only if it can be initiated and completed by a prompted agent operating
+    in a text-based environment without requiring live human co-participants,
+    physical materials, or real-time embodied interaction. Methods requiring
+    distributed human actors (e.g., Delphi panels, live wargames) or
+    somatic/physical media are out of scope.
+  leaf_term: >
+    A leaf is a single, mechanistically distinct process. It need not carry
+    a culturally established name; a precise procedural description
+    sufficient to distinguish it from all sibling leaves is acceptable.
+    The binding test is non-duplication: if two proposed leaves share the
+    same primary mechanism and differ only in framing or domain of
+    application, they collapse into one. Fame is not the criterion;
+    distinctness is.
+disambiguation_rules:
+  - when: >
+      A method both externalizes into an artifact and shifts the user's
+      cognitive frame (e.g., journey maps externalize user experience while
+      also requiring the author to adopt the user's perspective).
+    decide_by: >
+      Classify by the primary output. If the method's output is an
+      inspectable artifact, place under externalization. If the output is
+      expanded cognitive content with no durable artifact required, place
+      under generative_expansion. Artifacts are durable; perspective shifts
+      are transient.
+    example: >
+      Empathetic Journey Mapping produces an inspectable artifact (the map)
+      even though its creation requires adopting the user's perspective.
+      Classify under externalization, not generative_expansion.
+  - when: >
+      A method produces no durable external artifact but forces a structured
+      verbal or written explanation (e.g., Rubber Duck Debugging, Feynman
+      Technique).
+    decide_by: >
+      If the primary cognitive result is revealing what is already known
+      (exposing gaps, surfacing implicit structure), classify under
+      externalization -> verbal_externalization. If the primary result is
+      forcing production of content not yet held (a perspective shift that
+      generates new candidates), classify under generative_expansion ->
+      inversion_and_reframing. The test: does the method reveal or produce?
+
+structured_external_cognition:
+  # Parallel Question: What cognitive operation does the method's primary output perform?
+
+  externalization:
+    # Output: inspectable representation of thought
+    structural_diagrams:
+      - "Concept Mapping"
+      - "Causal Loop Diagramming"
+      - "Entity Relationship Modeling"
+      - "Cynefin Framework"
+      - "Wardley Mapping"
+    process_and_experience_diagrams:
+      - "Kanban Boards"
+      - "Value Stream Mapping"
+      - "Customer Journey Mapping"
+      - "Empathetic Journey Mapping"         # NEW: maps emotional and psychological friction across an experience arc;
+                                             # distinct from Customer Journey Mapping (tracks process/state transitions)
+                                             # by tracking affective states and narrative resonance over time
+    verbal_externalization:
+      - "Feynman Technique"
+      - "Rubber Duck Debugging"              # OPEN: stress test flags misclassification — no durable artifact produced,
+                                             # violating the durability constraint in disambiguation_rules; candidate for
+                                             # generative_expansion -> inversion_and_reframing; retained pending resolution
+                                             # of disambiguation_rule: does the method reveal (externalization) or produce
+                                             # (generative_expansion)?
+      - "Socratic Questioning"
+
+  generative_expansion:
+    # Output: more candidates than unaided thought would produce
+    constraint_driven_generation:
+      - "Creative Constraints"
+      - "Pseudocode and Formal Notation"
+      - "Clean Language"
+      - "Constrained Linguistic Generation"  # NEW: artificially restricts vocabulary, syntax, or permitted letters to
+                                             # force semantic rerouting away from habitual expression paths;
+                                             # distinct from Creative Constraints (operates at domain level) by
+                                             # targeting language primitives specifically
+    stochastic_generation:
+      # OPEN: axis tilt — constraint_driven_generation describes prompt content type; stochastic_generation
+      # describes selection mechanism. These are non-MECE siblings on different axes. Restructuring deferred
+      # pending full branch audit.
+      - "Cut-Up Technique"
+      - "Combinatorial Sampling"
+      - "Oblique Strategies"                 # NEW: stochastic selection from a curated set of cryptic lateral prompts
+                                             # to break creative fixation; agent-executable as randomized prompt draw
+    inversion_and_reframing:
+      - "Assumption Inversion"
+      - "TRIZ Analogical Transfer"
+      - "Six Hats and Pre-Mortem"
+      - "Dialectical Assumption Inversion"   # NEW: applies systematic Boolean negation to every node in an existing
+                                             # belief system or taxonomy to force whole-paradigm rupture; distinct from
+                                             # Assumption Inversion (targets individual assumptions selectively) by
+                                             # operating on total-system negation
+      - "CBT Thought Record"                 # NEW: structured worksheet sequencing automatic thought -> distortion
+                                             # identification -> rational alternative construction; agent-executable;
+                                             # classified here because mechanism is cognitive reframing, not affective
+                                             # regulation (the goal does not determine the branch; the mechanism does)
+    exhaustive_combinatorics:               # NEW sub-category: deterministic, exhaustive intersection of orthogonal
+                                             # problem dimensions; distinct from stochastic_generation by producing
+                                             # complete solution spaces rather than sampled ones
+      - "Morphological Analysis"
+      - "Scenario Matrix Construction"
+
+  reductive_filtering:
+    # Output: narrowed candidate set
+    formal_validation:
+      - "MECE Protocol"
+      - "Truth Tables"
+    group_convergence:
+      - "Affinity Diagramming"
+      # - "Nominal Group Technique"          # FAIL: requires synchronous live human participants
+      # - "Prediction Markets and Delphi"    # FAIL: requires distributed human actors with financial incentive
+                                             # structures; bypasses agent executability on both counts
+    causal_reduction:                       # NEW sub-category: deterministic tracing and narrowing of a causal chain
+                                             # to an actionable root node
+      - "Five Whys Root Cause Analysis"
+      - "Fault Tree Analysis"
+    quantified_subjectivity:               # NEW sub-category: mathematically structured evaluation of criteria that
+                                             # are inherently subjective; distinct from formal_validation (which assumes
+                                             # objective truth values) by operating on weighted human judgment
+      - "Weighted Decision Matrix"
+      - "Pairwise Comparison Matrix"         # NEW: ranks options via exhaustive binary comparisons rather than direct
+                                             # weight assignment; distinct from Weighted Decision Matrix by deriving
+                                             # weights implicitly through forced head-to-head choices
+    blinded_evaluation:                    # NEW sub-category: narrowing via structural redaction of identity or
+                                             # provenance metadata to remove social and status bias
+      - "Anonymized Structured Review"
+      - "Blind Comparative Ranking"          # NEW: ranks items against stated criteria when item provenance is
+                                             # structurally hidden from the evaluator throughout the process
+
+  simulation:
+    # Output: emergent system behavior via enacted dynamics
+    adversarial_simulation:
+      # - "Wargaming"                        # FAIL: requires live human counter-agents operating in real time
+      - "Red Teaming"
+      - "Adversarial Steelmanning"           # NEW: constructs the strongest possible counter-position to a given plan
+                                             # or argument, then stress-tests the original against it; distinct from
+                                             # Red Teaming (simulates an external attacker's strategy) by targeting
+                                             # the internal logical strength of the defended position
+    narrative_simulation:
+      - "Design Fiction"
+      - "Diegetic Worldbuilding"
+    # embodied_enactment:                   # FAIL: all leaves require physical materials or somatic interaction;
+                                             # branch suspended pending identification of agent-executable variants
+      # - "Bodystorming"                     # FAIL: requires physical embodiment and navigable spatial environment
+      # - "Physical Prototyping"             # FAIL: requires physical fabrication materials
+
+  execution_governance:                    # NEW depth-1: externalizes working memory to regulate live execution;
+                                             # parallel question: what cognitive operation offloads execution control
+                                             # to an external procedure?
+    sequential_execution_control:
+      - "Operational Checklist Protocol"
+      - "Structured Decision Gate"           # NEW: defines explicit go/no-go evaluation criteria at phase transitions
+                                             # before proceeding to the next stage; distinct from Operational Checklist
+                                             # Protocol (verifies sequential task completion) by governing transitions
+                                             # between phases rather than steps within a phase
+
+  delegated_computation:                   # NEW depth-1: outsources the cognitive operation itself to an active
+                                             # external agent rather than using a passive structural medium;
+                                             # parallel question: what cognitive operation is delegated to an
+                                             # algorithmic entity?
+    prompted_reasoning_delegation:
+      - "Chain-of-Thought Prompting"
+      - "Recursive Self-Critique Prompting"  # NEW: prompts an agent to iteratively evaluate and revise its own prior
+                                             # output against specified criteria through successive passes; distinct from
+                                             # Chain-of-Thought (linear forward reasoning trace) by introducing an
+                                             # adversarial self-loop
+
+  composite_orchestration:
+    # Output: ordered sequence of primitive cognitive operations
+    episodic_procedural:                   # NEW sub-category: time-bounded, phase-sequenced problem-solving frameworks
+                                             # that execute as a discrete event with a defined start and end
+      - "OODA Loop"
+      - "Design Thinking"
+      - "DMAIC"
+      - "Double Diamond"
+    environmental_orchestration:           # NEW sub-category: continuous, unbounded frameworks that accumulate and
+                                             # recombine cognitive artifacts over time rather than executing as a
+                                             # bounded event
+      - "Zettelkasten"
+      - "Commonplace Book Methodology"       # NEW: systematic collection, tagging, and cross-referencing of ideas and
+                                             # excerpts from diverse sources into a unified personal repository;
+                                             # distinct from Zettelkasten (atomic bidirectional linking of original
+                                             # ideas) by mechanism of categorical collection and curation of external
+                                             # source material

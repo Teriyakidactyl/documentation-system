@@ -1,17 +1,17 @@
 ---
 uid: 6E9QHP
 description: >-
-  `Consult when` *repository work reaches a documentation, documented-information,
-  or Documentation System tooling concern and the applicable procedure is not
-  yet known* `to` **select the narrowest applicable Documentation System
-  location before changing the repository**.
+  `Consult when` *repository work reaches a documentation, editing, organizing,
+  software, software-design, or work-management concern and the applicable
+  guidance is not yet known* `to` **select the narrowest applicable
+  Documentation System location before changing the repository**.
 ---
 
 # Documentation System
 
 This repository contains guidance documents and supporting tools for technical
 writing, document control, repository organization, software design, editing,
-and code creation.
+code creation, and repository Work Management.
 
 > [!IMPORTANT]
 > **Progressive disclosure is the interaction model.** The Documentation System
