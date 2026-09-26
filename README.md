@@ -1,17 +1,17 @@
 ---
 uid: 6E9QHP
 description: >-
-  `Consult when` *repository work reaches a documentation, documented-information,
-  or Documentation System tooling concern and the applicable procedure is not
-  yet known* `to` **select the narrowest applicable Documentation System
-  location before changing the repository**.
+  `Consult when` *repository work reaches a documentation, editing, organizing,
+  software, software-design, or work-management concern and the applicable
+  guidance is not yet known* `to` **select the narrowest applicable
+  Documentation System location before changing the repository**.
 ---
 
 # Documentation System
 
 This repository contains guidance documents and supporting tools for technical
 writing, document control, repository organization, software design, editing,
-and code creation.
+code creation, and repository Work Management.
 
 > [!IMPORTANT]
 > **Progressive disclosure is the interaction model.** The Documentation System
@@ -213,3 +213,19 @@ element:
 - `j. Naming/README.md`
 - `k. Performance/README.md`
 - `l. Testing/README.md`
+
+### Work Management
+
+`Consult when` *repository-local work must be captured, stored, planned, executed, resumed, reviewed, or closed and the applicable Work Management guidance is not yet known* `to` **route to the narrowest Work Management procedure or reference without confusing work state with the authority of the artifact being changed**.
+
+<a href="f.%20Work%20Management/README.md" uid="S4QDC1" data-ds-link="relative-path">../f. Work Management/README.md</a>
+
+- `1. 💡 Work Management.md`
+- `a. Close-Out/README.md`
+- `2. 📖 Project Storage.md`
+- `b. Execution/README.md`
+- `3. 📖 Work Model.md`
+- `c. Faults/README.md`
+- `4. 🛠️ Record A Task.md`
+- `d. Intake And Shaping/README.md`
+- `e. Planning/README.md`
