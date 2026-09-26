@@ -369,6 +369,25 @@ baseline. Software must not claim Self-Assembling Verification until the
 remaining coverage dimensions and reusable architecture obligations are
 satisfied.
 
+### 3.11 Consumer distribution ownership
+
+The consumer Skill Distribution is a derived projection of the canonical source
+repository. Repo Manager owns the deterministic construction rule for that
+projection: membership comes from Git-tracked source paths, and any path with a
+dot-prefixed component is omitted from the consumer surface.
+
+`repo_manager.automation.distribution` owns that build semantics and replaces
+the destination on each build so stale files cannot survive projection
+construction. GitHub Actions may supply execution environment and repository
+credentials, but the workflow must not independently reimplement projection
+membership or copy rules.
+
+The current release transport remains outside Repo Manager: the GitHub workflow
+switches or creates the `latest` branch, commits and pushes the constructed
+projection, and optionally creates an immutable version tag. Moving those
+repository-host operations behind a Repo Manager interface is a separate
+decision from owning distribution construction.
+
 ## 4. Realization
 
 The current public Software boundary is the numbered set of artifacts under
