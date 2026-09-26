@@ -2,6 +2,7 @@
 from .project import (
     WorkManagementError,
     reconcile_project,
+    register_plan,
     register_task,
     setup_project,
     validate_project,
@@ -10,6 +11,7 @@ from .project import (
 __all__ = [
     "WorkManagementError",
     "reconcile_project",
+    "register_plan",
     "register_task",
     "setup_project",
     "validate_project",
