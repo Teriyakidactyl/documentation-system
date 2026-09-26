@@ -89,7 +89,7 @@ under Work Management Planning/Reference as non-authoritative planning support.
 
 ### N007 — Integrate Document Control and Organizing
 
-State: active
+State: closed
 Requires: N004, N005
 
 Gate: `.project` is documented as reserved, Organizing treats it as a controlled
@@ -98,7 +98,7 @@ unaddressed.
 
 ### N008 — Refresh and validate repository
 
-State: ready
+State: active
 Requires: N007
 
 Gate: repository-convergence and all verification jobs pass on the pull request.
@@ -121,11 +121,12 @@ Gate: pull request is mergeable and required checks are successful.
 ## Current state
 
 The Work Management guidance root and planning references are committed on
-`work-management-root`. Root routing, `.project` reservation, Organizing
-support, and sideband regression coverage are now committed.
+`work-management-root`. Root routing, `.project` reservation, Organizing support, and sideband regression
+coverage are committed. The first PR validation run passed every substantive job
+except Repository Convergence; that failure identified a false generated Index
+on Planning/Reference, which is now corrected.
 
 ## Next action
 
-Open the pull request so GitHub Actions can run the repository's executable
-Organizing refresh and validation suite. Resolve any resulting validation
-faults, update this Plan, and merge after the acceptance gates pass.
+Re-run the PR validation suite. If Repository Convergence passes, inspect the
+resulting diff and mergeability, close N008/N009, and merge.
