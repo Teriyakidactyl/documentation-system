@@ -72,6 +72,8 @@ jobs:
         run: python "d. Software/tests/test_organizing.py"
       - name: Run Organizing CLI contract tests
         run: python "d. Software/tests/test_organizing_cli.py"
+      - name: Run Distribution automation tests
+        run: python "d. Software/tests/test_distribution.py"
 
   architecture-conformance:
     name: Architecture Conformance
