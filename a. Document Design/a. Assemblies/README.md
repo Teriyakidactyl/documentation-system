@@ -54,6 +54,5 @@ element:
 - `1. 🛠️ Author And Apply A Document Form.md`
 - `a. Architecture Decision Record/README.md`
 - `b. Architecture Document/README.md`
-- `c. Fault Record/README.md`
-- `d. Plan/README.md`
-- `e. Research/README.md`
+- `c. Records/README.md`
+- `d. Work/README.md`

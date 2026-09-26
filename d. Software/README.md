@@ -97,7 +97,7 @@ element:
 
 ### 🛠️ Work
 
-`Read in full and follow when` *repository-local Work Management state must be initialized, reconciled, validated, or given a new standalone Task* `to` **use Repo Manager's Work Management automation for the `.project/` skeleton, allocator metrics, controlled UID maintenance, and collision-safe Task registration**.
+`Read in full and follow when` *repository-local Work Management state must be initialized, reconciled, validated, or given a new standalone Task or Plan* `to` **use Repo Manager's Work Management automation for the current `.project/` skeleton, allocator metrics, UID maintenance, and collision-safe work registration**.
 
 <a href="Work.py" uid="XZ09JW" data-ds-link="relative-path">../Work.py</a>
 

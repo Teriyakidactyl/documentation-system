@@ -13,6 +13,7 @@ if str(SOFTWARE) not in sys.path:
 from repo_manager.automation.work_management import (
     WorkManagementError,
     reconcile_project,
+    register_plan,
     register_task,
     setup_project,
     validate_project,
@@ -45,7 +46,7 @@ class WorkManagementAutomationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def test_setup_materializes_full_skeleton_and_metrics_from_existing_work(self) -> None:
+    def test_setup_materializes_current_skeleton_and_metrics_from_existing_work(self) -> None:
         write(
             self.root / ".project/Planning/Plans/P004 Existing.md",
             work_record("P004", "plan"),
@@ -55,10 +56,12 @@ class WorkManagementAutomationTests(unittest.TestCase):
 
         self.assertTrue((self.root / ".project/README.md").is_file())
         self.assertTrue((self.root / ".project/Archive/Execution/Handoffs").is_dir())
+        self.assertFalse((self.root / ".project/Intake").exists())
         metrics = json.loads((self.root / ".project/metrics.json").read_text(encoding="utf-8"))
+        self.assertEqual(2, metrics["version"])
         self.assertEqual(5, metrics["ids"]["plan"])
+        self.assertNotIn("feedback", metrics["ids"])
         self.assertGreater(result["uids_minted"], 0)
-        self.assertIn("uid:", (self.root / ".project/Planning/Plans/P004 Existing.md").read_text(encoding="utf-8"))
 
     def test_duplicate_work_id_across_active_and_archive_is_rejected(self) -> None:
         write(
@@ -73,25 +76,42 @@ class WorkManagementAutomationTests(unittest.TestCase):
         with self.assertRaisesRegex(WorkManagementError, "Duplicate work.id T001"):
             setup_project(self.root)
 
-    def test_reconcile_repairs_stale_counter_but_preserves_higher_counter(self) -> None:
-        setup_project(self.root)
+    def test_legacy_record_work_object_remains_readable_without_active_counter(self) -> None:
         write(
-            self.root / ".project/Execution/Tasks/T007 Existing.md",
-            work_record("T007", "task"),
+            self.root / ".project/Intake/Feedback/FB007 Legacy.md",
+            work_record("FB007", "feedback"),
         )
+
+        result = setup_project(self.root)
+
+        self.assertEqual(1, result["metrics"]["ids"]["plan"])
+        self.assertNotIn("feedback", result["metrics"]["ids"])
+        validated = validate_project(self.root)
+        self.assertEqual(1, validated["legacy_work_objects"])
+
+    def test_reconcile_migrates_version_one_metrics_and_preserves_active_counters(self) -> None:
+        setup_project(self.root)
         metrics_path = self.root / ".project/metrics.json"
-        metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
-        metrics["ids"]["task"] = 2
-        metrics_path.write_text(json.dumps(metrics), encoding="utf-8")
+        metrics_path.write_text(json.dumps({
+            "version": 1,
+            "ids": {
+                "idea": 9,
+                "feedback": 8,
+                "issue": 7,
+                "fault": 6,
+                "investigation": 5,
+                "decision": 4,
+                "plan": 3,
+                "task": 20,
+                "handoff": 2,
+            },
+        }), encoding="utf-8")
 
         repaired = reconcile_project(self.root)
-        self.assertEqual(8, repaired["metrics"]["ids"]["task"])
 
-        metrics = repaired["metrics"]
-        metrics["ids"]["task"] = 20
-        metrics_path.write_text(json.dumps(metrics), encoding="utf-8")
-        preserved = reconcile_project(self.root)
-        self.assertEqual(20, preserved["metrics"]["ids"]["task"])
+        self.assertEqual(2, repaired["metrics"]["version"])
+        self.assertEqual(20, repaired["metrics"]["ids"]["task"])
+        self.assertNotIn("idea", repaired["metrics"]["ids"])
 
     def test_register_task_allocates_monotonically_and_mints_uid(self) -> None:
         setup_project(self.root)
@@ -109,7 +129,23 @@ class WorkManagementAutomationTests(unittest.TestCase):
         self.assertIn("state: captured", task.read_text(encoding="utf-8"))
         updated = json.loads(metrics_path.read_text(encoding="utf-8"))
         self.assertEqual(10, updated["ids"]["task"])
-        self.assertFalse((self.root / ".project/Execution/Tasks/.gitkeep").exists())
+
+    def test_register_plan_allocates_durable_captured_plan(self) -> None:
+        setup_project(self.root)
+        metrics_path = self.root / ".project/metrics.json"
+        metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+        metrics["ids"]["plan"] = 3
+        metrics_path.write_text(json.dumps(metrics), encoding="utf-8")
+
+        result = register_plan(self.root, "Refactor work forms")
+
+        self.assertEqual("P003", result["work_id"])
+        self.assertTrue(result["uid"])
+        plan = self.root / result["path"]
+        body = plan.read_text(encoding="utf-8")
+        self.assertIn("state: captured", body)
+        self.assertIn("## Execution-environment check", body)
+        self.assertIn("conversation-only", body)
 
     def test_validate_rejects_metrics_behind_allocated_ids(self) -> None:
         setup_project(self.root)

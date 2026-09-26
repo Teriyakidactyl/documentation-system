@@ -16,13 +16,9 @@ from repo_manager.automation.organizing.model import (
     load_artifacts,
 )
 
-METRICS_VERSION = 1
+METRICS_VERSION = 2
 
 KIND_PREFIX = {
-    "idea": "I",
-    "feedback": "FB",
-    "issue": "IS",
-    "fault": "F",
     "investigation": "R",
     "decision": "D",
     "plan": "P",
@@ -30,11 +26,16 @@ KIND_PREFIX = {
     "handoff": "H",
 }
 
+LEGACY_KIND_PREFIX = {
+    "idea": "I",
+    "feedback": "FB",
+    "issue": "IS",
+    "fault": "F",
+}
+
+ALL_KIND_PREFIX = {**LEGACY_KIND_PREFIX, **KIND_PREFIX}
+
 KIND_HOME = {
-    "idea": "Intake/Ideas",
-    "feedback": "Intake/Feedback",
-    "issue": "Intake/Issues",
-    "fault": "Intake/Faults",
     "investigation": "Planning/Investigations",
     "decision": "Planning/Decisions",
     "plan": "Planning/Plans",
@@ -43,19 +44,11 @@ KIND_HOME = {
 }
 
 LEAF_DIRS = (
-    "Intake/Ideas",
-    "Intake/Feedback",
-    "Intake/Issues",
-    "Intake/Faults",
     "Planning/Plans",
     "Planning/Investigations",
     "Planning/Decisions",
     "Execution/Tasks",
     "Execution/Handoffs",
-    "Archive/Intake/Ideas",
-    "Archive/Intake/Feedback",
-    "Archive/Intake/Issues",
-    "Archive/Intake/Faults",
     "Archive/Planning/Plans",
     "Archive/Planning/Investigations",
     "Archive/Planning/Decisions",
@@ -66,15 +59,17 @@ LEAF_DIRS = (
 PROJECT_README = """---
 description: >-
   `Consult when` *repository-local work state must be resumed or inspected*
-  `to` **locate Work Management records without treating them as current
+  `to` **locate Work Management objects without treating them as current
   product authority**.
 ---
 # Project Work
 
 This controlled sideband holds mutable Work Management state for this repository.
 
-Use Intake, Planning, Execution, and Archive as the stable responsibility layer.
-Repository automation maintains `metrics.json` for standalone Work ID allocation.
+Planning, Execution, and Archive are the stable responsibility layer.
+Repository automation maintains `metrics.json` for active standalone Work ID
+allocation. Retained Records remain outside Work Management unless executable
+work is deliberately created from them.
 """
 
 
@@ -140,13 +135,13 @@ def scan_work_objects(corpus_root: Path) -> tuple[WorkRecord, ...]:
             continue
         kind = work.get("type")
         work_id = work.get("id")
-        if not isinstance(kind, str) or kind not in KIND_PREFIX:
+        if not isinstance(kind, str) or kind not in ALL_KIND_PREFIX:
             raise WorkManagementError(
                 f"{_relative(root, path)}: unsupported or missing work.type {kind!r}"
             )
         if not isinstance(work_id, str):
             raise WorkManagementError(f"{_relative(root, path)}: work.id must be a string")
-        prefix = KIND_PREFIX[kind]
+        prefix = ALL_KIND_PREFIX[kind]
         match = re.fullmatch(re.escape(prefix) + r"([0-9]+)", work_id)
         if match is None:
             raise WorkManagementError(
@@ -167,7 +162,8 @@ def scan_work_objects(corpus_root: Path) -> tuple[WorkRecord, ...]:
 def _derived_next(records: tuple[WorkRecord, ...]) -> dict[str, int]:
     next_ids = {kind: 1 for kind in KIND_PREFIX}
     for record in records:
-        next_ids[record.kind] = max(next_ids[record.kind], record.number + 1)
+        if record.kind in next_ids:
+            next_ids[record.kind] = max(next_ids[record.kind], record.number + 1)
     return next_ids
 
 
@@ -179,23 +175,27 @@ def _read_metrics(corpus_root: Path) -> dict[str, Any] | None:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise WorkManagementError(f"{_relative(corpus_root, path)}: invalid JSON: {exc}") from exc
-    if not isinstance(payload, dict) or payload.get("version") != METRICS_VERSION:
+    if not isinstance(payload, dict) or payload.get("version") not in {1, METRICS_VERSION}:
         raise WorkManagementError(
-            f"{_relative(corpus_root, path)}: version must be {METRICS_VERSION}"
+            f"{_relative(corpus_root, path)}: version must be 1 or {METRICS_VERSION}"
         )
     ids = payload.get("ids")
     if not isinstance(ids, dict):
         raise WorkManagementError(f"{_relative(corpus_root, path)}: ids must be an object")
-    unknown = sorted(set(ids) - set(KIND_PREFIX))
-    if unknown:
-        raise WorkManagementError(
-            f"{_relative(corpus_root, path)}: unknown id counters: {', '.join(unknown)}"
-        )
+
     for kind in KIND_PREFIX:
         value = ids.get(kind)
         if not isinstance(value, int) or isinstance(value, bool) or value < 1:
             raise WorkManagementError(
                 f"{_relative(corpus_root, path)}: ids.{kind} must be an integer >= 1"
+            )
+
+    if payload.get("version") == METRICS_VERSION:
+        unknown = sorted(set(ids) - set(KIND_PREFIX))
+        if unknown:
+            raise WorkManagementError(
+                f"{_relative(corpus_root, path)}: unknown active id counters: "
+                + ", ".join(unknown)
             )
     return payload
 
@@ -216,10 +216,7 @@ def reconciled_metrics(corpus_root: Path) -> dict[str, Any]:
     if existing is not None:
         for kind in KIND_PREFIX:
             ids[kind] = max(ids[kind], existing["ids"][kind])
-    payload = dict(existing or {})
-    payload["version"] = METRICS_VERSION
-    payload["ids"] = ids
-    return payload
+    return {"version": METRICS_VERSION, "ids": ids}
 
 
 def _mint_project_uids(corpus_root: Path) -> int:
@@ -326,20 +323,19 @@ def validate_project(corpus_root: Path) -> dict[str, Any]:
         )
     return {
         "work_objects": len(records),
+        "legacy_work_objects": sum(1 for record in records if record.kind in LEGACY_KIND_PREFIX),
         "metrics": metrics,
-        "max_allocated": {
-            kind: required[kind] - 1 for kind in KIND_PREFIX
-        },
+        "max_allocated": {kind: required[kind] - 1 for kind in KIND_PREFIX},
     }
 
 
 def _safe_title(title: str) -> str:
     compact = " ".join(title.split()).strip()
     if not compact:
-        raise WorkManagementError("Task title must not be empty")
+        raise WorkManagementError("Work title must not be empty")
     compact = re.sub(r'[\\/:*?"<>|]+', "-", compact).strip(" .-")
     if not compact:
-        raise WorkManagementError("Task title has no safe filename characters")
+        raise WorkManagementError("Work title has no safe filename characters")
     return compact
 
 
@@ -371,39 +367,87 @@ Captured. Acceptance and starting conditions have not yet been established.
 
 ## Next action
 
-Define acceptance conditions and determine whether the Task is ready or blocked.
+Apply the Task Form and establish acceptance, capability constraints, and
+actionability.
 """
 
 
-def register_task(corpus_root: Path, title: str) -> dict[str, Any]:
+def _plan_text(work_id: str, title: str) -> str:
+    today = date.today().isoformat()
+    return f"""---
+description: >-
+  `Consult when` *plan {work_id} must be resumed or inspected* `to` **recover
+  its intended outcome and continue durable planning without prior conversation**.
+work:
+  id: {work_id}
+  type: plan
+  state: captured
+  updated: '{today}'
+---
+# {work_id} — {title}
+
+> [!WARNING]
+> This Plan is durable repository state. Do not replace it with conversation-only
+> planning.
+
+## Outcome
+
+{title}
+
+## Acceptance conditions
+
+- Define the observable conditions that make the Plan outcome complete.
+
+## Execution-environment check
+
+Before execution, assess the current harness capabilities and material limits.
+
+## Tasks
+
+No executable decomposition has been established yet.
+
+## Current state
+
+Captured. Planning preparation and decomposition remain incomplete.
+
+## Next action
+
+Apply Planning guidance and the Plan Form to establish informed executable work.
+"""
+
+
+def _register(corpus_root: Path, title: str, kind: str, renderer) -> dict[str, Any]:
     root = _normalize_root(corpus_root)
+    if kind not in {"task", "plan"}:
+        raise WorkManagementError(f"Unsupported registration kind: {kind}")
     setup_project(root)
     records = scan_work_objects(root)
     metrics = reconciled_metrics(root)
-    number = metrics["ids"]["task"]
+    number = metrics["ids"][kind]
     used = {record.work_id for record in records}
+    prefix = KIND_PREFIX[kind]
     while True:
-        work_id = f"T{number:03d}"
+        work_id = f"{prefix}{number:03d}"
         if work_id not in used:
             break
         number += 1
 
     safe_title = _safe_title(title)
-    task_dir = _project_root(root) / KIND_HOME["task"]
-    path = task_dir / f"{work_id} {safe_title}.md"
+    target_dir = _project_root(root) / KIND_HOME[kind]
+    path = target_dir / f"{work_id} {safe_title}.md"
     if path.exists():
-        raise WorkManagementError(f"Task path already exists: {_relative(root, path)}")
+        raise WorkManagementError(f"Work path already exists: {_relative(root, path)}")
 
     metrics_path = _metrics_path(root)
     metrics_before = metrics_path.read_text(encoding="utf-8")
-    anchor = task_dir / ".gitkeep"
+    anchor = target_dir / ".gitkeep"
     anchor_existed = anchor.exists()
 
     try:
-        path.write_text(_task_text(work_id, safe_title), encoding="utf-8")
+        path.write_text(renderer(work_id, safe_title), encoding="utf-8")
         if anchor_existed:
             anchor.unlink()
-        metrics["ids"]["task"] = number + 1
+        metrics["ids"][kind] = number + 1
         _write_metrics(root, metrics)
         _mint_project_uids(root)
         validate_project(root)
@@ -424,3 +468,11 @@ def register_task(corpus_root: Path, title: str) -> dict[str, Any]:
         "state": "captured",
         "metrics": metrics,
     }
+
+
+def register_task(corpus_root: Path, title: str) -> dict[str, Any]:
+    return _register(corpus_root, title, "task", _task_text)
+
+
+def register_plan(corpus_root: Path, title: str) -> dict[str, Any]:
+    return _register(corpus_root, title, "plan", _plan_text)

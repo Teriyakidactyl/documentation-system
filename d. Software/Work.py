@@ -3,10 +3,10 @@ r'''---
 uid: XZ09JW
 description: >-
   `Read in full and follow when` *repository-local Work Management state must
-  be initialized, reconciled, validated, or given a new standalone Task*
-  `to` **use Repo Manager's Work Management automation for the `.project/`
-  skeleton, allocator metrics, controlled UID maintenance, and collision-safe
-  Task registration**.
+  be initialized, reconciled, validated, or given a new standalone Task or Plan*
+  `to` **use Repo Manager's Work Management automation for the current
+  `.project/` skeleton, allocator metrics, UID maintenance, and collision-safe
+  work registration**.
 quadrant: HowTo
 outline:
   topology: branching
@@ -31,9 +31,9 @@ Use Work for repository-local `.project/` control operations.
 python3 "d. Software/Work.py" setup [repository_root]
 ```
 
-Setup materializes the canonical project skeleton, reconciles
-`.project/metrics.json`, and mints missing controlled UIDs for metadata-bearing
-project artifacts.
+Setup materializes the current Planning, Execution, and Archive skeleton,
+migrates allocator metrics to the current schema, and mints missing controlled
+UIDs for metadata-bearing project artifacts.
 
 ## 2. Reconcile allocator state
 
@@ -41,8 +41,9 @@ project artifacts.
 python3 "d. Software/Work.py" reconcile [repository_root]
 ```
 
-Reconcile preserves monotonic counters while raising any stale counter to one
-greater than the highest active or archived Work ID of that kind.
+Reconcile preserves monotonic active counters while raising stale counters above
+allocated Work IDs. Legacy Idea, Feedback, Issue, and Fault Work Objects remain
+readable for migration/history but do not receive active allocator counters.
 
 ## 3. Validate project state
 
@@ -51,7 +52,8 @@ python3 "d. Software/Work.py" validate [repository_root]
 ```
 
 Validation rejects duplicate or malformed standalone Work IDs, an incomplete
-project skeleton, or allocator counters behind actual Work Objects.
+current project skeleton, or active allocator counters behind actual Work
+Objects.
 
 ## 4. Register a standalone Task
 
@@ -59,10 +61,20 @@ project skeleton, or allocator counters behind actual Work Objects.
 python3 "d. Software/Work.py" register-task "Concise task title" [repository_root]
 ```
 
-Registration allocates the next collision-free `T###`, creates a captured Task
-record, advances metrics, and mints its controlled UID when applicable.
+Registration allocates the next collision-free `T###`, creates a captured Task,
+advances metrics, and mints its controlled UID when applicable.
 
-Plan-local Tasks do not use this allocator.
+## 5. Register a Plan
+
+```text
+python3 "d. Software/Work.py" register-plan "Concise plan title" [repository_root]
+```
+
+Registration allocates the next collision-free `P###` and immediately creates
+durable captured Plan state before decomposition is relied on. Apply Planning
+guidance and the Plan Form after registration.
+
+Plan-local Tasks do not use either standalone allocator.
 '''
 
 from repo_manager.interfaces.cli.work_management import main
