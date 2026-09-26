@@ -9,7 +9,8 @@ description: >-
 work:
   id: P002
   type: plan
-  state: active
+  state: closed
+  disposition: completed
   retention: active
   updated: '2026-09-25'
 ---
@@ -212,37 +213,44 @@ inside that boundary. Step completion is represented by Markdown checkbox state.
 
 ---
 
-### T8 — Validate and merge
+### ~~T8 — Validate and merge~~
 
-> [!IMPORTANT] State: Active
->
-> **Acceptance**
-> - All repository checks pass and the change is merged with publication
->   behavior intact.
->
-> **Steps**
-> - [x] Run capability and automation tests.
-> - [x] Run architecture and generated-contract checks.
-> - [x] Run repository convergence/idempotence.
-> - [ ] Verify `.project/` remains excluded from `latest`.
-> - [x] Open and review PR #63.
-> - [x] Resolve CI faults.
-> - [ ] Merge after the final head's required checks pass.
-> - [ ] Verify post-merge main and publication.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~All repository checks pass and the change is merged with publication
+  behavior intact.~~
+
+~~**Steps**~~
+
+- [x] ~~Run capability and automation tests.~~
+- [x] ~~Run architecture and generated-contract checks.~~
+- [x] ~~Run repository convergence/idempotence.~~
+- [x] ~~Verify `.project/` remains excluded from `latest`.~~
+- [x] ~~Open and review PR #63.~~
+- [x] ~~Resolve CI faults.~~
+- [x] ~~Merge after the final head's required checks pass.~~
+- [x] ~~Verify post-merge main and publication.~~
 
 ---
 
 ## Current state
 
-PR #63 is open. Workflow run 232 passed Capability Tests, Generated Contracts,
-Architecture Conformance, Repository Convergence, Software Surface, and
-Automation Tests. Work Management reconciliation and Organizing refresh were
-idempotent on the PR head.
+PR #63 is merged. Final PR workflow run 233 passed Capability Tests, Generated
+Contracts, Architecture Conformance, Repository Convergence, Software Surface,
+and Automation Tests.
 
-The remaining pre-merge change adds Work Management reconciliation to the
-post-merge `refresh-main` path and records this validation checkpoint.
+Main workflow run 234 passed the same verification surface. Its `refresh-main`
+job successfully reconciled Work Management, refreshed organization, verified
+idempotence, and committed derived state at
+`badd1bed4db2d0cceb4d86e067a5253f1f3e973f`.
+
+Skill-distribution run 75 completed successfully. The Work Management setup
+guidance and normalized Plan Document Form are present on `latest`, while
+`.project/metrics.json` is absent as required.
 
 ## Next action
 
-Wait for the final branch head to pass the complete PR verification suite, then
-merge PR #63 and verify main-branch refresh plus `latest` publication.
+None. This Plan is closed with disposition `completed` and retained for
+near-term auditability.
