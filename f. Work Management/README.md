@@ -52,7 +52,7 @@ element:
 
 ### 📖 Project Storage
 
-`Consult when` *repository-local Work Management information needs a durable filesystem location, retrieval rule, lifecycle transition, or archival treatment* `to` **place and retain work beneath the controlled `.project/` sideband using its Intake, Planning, Execution, and Archive responsibilities without making path location the sole source of work state**.
+`Consult when` *repository-local Work Management information needs a durable filesystem location, project initialization rule, Work ID allocator state, lifecycle transition, or archival treatment* `to` **place and retain work beneath the controlled `.project/` sideband without making path location or allocator metrics the sole source of semantic work state**.
 
 <a href="2.%20%F0%9F%93%96%20Project%20Storage.md" uid="11J42Y" data-ds-link="relative-path">../2. 📖 Project Storage.md</a>
 
@@ -66,7 +66,7 @@ element:
 
 ### 📖 Work Model
 
-`Consult when` *a Work Object, identifier, state, disposition, relation, gate, maturity, or retention fact must be interpreted or authored consistently* `to` **confirm the canonical semantics that determine repository work state without forcing all work kinds into one lifecycle**.
+`Consult when` *a Work Object, standalone Work ID, Plan-local Task, Step, state, disposition, relation, gate, maturity, or retention fact must be interpreted or authored consistently* `to` **confirm the canonical Work Management semantics without confusing Plan-local execution structure with repository-global Work Object identity**.
 
 <a href="3.%20%F0%9F%93%96%20Work%20Model.md" uid="2QZ9BC" data-ds-link="relative-path">../3. 📖 Work Model.md</a>
 
@@ -81,7 +81,7 @@ element:
 
 ### 🛠️ Record A Task
 
-`Read in full and follow when` *one repository action should be durably registered without first creating a project or plan* `to` **create a minimally sufficient Task with stable identity, actionable state, acceptance conditions, and next action in the repository's `.project/Execution/Tasks/` store**.
+`Read in full and follow when` *one repository action should be durably registered outside a Plan* `to` **create a minimally sufficient standalone Task with collision-resistant Work ID allocation, actionable state, acceptance conditions, and next action in `.project/Execution/Tasks/`**.
 
 <a href="4.%20%F0%9F%9B%A0%EF%B8%8F%20Record%20A%20Task.md" uid="D9Z403" data-ds-link="relative-path">../4. 🛠️ Record A Task.md</a>
 
@@ -92,6 +92,12 @@ element:
 <a href="d.%20Intake%20And%20Shaping/README.md" uid="7PB1HN" data-ds-link="relative-path">../d. Intake And Shaping/README.md</a>
 
 - `1. 🛠️ Shape Work.md`
+
+### 🛠️ Set Up Work Management
+
+`Read in full and follow when` *a repository must adopt Work Management or repair a missing project-control skeleton* `to` **materialize the complete `.project/` responsibility tree, initialize allocator metrics from existing Work Objects, and establish repository-automation-managed project control without inventing work records**.
+
+<a href="5.%20%F0%9F%9B%A0%EF%B8%8F%20Set%20Up%20Work%20Management.md" uid="W7ZGCR" data-ds-link="relative-path">../5. 🛠️ Set Up Work Management.md</a>
 
 ### Planning
 

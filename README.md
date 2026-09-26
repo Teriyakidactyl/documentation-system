@@ -189,6 +189,7 @@ element:
 - `HTML.py`
 - `Markdown.py`
 - `Navigation Crawler.py`
+- `Work.py`
 - `YAML.py`
 - `🛠️ Prepare Software Environment.md`
 
@@ -228,4 +229,5 @@ element:
 - `c. Faults/README.md`
 - `4. 🛠️ Record A Task.md`
 - `d. Intake And Shaping/README.md`
+- `5. 🛠️ Set Up Work Management.md`
 - `e. Planning/README.md`

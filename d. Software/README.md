@@ -95,6 +95,12 @@ element:
 
 <a href="Navigation%20Crawler.py" uid="45E225" data-ds-link="relative-path">../Navigation Crawler.py</a>
 
+### 🛠️ Work
+
+`Read in full and follow when` *repository-local Work Management state must be initialized, reconciled, validated, or given a new standalone Task* `to` **use Repo Manager's Work Management automation for the `.project/` skeleton, allocator metrics, controlled UID maintenance, and collision-safe Task registration**.
+
+<a href="Work.py" uid="XZ09JW" data-ds-link="relative-path">../Work.py</a>
+
 ### 🛠️ YAML
 
 `Read in full and follow when` *a YAML file or YAML value must be parsed or validated independently of frontmatter and corpus semantics* `to` **confirm its generic YAML structure through the shared YAML capability without importing higher-level document rules**.

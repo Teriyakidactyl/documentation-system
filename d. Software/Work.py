@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 r'''---
+uid: XZ09JW
 description: >-
   `Read in full and follow when` *repository-local Work Management state must
   be initialized, reconciled, validated, or given a new standalone Task*
