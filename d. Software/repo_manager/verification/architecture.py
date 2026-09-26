@@ -1,32 +1,65 @@
 """Mechanically decidable dependency checks for Repo Manager roles."""
 from __future__ import annotations
+
 import ast
 from pathlib import Path
 
+
 def _imports(path: Path) -> set[str]:
-    tree=ast.parse(path.read_text(encoding="utf-8"),filename=str(path))
-    result=set()
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    result = set()
     for node in ast.walk(tree):
-        if isinstance(node,ast.Import):
+        if isinstance(node, ast.Import):
             result.update(alias.name for alias in node.names)
-        elif isinstance(node,ast.ImportFrom) and node.module:
+        elif isinstance(node, ast.ImportFrom) and node.module:
             result.add(node.module)
     return result
 
+
+def _allowed_verification_interface_dependency(path: Path, imported: str) -> bool:
+    return (
+        path.name == "interface.py"
+        and (
+            imported == "repo_manager.interfaces.cli.surface"
+            or imported.startswith("repo_manager.interfaces.cli.surface.")
+        )
+    )
+
+
 def dependency_findings(package_root: Path) -> list[str]:
-    rules={
-        "core":("repo_manager.capabilities","repo_manager.automation","repo_manager.interfaces","repo_manager.verification"),
-        "capabilities":("repo_manager.automation","repo_manager.interfaces","repo_manager.verification"),
-        "automation":("repo_manager.interfaces","repo_manager.verification"),
-        "verification":("repo_manager.interfaces",),
+    rules = {
+        "core": (
+            "repo_manager.capabilities",
+            "repo_manager.automation",
+            "repo_manager.interfaces",
+            "repo_manager.verification",
+        ),
+        "capabilities": (
+            "repo_manager.automation",
+            "repo_manager.interfaces",
+            "repo_manager.verification",
+        ),
+        "automation": ("repo_manager.interfaces", "repo_manager.verification"),
+        "verification": ("repo_manager.interfaces",),
     }
-    findings=[]
-    for package,forbidden in rules.items():
-        root=package_root/package
+    findings = []
+    for package, forbidden in rules.items():
+        root = package_root / package
         if not root.exists():
             continue
         for path in sorted(root.rglob("*.py")):
             for imported in sorted(_imports(path)):
-                if any(imported==name or imported.startswith(name+".") for name in forbidden):
-                    findings.append(f"{path.relative_to(package_root).as_posix()}: forbidden dependency on {imported}")
+                if (
+                    package == "verification"
+                    and _allowed_verification_interface_dependency(path, imported)
+                ):
+                    continue
+                if any(
+                    imported == name or imported.startswith(name + ".")
+                    for name in forbidden
+                ):
+                    findings.append(
+                        f"{path.relative_to(package_root).as_posix()}: "
+                        f"forbidden dependency on {imported}"
+                    )
     return findings

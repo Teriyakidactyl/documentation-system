@@ -130,7 +130,7 @@ def _normalize(inputs: Mapping[str,Any]) -> Result[Any]:
 
 REFRESH=register(Operation(
     id="organizing.refresh",
-    commands=(("organizing","refresh"),),
+    commands=(("organize","refresh"),),
     owner=Source(OWNER.module,OWNER.file,"refresh"),
     input_schema=InputSchema((
         Field("corpus_root","path",example="."),
@@ -145,7 +145,7 @@ REFRESH=register(Operation(
 
 INSPECT=register(Operation(
     id="organizing.inspect",
-    commands=(("organizing","inspect"),),
+    commands=(("organize","inspect"),),
     owner=Source(OWNER.module,OWNER.file,"inspect"),
     input_schema=InputSchema((Field("corpus_root","path",example="."),)),
     handler=_inspect,
@@ -157,7 +157,7 @@ INSPECT=register(Operation(
 
 RESOLVE=register(Operation(
     id="organizing.resolve",
-    commands=(("organizing","resolve"),),
+    commands=(("organize","resolve"),),
     owner=Source(OWNER.module,OWNER.file,"resolve"),
     input_schema=InputSchema((
         Field("corpus_root","path",example="."),
@@ -172,7 +172,7 @@ RESOLVE=register(Operation(
 
 NORMALIZE=register(Operation(
     id="organizing.normalize",
-    commands=(("organizing","normalize"),),
+    commands=(("organize","normalize"),),
     owner=Source(OWNER.module,OWNER.file,"normalize"),
     input_schema=InputSchema((
         Field("corpus_root","path",example="."),
