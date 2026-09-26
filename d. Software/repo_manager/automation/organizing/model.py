@@ -31,7 +31,7 @@ from .convention import ConventionError, convention_for_children, encoded_token,
 
 
 IGNORED_DIRS = {"__pycache__"}
-CONTROLLED_SIDEBAND_DIRS = {".research", ".decisions", ".fault", ".project"}
+CONTROLLED_SIDEBAND_DIRS = {".decisions", ".project"}
 SUPPORTED_SUFFIXES = {".md", ".py"}
 LOCATION_ORDINAL_RE = re.compile(r"^([0-9]+)(?:\.\s+|\s+)")
 LOCATION_TOKEN = r"(?:[0-9]+|[a-z]+)"
