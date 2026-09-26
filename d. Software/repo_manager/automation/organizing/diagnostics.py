@@ -221,7 +221,7 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
             )
         else:
             rel = prompt.path.resolve().relative_to(corpus.corpus_root.resolve())
-            if ".research" not in rel.parts[:-1] or prompt.path.name != "Prompt.md":
+            if tuple(rel.parts[:3]) != (".project", "Records", "Research") or prompt.path.name != "Prompt.md":
                 diagnostics.append(
                     Diagnostic(
                         code="DS002",
@@ -230,7 +230,7 @@ def validate_research_reports(corpus: Corpus) -> list[Diagnostic]:
                         line=1,
                         message=(
                             f"research-prompt uid {prompt_uid} must identify Prompt.md "
-                            "inside the controlled .research sideband"
+                            "inside .project/Records/Research beneath the controlled .project sideband"
                         ),
                     )
                 )
