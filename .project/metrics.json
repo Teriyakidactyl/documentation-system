@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "ids": {
+    "idea": 1,
+    "feedback": 1,
+    "issue": 1,
+    "fault": 1,
+    "investigation": 1,
+    "decision": 1,
+    "plan": 3,
+    "task": 1,
+    "handoff": 1
+  }
+}
