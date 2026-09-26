@@ -335,15 +335,25 @@ be reported with a completed deterministic refresh.
 
 Software follows the general
 <a href="../../e.%20Software%20Design/l.%20Testing/README.md" uid="R0J5KF">documentation-system:§e.l</a>
-guidance. `verification` now discovers public operations from
-`documentation_system.operations`, assembles declared fixtures and
-schema-derived invalid cases, executes the real operation boundary, applies
-independent common contracts, and verifies that durable CLI routes are unique
-and parser-resolvable. Organizing is no longer an accepted migration gap. The
-current implementation still does **not** select the reusable Self-Assembling
-Verification Architecture because Boundary / Generated / Declared / Dedicated
-coverage accounting and the remaining architecture obligations are not yet
-complete.
+guidance. `verification` discovers public operations from semantic owners,
+assembles declared fixtures and schema-derived invalid cases, executes the real
+operation boundary, and applies independent common contracts. Public CLI routes
+are also discoverable projections: each command declared by an Operation must
+have exactly one executable projection under `repo_manager.interfaces.cli`.
+Generated verification exercises those projections with controlled success and
+failure Results so argument parsing, operation-input mapping, exit behavior,
+declared JSON output, stderr failure evidence, and traceback containment are
+tested without making the CLI the semantic owner.
+
+Semantic operation discovery remains independent of interface modules. The
+dedicated `repo_manager.verification.interface` boundary is the only
+verification module permitted to inspect CLI projection declarations. Exact
+presentation semantics that cannot be derived safely, such as Organizing's
+successful diagnostic rendering and diagnostics-file schema, remain authored
+contracts. The current implementation still does **not** select the reusable
+Self-Assembling Verification Architecture because Boundary / Generated /
+Declared / Dedicated coverage accounting and the remaining architecture
+obligations are not yet complete.
 
 The implemented testing design is manually authored and layered by owned
 contract:
@@ -396,41 +406,44 @@ Documentation System representation.
 
 The principal shared implementation boundaries are:
 
-- `capabilities/folder.py` for collision-safe filesystem mutation;
-- `capabilities/markdown.py` and `markdown_lint.py` for Markdown structure
-  and deterministic lint/fix mechanics;
-- `capabilities/frontmatter.py` for Markdown/Python metadata envelopes and
-  safe Python module-docstring extraction/replacement;
-- `capabilities/yaml.py` for YAML semantics;
-- `capabilities/html.py` for generic HTML and anchor syntax;
-- `automation/organizing` for corpus-wide identity, organization, projection,
-  controlled-reference, diagnostic, and refactor semantics;
-- `core` for canonical source-addressable results, failures, schemas, and
-  operation execution;
-- `documentation_system/operations` for interface-neutral public operation
-  declarations, schemas, expected-failure translation, and verification probes;
-- `documentation_system/interfaces/cli` for command parsing, invocation,
-  projection, and exit behavior only;
-- `verification` for operation discovery, case assembly, common contracts,
-  dependency checks, and current coverage reporting; and
+- `repo_manager/capabilities/folder.py` for collision-safe filesystem mutation;
+- `repo_manager/capabilities/markdown.py` and `markdown_lint.py` for Markdown
+  structure and deterministic lint/fix mechanics;
+- `repo_manager/capabilities/frontmatter.py` for Markdown/Python metadata
+  envelopes and safe Python module-docstring extraction/replacement;
+- `repo_manager/capabilities/yaml.py` for YAML semantics;
+- `repo_manager/capabilities/html.py` for generic HTML and anchor syntax;
+- `repo_manager/automation/organizing` for corpus-wide identity, organization,
+  projection, controlled-reference, diagnostic, and refactor semantics;
+- semantic-owner capability and automation modules for interface-neutral public
+  Operation declarations, schemas, expected-failure translation, and
+  verification probes;
+- `repo_manager/core` for canonical source-addressable results, failures,
+  schemas, operation execution, and registry contracts;
+- `repo_manager/interfaces/cli` for command parsing, operation-input
+  projection, result presentation, and exit behavior only;
+- `repo_manager/verification` for operation discovery, operation and public
+  interface case execution, common contracts, dependency checks, and coverage
+  reporting; and
 - `d. Software/tests` for authored capability, automation, core, verification,
-  and CLI-boundary coverage.
+  and projection-specific regression coverage.
 
 Current composition examples include:
 
 ~~~text
-Markdown tool
-    → Frontmatter
-    → Markdown capability
+Markdown CLI projection
+    → Markdown Operation owned by repo_manager.capabilities.markdown
+    → Frontmatter / Markdown mechanics
     → markdown-it-py / PyMarkdownLnt
 
-Frontmatter tool
+Frontmatter CLI projection
+    → Frontmatter Operation owned by repo_manager.capabilities.frontmatter
     → Frontmatter capability
     → YAML capability
 
-Organizing CLI
-    → documentation_system.operations.organizing
-    → corpus semantics in automation/organizing
+Organizing CLI projection
+    → Operation owned by repo_manager.automation.organizing.operations
+    → corpus semantics in repo_manager.automation.organizing
     → Frontmatter / Markdown / HTML / Folder / YAML mechanics
 ~~~
 
@@ -446,11 +459,21 @@ structure, HTML anchor parsing, and organization refactor behavior.
 
 `d. Software/tests/test_organizing.py` exercises corpus semantics and the
 composition of representation capabilities through Organizing.
+`test_organizing_cli.py` retains authored projection contracts whose exact
+terminal and diagnostics-file semantics cannot be derived from the generic
+interface model.
 
-The `Maintain documentation organization` GitHub Actions workflow remains the
-repository verification boundary that runs Software tests and the public
-Organizing entry path, establishes refresh idempotence, and checks generated
-state.
+`repo_manager.verification.runner generated` discovers every public Operation
+and every declared CLI projection. It executes semantic operation cases and then
+exercises each CLI projection with controlled success and failure Results.
+`runner surface` fails when a declared command lacks one executable projection
+or an interface projection has no owning semantic command.
+
+The `Maintain documentation organization` GitHub Actions workflow executes
+those self-assembled checks alongside authored Software tests and repository
+refresh convergence. The historical root Organizing executable remains the
+current convergence caller until the installed `repo` entry point replaces
+that migration surface.
 
 Current verification does not yet prove every ownership statement in this
 document mechanically. In particular, the absence of duplicated parser
