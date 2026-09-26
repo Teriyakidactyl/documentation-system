@@ -1,7 +1,7 @@
 ---
 uid: E1AK8J
 form:
-  path: '<a href="../../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/e.%20Research/b.%20Research%20Report/README.md" uid="AKNN1G">documentation-system:§a.a.b.e.b</a>'
+  path: '<a href="../../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/c.%20Records/d.%20Research/b.%20Research%20Report/README.md" uid="AKNN1G">documentation-system:§a.a.b.c.d.b</a>'
   version: '1.0'
 description: >-
   `Consult when` *the 2026-09-25 conversation-derived investigation of

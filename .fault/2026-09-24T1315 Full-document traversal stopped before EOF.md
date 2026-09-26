@@ -1,7 +1,7 @@
 ---
 uid: 0QZE9Q
 form:
-  path: '<a href="../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/c.%20Fault%20Record/README.md" uid="CD4R6P">documentation-system:§a.a.b.c</a>'
+  path: '<a href="../a.%20Document%20Design/a.%20Assemblies/b.%20Forms/c.%20Records/a.%20Fault%20Record/README.md" uid="CD4R6P">documentation-system:§a.a.b.c.a</a>'
   version: '1.0'
 description: >-
   `Read in full when` *the failure in which a required full-document load

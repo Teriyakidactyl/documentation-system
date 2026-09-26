@@ -32,12 +32,12 @@ element:
 
 ### 📖 Plan
 
-`Consult when` *a Work Management Plan Markdown file is being authored or reviewed for representation conformance* `to` **confirm the canonical whole-document sections and Plan Task source patterns that make active, blocked, review, completed, and step-level execution state visually recoverable**.
+`Consult when` *a Work Management Plan Markdown file is being authored or reviewed for representation conformance* `to` **confirm its durable persistence, canonical sections, executor capability check, and Plan Task source patterns while preserving Work Management as semantic owner**.
 
 <a href="1.%20%F0%9F%93%96%20Plan.md" uid="7NVBMP" data-ds-link="relative-path">../1. 📖 Plan.md</a>
 
 ### 🛠️ Author A Plan
 
-`Read in full and follow when` *resolved Work Management Plan semantics must be recorded or maintained as Markdown* `to` **assemble the Plan with canonical sections, local Task headings, state callouts, checkbox-backed Steps, completed-task strike-through, and horizontal Task boundaries while preserving Work Management as the semantic owner**.
+`Read in full and follow when` *resolved Work Management Planning semantics must be recorded or maintained as Markdown* `to` **persist the Plan before execution reliance, preserve the boundary between authoring and planned work, render canonical Task state, and retain a per-executor harness check**.
 
 <a href="2.%20%F0%9F%9B%A0%EF%B8%8F%20Author%20A%20Plan.md" uid="55QQWS" data-ds-link="relative-path">../2. 🛠️ Author A Plan.md</a>

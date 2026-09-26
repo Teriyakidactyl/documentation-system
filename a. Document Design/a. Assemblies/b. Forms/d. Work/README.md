@@ -1,4 +1,5 @@
 ---
+uid: 47CREE
 description: >-
   `Consult when` *repository work must be represented as a reusable Task or
   Plan document and the applicable Form or shared authoring preparation is not
@@ -80,3 +81,21 @@ element:
     uid: 45E225
     filepath: d. Software/Navigation Crawler.py
 -->
+
+### Plan
+
+`Consult when` *a Work Management Plan is being authored, reviewed, or maintained as Markdown* `to` **select the canonical Plan source representation for headings, Task state callouts, checkbox-backed Steps, separators, completed-task treatment, and resumable execution sections without redefining Work Management semantics**.
+
+<a href="a.%20Plan/README.md" uid="46J9VC" data-ds-link="relative-path">../a. Plan/README.md</a>
+
+- `1. 📖 Plan.md`
+- `2. 🛠️ Author A Plan.md`
+
+### Task
+
+`Consult when` *one independently executable repository outcome must be represented as a reusable Task document* `to` **select the Task specification or authoring procedure while leaving lifecycle, identity, storage, and allocation semantics with Work Management**.
+
+<a href="b.%20Task/README.md" uid="CABNEW" data-ds-link="relative-path">../b. Task/README.md</a>
+
+- `1. 📖 Task.md`
+- `2. 🛠️ Author A Task.md`

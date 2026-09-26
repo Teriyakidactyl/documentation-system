@@ -55,29 +55,22 @@ element:
 - `1. 📖 Architecture Document.md`
 - `2. 🛠️ Author An Architecture Document.md`
 
-### Fault Record
+### Records
 
-`Consult when` *an observed failure and its causal evidence must be retained without making the historical fault record current authority* `to` **select the Fault Record specification or assembly procedure needed to reconstruct the failure, analyze its recurrence conditions, and trace resulting corrective action into current authority**.
+`Consult when` *a recurring document role primarily preserves an observation, condition, request, finding, evidence, or provenance and the applicable record Form is not yet known* `to` **select the narrowest Record Form without treating retained information as executable work merely because it may motivate action**.
 
-<a href="c.%20Fault%20Record/README.md" uid="CD4R6P" data-ds-link="relative-path">../c. Fault Record/README.md</a>
+<a href="c.%20Records/README.md" uid="8HHXZ1" data-ds-link="relative-path">../c. Records/README.md</a>
 
-- `1. 📖 Fault Record.md`
-- `2. 🛠️ Record A Fault.md`
+- `a. Fault Record/README.md`
+- `b. Feedback/README.md`
+- `c. Issue/README.md`
+- `d. Research/README.md`
 
-### Plan
+### Work
 
-`Consult when` *a Work Management Plan is being authored, reviewed, or maintained as Markdown* `to` **select the canonical Plan source representation for headings, Task state callouts, checkbox-backed Steps, separators, completed-task treatment, and resumable execution sections without redefining Work Management semantics**.
+`Consult when` *repository work must be represented as a reusable Task or Plan document and the applicable Form or shared authoring preparation is not yet known* `to` **select the Task or Plan Form and establish informed, durable, harness-aware execution context without redefining Work Management lifecycle or planning semantics**.
 
-<a href="d.%20Plan/README.md" uid="46J9VC" data-ds-link="relative-path">../d. Plan/README.md</a>
+<a href="d.%20Work/README.md" uid="47CREE" data-ds-link="relative-path">../d. Work/README.md</a>
 
-- `1. 📖 Plan.md`
-- `2. 🛠️ Author A Plan.md`
-
-### Research
-
-`Consult when` *repeatable research must preserve both its reusable request and one or more execution outputs* `to` **select the Research Prompt or Research Report Form without collapsing reusable instructions into run provenance**.
-
-<a href="e.%20Research/README.md" uid="6AZDY2" data-ds-link="relative-path">../e. Research/README.md</a>
-
-- `a. Research Prompt/README.md`
-- `b. Research Report/README.md`
+- `a. Plan/README.md`
+- `b. Task/README.md`

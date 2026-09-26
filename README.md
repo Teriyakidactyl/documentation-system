@@ -222,12 +222,8 @@ element:
 <a href="f.%20Work%20Management/README.md" uid="S4QDC1" data-ds-link="relative-path">../f. Work Management/README.md</a>
 
 - `1. 💡 Work Management.md`
-- `a. Close-Out/README.md`
+- `a. Planning/README.md`
 - `2. 📖 Project Storage.md`
-- `b. Execution/README.md`
-- `3. 📖 Work Model.md`
-- `c. Faults/README.md`
-- `4. 🛠️ Record A Task.md`
-- `d. Intake And Shaping/README.md`
+- `3. 📖 Work Lifecycle.md`
+- `4. 🛠️ Manage Work.md`
 - `5. 🛠️ Set Up Work Management.md`
-- `e. Planning/README.md`
