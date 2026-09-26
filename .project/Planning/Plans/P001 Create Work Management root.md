@@ -98,14 +98,14 @@ unaddressed.
 
 ### N008 — Refresh and validate repository
 
-State: active
+State: closed
 Requires: N007
 
 Gate: repository-convergence and all verification jobs pass on the pull request.
 
 ### N009 — Review pull request
 
-State: ready
+State: closed
 Requires: N008
 
 Gate: diff contains no unplanned authority transfer, stale generated
@@ -113,7 +113,7 @@ representation, or failing review thread.
 
 ### N010 — Merge
 
-State: ready
+State: active
 Requires: N009
 
 Gate: pull request is mergeable and required checks are successful.
@@ -122,11 +122,11 @@ Gate: pull request is mergeable and required checks are successful.
 
 The Work Management guidance root and planning references are committed on
 `work-management-root`. Root routing, `.project` reservation, Organizing support, and sideband regression
-coverage are committed. The first PR validation run passed every substantive job
-except Repository Convergence; that failure identified a false generated Index
-on Planning/Reference, which is now corrected.
+coverage are committed. PR #61 passes Software Surface, Generated Contracts,
+Capability Tests, Automation Tests, Architecture Conformance, and Repository
+Convergence. The PR is mergeable with no structural validation failure.
 
 ## Next action
 
-Re-run the PR validation suite. If Repository Convergence passes, inspect the
-resulting diff and mergeability, close N008/N009, and merge.
+Merge PR #61. After merge, confirm the main-branch refresh completes and updates
+derived UIDs/indexes as required.
