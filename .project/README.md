@@ -1,4 +1,5 @@
 ---
+uid: 2Q1HKP
 description: >-
   `Consult when` *the Documentation System's current repository-local work
   state must be resumed or inspected* `to` **locate the active Plan and

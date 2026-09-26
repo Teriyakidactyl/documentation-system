@@ -1,4 +1,5 @@
 ---
+uid: 0SPG1T
 description: >-
   `Consult when` *ordinary planning is insufficient because work needs
   stronger generation, causal analysis, comparison, simulation, adversarial
