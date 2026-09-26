@@ -15,14 +15,12 @@ The material is reference input, not current Work Management authority. Apply
 only the methods that address a concrete planning weakness, and keep the Plan's
 actual Nodes, Relations, Gates, and acceptance conditions in the Plan.
 
-## Index
-<!--
-element:
-  path:
-    uid: BZJASV
-    filepath: a. Document Design/a. Assemblies/a. Elements/a. Index/README.md
-  version: '2.0'
-  renderer:
-    uid: 45E225
-    filepath: d. Software/Navigation Crawler.py
--->
+## Retained sources
+
+- `Process Creator.md` provides a self-gating process-compilation model with
+  dependency sufficiency, cycles, validation timing, and commitment cost.
+- `Externalized Cognition Methods_v1.yaml` preserves the earlier external
+  cognition taxonomy and unresolved classifications.
+- `Externalized Cognition Methods_v2.yaml` provides the richer executable
+  taxonomy of externalization, generation, filtering, simulation, execution
+  governance, delegated computation, and composite orchestration.
