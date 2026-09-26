@@ -138,12 +138,15 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
+      - name: Reconcile Work Management
+        run: python "d. Software/Work.py" reconcile .
       - name: Refresh organization
         run: python "d. Software/Navigation Crawler.py" refresh .
       - name: Verify idempotence
         shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
+          python "d. Software/Work.py" reconcile .
           python "d. Software/Navigation Crawler.py" refresh .
           git diff > /tmp/organizing-second.diff
           cmp /tmp/organizing-first.diff /tmp/organizing-second.diff

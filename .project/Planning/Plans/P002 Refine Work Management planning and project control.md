@@ -133,24 +133,26 @@ inside that boundary. Step completion is represented by Markdown checkbox state.
 
 ---
 
-### T4 — Implement repo-automation Work Management operations
+### ~~T4 — Implement repo-automation Work Management operations~~
 
-> [!IMPORTANT] State: Active
->
-> **Acceptance**
-> - Repo automation can initialize Work Management, reconcile and validate
->   allocator state, and register standalone Tasks without collisions.
->
-> **Steps**
-> - [x] Add a Work Management automation module.
-> - [x] Define kind-to-prefix mapping and `metrics.json` schema.
-> - [x] Scan active and archived Work Objects for IDs.
-> - [x] Detect duplicates.
-> - [x] Allocate monotonic Task IDs without recycling.
-> - [x] Reconcile counters against actual Work Objects.
-> - [x] Expose setup, reconcile, validate, and register-task operations.
-> - [x] Reuse repository UID minting mechanics for project artifacts.
-> - [ ] Run repository verification against the new operation surface.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Repo automation can initialize Work Management, reconcile and validate
+  allocator state, and register standalone Tasks without collisions.~~
+
+~~**Steps**~~
+
+- [x] ~~Add a Work Management automation module.~~
+- [x] ~~Define kind-to-prefix mapping and `metrics.json` schema.~~
+- [x] ~~Scan active and archived Work Objects for IDs.~~
+- [x] ~~Detect duplicates.~~
+- [x] ~~Allocate monotonic Task IDs without recycling.~~
+- [x] ~~Reconcile counters against actual Work Objects.~~
+- [x] ~~Expose setup, reconcile, validate, and register-task operations.~~
+- [x] ~~Reuse repository UID minting mechanics for project artifacts.~~
+- [x] ~~Run repository verification against the new operation surface.~~
 
 ---
 
@@ -172,21 +174,23 @@ inside that boundary. Step completion is represented by Markdown checkbox state.
 
 ---
 
-### T6 — Add validation and regression coverage
+### ~~T6 — Add validation and regression coverage~~
 
-> [!NOTE] State: Ready
->
-> **Acceptance**
-> - Automated tests cover setup, allocation, collisions, metrics reconciliation,
->   UID maintenance, and interface exposure.
->
-> **Steps**
-> - [x] Add duplicate-ID coverage.
-> - [x] Add stale-metrics reconciliation coverage.
-> - [x] Add monotonic Task registration coverage.
-> - [x] Add setup and UID-minting coverage.
-> - [x] Add public operation/CLI discovery coverage.
-> - [ ] Execute the full CI verification surface.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Automated tests cover setup, allocation, collisions, metrics reconciliation,
+  UID maintenance, and interface exposure.~~
+
+~~**Steps**~~
+
+- [x] ~~Add duplicate-ID coverage.~~
+- [x] ~~Add stale-metrics reconciliation coverage.~~
+- [x] ~~Add monotonic Task registration coverage.~~
+- [x] ~~Add setup and UID-minting coverage.~~
+- [x] ~~Add public operation/CLI discovery coverage.~~
+- [x] ~~Execute the full CI verification surface.~~
 
 ---
 
@@ -209,32 +213,35 @@ inside that boundary. Step completion is represented by Markdown checkbox state.
 
 ### T8 — Validate and merge
 
-> [!NOTE] State: Ready
+> [!IMPORTANT] State: Active
 >
 > **Acceptance**
 > - All repository checks pass and the change is merged with publication
 >   behavior intact.
 >
 > **Steps**
-> - [ ] Run capability and automation tests.
-> - [ ] Run architecture and generated-contract checks.
-> - [ ] Run repository convergence/idempotence.
+> - [x] Run capability and automation tests.
+> - [x] Run architecture and generated-contract checks.
+> - [x] Run repository convergence/idempotence.
 > - [ ] Verify `.project/` remains excluded from `latest`.
-> - [ ] Open and review the PR.
-> - [ ] Resolve CI faults.
-> - [ ] Merge after all required checks pass.
+> - [x] Open and review PR #63.
+> - [x] Resolve CI faults.
+> - [ ] Merge after the final head's required checks pass.
 > - [ ] Verify post-merge main and publication.
 
 ---
 
 ## Current state
 
-The semantic model, Plan Form, setup guidance, project metrics, Work Management
-automation operations, CLI projection, and dedicated tests are implemented on
-`work-management-refinement`. Per-commit reconciliation and full repository
-verification remain.
+PR #63 is open. Workflow run 232 passed Capability Tests, Generated Contracts,
+Architecture Conformance, Repository Convergence, Software Surface, and
+Automation Tests. Work Management reconciliation and Organizing refresh were
+idempotent on the PR head.
+
+The remaining pre-merge change adds Work Management reconciliation to the
+post-merge `refresh-main` path and records this validation checkpoint.
 
 ## Next action
 
-Wire Work Management reconciliation into repository convergence, then open the
-pull request and use CI to complete T4, T6, and T8.
+Wait for the final branch head to pass the complete PR verification suite, then
+merge PR #63 and verify main-branch refresh plus `latest` publication.
