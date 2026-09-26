@@ -35,7 +35,7 @@ writing-style:
 ## Context
 
 The originating investigation is
-[Verifying That a Governing Document Is Actually Present in an LLM Agent’s Effective Context](../.research/Governing%20Document%20Context%20Presence/2026-09-23%20Research%20Report.md).
+[Verifying That a Governing Document Is Actually Present in an LLM Agent’s Effective Context](../.project/Records/Research/Governing%20Document%20Context%20Presence/2026-09-23%20Research%20Report.md).
 
 The investigation asked whether an agent can establish that a governing
 document is actually present in its effective context rather than merely
