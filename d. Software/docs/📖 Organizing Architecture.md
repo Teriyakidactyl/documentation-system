@@ -84,12 +84,18 @@ Do not create a second corpus model, parallel link authority, independent index
 assembler, or filesystem refactorer that reconstructs organization semantics
 separately.
 
-Treat `automation/organizing` as the address-transparent semantic
-implementation. `documentation_system/operations/organizing.py` owns the
-interface-neutral public operation contracts over that implementation.
-`documentation_system/interfaces/cli/organizing.py` owns command parsing and
-result projection only. Treat `capabilities` as reusable representation-level
-behavior used by Organizing and independently routable peer tools.
+Treat `repo_manager.automation.organizing` as the address-transparent
+semantic implementation. `repo_manager.automation.organizing.operations` owns
+the interface-neutral public operation contracts over that implementation.
+`repo_manager.interfaces.cli.organizing` owns command parsing, operation-input
+projection, result presentation, and exit behavior only. Treat
+`repo_manager.capabilities` as reusable representation-level behavior used by
+Organizing and independently routable peer tools.
+
+The semantic Operation declares the public subject/action route
+`organize <action>`. The CLI layer declares the executable projection of that
+route. Verification cross-checks the two declarations and exercises the
+projection without transferring Organizing semantics to the interface.
 
 A peer capability owns its representation semantics. Organizing owns how those
 representations participate in one controlled corpus.
@@ -329,29 +335,38 @@ selected scheme or an explicit caller decision.
 The public implementation boundary is:
 
 ~~~text
-d. Software/Navigation Crawler.py        temporary wrapper
-    → documentation_system/interfaces/cli/organizing.py
-        → documentation_system/operations/organizing.py
-            → automation/organizing/
+d. Software/Navigation Crawler.py        temporary compatibility wrapper
+    → repo_manager.interfaces.cli.organizing
+        → repo_manager.automation.organizing.operations
+            → repo_manager.automation.organizing
                 → normalized corpus and organization passes
 ~~~
 
+The semantic command declaration uses the approved `organize` subject. The
+historical wrapper does not define that durable grammar; it remains only until
+repository callers move to the installed `repo` entry point.
+
 The principal implementation responsibilities are:
 
-- `automation/organizing/model.py` owns normalized corpus facts, UID identity, locator
-  derivation, controlled sideband traversal, and corpus construction;
-- `automation/organizing/engine.py` owns corpus-wide operation sequencing;
-- `documentation_system/operations/organizing.py` owns the public Organizing
+- `repo_manager/automation/organizing/model.py` owns normalized corpus facts,
+  UID identity, locator derivation, controlled sideband traversal, and corpus
+  construction;
+- `repo_manager/automation/organizing/engine.py` owns corpus-wide operation
+  sequencing;
+- `repo_manager/automation/organizing/operations.py` owns the public Organizing
   operation contracts and canonical result/failure boundary;
-- `documentation_system/interfaces/cli/organizing.py` owns command parsing,
-  result projection, and exit behavior;
-- `automation/organizing/indexes.py` owns navigation projection;
-- `automation/organizing/links.py` owns controlled-reference refresh;
-- `automation/organizing/diagnostics.py` owns diagnostic representation and projections;
-- `automation/organizing/refactor.py` and `automation/organizing/schemes/ordinal.py` own
-  organization inspection and deterministic normalization; and
-- `capabilities` owns reusable Folder, Markdown, Frontmatter, YAML, and HTML
-  mechanics.
+- `repo_manager/interfaces/cli/organizing.py` owns command parsing,
+  operation-input projection, result presentation, and exit behavior;
+- `repo_manager/automation/organizing/indexes.py` owns navigation projection;
+- `repo_manager/automation/organizing/links.py` owns controlled-reference
+  refresh;
+- `repo_manager/automation/organizing/diagnostics.py` owns Organizing's current
+  diagnostic representation and projections;
+- `repo_manager/automation/organizing/refactor.py` and
+  `repo_manager/automation/organizing/schemes/ordinal.py` own organization
+  inspection and deterministic normalization; and
+- `repo_manager/capabilities` owns reusable Folder, Markdown, Frontmatter,
+  YAML, and HTML mechanics.
 
 Keep semantic ownership and implementation dependency distinct:
 
@@ -382,25 +397,33 @@ Do not infer a Software navigation hierarchy from the import graph.
 
 ## 5. Verification
 
-The authored Software test suite under `d. Software/tests` is the current
-executable verification surface for Organizing. It must continue to cover
-corpus-root behavior, index boundaries, controlled sidebands, UIDs and
-locators, controlled references, ordinal inspection and normalization,
-representation capabilities, and deterministic refresh behavior.
+The authored Software test suite under `d. Software/tests` covers Organizing
+corpus-root behavior, index boundaries, controlled sidebands, UIDs and locators,
+controlled references, ordinal inspection and normalization, representation
+capabilities, and deterministic refresh behavior.
+
+Organizing's semantic Operations participate in the self-assembled operation
+cases. Their declared `organize <action>` routes also participate in the
+self-assembled public-interface surface: verification requires one executable
+CLI projection for each route and exercises parsing, operation-input mapping,
+success/failure exit behavior, declared machine-readable output, stderr failure
+evidence, and traceback containment.
+
+Projection details that cannot be derived safely remain authored contracts.
+`test_organizing_cli.py` therefore verifies the successful warning rendering
+and diagnostics JSON schema that previously regressed even while semantic
+diagnostics remained present.
 
 The `Maintain documentation organization` GitHub Actions workflow executes the
-Software tests, runs Organizing through the historical public entry path, runs a
-second refresh to establish idempotence, and checks the resulting diff for
-formatting errors.
-
-The same public Organizing boundary must remain usable locally. CI is a
-projection of verification, not the sole semantic owner of it.
+self-assembled checks and authored Software tests, then runs Organizing through
+the historical wrapper for repository refresh convergence until that migration
+caller is retired. CI is a projection of verification, not the sole semantic
+owner of it.
 
 This implementation does not yet claim the Self-Assembling Verification
-Architecture. Adopting that reusable architecture requires mechanically
-discoverable callable declarations, visible coverage classification, and the
-other obligations defined by that architecture rather than a metadata-only
-selection.
+Architecture. Adopting that reusable architecture still requires explicit
+Boundary / Generated / Declared / Dedicated coverage accounting and the other
+obligations defined by that architecture.
 
 ## 6. Evolution
 
