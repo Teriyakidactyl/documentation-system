@@ -1,4 +1,5 @@
 ---
+uid: RCRD01
 description: >-
   `Consult when` *retained non-authority project information must be located or
   a new retained record needs a stable address-opaque container* `to` **select
