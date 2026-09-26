@@ -55,6 +55,9 @@ class WorkManagementAutomationTests(unittest.TestCase):
         result = setup_project(self.root)
 
         self.assertTrue((self.root / ".project/README.md").is_file())
+        self.assertTrue((self.root / ".project/Records/Drafts").is_dir())
+        self.assertTrue((self.root / ".project/Records/Faults").is_dir())
+        self.assertTrue((self.root / ".project/Records/Research").is_dir())
         self.assertTrue((self.root / ".project/Archive/Execution/Handoffs").is_dir())
         self.assertFalse((self.root / ".project/Intake").exists())
         metrics = json.loads((self.root / ".project/metrics.json").read_text(encoding="utf-8"))
