@@ -7,7 +7,9 @@ description: >-
 work:
   id: P001
   type: plan
-  state: active
+  state: closed
+  disposition: completed
+  retention: active
   updated: '2026-09-25'
 ---
 # P001 — Create Work Management root
@@ -114,20 +116,19 @@ representation, or failing review thread.
 
 ### N010 — Merge
 
-State: active
+State: closed
 Requires: N009
 
 Gate: pull request is mergeable and required checks are successful.
 
 ## Current state
 
-The Work Management guidance root and planning references are committed on
-`work-management-root`. Root routing, `.project` reservation, Organizing support, and sideband regression
-coverage are committed. PR #61 passes Software Surface, Generated Contracts,
+PR #61 is merged to `main`. The merge validation and the main-branch
+post-merge refresh both passed Software Surface, Generated Contracts,
 Capability Tests, Automation Tests, Architecture Conformance, and Repository
-Convergence. The PR is mergeable with no structural validation failure.
+Convergence. Organizing refreshed derived UIDs and indexes on `main`.
 
 ## Next action
 
-Merge PR #61. After merge, confirm the main-branch refresh completes and updates
-derived UIDs/indexes as required.
+None. This Plan is closed with disposition `completed` and remains in active
+retention for near-term auditability.
