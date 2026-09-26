@@ -20,6 +20,7 @@ from repo_manager.core import (
 from .project import (
     WorkManagementError,
     reconcile_project,
+    register_plan,
     register_task,
     setup_project,
     validate_project,
@@ -75,13 +76,15 @@ def _register_task(inputs: Mapping[str, Any]) -> Result[Any]:
     return _run(inputs, "register_task", register_task, str(inputs["title"]))
 
 
+def _register_plan(inputs: Mapping[str, Any]) -> Result[Any]:
+    return _run(inputs, "register_plan", register_plan, str(inputs["title"]))
+
+
 SETUP = register(Operation(
     id="work_management.setup",
     commands=(("work", "setup"),),
     owner=Source(OWNER.module, OWNER.file, "setup"),
-    input_schema=InputSchema((
-        Field("corpus_root", "path", example="."),
-    )),
+    input_schema=InputSchema((Field("corpus_root", "path", example="."),)),
     handler=_setup,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
@@ -93,9 +96,7 @@ RECONCILE = register(Operation(
     id="work_management.reconcile",
     commands=(("work", "reconcile"),),
     owner=Source(OWNER.module, OWNER.file, "reconcile"),
-    input_schema=InputSchema((
-        Field("corpus_root", "path", example="."),
-    )),
+    input_schema=InputSchema((Field("corpus_root", "path", example="."),)),
     handler=_reconcile,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
@@ -107,9 +108,7 @@ VALIDATE = register(Operation(
     id="work_management.validate",
     commands=(("work", "validate"),),
     owner=Source(OWNER.module, OWNER.file, "validate"),
-    input_schema=InputSchema((
-        Field("corpus_root", "path", example="."),
-    )),
+    input_schema=InputSchema((Field("corpus_root", "path", example="."),)),
     handler=_validate,
     effects=Effects(filesystem="read"),
     verification=Verification(probes=(
@@ -133,9 +132,21 @@ REGISTER_TASK = register(Operation(
     handler=_register_task,
     effects=Effects(filesystem="write"),
     verification=Verification(probes=(
-        Probe(
-            name="register-first-task",
-            inputs={"corpus_root": "{tmp}", "title": "Example task"},
-        ),
+        Probe(name="register-first-task", inputs={"corpus_root": "{tmp}", "title": "Example task"}),
+    )),
+))
+
+REGISTER_PLAN = register(Operation(
+    id="work_management.register_plan",
+    commands=(("work", "register-plan"),),
+    owner=Source(OWNER.module, OWNER.file, "register_plan"),
+    input_schema=InputSchema((
+        Field("corpus_root", "path", example="."),
+        Field("title", "string", example="Example plan"),
+    )),
+    handler=_register_plan,
+    effects=Effects(filesystem="write"),
+    verification=Verification(probes=(
+        Probe(name="register-first-plan", inputs={"corpus_root": "{tmp}", "title": "Example plan"}),
     )),
 ))
