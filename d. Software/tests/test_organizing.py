@@ -385,6 +385,33 @@ description: >-
         compiled = (root / "README.md").read_text(encoding="utf-8")
         self.assertNotIn("Test Fault", compiled)
 
+    def test_project_sideband_is_controlled_but_unaddressed(self) -> None:
+        root = self.make_corpus("project")
+        task = root / ".project" / "Execution" / "Tasks" / "T001 Test task.md"
+        write(
+            task,
+            """---
+description: >-
+  `Consult when` *test task T001 must be resumed* `to` **recover its current work state**.
+work:
+  id: T001
+  type: task
+  state: ready
+---
+# T001 — Test task
+""",
+        )
+
+        refresh_corpus(root)
+
+        refreshed = task.read_text(encoding="utf-8")
+        self.assertIn("uid:", refreshed)
+        corpus = build_corpus(root)
+        artifact = corpus.artifacts[task.resolve()]
+        self.assertIsNone(artifact.location)
+        compiled = (root / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("Test task", compiled)
+
     def test_bare_corpus_root_address_is_invalid(self) -> None:
         root = self.make_corpus("project")
 
