@@ -132,13 +132,13 @@ class FolderConventionTests(unittest.TestCase):
                 "files": {"scheme": "decimal", "separator": ". ", "sort": "alphabetical"},
             },
         )
-        sideband = self.root / ".research" / "1 Retained.md"
+        sideband = self.root / ".project" / "Records" / "Research" / "1 Retained.md"
         write(sideband, page(uid="DEF456"))
 
         normalize_conventions(self.root, apply=True)
 
         self.assertTrue(sideband.is_file())
-        self.assertFalse((self.root / ".research" / "1. Retained.md").exists())
+        self.assertFalse((self.root / ".project" / "Records" / "Research" / "1. Retained.md").exists())
 
     def test_partial_legacy_and_canonical_prefixes_reconcile(self) -> None:
         self.write_config(
@@ -362,9 +362,9 @@ description: >-
         compiled = (root / "README.md").read_text(encoding="utf-8")
         self.assertNotIn("Test Decision", compiled)
 
-    def test_fault_sideband_is_controlled_but_unaddressed(self) -> None:
+    def test_fault_record_collector_is_controlled_but_unaddressed(self) -> None:
         root = self.make_corpus("project")
-        fault = root / ".fault" / "Fault.md"
+        fault = root / ".project" / "Records" / "Faults" / "Fault.md"
         write(
             fault,
             """---
