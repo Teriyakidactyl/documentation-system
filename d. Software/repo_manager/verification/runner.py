@@ -7,14 +7,13 @@ from pathlib import Path
 import tempfile
 
 from repo_manager.core.execution import invoke
-from repo_manager.interfaces.cli.surface import discover_routes
-
 from .architecture import dependency_findings
 from .cases import assemble
 from .contracts import evaluate
 from .coverage import coverage_findings
 from .discovery import discover
 from .interface import coverage_findings as interface_coverage_findings
+from .interface import discover_routes
 from .interface import evaluate as evaluate_interface
 
 
