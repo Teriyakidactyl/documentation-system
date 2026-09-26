@@ -9,6 +9,7 @@ from typing import Any, Mapping
 
 from repo_manager.automation.work_management.operations import (
     RECONCILE,
+    REGISTER_PLAN,
     REGISTER_TASK,
     SETUP,
     VALIDATE,
@@ -31,9 +32,10 @@ def main(argv: list[str] | None = None, *, executor=invoke) -> None:
         command = sub.add_parser(name)
         command.add_argument("corpus_root", nargs="?")
 
-    register_task = sub.add_parser("register-task")
-    register_task.add_argument("title")
-    register_task.add_argument("corpus_root", nargs="?")
+    for name in ("register-task", "register-plan"):
+        command = sub.add_parser(name)
+        command.add_argument("title")
+        command.add_argument("corpus_root", nargs="?")
 
     args = parser.parse_args(argv)
     inputs = {"corpus_root": _root(getattr(args, "corpus_root", None))}
@@ -44,6 +46,9 @@ def main(argv: list[str] | None = None, *, executor=invoke) -> None:
         operation = RECONCILE
     elif args.command == "validate":
         operation = VALIDATE
+    elif args.command == "register-plan":
+        operation = REGISTER_PLAN
+        inputs["title"] = args.title
     else:
         operation = REGISTER_TASK
         inputs["title"] = args.title
@@ -78,35 +83,28 @@ def _register_inputs(values: Mapping[str, Any]) -> Mapping[str, Any]:
 
 CLI_ROUTES = (
     CliRoute(
-        command=SETUP.commands[0],
-        operation=SETUP,
-        main=main,
-        arguments=_root_arguments,
-        project_inputs=_root_inputs,
+        command=SETUP.commands[0], operation=SETUP, main=main,
+        arguments=_root_arguments, project_inputs=_root_inputs,
         verification=RouteVerification(success_value={}, output="json"),
     ),
     CliRoute(
-        command=RECONCILE.commands[0],
-        operation=RECONCILE,
-        main=main,
-        arguments=_root_arguments,
-        project_inputs=_root_inputs,
+        command=RECONCILE.commands[0], operation=RECONCILE, main=main,
+        arguments=_root_arguments, project_inputs=_root_inputs,
         verification=RouteVerification(success_value={}, output="json"),
     ),
     CliRoute(
-        command=VALIDATE.commands[0],
-        operation=VALIDATE,
-        main=main,
-        arguments=_root_arguments,
-        project_inputs=_root_inputs,
+        command=VALIDATE.commands[0], operation=VALIDATE, main=main,
+        arguments=_root_arguments, project_inputs=_root_inputs,
         verification=RouteVerification(success_value={}, output="json"),
     ),
     CliRoute(
-        command=REGISTER_TASK.commands[0],
-        operation=REGISTER_TASK,
-        main=main,
-        arguments=_register_arguments,
-        project_inputs=_register_inputs,
+        command=REGISTER_TASK.commands[0], operation=REGISTER_TASK, main=main,
+        arguments=_register_arguments, project_inputs=_register_inputs,
+        verification=RouteVerification(success_value={}, output="json"),
+    ),
+    CliRoute(
+        command=REGISTER_PLAN.commands[0], operation=REGISTER_PLAN, main=main,
+        arguments=_register_arguments, project_inputs=_register_inputs,
         verification=RouteVerification(success_value={}, output="json"),
     ),
 )

@@ -105,6 +105,40 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
+      - name: Inspect organization
+        run: python "d. Software/Navigation Crawler.py" inspect .
+      - name: Lint authored Markdown changed by Work Management refactor
+        shell: bash
+        run: |
+          files=(
+            ".project/README.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/README.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/b. Feedback/1. 📖 Feedback.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/b. Feedback/2. 🛠️ Record Feedback.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/b. Feedback/README.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/c. Issue/1. 📖 Issue.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/c. Issue/2. 🛠️ Record An Issue.md"
+            "a. Document Design/a. Assemblies/b. Forms/c. Records/c. Issue/README.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/README.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/a. Plan/1. 📖 Plan.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/a. Plan/2. 🛠️ Author A Plan.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/b. Task/1. 📖 Task.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/b. Task/2. 🛠️ Author A Task.md"
+            "a. Document Design/a. Assemblies/b. Forms/d. Work/b. Task/README.md"
+            "a. Document Design/b. Document Control/2. 📖 Repository Information Storage.md"
+            "f. Work Management/1. 💡 Work Management.md"
+            "f. Work Management/2. 📖 Project Storage.md"
+            "f. Work Management/3. 📖 Work Lifecycle.md"
+            "f. Work Management/4. 🛠️ Manage Work.md"
+            "f. Work Management/5. 🛠️ Set Up Work Management.md"
+            "f. Work Management/e. Planning/1. 📖 Plan Model.md"
+            "f. Work Management/e. Planning/2. 🛠️ Plan Work.md"
+          )
+          for path in "${files[@]}"; do
+            python "d. Software/Markdown.py" lint "$path"
+          done
+      - name: Apply organization normalization
+        run: python "d. Software/Navigation Crawler.py" normalize --apply .
       - name: Reconcile Work Management
         run: python "d. Software/Work.py" reconcile .
       - name: Refresh organization
@@ -113,6 +147,7 @@ jobs:
         shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
+          python "d. Software/Navigation Crawler.py" normalize --apply .
           python "d. Software/Work.py" reconcile .
           python "d. Software/Navigation Crawler.py" refresh .
           git diff > /tmp/organizing-second.diff
@@ -138,6 +173,10 @@ jobs:
           python-version: "3.x"
       - name: Install Software dependencies
         run: python -m pip install --disable-pip-version-check -r "d. Software/requirements.txt"
+      - name: Inspect organization
+        run: python "d. Software/Navigation Crawler.py" inspect .
+      - name: Apply organization normalization
+        run: python "d. Software/Navigation Crawler.py" normalize --apply .
       - name: Reconcile Work Management
         run: python "d. Software/Work.py" reconcile .
       - name: Refresh organization
@@ -146,6 +185,7 @@ jobs:
         shell: bash
         run: |
           git diff > /tmp/organizing-first.diff
+          python "d. Software/Navigation Crawler.py" normalize --apply .
           python "d. Software/Work.py" reconcile .
           python "d. Software/Navigation Crawler.py" refresh .
           git diff > /tmp/organizing-second.diff
