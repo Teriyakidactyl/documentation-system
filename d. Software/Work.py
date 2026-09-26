@@ -31,7 +31,7 @@ Use Work for repository-local `.project/` control operations.
 python3 "d. Software/Work.py" setup [repository_root]
 ```
 
-Setup materializes the current Planning, Execution, and Archive skeleton,
+Setup materializes the current Records, Planning, Execution, and Archive skeleton,
 migrates allocator metrics to the current schema, and mints missing controlled
 UIDs for metadata-bearing project artifacts.
 
