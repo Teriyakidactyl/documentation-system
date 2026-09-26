@@ -1,0 +1,788 @@
+taxonomy: Structured External Cognition
+version: 2.0
+description: >
+  A taxonomy of methods that externalize, expand, reduce, simulate, or
+  orchestrate cognition through structured procedure. Organized by the
+  cognitive operation each method's primary output performs. Composite
+  workflows are separated from primitives to prevent axis tilt between
+  mechanism and meta-mechanism. v2.0 introduces anchor-compressed shared
+  property blocks, a logic field carrying formulaic or semantic
+  representations where the method is formalizable, and a composes field
+  on composite methods naming the primitives they sequence. Excluded methods
+  (agent-executability failures) are retained as named entries with fail
+  anchors rather than comments, making exclusion reasons queryable.
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ANCHOR CONVENTION
+# Anchors (&name) define shared property blocks; aliases (*name) reference
+# them. Merge keys (<<) compose multiple blocks into a single mapping;
+# explicit keys override merged values. Where multiple anchors are merged,
+# list syntax is used: <<: [*a, *b]. Later entries in the list take
+# precedence on key collision.
+#
+# An agent reading raw YAML retains anchor relationships semantically even
+# when a parser expands them. The deviation from an anchored base is the
+# load-bearing signal — a method that shares *mech_deterministic with its
+# siblings but overrides deterministic: false is immediately flagged as
+# anomalous.
+#
+# LOGIC FIELD CONVENTION
+# logic.form classifies the type of formalization:
+#   cartesian_product | boolean_algebra | weighted_sum | pairwise_aggregation |
+#   set_partition | dag_boolean_reduction | iterative_causal_chain |
+#   signed_graph | state_machine | double_convergence | graph_accumulation |
+#   iterative_refinement_loop | prompt_template | conditional_gate |
+#   negation | total_negation | sequential_transform | stochastic_sampling |
+#   relational_schema | domain_classification
+# logic.latex: LaTeX expression (omitted where underdetermined)
+# logic.python: Python expression or function signature (omitted where underdetermined)
+# logic.semantic: natural-language formula for methods resisting math formalization
+#
+# COMPOSES FIELD CONVENTION (composite_orchestration nodes only)
+# composes: lists the dot-path addresses of primitive methods this framework
+# sequences. Encodes the consumed_by / composes_with relation currently
+# invisible in the tree structure.
+# ══════════════════════════════════════════════════════════════════════════════
+
+_defs:
+
+  executability:
+    agent: &exec_agent
+      executable: true
+      requires_live_humans: false
+      requires_physical_materials: false
+    fail_human: &exec_fail_human
+      executable: false
+      fail_reason: requires_live_human_participants
+    fail_physical: &exec_fail_physical
+      executable: false
+      fail_reason: requires_physical_materials_or_embodiment
+
+  output:
+    artifact: &out_artifact
+      output_type: artifact
+      durable: true
+    transient: &out_transient
+      output_type: transient
+      durable: false
+    candidates: &out_candidates
+      output_type: expanded_candidate_set
+      durable: true
+    narrowed: &out_narrowed
+      output_type: narrowed_candidate_set
+      durable: true
+    emergent: &out_emergent
+      output_type: emergent_behavior
+      durable: false
+    governed: &out_governed
+      output_type: execution_state
+      durable: true
+    delegated: &out_delegated
+      output_type: delegated_result
+      durable: true
+    orchestrated: &out_orchestrated
+      output_type: orchestrated_sequence
+      durable: true
+
+  mechanism:
+    stochastic: &mech_stochastic
+      mechanism_type: stochastic
+      deterministic: false
+    deterministic: &mech_deterministic
+      mechanism_type: deterministic
+      deterministic: true
+    combinatorial: &mech_combinatorial
+      mechanism_type: exhaustive_combinatorial
+      deterministic: true
+    iterative: &mech_iterative
+      mechanism_type: iterative_refinement
+      deterministic: false
+    adversarial: &mech_adversarial
+      mechanism_type: adversarial_simulation
+      deterministic: false
+    narrative: &mech_narrative
+      mechanism_type: narrative_projection
+      deterministic: false
+    prompted: &mech_prompted
+      mechanism_type: prompted_delegation
+      deterministic: false
+    causal: &mech_causal
+      mechanism_type: causal_tracing
+      deterministic: true
+    boolean: &mech_boolean
+      mechanism_type: boolean_evaluation
+      deterministic: true
+    weighted: &mech_weighted
+      mechanism_type: weighted_aggregation
+      deterministic: true
+    relational: &mech_relational
+      mechanism_type: relational_structuring
+      deterministic: true
+    sequential: &mech_sequential
+      mechanism_type: sequential_phase_execution
+      deterministic: false
+
+parallel_question: >
+  What cognitive operation does the method's primary output perform?
+
+structural_notes:
+  horizon: >
+    Depth-1 children are is-a children of the root (scope-exempt per
+    IA-ACN § 3.5, Step 1). Depth-2 sub-categories are is-a children of
+    their parent operation. Leaves are the named methods. Leaf-Term MECE
+    applies across all is-a levels.
+  unit_of_analysis: >
+    A single named method. Variants whose primary output differs receive
+    separate entries.
+  scope: >
+    In scope: methods whose primary locus of cognitive work is external to
+    the individual mind. Agent executability required: initiatable and
+    completable by a prompted agent in a text-based environment without
+    live human co-participants, physical materials, or real-time embodied
+    interaction. Excluded methods are retained as named entries with
+    *exec_fail_human or *exec_fail_physical anchors.
+
+disambiguation_rules:
+  - when: >
+      A method both externalizes into an artifact and shifts cognitive frame.
+    decide_by: >
+      Classify by primary output. Artifact → externalization.
+      Expanded cognitive content with no durable artifact → generative_expansion.
+    example: >
+      empathetic_journey_mapping produces an inspectable artifact even though
+      creation requires perspective adoption → externalization.
+
+  - when: >
+      A method produces no durable artifact but forces structured explanation.
+    decide_by: >
+      Does the method reveal (surface implicit structure) or produce
+      (generate new candidates)? Reveal → externalization.verbal_externalization.
+      Produce → generative_expansion.inversion_and_reframing.
+    example: >
+      rubber_duck_debugging reveals implicit assumptions → externalization
+      (retained pending final resolution — see open flag on that entry).
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAXONOMY NODES
+# ══════════════════════════════════════════════════════════════════════════════
+
+structured_external_cognition:
+
+  # ── EXTERNALIZATION ─────────────────────────────────────────────────────────
+  externalization:
+    parallel_question: "What inspectable representation of thought does the method produce?"
+
+    structural_diagrams:
+
+      concept_mapping:
+        <<: [*exec_agent, *out_artifact, *mech_relational]
+        definition: >
+          Maps concepts as nodes and labeled relationship edges to reveal
+          structural dependencies and conceptual topology.
+
+      causal_loop_diagramming:
+        <<: [*exec_agent, *out_artifact, *mech_relational]
+        definition: >
+          Maps variables as nodes connected by signed causal edges
+          (reinforcing or balancing) to reveal feedback dynamics.
+        logic:
+          form: signed_graph
+          latex: "G = (V, E, s) \\text{ where } s: E \\to \\{+,-\\}"
+          semantic: >
+            For each causal relationship: identify variable pair → determine
+            direction → assign sign (+/−) → check for feedback loops.
+
+      entity_relationship_modeling:
+        <<: [*exec_agent, *out_artifact, *mech_relational]
+        definition: >
+          Formalizes entities, their attributes, and cardinality of
+          relationships between them into a structured schema diagram.
+        logic:
+          form: relational_schema
+          semantic: "Entity(attributes) — relationship_type(cardinality) — Entity(attributes)"
+
+      cynefin_framework:
+        <<: [*exec_agent, *out_artifact, *mech_deterministic]
+        definition: >
+          Sorts problems into five domains (Clear, Complicated, Complex,
+          Chaotic, Confused) to determine the appropriate response mode.
+        logic:
+          form: domain_classification
+          semantic: >
+            For each problem: evaluate cause-effect legibility ×
+            repeatability → map to domain → read prescribed response.
+
+      wardley_mapping:
+        <<: [*exec_agent, *out_artifact, *mech_relational]
+        definition: >
+          Plots value chain components on axes of user-visibility and
+          evolutionary maturity (genesis → commodity) to reveal
+          strategic position.
+
+    process_and_experience_diagrams:
+
+      kanban_boards:
+        <<: [*exec_agent, *out_artifact, *mech_deterministic]
+        definition: >
+          Externalizes work-in-progress state across defined workflow
+          stages using a pull-based card system with explicit WIP limits.
+
+      value_stream_mapping:
+        <<: [*exec_agent, *out_artifact, *mech_deterministic]
+        definition: >
+          Maps the end-to-end flow of materials and information to deliver
+          a product, identifying value-added vs. waste steps.
+
+      customer_journey_mapping:
+        <<: [*exec_agent, *out_artifact, *mech_deterministic]
+        definition: >
+          Traces discrete process states and touchpoints a customer
+          traverses in achieving a goal with a product or service.
+
+      empathetic_journey_mapping:
+        <<: [*exec_agent, *out_artifact, *mech_deterministic]
+        definition: >
+          Maps affective states, emotional friction, and narrative
+          resonance across an experience arc. Distinct from
+          customer_journey_mapping (process/state transitions) by tracking
+          psychological experience over time.
+
+    verbal_externalization:
+
+      feynman_technique:
+        <<: [*exec_agent, *out_transient, *mech_deterministic]
+        definition: >
+          Forces explanation of a concept in plain language as if to a
+          novice, revealing gaps by the failure points of the explanation.
+
+      rubber_duck_debugging:
+        <<: [*exec_agent, *out_transient, *mech_deterministic]
+        definition: >
+          Forces articulation of a problem step-by-step to a passive
+          listener, surfacing implicit assumptions and logical discontinuities.
+        open: >
+          Placement under review: no durable artifact produced. Disambiguation
+          test: does the method reveal (externalization) or produce
+          (generative_expansion.inversion_and_reframing)? Primary output is
+          surfaced implicit structure (reveal) → current placement defensible
+          but contested.
+
+      socratic_questioning:
+        <<: [*exec_agent, *out_transient, *mech_iterative]
+        definition: >
+          Applies a structured sequence of probing questions to expose
+          assumptions, test logical consistency, and surface contradictions
+          in a held position.
+
+  # ── GENERATIVE EXPANSION ────────────────────────────────────────────────────
+  generative_expansion:
+    parallel_question: "What mechanism produces more candidates than unaided thought would generate?"
+
+    constraint_driven_generation:
+
+      creative_constraints:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Applies domain-level restrictions (material, format, time,
+          resource) to force novel solution paths by eliminating habitual ones.
+
+      pseudocode_and_formal_notation:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Encodes a problem in a formal or semi-formal language to force
+          precision and reveal structural ambiguity in informal reasoning.
+
+      clean_language:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Uses a restricted question set derived from the subject's own
+          metaphors to explore conceptual structure without imposing the
+          facilitator's frame.
+
+      constrained_linguistic_generation:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Artificially restricts vocabulary, syntax, or permitted characters
+          to force semantic rerouting away from habitual expression paths.
+          Distinct from creative_constraints (domain level) by targeting
+          language primitives specifically.
+
+    stochastic_generation:
+      open: >
+        Axis tilt flagged: constraint_driven_generation classifies by prompt
+        content type; stochastic_generation classifies by selection mechanism.
+        Non-MECE siblings on different axes. Restructuring deferred.
+
+      cut_up_technique:
+        <<: [*exec_agent, *out_candidates, *mech_stochastic]
+        definition: >
+          Fragments source text and recombines fragments in random order
+          to produce unexpected juxtapositions.
+
+      combinatorial_sampling:
+        <<: [*exec_agent, *out_candidates, *mech_stochastic]
+        definition: >
+          Randomly samples from defined concept or attribute pools to
+          generate novel candidate combinations for evaluation.
+        logic:
+          form: stochastic_sampling
+          python: "random.choices(pool, k=n)"
+          semantic: "Sample k items from candidate pool; evaluate; resample if needed."
+
+      oblique_strategies:
+        <<: [*exec_agent, *out_candidates, *mech_stochastic]
+        definition: >
+          Stochastic selection from a curated set of cryptic lateral prompts
+          to break creative fixation. Agent-executable as randomized prompt draw.
+        logic:
+          form: stochastic_sampling
+          python: "random.choice(strategy_deck)"
+
+    inversion_and_reframing:
+
+      assumption_inversion:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Enumerates the assumptions underlying a problem or position, then
+          systematically negates each to generate alternative framings.
+        logic:
+          form: negation
+          latex: "\\forall a \\in A_{\\text{belief}}: \\text{generate } \\neg a"
+          semantic: >
+            For each assumption a in belief_set: generate ¬a; evaluate
+            viability of a world where ¬a holds.
+
+      triz_analogical_transfer:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Maps a problem to an abstract TRIZ contradiction, retrieves the
+          canonical inventive principles for that contradiction, and applies
+          them by analogy to the target domain.
+
+      six_hats_and_pre_mortem:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Sequences structured perspective shifts (emotional, critical,
+          optimistic, creative, process, overview) or projects a failure
+          state and reasons backward to its causes.
+
+      dialectical_assumption_inversion:
+        <<: [*exec_agent, *out_candidates, *mech_deterministic]
+        definition: >
+          Applies systematic Boolean negation to every node in an existing
+          belief system or taxonomy to force whole-paradigm rupture. Distinct
+          from assumption_inversion (targets individual assumptions) by
+          operating on total-system negation.
+        logic:
+          form: total_negation
+          latex: "\\forall n \\in G_{\\text{belief}}: n \\leftarrow \\neg n"
+          semantic: >
+            Traverse full belief graph; negate every node; rebuild a
+            consistent world from the negated set.
+
+      cbt_thought_record:
+        <<: [*exec_agent, *out_candidates, *mech_iterative]
+        definition: >
+          Structured worksheet sequencing: automatic thought → distortion
+          identification → rational alternative construction. Classified by
+          mechanism (cognitive reframing), not goal (affective regulation).
+        logic:
+          form: sequential_transform
+          semantic: >
+            thought_t → identify_distortion(thought_t) →
+            generate_alternative(distortion) → evaluate_alternative.
+
+    exhaustive_combinatorics:
+      parallel_question: >
+        "What method produces a complete solution space by exhaustive
+        intersection of orthogonal dimensions?"
+
+      morphological_analysis:
+        <<: [*exec_agent, *out_candidates, *mech_combinatorial]
+        definition: >
+          Enumerates all possible combinations across a set of orthogonal
+          problem dimensions to produce the complete solution space.
+        logic:
+          form: cartesian_product
+          latex: "S = \\prod_{i=1}^{n} D_i"
+          python: "list(itertools.product(*dimensions))"
+          semantic: >
+            Define n orthogonal dimensions; enumerate values per dimension;
+            take Cartesian product.
+
+      scenario_matrix_construction:
+        <<: [*exec_agent, *out_candidates, *mech_combinatorial]
+        definition: >
+          Constructs a matrix of scenarios by intersecting orthogonal
+          uncertainty axes to produce the complete set of plausible futures.
+        logic:
+          form: cartesian_product
+          latex: "S = D_1 \\times D_2 \\times \\cdots \\times D_n"
+          python: "list(itertools.product(*uncertainty_axes))"
+          semantic: >
+            Define uncertainty axes; enumerate states per axis;
+            intersect; evaluate each cell.
+
+  # ── REDUCTIVE FILTERING ─────────────────────────────────────────────────────
+  reductive_filtering:
+    parallel_question: "What mechanism narrows the candidate set?"
+
+    formal_validation:
+
+      mece_protocol:
+        <<: [*exec_agent, *out_narrowed, *mech_boolean]
+        definition: >
+          Tests a proposed set of categories for mutual exclusivity
+          (no overlapping membership) and collective exhaustivity
+          (no missing members).
+        logic:
+          form: set_partition
+          latex: >
+            \\text{MECE} \\iff
+            \\Bigl(\\bigcup_{i} C_i = U\\Bigr)
+            \\land
+            \\Bigl(\\forall\\, i \\neq j:\\, C_i \\cap C_j = \\emptyset\\Bigr)
+          semantic: >
+            For each pair of categories: confirm disjoint.
+            Confirm union equals universe.
+
+      truth_tables:
+        <<: [*exec_agent, *out_narrowed, *mech_boolean]
+        definition: >
+          Systematically enumerates all truth-value assignments to
+          propositional variables and evaluates the compound expression
+          for each row.
+        logic:
+          form: boolean_algebra
+          latex: "T: \\{0,1\\}^n \\to \\{0,1\\}"
+          python: "list(itertools.product([0,1], repeat=n))"
+          semantic: >
+            Enumerate 2^n rows; evaluate compound expression per row;
+            read validity/satisfiability from truth column.
+
+    group_convergence:
+
+      affinity_diagramming:
+        <<: [*exec_agent, *out_narrowed, *mech_deterministic]
+        definition: >
+          Groups raw observations or ideas into emergent thematic clusters
+          through iterative proximity sorting, without predetermined
+          categories.
+
+      nominal_group_technique:
+        <<: *exec_fail_human
+        definition: >
+          Structured group ideation and voting protocol. Excluded: requires
+          synchronous live human participants.
+
+      prediction_markets_and_delphi:
+        <<: *exec_fail_human
+        definition: >
+          Distributed human forecasting with financial incentive structures
+          or iterative expert surveying. Excluded: requires distributed human
+          actors and incentive structures — fails agent executability on
+          both counts.
+
+    causal_reduction:
+      parallel_question: "What method traces a causal chain to an actionable root node?"
+
+      five_whys_root_cause_analysis:
+        <<: [*exec_agent, *out_narrowed, *mech_causal]
+        definition: >
+          Iteratively asks "why" of each successive causal explanation until
+          a root cause is reached, typically within five iterations.
+        logic:
+          form: iterative_causal_chain
+          latex: >
+            c_n = f(c_{n-1}),\quad c_0 = \text{symptom},\quad
+            \text{halt when } c_n = c_{\text{root}}
+          semantic: >
+            cause_0 = symptom; cause_n = why(cause_{n-1}); halt when
+            cause_n is actionable and addressable.
+
+      fault_tree_analysis:
+        <<: [*exec_agent, *out_narrowed, *mech_boolean]
+        definition: >
+          Constructs a top-down DAG from a defined failure event,
+          decomposing through Boolean AND/OR gates to basic fault events.
+        logic:
+          form: dag_boolean_reduction
+          latex: "T = \\bigvee_i \\Bigl(\\bigwedge_j E_{ij}\\Bigr)"
+          python: "reduce(operator.or_, [reduce(operator.and_, gate) for gate in gates])"
+          semantic: >
+            Top event = OR of gate outputs; each gate = AND/OR of child
+            events; trace to basic events.
+
+    quantified_subjectivity:
+      parallel_question: >
+        "What method imposes mathematical structure on inherently
+        subjective evaluation?"
+
+      weighted_decision_matrix:
+        <<: [*exec_agent, *out_narrowed, *mech_weighted]
+        definition: >
+          Scores options against weighted criteria and sums to produce
+          a ranked scalar per option. Converts multi-criteria judgment
+          into a single comparable value.
+        logic:
+          form: weighted_sum
+          latex: "S_j = \\sum_{i=1}^{n} w_i \\cdot r_{ij}"
+          python: >
+            scores = {opt: sum(w*r for w,r in zip(weights, ratings[opt]))
+                      for opt in options}
+          semantic: "For each option: sum(weight_i × rating_i); rank by total score."
+
+      pairwise_comparison_matrix:
+        <<: [*exec_agent, *out_narrowed, *mech_weighted]
+        definition: >
+          Derives implicit weights through exhaustive head-to-head binary
+          comparisons rather than direct weight assignment. Distinct from
+          weighted_decision_matrix by deriving weights implicitly.
+        logic:
+          form: pairwise_aggregation
+          latex: >
+            w_i = \frac{\sum_j a_{ij}}{\sum_i \sum_j a_{ij}},
+            \quad a_{ij} = \text{preference}(i,j)
+          python: "w = [sum(row)/sum(sum(r) for r in matrix) for row in matrix]"
+          semantic: >
+            Build n×n comparison matrix; normalize each row; average
+            normalized values to derive weights; apply weights to score options.
+
+    blinded_evaluation:
+      parallel_question: >
+        "What method removes provenance metadata to eliminate social
+        bias from evaluation?"
+
+      anonymized_structured_review:
+        <<: [*exec_agent, *out_narrowed, *mech_deterministic]
+        definition: >
+          Evaluates submissions against explicit criteria with author/source
+          identity structurally redacted throughout the review process.
+
+      blind_comparative_ranking:
+        <<: [*exec_agent, *out_narrowed, *mech_deterministic]
+        definition: >
+          Ranks items against stated criteria when item provenance is
+          structurally hidden from the evaluator. Distinct from
+          anonymized_structured_review by producing a relative ranking
+          rather than an absolute score per item.
+
+  # ── SIMULATION ──────────────────────────────────────────────────────────────
+  simulation:
+    parallel_question: "What enacted dynamic produces emergent system behavior?"
+
+    adversarial_simulation:
+
+      wargaming:
+        <<: *exec_fail_human
+        definition: >
+          Structured adversarial simulation. Excluded: requires live human
+          counter-agents operating in real time.
+
+      red_teaming:
+        <<: [*exec_agent, *out_emergent, *mech_adversarial]
+        definition: >
+          Simulates an external attacker's strategy against a target system
+          or plan to surface vulnerabilities before exploitation.
+
+      adversarial_steelmanning:
+        <<: [*exec_agent, *out_emergent, *mech_adversarial]
+        definition: >
+          Constructs the strongest possible counter-position to a given
+          plan or argument, then stress-tests the original against it.
+          Distinct from red_teaming (external attacker simulation) by
+          targeting internal logical strength of the defended position.
+
+    narrative_simulation:
+
+      design_fiction:
+        <<: [*exec_agent, *out_emergent, *mech_narrative]
+        definition: >
+          Constructs a plausible near-future artifact or scenario to make
+          abstract technological or social possibilities concrete and
+          evaluable.
+
+      diegetic_worldbuilding:
+        <<: [*exec_agent, *out_emergent, *mech_narrative]
+        definition: >
+          Constructs a self-consistent fictional world with internal rules,
+          then reasons within that world to surface implications under stress.
+
+    embodied_enactment:
+      open: >
+        Branch suspended: all candidate leaves require physical materials
+        or somatic interaction. Pending identification of agent-executable
+        variants.
+
+      bodystorming:
+        <<: *exec_fail_physical
+        definition: >
+          Physical embodiment and spatial navigation of a simulated
+          experience. Excluded: requires physical embodiment.
+
+      physical_prototyping:
+        <<: *exec_fail_physical
+        definition: >
+          Fabrication of physical artifacts to test design assumptions.
+          Excluded: requires physical fabrication materials.
+
+  # ── EXECUTION GOVERNANCE ────────────────────────────────────────────────────
+  execution_governance:
+    parallel_question: >
+      "What cognitive operation offloads execution control to an
+      external procedure?"
+
+    sequential_execution_control:
+
+      operational_checklist_protocol:
+        <<: [*exec_agent, *out_governed, *mech_deterministic]
+        definition: >
+          Externalizes the sequence of required task completions into a
+          persistent ledger that tracks state and prevents omission.
+
+      structured_decision_gate:
+        <<: [*exec_agent, *out_governed, *mech_deterministic]
+        definition: >
+          Defines explicit go/no-go evaluation criteria at phase transitions
+          before proceeding to the next stage. Distinct from
+          operational_checklist_protocol (verifies sequential step completion)
+          by governing transitions between phases rather than steps within a phase.
+        logic:
+          form: conditional_gate
+          python: "proceed = all(criterion(state) for criterion in gate_criteria)"
+          semantic: >
+            At phase boundary: evaluate all gate criteria; if all pass →
+            proceed; else → halt or return to prior phase.
+
+  # ── DELEGATED COMPUTATION ───────────────────────────────────────────────────
+  delegated_computation:
+    parallel_question: >
+      "What cognitive operation is delegated to an algorithmic entity?"
+
+    prompted_reasoning_delegation:
+
+      chain_of_thought_prompting:
+        <<: [*exec_agent, *out_delegated, *mech_prompted]
+        definition: >
+          Prompts an agent to externalize step-by-step reasoning before
+          producing a conclusion, improving accuracy by making inference
+          steps inspectable and correctable.
+        logic:
+          form: prompt_template
+          semantic: >
+            system: [task_definition]. instruction: Think step by step.
+            output: [reasoning_chain] → [conclusion].
+
+      recursive_self_critique_prompting:
+        <<: [*exec_agent, *out_delegated, *mech_iterative]
+        definition: >
+          Prompts an agent to iteratively evaluate and revise its own prior
+          output against specified criteria through successive passes.
+          Distinct from chain_of_thought_prompting (linear forward reasoning)
+          by introducing an adversarial self-loop.
+        logic:
+          form: iterative_refinement_loop
+          latex: >
+            o_n = f(o_{n-1}, C),\quad o_0 = f_0(\text{task}),\quad
+            \text{halt when } \text{eval}(o_n, C) = \text{pass}
+          semantic: >
+            output_0 = generate(task); output_n = revise(output_{n-1},
+            criteria); halt when all criteria satisfied.
+
+  # ── COMPOSITE ORCHESTRATION ─────────────────────────────────────────────────
+  composite_orchestration:
+    parallel_question: >
+      "What sequence of primitive cognitive operations does this
+      framework coordinate?"
+
+    episodic_procedural:
+      parallel_question: >
+        "What time-bounded, phase-sequenced framework executes as a
+        discrete event with a defined start and end?"
+
+      ooda_loop:
+        <<: [*exec_agent, *out_orchestrated, *mech_sequential]
+        definition: >
+          Sequences four phases (Observe, Orient, Decide, Act) in a
+          feedback loop calibrated to operate faster than an adversary's
+          decision cycle.
+        logic:
+          form: state_machine
+          latex: "O \\to R \\to D \\to A \\circlearrowleft"
+          semantic: >
+            observe(environment) → orient(mental_model) →
+            decide(options) → act(selection) → loop.
+        composes:
+          - externalization.structural_diagrams.wardley_mapping
+          - reductive_filtering.causal_reduction
+          - simulation.adversarial_simulation.red_teaming
+
+      design_thinking:
+        <<: [*exec_agent, *out_orchestrated, *mech_sequential]
+        definition: >
+          Five-phase human-centered framework: Empathize, Define, Ideate,
+          Prototype, Test. Iterates between divergent and convergent modes.
+        composes:
+          - externalization.process_and_experience_diagrams.empathetic_journey_mapping
+          - generative_expansion.exhaustive_combinatorics.morphological_analysis
+          - reductive_filtering.group_convergence.affinity_diagramming
+          - reductive_filtering.quantified_subjectivity.weighted_decision_matrix
+
+      dmaic:
+        <<: [*exec_agent, *out_orchestrated, *mech_sequential]
+        definition: >
+          Six Sigma improvement framework sequencing Define, Measure,
+          Analyze, Improve, Control. Optimizes processes by reducing variance.
+        logic:
+          form: state_machine
+          semantic: >
+            define(problem) → measure(baseline) → analyze(root_cause) →
+            improve(solution) → control(sustain).
+        composes:
+          - reductive_filtering.causal_reduction.five_whys_root_cause_analysis
+          - reductive_filtering.causal_reduction.fault_tree_analysis
+          - reductive_filtering.quantified_subjectivity.weighted_decision_matrix
+          - execution_governance.sequential_execution_control.operational_checklist_protocol
+
+      double_diamond:
+        <<: [*exec_agent, *out_orchestrated, *mech_sequential]
+        definition: >
+          Design Council framework sequencing two diverge-converge cycles:
+          Discover (diverge) → Define (converge) → Develop (diverge) →
+          Deliver (converge).
+        logic:
+          form: double_convergence
+          semantic: >
+            diverge(problem_space) → converge(problem_definition) →
+            diverge(solution_space) → converge(solution).
+        composes:
+          - externalization.process_and_experience_diagrams.customer_journey_mapping
+          - generative_expansion.constraint_driven_generation.creative_constraints
+          - reductive_filtering.formal_validation.mece_protocol
+
+    environmental_orchestration:
+      parallel_question: >
+        "What continuous, unbounded framework accumulates and recombines
+        cognitive artifacts over time rather than executing as a bounded event?"
+
+      zettelkasten:
+        <<: [*exec_agent, *out_orchestrated, *mech_relational]
+        definition: >
+          Persistent note system built on atomic bidirectional linking of
+          original ideas. Each note carries a unique ID; links are first-class
+          citizens. Distinct from commonplace_book_methodology (categorical
+          collection of external source material) by mechanism of atomic
+          linking of original ideas.
+        logic:
+          form: graph_accumulation
+          semantic: >
+            note_n = {id, content, links[]}; on_add: generate_links(note_n,
+            existing_notes); traverse by link, not by category.
+
+      commonplace_book_methodology:
+        <<: [*exec_agent, *out_orchestrated, *mech_deterministic]
+        definition: >
+          Systematic collection, tagging, and cross-referencing of excerpts
+          from diverse external sources into a unified personal repository.
+          Distinct from zettelkasten (atomic linking of original ideas) by
+          mechanism of categorical curation of external source material.
