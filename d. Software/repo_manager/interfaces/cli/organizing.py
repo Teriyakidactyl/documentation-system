@@ -5,6 +5,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any, Mapping
 
 from repo_manager.automation.organizing.diagnostics import (
     Diagnostic as OrganizingDiagnostic,
@@ -16,6 +17,8 @@ from repo_manager.automation.organizing.model import find_repository_root
 from repo_manager.automation.organizing.operations import INSPECT, NORMALIZE, REFRESH, RESOLVE
 from repo_manager.core import Severity, invoke
 from repo_manager.core.projection import json_text
+
+from .surface import CliRoute, RouteVerification
 
 
 def _root(value: str | None, script: Path | None) -> Path:
@@ -41,7 +44,12 @@ def _organizing_diagnostics(result, corpus_root: Path) -> list[OrganizingDiagnos
     return diagnostics
 
 
-def main(argv: list[str] | None = None, *, script: Path | None = None) -> None:
+def main(
+    argv: list[str] | None = None,
+    *,
+    script: Path | None = None,
+    executor=invoke,
+) -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -65,7 +73,7 @@ def main(argv: list[str] | None = None, *, script: Path | None = None) -> None:
     corpus_root = _root(getattr(args, "corpus_root", None), script)
 
     if args.command == "refresh":
-        result = invoke(
+        result = executor(
             REFRESH,
             {"corpus_root": str(corpus_root), "annotate": args.annotate},
         )
@@ -84,18 +92,18 @@ def main(argv: list[str] | None = None, *, script: Path | None = None) -> None:
                 f"{len(value['diagnostics'])} diagnostics"
             )
     elif args.command == "inspect":
-        result = invoke(INSPECT, {"corpus_root": str(corpus_root)})
+        result = executor(INSPECT, {"corpus_root": str(corpus_root)})
         if result.ok:
             print(json.dumps(result.value, indent=2, ensure_ascii=False))
     elif args.command == "resolve":
-        result = invoke(
+        result = executor(
             RESOLVE,
             {"corpus_root": str(corpus_root), "address": args.address},
         )
         if result.ok:
             print(json.dumps(result.value, indent=2, ensure_ascii=False))
     else:
-        result = invoke(
+        result = executor(
             NORMALIZE,
             {"corpus_root": str(corpus_root), "apply": args.apply},
         )
@@ -107,3 +115,99 @@ def main(argv: list[str] | None = None, *, script: Path | None = None) -> None:
         raise SystemExit(1)
     if any(item.severity is Severity.ERROR for item in result.diagnostics):
         raise SystemExit(1)
+
+
+def _resolved_root(values: Mapping[str, Any]) -> str:
+    return str(Path(str(values["corpus_root"])).resolve())
+
+
+def _refresh_arguments(values: Mapping[str, Any]) -> list[str]:
+    arguments = [str(values["corpus_root"])]
+    if values.get("annotate"):
+        arguments.append("--annotate")
+    return arguments
+
+
+def _refresh_inputs(values: Mapping[str, Any]) -> Mapping[str, Any]:
+    return {
+        "corpus_root": _resolved_root(values),
+        "annotate": bool(values.get("annotate", False)),
+    }
+
+
+def _inspect_arguments(values: Mapping[str, Any]) -> list[str]:
+    return [str(values["corpus_root"])]
+
+
+def _inspect_inputs(values: Mapping[str, Any]) -> Mapping[str, Any]:
+    return {"corpus_root": _resolved_root(values)}
+
+
+def _resolve_arguments(values: Mapping[str, Any]) -> list[str]:
+    return [str(values["address"]), str(values["corpus_root"])]
+
+
+def _resolve_inputs(values: Mapping[str, Any]) -> Mapping[str, Any]:
+    return {
+        "corpus_root": _resolved_root(values),
+        "address": str(values["address"]),
+    }
+
+
+def _normalize_arguments(values: Mapping[str, Any]) -> list[str]:
+    arguments = [str(values["corpus_root"])]
+    if values.get("apply"):
+        arguments.append("--apply")
+    return arguments
+
+
+def _normalize_inputs(values: Mapping[str, Any]) -> Mapping[str, Any]:
+    return {
+        "corpus_root": _resolved_root(values),
+        "apply": bool(values.get("apply", False)),
+    }
+
+
+CLI_ROUTES = (
+    CliRoute(
+        command=REFRESH.commands[0],
+        operation=REFRESH,
+        main=main,
+        arguments=_refresh_arguments,
+        project_inputs=_refresh_inputs,
+        verification=RouteVerification(
+            success_value={
+                "artifacts": 0,
+                "locations": 0,
+                "links_refreshed": 0,
+                "uids_minted": 0,
+                "diagnostics": [],
+            },
+            output="text",
+        ),
+    ),
+    CliRoute(
+        command=INSPECT.commands[0],
+        operation=INSPECT,
+        main=main,
+        arguments=_inspect_arguments,
+        project_inputs=_inspect_inputs,
+        verification=RouteVerification(success_value={}, output="json"),
+    ),
+    CliRoute(
+        command=RESOLVE.commands[0],
+        operation=RESOLVE,
+        main=main,
+        arguments=_resolve_arguments,
+        project_inputs=_resolve_inputs,
+        verification=RouteVerification(success_value={}, output="json"),
+    ),
+    CliRoute(
+        command=NORMALIZE.commands[0],
+        operation=NORMALIZE,
+        main=main,
+        arguments=_normalize_arguments,
+        project_inputs=_normalize_inputs,
+        verification=RouteVerification(success_value={}, output="json"),
+    ),
+)
