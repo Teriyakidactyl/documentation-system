@@ -64,11 +64,20 @@ element:
 - `1. 📖 Fault Record.md`
 - `2. 🛠️ Record A Fault.md`
 
+### Plan
+
+`Consult when` *a Work Management Plan is being authored, reviewed, or maintained as Markdown* `to` **select the canonical Plan source representation for headings, Task state callouts, checkbox-backed Steps, separators, completed-task treatment, and resumable execution sections without redefining Work Management semantics**.
+
+<a href="d.%20Plan/README.md" uid="46J9VC" data-ds-link="relative-path">../d. Plan/README.md</a>
+
+- `1. 📖 Plan.md`
+- `2. 🛠️ Author A Plan.md`
+
 ### Research
 
 `Consult when` *repeatable research must preserve both its reusable request and one or more execution outputs* `to` **select the Research Prompt or Research Report Form without collapsing reusable instructions into run provenance**.
 
-<a href="d.%20Research/README.md" uid="6AZDY2" data-ds-link="relative-path">../d. Research/README.md</a>
+<a href="e.%20Research/README.md" uid="6AZDY2" data-ds-link="relative-path">../e. Research/README.md</a>
 
 - `a. Research Prompt/README.md`
 - `b. Research Report/README.md`

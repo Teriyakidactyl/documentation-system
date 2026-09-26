@@ -55,4 +55,5 @@ element:
 - `a. Architecture Decision Record/README.md`
 - `b. Architecture Document/README.md`
 - `c. Fault Record/README.md`
-- `d. Research/README.md`
+- `d. Plan/README.md`
+- `e. Research/README.md`

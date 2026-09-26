@@ -36,7 +36,7 @@ address-transparent implementation capabilities beneath them, and the
 composition rules that keep representation expertise separate from higher-level
 Documentation System semantics.
 
-The public Software surfaces currently include Organizing, Harness Installer,
+The public Software surfaces currently include Organizing, Work, Harness Installer,
 Folder, Markdown, Frontmatter, YAML, HTML, and Software environment preparation.
 The Python implementation is organized by explicit role packages. `capabilities`
 owns reusable representation mechanics; `automation` owns repository workflows
@@ -127,7 +127,9 @@ Current ownership includes:
   replacement within supported host representations;
 - YAML owns generic YAML parsing and serialization;
 - HTML owns HTML syntax and constrained anchor parsing; and
-- Organizing owns controlled-corpus semantics that use those representations.
+- Organizing owns controlled-corpus semantics that use those representations; and
+- Work owns repository-local Work Management setup, allocator reconciliation,
+  project-state validation, and standalone Task registration.
 
 A higher-level capability may ask a representation expert to extract or mutate a
 surface, but it must retain ownership of the higher-level meaning assigned to
@@ -415,6 +417,8 @@ The principal shared implementation boundaries are:
 - `repo_manager/capabilities/html.py` for generic HTML and anchor syntax;
 - `repo_manager/automation/organizing` for corpus-wide identity, organization,
   projection, controlled-reference, diagnostic, and refactor semantics;
+- `repo_manager/automation/work_management` for `.project/` setup, Work ID
+  allocation, metrics reconciliation, validation, and standalone Task registration;
 - semantic-owner capability and automation modules for interface-neutral public
   Operation declarations, schemas, expected-failure translation, and
   verification probes;
@@ -445,6 +449,11 @@ Organizing CLI projection
     → Operation owned by repo_manager.automation.organizing.operations
     → corpus semantics in repo_manager.automation.organizing
     → Frontmatter / Markdown / HTML / Folder / YAML mechanics
+
+Work CLI projection
+    → Operation owned by repo_manager.automation.work_management.operations
+    → project semantics in repo_manager.automation.work_management
+    → Frontmatter plus controlled UID mechanics
 ~~~
 
 `requirements.txt` is the shared dependency declaration for Software execution.
@@ -459,6 +468,8 @@ structure, HTML anchor parsing, and organization refactor behavior.
 
 `d. Software/tests/test_organizing.py` exercises corpus semantics and the
 composition of representation capabilities through Organizing.
+`test_work_management.py` exercises project setup, collision detection, monotonic
+allocator reconciliation, Task registration, and project UID maintenance.
 `test_organizing_cli.py` retains authored projection contracts whose exact
 terminal and diagnostics-file semantics cannot be derived from the generic
 interface model.
