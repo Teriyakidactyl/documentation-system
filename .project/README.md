@@ -2,21 +2,22 @@
 uid: 2Q1HKP
 description: >-
   `Consult when` *the Documentation System's current repository-local work
-  state must be resumed or inspected* `to` **locate the active Plan and
-  Work Objects without treating them as current Documentation System
-  authority**.
+  state must be resumed or inspected* `to` **locate Plans, standalone Work
+  Objects, and allocator state without treating them as current Documentation
+  System authority**.
 ---
 # Project Work
 
 This controlled sideband holds mutable Work Management state for this repository.
 
-This repository materializes the complete recognized Work Management folder
-skeleton so humans and agents always have predictable destinations even before a
-particular Work Object kind is present.
+Repository automation maintains the complete project skeleton and
+`metrics.json`. The metrics file records monotonic next-ID counters for
+standalone Work Objects; the Work Objects themselves remain semantic truth.
 
 ```text
 .project/
 ├── README.md
+├── metrics.json
 ├── Intake/
 │   ├── Ideas/
 │   ├── Feedback/
@@ -44,14 +45,13 @@ particular Work Object kind is present.
         └── Handoffs/
 ```
 
-The active responsibility layer remains `Intake/`, `Planning/`,
-`Execution/`, and `Archive/`. Object-kind folders organize retrieval; they
-do not encode lifecycle state.
+The stable responsibility layer is Intake, Planning, Execution, and Archive.
+Object-kind folders organize retrieval; they do not encode lifecycle state.
 
-Archive mirrors the active responsibility/object-kind structure so cold Work
-Objects retain an obvious type-preserving destination after Close-Out.
+Plans normally keep Plan-local Tasks and checkbox-backed Steps in one Plan file.
+Only standalone Work Objects consume repository-global Work IDs.
 
 Empty directories are retained in Git with `.gitkeep` anchors. Those anchors
-carry no Work Object semantics.
+carry no Work Management semantics.
 
 Current technical and documentation authority remains outside this sideband.

@@ -33,7 +33,7 @@ conventions separately from Work Management semantics.
   reconciliation, UID maintenance, and Work Management validation.
 - Work Management distinguishes standalone Tasks from Plan-local Tasks and
   Steps.
-- Plan-local Tasks remain in the Plan file and do not consume repository-wide
+- Plan-local Tasks remain inside the Plan file and do not consume repository-wide
   `T###` IDs.
 - Plan Tasks may contain Steps, and every Step is represented by a Markdown
   checkbox.
@@ -70,110 +70,105 @@ and is externally qualified as `P002:T1` only when needed.
 
 A Plan-local Task owns one acceptance boundary. Its Steps are execution actions
 inside that boundary. Step completion is represented by Markdown checkbox state.
-An item needing independent handoff, blocking, cancellation, review, or
-acceptance should normally be promoted to a Plan Task or standalone Task.
-
-The Plan Form convention is:
-
-- Task heading outside the callout;
-- `[!NOTE] State: Ready` for ready Tasks;
-- `[!IMPORTANT] State: Active` for active Tasks;
-- a state-appropriate callout for blocked/review Tasks;
-- completed Tasks are not callouts or quotes and are struck through;
-- Steps use `- [ ]` or `- [x]`;
-- `---` separates every Task block.
 
 ---
 
 ## Tasks
 
-### T1 — Reconcile Work Management semantics
+### ~~T1 — Reconcile Work Management semantics~~
 
-> [!IMPORTANT] State: Active
->
-> **Acceptance**
-> - Work Model and Plan Model distinguish standalone Tasks, Plan-local Tasks,
->   and Steps.
-> - Plan-local Tasks do not consume global Task IDs or require external files.
-> - Promotion to standalone Work Object is explicit.
->
-> **Steps**
-> - [ ] Revise Work Model Task and Plan definitions.
-> - [ ] Revise Plan Model around Plan-local Tasks and checkbox-backed Steps.
-> - [ ] Remove ordinary multi-file Plan Task guidance.
-> - [ ] Define the promotion boundary to standalone Tasks.
-> - [ ] Route Plan authoring representation to the Plan Document Form.
+~~State: Completed~~
 
----
+~~**Acceptance**~~
 
-### T2 — Create the Plan Document Form
+- ~~Work Model and Plan Model distinguish standalone Tasks, Plan-local Tasks,
+  and Steps.~~
+- ~~Plan-local Tasks do not consume global Task IDs or require external files.~~
+- ~~Promotion to standalone Work Object is explicit.~~
 
-> [!NOTE] State: Ready
->
-> **Acceptance**
-> - A canonical Plan Form package exists under Document Design Assemblies.
-> - The Form owns Plan source arrangement and the agreed Task/Step conventions.
->
-> **Steps**
-> - [ ] Create the Form package README.
-> - [ ] Write the Plan Form reference.
-> - [ ] Write Author A Plan.
-> - [ ] Route the package from Forms.
-> - [ ] Encode headings, state callouts, checkboxes, separators, and completed
->       strike-through representation.
+~~**Steps**~~
+
+- [x] ~~Revise Work Model Task and Plan definitions.~~
+- [x] ~~Revise Plan Model around Plan-local Tasks and checkbox-backed Steps.~~
+- [x] ~~Remove ordinary multi-file Plan Task guidance.~~
+- [x] ~~Define the promotion boundary to standalone Tasks.~~
+- [x] ~~Route Plan representation to the Plan Document Form.~~
 
 ---
 
-### T3 — Add explicit Work Management project setup
+### ~~T2 — Create the Plan Document Form~~
 
-> [!NOTE] State: Ready
->
-> **Acceptance**
-> - One Work Management procedure initializes the complete project skeleton and
->   `metrics.json`.
->
-> **Steps**
-> - [ ] Add Set Up Work Management.
-> - [ ] Define the full active and Archive skeleton.
-> - [ ] Define `.gitkeep` treatment for empty folders.
-> - [ ] Define adoption when Work Objects already exist.
-> - [ ] Route setup from Work Management README.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~A canonical Plan Form package exists under Document Design Assemblies.~~
+- ~~The Form owns Plan source arrangement and Task/Step conventions.~~
+
+~~**Steps**~~
+
+- [x] ~~Create the Form package README.~~
+- [x] ~~Write the Plan Form reference.~~
+- [x] ~~Write Author A Plan.~~
+- [x] ~~Encode headings, state callouts, checkboxes, separators, and completed
+  strike-through representation.~~
+
+---
+
+### ~~T3 — Add explicit Work Management project setup~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~One Work Management procedure initializes the complete project skeleton and
+  `metrics.json`.~~
+
+~~**Steps**~~
+
+- [x] ~~Add Set Up Work Management.~~
+- [x] ~~Define the full active and Archive skeleton.~~
+- [x] ~~Define `.gitkeep` treatment for empty folders.~~
+- [x] ~~Define adoption when Work Objects already exist.~~
 
 ---
 
 ### T4 — Implement repo-automation Work Management operations
 
-> [!NOTE] State: Ready
+> [!IMPORTANT] State: Active
 >
 > **Acceptance**
-> - Repo automation can initialize Work Management and register standalone Work
->   IDs without collisions.
+> - Repo automation can initialize Work Management, reconcile and validate
+>   allocator state, and register standalone Tasks without collisions.
 >
 > **Steps**
-> - [ ] Add a Work Management automation module.
-> - [ ] Define kind-to-prefix mapping and `metrics.json` schema.
-> - [ ] Scan active and archived Work Objects for IDs.
-> - [ ] Detect duplicates.
-> - [ ] Allocate monotonic IDs without recycling.
-> - [ ] Reconcile counters against actual Work Objects.
-> - [ ] Expose setup/register operations through the repo-manager interface.
-> - [ ] Reuse repo automation UID minting/validation behavior.
+> - [x] Add a Work Management automation module.
+> - [x] Define kind-to-prefix mapping and `metrics.json` schema.
+> - [x] Scan active and archived Work Objects for IDs.
+> - [x] Detect duplicates.
+> - [x] Allocate monotonic Task IDs without recycling.
+> - [x] Reconcile counters against actual Work Objects.
+> - [x] Expose setup, reconcile, validate, and register-task operations.
+> - [x] Reuse repository UID minting mechanics for project artifacts.
+> - [ ] Run repository verification against the new operation surface.
 
 ---
 
-### T5 — Update standalone Task creation
+### ~~T5 — Update standalone Task creation~~
 
-> [!NOTE] State: Ready
->
-> **Acceptance**
-> - Record A Task delegates global ID allocation to repo automation and clearly
->   excludes Plan-local Tasks from the allocator.
->
-> **Steps**
-> - [ ] Replace manual next-ID scanning guidance.
-> - [ ] Clarify standalone Task scope.
-> - [ ] Require checkbox-backed Steps when standalone Tasks contain Steps.
-> - [ ] Remove obsolete Organizing runtime wording.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Record A Task delegates global ID allocation to repo automation and excludes
+  Plan-local Tasks from the allocator.~~
+
+~~**Steps**~~
+
+- [x] ~~Replace manual next-ID scanning guidance.~~
+- [x] ~~Clarify standalone Task scope.~~
+- [x] ~~Require checkbox-backed Steps when standalone Tasks contain Steps.~~
+- [x] ~~Remove obsolete user-facing Organizing runtime wording.~~
 
 ---
 
@@ -186,29 +181,29 @@ The Plan Form convention is:
 >   UID maintenance, and interface exposure.
 >
 > **Steps**
-> - [ ] Test duplicate IDs across active stores.
-> - [ ] Test duplicate IDs across active and Archive.
-> - [ ] Test stale metrics reconciliation.
-> - [ ] Test monotonic allocation with gaps and archival.
-> - [ ] Test empty and pre-populated project setup.
-> - [ ] Test repo-manager public operation/CLI surface.
-> - [ ] Test Plan Form representation where supported.
+> - [x] Add duplicate-ID coverage.
+> - [x] Add stale-metrics reconciliation coverage.
+> - [x] Add monotonic Task registration coverage.
+> - [x] Add setup and UID-minting coverage.
+> - [x] Add public operation/CLI discovery coverage.
+> - [ ] Execute the full CI verification surface.
 
 ---
 
-### T7 — Migrate repository examples and current project state
+### ~~T7 — Migrate repository examples and current project state~~
 
-> [!NOTE] State: Ready
->
-> **Acceptance**
-> - Current `.project/` state demonstrates the new setup and Plan conventions.
->
-> **Steps**
-> - [ ] Add `.project/metrics.json`.
-> - [ ] Update `.project/README.md`.
-> - [ ] Reformat P001 using the Plan Form conventions without changing its
->       historical outcome.
-> - [ ] Keep this P002 Plan current as implementation advances.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Current `.project/` state demonstrates the new setup and Plan conventions.~~
+
+~~**Steps**~~
+
+- [x] ~~Add `.project/metrics.json`.~~
+- [x] ~~Update `.project/README.md`.~~
+- [x] ~~Reformat P001 using the Plan Form conventions.~~
+- [x] ~~Keep this P002 Plan current.~~
 
 ---
 
@@ -234,10 +229,12 @@ The Plan Form convention is:
 
 ## Current state
 
-Implementation has begun on branch `work-management-refinement`. The semantic
-and Plan Form boundary is the active work.
+The semantic model, Plan Form, setup guidance, project metrics, Work Management
+automation operations, CLI projection, and dedicated tests are implemented on
+`work-management-refinement`. Per-commit reconciliation and full repository
+verification remain.
 
 ## Next action
 
-Complete T1 and T2 before changing repo automation so the software implements a
-stable semantic and representation contract.
+Wire Work Management reconciliation into repository convergence, then open the
+pull request and use CI to complete T4, T6, and T8.

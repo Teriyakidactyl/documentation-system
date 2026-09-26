@@ -2,8 +2,8 @@
 uid: R2MVGF
 description: >-
   `Consult when` *plan P001 for creating the Work Management root must be
-  resumed or inspected* `to` **recover its outcome, completed decisions,
-  current execution frontier, and remaining merge work**.
+  inspected* `to` **recover its completed outcome and retained implementation
+  evidence without treating the historical Plan as current product authority**.
 work:
   id: P001
   type: plan
@@ -18,117 +18,181 @@ work:
 
 Add a root-level Work Management capability that lets a target repository
 capture, plan, execute, hand off, close, and durably retain repository work
-under a `.project/` sideband, including a lightweight one-off Task route and an
-advanced Plan graph model.
+under a `.project/` sideband.
 
 ## Acceptance conditions
 
 - Root routing exposes Work Management as a peer capability.
 - `.project/` is a reserved controlled sideband and is absent from `latest`.
-- `.project/` uses the stable responsibility layer Intake, Planning, Execution,
-  and Archive.
-- A Task can be registered without a Plan.
-- Plans support explicit Nodes, Relations, Gates, dependency sufficiency, and
-  resumable state.
+- Intake, Planning, Execution, and Archive are stable storage responsibilities.
+- A standalone Task can be registered without a Plan.
+- Plans support resumable coordinated work.
 - Fault work integrates with Work Management while legacy `.fault/` evidence
   remains compatible.
-- Planning retains Process Creator and both Externalized Cognition Methods
-  references under Planning/Reference.
-- Organizing recognizes `.project` as controlled and address-opaque.
-- Repository verification passes.
-- The change is merged to `main`.
+- Planning references are retained under Planning/Reference.
+- Repository verification passes and the change is merged.
 
-## Work graph
+## Tasks
 
-### N001 — Establish Work Management semantic owner
+### ~~T1 — Establish Work Management semantic ownership~~
 
-State: closed
+~~State: Completed~~
 
-Result: Work Management owns repository-local work state and relations without
-acquiring authority over the artifacts being changed.
+~~**Acceptance**~~
 
-### N002 — Validate root placement and responsibility structure
+- ~~Work Management owns repository-local work state without acquiring authority
+  over the artifacts being changed.~~
 
-State: closed
-Requires: N001
+~~**Steps**~~
 
-Result: Work Management is a root peer. Its guidance responsibilities are
-Close-Out, Execution, Faults, Intake And Shaping, and Planning, plus root-level
-model/storage/task entry documents.
+- [x] ~~Define the semantic boundary.~~
+- [x] ~~Separate work state from product authority.~~
 
-### N003 — Specify Work Object and Plan models
+---
 
-State: closed
-Requires: N001
+### ~~T2 — Establish root placement and responsibility structure~~
 
-Result: Work Objects have stable identity, typed state, explicit disposition,
-relations, Gates, and retention. Plans progressively formalize from simple
-checklists to explicit execution graphs.
+~~State: Completed~~
 
-### N004 — Specify `.project/` storage
+~~**Acceptance**~~
 
-State: closed
-Requires: N002, N003
+- ~~Work Management is a root peer with stable Intake, Planning, Execution, and
+  Archive storage responsibilities.~~
 
-Result: `.project/` is controlled and address-opaque; its stable storage
-responsibilities are Intake, Planning, Execution, and Archive. Close-Out is an
-operation rather than a storage branch.
+~~**Steps**~~
 
-### N005 — Author Work Management guidance
+- [x] ~~Validate root placement.~~
+- [x] ~~Define responsibility branches.~~
 
-State: closed
-Requires: N001, N002, N003, N004
+---
 
-Result: Root guidance, intake, planning, execution, close-out, fault semantics,
-storage, one-off task creation, and Plan model documents are authored.
+### ~~T3 — Specify Work Object and Plan models~~
 
-### N006 — Retain planning references
+~~State: Completed~~
 
-State: closed
-Requires: N005
+~~**Acceptance**~~
 
-Result: Process Creator and Externalized Cognition Methods v1/v2 are colocated
-under Work Management Planning/Reference as non-authoritative planning support.
+- ~~Work Objects have stable identity, typed state, disposition, relations,
+  Gates, and retention.~~
 
-### N007 — Integrate Document Control and Organizing
+~~**Steps**~~
 
-State: closed
-Requires: N004, N005
+- [x] ~~Define Work Object semantics.~~
+- [x] ~~Define the initial Plan graph model.~~
 
-Gate: `.project` is documented as reserved, Organizing treats it as a controlled
-sideband, and regression coverage proves artifacts are controlled but
-unaddressed.
+---
 
-### N008 — Refresh and validate repository
+### ~~T4 — Specify `.project/` storage~~
 
-State: closed
-Requires: N007
+~~State: Completed~~
 
-Gate: repository-convergence and all verification jobs pass on the pull request.
+~~**Acceptance**~~
 
-### N009 — Review pull request
+- ~~The sideband is controlled, address-opaque, and excluded from publication.~~
 
-State: closed
-Requires: N008
+~~**Steps**~~
 
-Gate: diff contains no unplanned authority transfer, stale generated
-representation, or failing review thread.
+- [x] ~~Define the storage root.~~
+- [x] ~~Separate Close-Out from storage topology.~~
 
-### N010 — Merge
+---
 
-State: closed
-Requires: N009
+### ~~T5 — Author Work Management guidance~~
 
-Gate: pull request is mergeable and required checks are successful.
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Root, intake, planning, execution, close-out, fault, storage, and Task
+  guidance are present.~~
+
+~~**Steps**~~
+
+- [x] ~~Author the guidance set.~~
+- [x] ~~Connect root routing.~~
+
+---
+
+### ~~T6 — Retain planning references~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Process Creator and Externalized Cognition references remain available as
+  non-authoritative planning support.~~
+
+~~**Steps**~~
+
+- [x] ~~Retain the three planning sources.~~
+
+---
+
+### ~~T7 — Integrate controlled sideband behavior~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~`.project/` artifacts are controlled but unaddressed.~~
+
+~~**Steps**~~
+
+- [x] ~~Recognize the sideband.~~
+- [x] ~~Add regression coverage.~~
+
+---
+
+### ~~T8 — Refresh and validate repository~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~Repository convergence and all verification jobs pass.~~
+
+~~**Steps**~~
+
+- [x] ~~Run the verification suite.~~
+- [x] ~~Resolve the reference-index convergence fault.~~
+
+---
+
+### ~~T9 — Review pull request~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~The change contains no unplanned authority transfer or failing review
+  condition.~~
+
+~~**Steps**~~
+
+- [x] ~~Review the final diff and CI state.~~
+
+---
+
+### ~~T10 — Merge~~
+
+~~State: Completed~~
+
+~~**Acceptance**~~
+
+- ~~PR #61 is merged and post-merge verification passes.~~
+
+~~**Steps**~~
+
+- [x] ~~Merge the pull request.~~
+- [x] ~~Verify main and publication.~~
+
+---
 
 ## Current state
 
-PR #61 is merged to `main`. The merge validation and the main-branch
-post-merge refresh both passed Software Surface, Generated Contracts,
-Capability Tests, Automation Tests, Architecture Conformance, and Repository
-Convergence. Organizing refreshed derived UIDs and indexes on `main`.
+PR #61 is merged. The Plan remains in active retention as historical Work
+Management evidence.
 
 ## Next action
 
-None. This Plan is closed with disposition `completed` and remains in active
-retention for near-term auditability.
+None. This Plan is closed with disposition `completed`.
