@@ -8,7 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock
 
 SOFTWARE = Path(__file__).resolve().parents[1]
 if str(SOFTWARE) not in sys.path:
@@ -37,9 +37,9 @@ class OrganizingCliContractTests(unittest.TestCase):
                     "diagnostics": [],
                 }
             )
-            with patch.object(organizing, "invoke", return_value=result) as invoked:
-                with redirect_stdout(StringIO()):
-                    organizing.main(["refresh"], script=script)
+            invoked = Mock(return_value=result)
+            with redirect_stdout(StringIO()):
+                organizing.main(["refresh"], script=script, executor=invoked)
 
             inputs = invoked.call_args.args[1]
             self.assertEqual(str(root.resolve()), inputs["corpus_root"])
@@ -75,16 +75,17 @@ class OrganizingCliContractTests(unittest.TestCase):
             )
 
             stdout = StringIO()
-            with patch.object(organizing, "invoke", return_value=result):
-                with redirect_stdout(stdout):
-                    organizing.main(
-                        [
-                            "refresh",
-                            str(root),
-                            "--diagnostics-json",
-                            str(output),
-                        ]
-                    )
+            executor = Mock(return_value=result)
+            with redirect_stdout(stdout):
+                organizing.main(
+                    [
+                        "refresh",
+                        str(root),
+                        "--diagnostics-json",
+                        str(output),
+                    ],
+                    executor=executor,
+                )
 
             rendered = stdout.getvalue()
             self.assertIn(
