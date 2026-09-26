@@ -18,6 +18,11 @@ standalone Work Object kinds; Work Objects themselves remain semantic truth.
 .project/
 ├── README.md
 ├── metrics.json
+├── Records/
+│   ├── README.md
+│   ├── Drafts/
+│   ├── Faults/
+│   └── Research/
 ├── Planning/
 │   ├── Plans/
 │   ├── Investigations/
@@ -35,8 +40,9 @@ standalone Work Object kinds; Work Objects themselves remain semantic truth.
         └── Handoffs/
 ```
 
-Retained Records such as Feedback, Issue, Fault Record, and Research are not
-Work Objects merely because work can derive from them.
+`Records/` collects retained non-authority material under the same controlled,
+address-opaque project sideband. Record kinds keep their own semantic ownership
+and are not Work Objects merely because work can derive from them.
 
 Legacy repositories may still contain historical `.project/Intake/` Work
 Objects. Current setup does not create that branch, and current allocator state
