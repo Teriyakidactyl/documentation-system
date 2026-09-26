@@ -31,6 +31,10 @@ class VerificationSurfaceTests(unittest.TestCase):
                 "organizing.inspect",
                 "organizing.resolve",
                 "organizing.normalize",
+                "work_management.setup",
+                "work_management.reconcile",
+                "work_management.validate",
+                "work_management.register_task",
             }
             <= ids
         )
