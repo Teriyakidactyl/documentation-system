@@ -54,26 +54,20 @@ jobs:
 
       - name: Build consumer projection
         id: projection
-        shell: bash
+        env:
+          PYTHONPATH: d. Software
+          DIST: ${{ runner.temp }}/skill-distribution
         run: |
-          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from repo_manager.automation.distribution import build_distribution
 
-          source_sha="$(git rev-parse HEAD)"
-          dist="$RUNNER_TEMP/skill-distribution"
-          rm -rf "$dist"
-          mkdir -p "$dist"
-
-          while IFS= read -r -d '' path; do
-            if [[ "/$path" =~ /\.[^/]+/ ]]; then
-              continue
-            fi
-
-            mkdir -p "$dist/$(dirname "$path")"
-            cp -a -- "$path" "$dist/$path"
-          done < <(git ls-files -z)
-
-          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
-          echo "dist=$dist" >> "$GITHUB_OUTPUT"
+          result = build_distribution(Path("."), Path(os.environ["DIST"]))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"source_sha={result.source_revision}\n")
+              output.write(f"dist={result.output_root}\n")
+          PY
 
       - name: Publish latest
         id: publish
